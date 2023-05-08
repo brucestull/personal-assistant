@@ -28,11 +28,11 @@ class CustomUserAdmin(UserAdmin):
         fieldsets_as_list = list(fieldsets)
 
         # Create list of single tuple for `registration_accepted`:
-        moderator_permissions_as_list = (
+        moderator_permissions = (
             "Moderator Permissions",
             {"fields": ("registration_accepted",)},
         )
 
-        fieldsets_as_list.insert(2, moderator_permissions_as_list)
+        fieldsets_as_list.insert(2, moderator_permissions)
         # Combine the two lists and return the result:
         return fieldsets_as_list
