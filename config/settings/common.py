@@ -119,4 +119,4 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
-THE_SITE_NAME = "DjangoCustomUserStarter"
+THE_SITE_NAME = "Health Activities"
