@@ -1,4 +1,5 @@
 from django.urls import reverse_lazy
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.views import LoginView
@@ -7,6 +8,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from accounts.forms import CustomUserCreationForm, CustomUserChangeForm
 from accounts.models import CustomUser
 from config.settings.common import THE_SITE_NAME
+
+
+class ForbiddenView(TemplateView):
+    """
+    View for the 403 Forbidden page.
+    """
+
+    template_name = "403.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Forbidden"
+        context["the_site_name"] = THE_SITE_NAME
+        return context
 
 
 class CustomUserSignUpView(CreateView):

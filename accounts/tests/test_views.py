@@ -8,7 +8,7 @@ A_TEST_USERNAME = "ACustomUser"
 A_TEST_PASSWORD = "a_test_password"
 A_TEST_FIRST_NAME = "A"
 
-THE_SITE_NAME = "DjangoCustomUserStarter"
+THE_SITE_NAME = "Health Activities"
 
 SIGN_UP_VIEW_URL = "/accounts/signup/"
 SIGN_UP_VIEW_NAME = "signup"
