@@ -7,19 +7,21 @@
 {% endblock title %}
 
 {% block content %}
+    <h1>Journals</h1>
 
-{% if user.registration_accepted %}
-    {{ journal_list }}
-    <br>
-    <br>
-    {% for journal in journal_list %}
-        <hr>
-        {{ journal.title }}:
+    {% if user.registration_accepted %}
         <br>
-        {{ journal.content }}
+        {{ journal_list }}
         <br>
         <br>
-    {% endfor %}
-{% endif %}
+        {% for journal in journal_list %}
+            <hr>
+            {{ journal.title }}:
+            <br>
+            {{ journal.content }}
+            <br>
+            <br>
+        {% endfor %}
+    {% endif %}
 
 {% endblock content %}
