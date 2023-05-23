@@ -1,6 +1,8 @@
 <div>
     <a href="{% url 'home' %}">Home</a>
     <br>
+    <a href="{% url 'self_enquiry:list' %}">Journals</a>
+    <br>
     {% if user.is_authenticated %}
         <span>Greetings, {{ user.username | capfirst }}!</span>
         <br>

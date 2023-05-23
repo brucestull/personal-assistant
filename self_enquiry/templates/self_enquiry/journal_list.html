@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ the_site_name }}
+    -
+    {{ page_title }}
+{% endblock title %}
+
+{% block content %}
+
+{{ journal_list }}
+<br>
+<br>
+
+{% for journal in journal_list %}
+{{ journal.title }}:
+<br>
+{{ journal.content }}
+<br>
+<br>
+{% endfor %}
+
+{% endblock content %}

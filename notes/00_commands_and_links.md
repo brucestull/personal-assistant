@@ -74,6 +74,8 @@
 
 ## Development server web links
 
+* Application:
+  * <http://localhost:8000/journals/list/>
 * Create user:
   * <http://localhost:8000/accounts/signup/>
 * Server Root:
