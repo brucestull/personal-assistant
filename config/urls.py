@@ -22,17 +22,16 @@ from config.settings.common import THE_SITE_NAME
 
 urlpatterns = [
     path(
-        '',
+        "",
         TemplateView.as_view(
             template_name="home.html",
-            extra_context={'the_site_name': THE_SITE_NAME},
+            extra_context={"the_site_name": THE_SITE_NAME},
         ),
-        name='home',
+        name="home",
     ),
-
-    path('admin/doc/', include('django.contrib.admindocs.urls')),
-    path('admin/', admin.site.urls),
-    
-    path('accounts/', include('accounts.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path("admin/doc/", include("django.contrib.admindocs.urls")),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("accounts.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("journals/", include("self_enquiry.urls")),
 ]
