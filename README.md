@@ -1,4 +1,9 @@
-# Django Starter with CustomUser, Django Documentation Generator, DEV-PROD settings, pipenv, and Heroku Procfile
+# Health Activity Tracker
+
+## Heroku Deployment
+
+* [Health Activity Tracker](https://health-activity-tracker.herokuapp.com/)
+* <https://git.heroku.com/health-activity-tracker.git>
 
 * NOTE: Author is using PowerShell for this guide.
 
