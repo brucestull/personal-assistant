@@ -10,16 +10,14 @@
     <h1>Journals</h1>
 
     {% if user.registration_accepted %}
-        <br>
         {{ journal_list }}
         <br>
         <br>
         {% for journal in journal_list %}
             <hr>
-            {{ journal.title }}:
-            <br>
-            {{ journal.content }}
-            <br>
+            <h2>{{ journal.title }}</h2>
+            <h3>{{ journal.created }}</h3>
+            <p>{{ journal.content }}</p>
             <br>
         {% endfor %}
     {% endif %}
