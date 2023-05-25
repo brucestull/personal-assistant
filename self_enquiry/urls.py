@@ -1,6 +1,6 @@
 from django.urls import path
 
-from self_enquiry.views import JournalListView
+from self_enquiry.views import JournalListView, JournalCreateView
 
 
 app_name = "self_enquiry"
@@ -9,5 +9,10 @@ urlpatterns = [
         "list/",
         JournalListView.as_view(),
         name="list",
+    ),
+    path(
+        "create/",
+        JournalCreateView.as_view(),
+        name="create",
     ),
 ]
