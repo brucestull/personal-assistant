@@ -26,9 +26,13 @@ class CustomUserModelTest(TestCase):
             username=A_TEST_USERNAME,
         )
 
-    def test_registration_accepted_field_default_false_for_created_user(self):
+    def test_new_user_has_registration_accepted_false(self):
         """
         A newly created `CustomUser` should have `registration_accepted` `False`.
+
+        This tests the actual `default` value of the `registration_accepted` field of a newly created user.
+
+        This test may be redundant with `test_registration_accepted_default_attribute_false`, since Django makes sure to use the `registration_accepted` default value we specify in the model, which is tested in `test_registration_accepted_default_attribute_false`.
         """
         user = CustomUser.objects.get(id=1)
         self.assertFalse(user.registration_accepted)
@@ -36,6 +40,8 @@ class CustomUserModelTest(TestCase):
     def test_registration_accepted_default_attribute_false(self):
         """
         `CustomUser` model `registration_accepted` field `default` should be `False`.
+
+        This tests the `default` attribute of the `registration_accepted` field of the `CustomUser` model.
         """
         user = CustomUser.objects.get(id=1)
         field_registration_accepted = user._meta.get_field(
