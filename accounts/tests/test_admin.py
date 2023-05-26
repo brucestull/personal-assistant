@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from accounts.models import CustomUser
 from accounts.admin import CustomUserAdmin
+from accounts.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 A_TEST_USERNAME = 'ACustomUser'
@@ -24,6 +25,27 @@ class TestCustomUserAdmin(TestCase):
             username=A_TEST_USERNAME,
             first_name=A_TEST_FIRST_NAME,
         )
+
+    def test_uses_correct_add_form(self):
+        """
+        `CustomUserAdmin` `add_form` should be `CustomUserCreationForm`.
+        """
+        custom_user_admin = CustomUserAdmin(CustomUser, None)
+        self.assertEqual(custom_user_admin.add_form, CustomUserCreationForm)
+
+    def test_uses_correct_change_form(self):
+        """
+        `CustomUserAdmin` `form` should be `CustomUserChangeForm`.
+        """
+        custom_user_admin = CustomUserAdmin(CustomUser, None)
+        self.assertEqual(custom_user_admin.form, CustomUserChangeForm)
+
+    def test_uses_correct_model(self):
+        """
+        `CustomUserAdmin` `model` should be `CustomUser`.
+        """
+        custom_user_admin = CustomUserAdmin(CustomUser, None)
+        self.assertEqual(custom_user_admin.model, CustomUser)
 
     def test_list_display_includes_username(self):
         """
