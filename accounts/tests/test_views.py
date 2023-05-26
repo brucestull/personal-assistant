@@ -14,6 +14,11 @@ ANOTHER_TEST_FIRST_NAME = "Another"
 
 THE_SITE_NAME = "Health Activities"
 
+FORBIDDEN_VIEW_PAGE_TITLE = "Forbidden"
+FORBIDDEN_VIEW_URL = "/accounts/403/"
+FORBIDDEN_VIEW_NAME = "forbidden"
+FORBIDDEN_VIEW_TEMPLATE_NAME = "403.html"
+
 SIGN_UP_VIEW_URL = "/accounts/signup/"
 SIGN_UP_VIEW_NAME = "signup"
 SIGN_UP_VIEW_TEMPLATE = "registration/signup.html"
@@ -28,6 +33,50 @@ USER_UPDATE_VIEW_TEMPLATE = "registration/update.html"
 USER_DETAIL_VIEW_URL = "/accounts/1/detail/"
 USER_DETAIL_VIEW_NAME = "detail"
 USER_DETAIL_VIEW_TEMPLATE = "accounts/customuser_detail.html"
+
+
+class TestForbiddenView(TestCase):
+    """
+    Tests for `ForbiddenView`.
+    """
+
+    def test_url_exists(self):
+        """
+        URL should return status 200.
+        """
+        response = self.client.get(FORBIDDEN_VIEW_URL)
+        self.assertEqual(response.status_code, 200)
+
+    def test_url_accessible_by_name(self):
+        """
+        View name should return status 200.
+        """
+        response = self.client.get(reverse(FORBIDDEN_VIEW_NAME))
+        self.assertEqual(response.status_code, 200)
+
+    def test_uses_correct_template(self):
+        """
+        View should use template `403.html`.
+        """
+        response = self.client.get(FORBIDDEN_VIEW_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, FORBIDDEN_VIEW_TEMPLATE_NAME)
+
+    def test_context_has_correct_page_title(self):
+        """
+        View should have context with `page_title` set to `Forbidden`.
+        """
+        response = self.client.get(FORBIDDEN_VIEW_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["page_title"], FORBIDDEN_VIEW_PAGE_TITLE)
+
+    def test_context_has_correct_the_site_name(self):
+        """
+        View should have context with `the_site_name` set to `Health Activities`.
+        """
+        response = self.client.get(FORBIDDEN_VIEW_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
 
 
 class SignUpViewTest(TestCase):
