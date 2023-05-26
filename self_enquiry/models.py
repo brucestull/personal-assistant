@@ -21,15 +21,15 @@ class Journal(models.Model):
         related_name="journals",
     )
     title = models.CharField(
-        max_length=100,
-        help_text="Optional - 100 characters or fewer",
         verbose_name="Journal Title",
+        help_text="Optional - 100 characters or fewer",
+        max_length=100,
         null=True,
         blank=True,
     )
     content = models.TextField(
-        help_text="Required",
         verbose_name="Journal Content",
+        help_text="Required",
     )
     created = models.DateTimeField(
         help_text="The date and time the journal was created.",
