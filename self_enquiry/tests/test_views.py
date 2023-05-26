@@ -104,7 +104,9 @@ class JournalListViewTest(TestCase):
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f"<title>{THE_SITE_NAME} - {JOURNAL_LIST_PAGE_TITLE}</title>")
+        self.assertContains(
+            response, f"<title>{THE_SITE_NAME} - {JOURNAL_LIST_PAGE_TITLE}</title>"
+        )
 
     def test_view_pagination_is_ten(self):
         """
@@ -132,7 +134,9 @@ class JournalListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue("is_paginated" in response.context)
         self.assertTrue(response.context["is_paginated"] == True)
-        self.assertTrue(len(response.context["journal_list"]) == NUMBER_OF_JOURNALS_PER_PAGE)
+        self.assertTrue(
+            len(response.context["journal_list"]) == NUMBER_OF_JOURNALS_PER_PAGE
+        )
         for journal in response.context["journal_list"]:
             self.assertTrue(isinstance(journal, Journal))
 
@@ -162,7 +166,10 @@ class JournalListViewTest(TestCase):
         self.assertEqual(response_page_one.status_code, 200)
         self.assertTrue("is_paginated" in response_page_one.context)
         self.assertTrue(response_page_one.context["is_paginated"] == True)
-        self.assertTrue(len(response_page_one.context["journal_list"]) == NUMBER_OF_JOURNALS_PER_PAGE)
+        self.assertTrue(
+            len(response_page_one.context["journal_list"])
+            == NUMBER_OF_JOURNALS_PER_PAGE
+        )
         response_page_two = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
         self.assertEqual(response_page_two.status_code, 200)
         self.assertTrue("is_paginated" in response_page_two.context)
@@ -275,3 +282,43 @@ class JournalCreateViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse(JOURNAL_LIST_VIEW_NAME))
+
+    def test_view_creates_journal_on_success(self):
+        """
+        `JournalCreateView` view should create a journal on success.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        self.client.post(
+            JOURNAL_CREATE_URL,
+            {
+                "title": TEST_JOURNAL_TITLE,
+                "content": TEST_JOURNAL_CONTENT,
+            },
+        )
+        self.assertTrue(Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists())
+
+    def test_created_journal_is_owned_by_current_user(self):
+        """
+        `JournalCreateView` view should create a journal owned by the current user.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        self.client.post(
+            JOURNAL_CREATE_URL,
+            {
+                "title": TEST_JOURNAL_TITLE,
+                "content": TEST_JOURNAL_CONTENT,
+            },
+        )
+        self.assertTrue(
+            Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists(),
+        )
+        self.assertTrue(
+            Journal.objects.filter(title=TEST_JOURNAL_TITLE).first().author
+            == self.user,
+        )
