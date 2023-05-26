@@ -47,4 +47,4 @@ class Journal(models.Model):
         )
 
     def get_absolute_url(self):
-        return reverse("journal_detail", args=[str(self.id)])
+        return reverse("self_enquiry:detail", args=[str(self.id)])

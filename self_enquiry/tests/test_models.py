@@ -115,4 +115,80 @@ class JournalModelTest(TestCase):
         field = Journal._meta.get_field("title")
         self.assertTrue(field.blank)
 
+    def test_content_verbose_name(self):
+        """
+        `Journal` model `content` field `verbose_name` should be
+        `Journal Content`.
+        """
+        field = Journal._meta.get_field("content")
+        self.assertEqual(field.verbose_name, JOURNAL_CONTENT_VERBOSE_NAME)
 
+    def test_content_help_text(self):
+        """
+        `Journal` model `content` field `help_text` should be
+        `Required`.
+        """
+        field = Journal._meta.get_field("content")
+        self.assertEqual(field.help_text, JOURNAL_CONTENT_HELP_TEXT)
+
+    def test_created_label(self):
+        """
+        `Journal` model `created` field `label` should be `created`.
+        """
+        field = Journal._meta.get_field("created")
+        self.assertEqual(field.verbose_name, "created")
+
+    def test_created_help_text(self):
+        """
+        `Journal` model `created` field `help_text` should be
+        `The date and time the journal was created.`.
+        """
+        field = Journal._meta.get_field("created")
+        self.assertEqual(field.help_text, JOURNAL_CREATED_HELP_TEXT)
+
+    def test_created_auto_now_add_true(self):
+        """
+        `Journal` model `created` field `auto_now_add` should be
+        `True`.
+        """
+        field = Journal._meta.get_field("created")
+        self.assertTrue(field.auto_now_add)
+
+    def test_updated_label(self):
+        """
+        `Journal` model `updated` field `label` should be `updated`.
+        """
+        field = Journal._meta.get_field("updated")
+        self.assertEqual(field.verbose_name, "updated")
+
+    def test_updated_help_text(self):
+        """
+        `Journal` model `updated` field `help_text` should be
+        `The date and time the journal was last updated.`.
+        """
+        field = Journal._meta.get_field("updated")
+        self.assertEqual(field.help_text, JOURNAL_UPDATED_HELP_TEXT)
+
+    def test_updated_auto_now_true(self):
+        """
+        `Journal` model `updated` field `auto_now` should be
+        `True`.
+        """
+        field = Journal._meta.get_field("updated")
+        self.assertTrue(field.auto_now)
+
+    def test_str_method(self):
+        """
+        `Journal` model `__str__` method should return something.
+        """
+        journal = Journal.objects.get(id=1)
+        self.assertEqual(str(journal), f"{A_TEST_USERNAME} : {journal.id} - {JOURNAL_TITLE[:24]}")
+
+    # TODO: Add test for `get_absolute_url` method.
+    # def test_get_absolute_url_method(self):
+    #     """
+    #     `Journal` model `get_absolute_url` method should return
+    #     something.
+    #     """
+    #     journal = Journal.objects.get(id=1)
+    #     self.assertEqual(journal.get_absolute_url(), f"/journals/{journal.id}/")
