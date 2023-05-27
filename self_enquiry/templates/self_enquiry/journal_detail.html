@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock title %}
+
+{% block content %}
+{{ journal }}
+<a href="{% url 'self_enquiry:edit' journal.id %}">Edit Journal</a>
+<a href="{% url 'self_enquiry:delete-confirmation' journal.id %}">Delete Journal</a>
+{% endblock content %}
