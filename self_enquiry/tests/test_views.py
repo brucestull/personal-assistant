@@ -11,21 +11,173 @@ THE_SITE_NAME = "Health Activities"
 A_TEST_USERNAME = "ACustomUser"
 A_TEST_PASSWORD = "Apassword123"
 
-JOURNAL_LIST_URL = "/journals/list/"
-JOURNAL_LIST_VIEW_NAME = "self_enquiry:list"
-JOURNAL_LIST_TEMPLATE = "self_enquiry/journal_list.html"
-JOURNAL_LIST_PAGE_TITLE = "Journals"
-
 JOURNAL_CREATE_URL = "/journals/create/"
 JOURNAL_CREATE_VIEW_NAME = "self_enquiry:create"
 JOURNAL_CREATE_TEMPLATE = "self_enquiry/journal_form.html"
 JOURNAL_CREATE_PAGE_TITLE = "Create a Journal"
+
+JOURNAL_DETAIL_URL = "/journals/1/"
+JOURNAL_DETAIL_VIEW_NAME = "self_enquiry:detail"
+JOURNAL_DETAIL_TEMPLATE = "self_enquiry/journal_detail.html"
+JOURNAL_DETAIL_PAGE_TITLE = "Journal Detail"
+
+JOURNAL_LIST_URL = "/journals/list/"
+JOURNAL_LIST_VIEW_NAME = "self_enquiry:list"
+JOURNAL_LIST_TEMPLATE = "self_enquiry/journal_list.html"
+JOURNAL_LIST_PAGE_TITLE = "Journals"
 
 TEST_JOURNAL_TITLE = "Test Journal Title"
 TEST_JOURNAL_CONTENT = "Test Journal Content"
 
 NUMBER_OF_JOURNALS = 13
 NUMBER_OF_JOURNALS_PER_PAGE = 10
+
+
+class JournalCreateViewTest(TestCase):
+    """
+    Tests for `JournalCreateView`.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up a test user.
+        """
+        cls.user = CustomUser.objects.create_user(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+
+    def test_journal_create_url_returns_200(self):
+        """
+        `JournalCreateView` view `url` should return a 200 response.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        response = self.client.get(JOURNAL_CREATE_URL)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_accessible_by_name(self):
+        """
+        `JournalCreateView` view should be accessible by name.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """
+        `JournalCreateView` view should use the correct template.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, JOURNAL_CREATE_TEMPLATE)
+
+    def test_view_context_contains_page_title(self):
+        """
+        `JournalCreateView` view should use the correct page title.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        response = self.client.get(JOURNAL_CREATE_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("page_title" in response.context)
+        self.assertEqual(response.context["page_title"], JOURNAL_CREATE_PAGE_TITLE)
+
+    def test_view_context_contains_the_site_name(self):
+        """
+        `JournalCreateView` view should use the correct site name.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        response = self.client.get(JOURNAL_CREATE_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("the_site_name" in response.context)
+        self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
+
+    def test_view_has_proper_fields(self):
+        """
+        `JournalCreateView` view should have the proper fields.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        response = self.client.get(JOURNAL_CREATE_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("title" in response.context["form"].fields)
+        self.assertTrue("content" in response.context["form"].fields)
+
+    def test_view_redirects_to_list_on_success(self):
+        """
+        `JournalCreateView` view should redirect to the list view on success.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        response = self.client.post(
+            JOURNAL_CREATE_URL,
+            {
+                "title": TEST_JOURNAL_TITLE,
+                "content": TEST_JOURNAL_CONTENT,
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse(JOURNAL_LIST_VIEW_NAME))
+
+    def test_view_creates_journal_on_success(self):
+        """
+        `JournalCreateView` view should create a journal on success.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        self.client.post(
+            JOURNAL_CREATE_URL,
+            {
+                "title": TEST_JOURNAL_TITLE,
+                "content": TEST_JOURNAL_CONTENT,
+            },
+        )
+        self.assertTrue(Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists())
+
+    def test_created_journal_is_owned_by_current_user(self):
+        """
+        `JournalCreateView` view should create a journal owned by the current user.
+        """
+        login = self.client.login(
+            username=A_TEST_USERNAME,
+            password=A_TEST_PASSWORD,
+        )
+        self.client.post(
+            JOURNAL_CREATE_URL,
+            {
+                "title": TEST_JOURNAL_TITLE,
+                "content": TEST_JOURNAL_CONTENT,
+            },
+        )
+        self.assertTrue(
+            Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists(),
+        )
+        self.assertTrue(
+            Journal.objects.filter(title=TEST_JOURNAL_TITLE).first().author
+            == self.user,
+        )
 
 
 class JournalListViewTest(TestCase):
@@ -177,148 +329,77 @@ class JournalListViewTest(TestCase):
         self.assertTrue(len(response_page_two.context["journal_list"]) == 3)
 
 
-class JournalCreateViewTest(TestCase):
+class JournalDetailViewTest(TestCase):
     """
-    Tests for `JournalCreateView`.
+    Test `JournalDetailView` view.
     """
 
     @classmethod
     def setUpTestData(cls):
         """
-        Set up a test user.
+        Set up a test user and journal.
         """
         cls.user = CustomUser.objects.create_user(
             username=A_TEST_USERNAME,
             password=A_TEST_PASSWORD,
         )
+        cls.journal = Journal.objects.create(
+            author=cls.user,
+            title=TEST_JOURNAL_TITLE,
+            content=TEST_JOURNAL_CONTENT,
+        )
 
-    def test_journal_create_url_returns_200(self):
+    def test_journal_detail_url_returns_200(self):
         """
-        `JournalCreateView` view `url` should return a 200 response.
+        `JournalDetailView` view `url` should return a 200 response.
         """
         login = self.client.login(
             username=A_TEST_USERNAME,
             password=A_TEST_PASSWORD,
         )
-        response = self.client.get(JOURNAL_CREATE_URL)
+        response = self.client.get(self.journal.get_absolute_url())
         self.assertEqual(response.status_code, 200)
 
     def test_view_accessible_by_name(self):
         """
-        `JournalCreateView` view should be accessible by name.
+        `JournalDetailView` view should be accessible by name.
         """
         login = self.client.login(
             username=A_TEST_USERNAME,
             password=A_TEST_PASSWORD,
         )
-        response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
+        response = self.client.get(
+            reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
         """
-        `JournalCreateView` view should use the correct template.
+        `JournalDetailView` view should use the correct template.
         """
         login = self.client.login(
             username=A_TEST_USERNAME,
             password=A_TEST_PASSWORD,
         )
-        response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
+        response = self.client.get(
+            reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id]),
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, JOURNAL_CREATE_TEMPLATE)
+        self.assertTemplateUsed(response, JOURNAL_DETAIL_TEMPLATE)
 
-    def test_view_context_contains_page_title(self):
+    def test_view_uses_correct_page_title(self):
         """
-        `JournalCreateView` view should use the correct page title.
+        `JournalDetailView` view should use the correct page title.
         """
         login = self.client.login(
             username=A_TEST_USERNAME,
             password=A_TEST_PASSWORD,
         )
-        response = self.client.get(JOURNAL_CREATE_URL)
+        response = self.client.get(
+            reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue("page_title" in response.context)
-        self.assertEqual(response.context["page_title"], JOURNAL_CREATE_PAGE_TITLE)
-
-    def test_view_context_contains_the_site_name(self):
-        """
-        `JournalCreateView` view should use the correct site name.
-        """
-        login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
-        )
-        response = self.client.get(JOURNAL_CREATE_URL)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue("the_site_name" in response.context)
-        self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-
-    def test_view_has_proper_fields(self):
-        """
-        `JournalCreateView` view should have the proper fields.
-        """
-        login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
-        )
-        response = self.client.get(JOURNAL_CREATE_URL)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue("title" in response.context["form"].fields)
-        self.assertTrue("content" in response.context["form"].fields)
-
-    def test_view_redirects_to_list_on_success(self):
-        """
-        `JournalCreateView` view should redirect to the list view on success.
-        """
-        login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
-        )
-        response = self.client.post(
-            JOURNAL_CREATE_URL,
-            {
-                "title": TEST_JOURNAL_TITLE,
-                "content": TEST_JOURNAL_CONTENT,
-            },
-        )
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse(JOURNAL_LIST_VIEW_NAME))
-
-    def test_view_creates_journal_on_success(self):
-        """
-        `JournalCreateView` view should create a journal on success.
-        """
-        login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
-        )
-        self.client.post(
-            JOURNAL_CREATE_URL,
-            {
-                "title": TEST_JOURNAL_TITLE,
-                "content": TEST_JOURNAL_CONTENT,
-            },
-        )
-        self.assertTrue(Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists())
-
-    def test_created_journal_is_owned_by_current_user(self):
-        """
-        `JournalCreateView` view should create a journal owned by the current user.
-        """
-        login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
-        )
-        self.client.post(
-            JOURNAL_CREATE_URL,
-            {
-                "title": TEST_JOURNAL_TITLE,
-                "content": TEST_JOURNAL_CONTENT,
-            },
-        )
-        self.assertTrue(
-            Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists(),
-        )
-        self.assertTrue(
-            Journal.objects.filter(title=TEST_JOURNAL_TITLE).first().author
-            == self.user,
+        self.assertContains(
+            response,
+            f"<title>{THE_SITE_NAME} - {JOURNAL_DETAIL_PAGE_TITLE}</title>",
         )

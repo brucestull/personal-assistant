@@ -7,11 +7,17 @@
 {% endblock title %}
 
 {% block content %}
-<h1>Create a New Journal</h1>
+<h1>{{ page_title }}</h1>
 <form method='post'>
     {% csrf_token %}
         {{ form.as_p }}
-    <button type="submit" >Create Inspirational</button>
+    <button type="submit" >{{ form_button_text }}</button>
+    {% if request.resolver_match.view_name == "self_enquiry:edit" %}
+    {% comment %} button to cancel the edit {% endcomment %}
+    <a href="{% url 'self_enquiry:detail' pk=journal.pk %}">Cancel</a>
+    {% elif request.resolver_match.view_name == "self_enquiry:create" %}
+    {% comment %} button to cancel the add {% endcomment %}
+    <a href="{% url 'self_enquiry:list' %}">Cancel</a>
+    {% endif %}
 </form>
-<p><a href="{% url 'self_enquiry:list' %}">Back to Journal list</a></p>
 {% endblock content %}
