@@ -13,7 +13,7 @@
             <hr>
             <h2><a href="{% url 'self_enquiry:detail' journal.id %}">{{ journal.title }}</a></h2>
             <h3>{{ journal.created }}</h3>
-            <p>{{ journal.content }}</p>
+            <p>{{ journal.content | linebreaksbr }}</p>
             <br>
         {% endfor %}
     {% endif %}
