@@ -13,5 +13,7 @@
     <form method="post" action="{% url 'self_enquiry:delete' journal_id %}">
         {% csrf_token %}
         <button type="submit">Confirm Delete</button>
+        {% comment %} Cancel the deletion {% endcomment %}
+        <a href="{% url 'self_enquiry:detail' journal_id %}">Cancel</a>
     </form>
 {% endblock content %}
