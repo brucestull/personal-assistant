@@ -8,13 +8,11 @@
     {% if user.registration_accepted %}
         {{ journal_list }}
         <br>
-        <br>
         {% for journal in journal_list %}
             <hr>
             <h2><a href="{% url 'self_enquiry:detail' journal.id %}">{{ journal.title }}</a></h2>
             <h3>{{ journal.created }}</h3>
-            <p>{{ journal.content | linebreaksbr }}</p>
-            <br>
+            {{ journal.content | linebreaks }}
         {% endfor %}
     {% endif %}
 
