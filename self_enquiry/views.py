@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from django.urls.base import reverse_lazy
+from django.shortcuts import get_object_or_404
 
 from config.settings.common import THE_SITE_NAME
 from .models import Journal
@@ -104,8 +105,9 @@ class JournalConfirmDeleteView(View):
 
     def get(self, request, *args, **kwargs):
         journal_id = kwargs["pk"]  # Assuming you pass the journal ID in the URL
+        journal = get_object_or_404(Journal, pk=journal_id)
         context = {
-            "journal_id": journal_id,
+            "journal": journal,
             "the_site_name": THE_SITE_NAME,
             "page_title": JOURNAL_DELETE_PAGE_TITLE,
         }

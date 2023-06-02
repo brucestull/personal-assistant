@@ -8,12 +8,12 @@
 
 {% block content %}
     <h1>Confirm Delete</h1>
-    <p>Are you sure you want to delete journal {{ journal_id }}?</p>
+    <p>Are you sure you want to delete journal: {{ journal.title }}?</p>
 
-    <form method="post" action="{% url 'self_enquiry:delete' journal_id %}">
+    <form method="post" action="{% url 'self_enquiry:delete' journal.id %}">
         {% csrf_token %}
         <button type="submit">Confirm Delete</button>
-        {% comment %} Cancel the deletion {% endcomment %}
-        <a href="{% url 'self_enquiry:detail' journal_id %}">Cancel</a>
+        {% comment %} Allow cancellation of the deletion {% endcomment %}
+        <a href="{% url 'self_enquiry:detail' journal.id %}">Cancel</a>
     </form>
 {% endblock content %}
