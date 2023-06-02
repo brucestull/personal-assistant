@@ -6,8 +6,6 @@
     <h1>{{ page_title }}</h1>
 
     {% if user.registration_accepted %}
-        {{ journal_list }}
-        <br>
         {% for journal in journal_list %}
             <hr>
             <h2><a href="{% url 'self_enquiry:detail' journal.id %}">{{ journal.title }}</a></h2>
