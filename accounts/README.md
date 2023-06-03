@@ -1,6 +1,8 @@
+# Accounts Application
+
 ## URL Mappings
 
-# URLs and Views Provided by Django `auth` App
+### URLs and Views Provided by Django `auth` App
 
 | URL                                  | View Name                        |
 | ------------------------------------ | -------------------------------- |
@@ -13,7 +15,7 @@
 | accounts/reset/\<uidb64\>/\<token\>/ | [name='password_reset_confirm']  |
 | accounts/reset/done/                 | [name='password_reset_complete'] |
 
-## We override the following `View`
+### We override the following `View`
 
 `accounts/login/` is mapped to `CustomLoginView` instead of `LoginView` provided by Django.
 
@@ -21,7 +23,7 @@
 | --------------- | -------------- | ----------------- | ----------------- |
 | accounts/login/ | [name='login'] | `CustomLoginView` | `LoginView`       |
 
-## NOTE
+### NOTE
 
 We don't give the `accounts` app an `app_name` since Django-provided views are not namespaced. And mixing our namespaced urls with Django-provided urls will make url mappings inconsistent in the templates.
 
