@@ -8,6 +8,6 @@ class SelfEnquiryAdmin(admin.ModelAdmin):
     list_display = (
         'author',
         'title',
-        'content',
+        'display_content',
         'created',
     )

@@ -48,3 +48,6 @@ class Journal(models.Model):
 
     def get_absolute_url(self):
         return reverse("self_enquiry:detail", args=[str(self.id)])
+
+    def display_content(self):
+        return self.content[:50] + ("..." if len(self.content) > 50 else "")
