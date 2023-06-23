@@ -37,6 +37,14 @@
 * `python manage.py createsuperuser`
 * `python manage.py createsuperuser --email admin@email.app --username admin`
 * `python manage.py createsuperuser --email FlynntKnapp@email.app --username FlynntKnapp`
+* `python manage.py shell`
+  ```python
+  from django.conf import settings as s
+  print(s.DEBUG)
+  print(s.SECRET_KEY)
+  print(s.DATABASES)
+  print(s.INSTALLED_APPS)
+  ```
 
 ### Django Create `SECRET_KEY`
 
