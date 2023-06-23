@@ -11,7 +11,7 @@ def index(request):
         f"<br>"
         f"<a href='/'>Home</a>"
         f"<br>"
-        f"<a href='/admin/valued_goals/corevalue/'>Add Core Value</a>"
+        f"<a href='/admin/valued_goals/corevalue/'>Core Values: Django Admin</a>"
         f"<br>"
-        f"<a href='/admin/valued_goals/valuedgoal/'>Add Valued Goal</a>"
+        f"<a href='/admin/valued_goals/valuedgoal/'>Valued Goal: Django Admin</a>"
         )
