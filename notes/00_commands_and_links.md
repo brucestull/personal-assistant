@@ -82,8 +82,9 @@
 
 ## Development server web links
 
-* Application:
+* Applications:
   * <http://localhost:8000/journals/list/>
+  * <http://localhost:8000/valued-goals/>
 * Create user:
   * <http://localhost:8000/accounts/signup/>
 * Server Root:
