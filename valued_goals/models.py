@@ -44,12 +44,7 @@ class ValuedGoal(TimestampBase):
         """
         String for representing the ValuedGoal object.
         """
-        return (
-            (self.description[:20] + "...")
-            if len(self.description) > 20
-            else self.description
-        )
-
+        return self.name
 
 class CoreValue(TimestampBase):
     """
@@ -74,7 +69,4 @@ class CoreValue(TimestampBase):
         """
         String for representing the CoreValue object.
         """
-        return (
-            f"{self.name} - "
-            f"{(self.description[:20] + '...') if len(self.description) > 20 else self.description}"
-        )
+        return self.name
