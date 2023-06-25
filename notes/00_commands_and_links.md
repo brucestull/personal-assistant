@@ -1,5 +1,25 @@
 # Useful Commands and Links
 
+## Development server web links
+
+* Applications:
+  * <http://localhost:8000/journals/list/>
+  * [HTML](http://localhost:8000/valued-goals/html/)
+  * [Goals](http://localhost:8000/valued-goals/goals/)
+  * [Goals Create](http://localhost:8000/valued-goals/goals/create/)
+* Create user:
+  * <http://localhost:8000/accounts/signup/>
+* Server Root:
+  * <http://localhost:8000/>
+* Django Admin:
+  * <http://localhost:8000/admin/>
+* Django Admin Documentation:
+  * <http://localhost:8000/admin/doc/>
+  * <http://localhost:8000/admin/doc/tags/>
+  * <http://localhost:8000/admin/doc/filters/>
+  * <http://localhost:8000/admin/doc/models/>
+  * <http://localhost:8000/admin/doc/models/auth.user/>
+
 ## Commands
 
 ### This Project
@@ -7,6 +27,7 @@
 1. `pipenv install`
 1. `pipenv shell`
 1. `python manage.py migrate accounts`
+1. `python manage.py makemigrations`
 1. `python manage.py migrate`
 1. `python manage.py createsuperuser --email admin@email.app --username admin`
 1. `python manage.py createsuperuser --email FlynntKnapp@email.app --username FlynntKnapp`
@@ -79,23 +100,6 @@
 * Create user:
 * Django Admin:
 * Django Admin Documentation:
-
-## Development server web links
-
-* Application:
-  * <http://localhost:8000/journals/list/>
-* Create user:
-  * <http://localhost:8000/accounts/signup/>
-* Server Root:
-  * <http://localhost:8000/>
-* Django Admin:
-  * <http://localhost:8000/admin/>
-* Django Admin Documentation:
-  * <http://localhost:8000/admin/doc/>
-  * <http://localhost:8000/admin/doc/tags/>
-  * <http://localhost:8000/admin/doc/filters/>
-  * <http://localhost:8000/admin/doc/models/>
-  * <http://localhost:8000/admin/doc/models/auth.user/>
 
 ## Repository Links
 

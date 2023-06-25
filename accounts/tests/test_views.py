@@ -143,7 +143,7 @@ class SignUpViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, SIGN_UP_VIEW_TEMPLATE)
 
-    def test_context_has_the_site_name(self):
+    def test_the_site_name_in_context(self):
         """
 
         View `context` should have a value of "Health Activities" for THE_SITE_NAME.
@@ -175,7 +175,7 @@ class CustomLoginViewTest(TestCase):
         response = self.client.get(reverse(CUSTOM_LOGIN_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
 
-    def test_context_has_the_site_name(self):
+    def test_the_site_name_in_context(self):
         """
         View `context` should have a value for THE_SITE_NAME.
         """
