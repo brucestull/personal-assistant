@@ -34,5 +34,4 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("journals/", include("self_enquiry.urls")),
-    path("valued-goals/", include("valued_goals.urls")),
 ]

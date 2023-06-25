@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.admindocs",
     "self_enquiry.apps.SelfEnquiryConfig",
-    "valued_goals.apps.ValuedGoalsConfig",
 ]
 
 MIDDLEWARE = [
