@@ -8,6 +8,10 @@ from django.views.generic.detail import DetailView
 
 from .models import ValuedGoal, CoreValue
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 # This `@user_passes_test` decorator ensures that only staff users (is_staff == True) can access this view.
 @user_passes_test(lambda u: u.is_staff)
@@ -27,12 +31,16 @@ def html_response(request):
 
 @login_required
 def goals(request):
-    goals = ValuedGoal.objects.filter(user=request.user)
-    return render(
-        request,
-        "valued_goals/goals.html",
-        {"goals": goals},
-    )
+    try:
+        goals = ValuedGoal.objects.filter(user=request.user)
+        return render(
+            request,
+            "valued_goals/goals.html",
+            {"goals": goals},
+        )
+    except Exception as e:
+        logger.exception(e)
+        raise
 
 
 class GoalsCreateView(CreateView):
