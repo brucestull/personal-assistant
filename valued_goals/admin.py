@@ -6,47 +6,42 @@ from .models import ValuedGoal, CoreValue
 @admin.register(ValuedGoal)
 class ValuedGoalAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
-        'description',
-        'target_date',
-        'completed',
-        'completed_date',
-        'created',
-        'updated',
+        "name",
+        "description",
+        "created",
+        "updated",
     )
     list_filter = (
-        'completed',
-        'created',
-        'updated',
+        "created",
+        "updated",
     )
     search_fields = (
-        'name',
-        'description',
+        "name",
+        "description",
     )
     ordering = (
-        'completed',
-        '-target_date',
-        '-created',
+        "created",
+        "name",
     )
 
 
 @admin.register(CoreValue)
 class CoreValueAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
-        'description',
-        'created',
-        'updated',
+        "name",
+        "description",
+        "created",
+        "updated",
     )
     list_filter = (
-        'created',
-        'updated',
+        "created",
+        "updated",
     )
     search_fields = (
-        'name',
-        'description',
+        "name",
+        "description",
     )
     ordering = (
-        'name',
-        'created',
+        "name",
+        "created",
     )
