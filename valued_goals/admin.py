@@ -23,6 +23,9 @@ class ValuedGoalAdmin(admin.ModelAdmin):
         "created",
         "name",
     )
+    def get_queryset(self, request):
+        print("get_queryset called")
+        return super().get_queryset(request)
 
 
 @admin.register(CoreValue)
@@ -45,3 +48,6 @@ class CoreValueAdmin(admin.ModelAdmin):
         "name",
         "created",
     )
+    def get_queryset(self, request):
+        print("get_queryset called")
+        return super().get_queryset(request)
