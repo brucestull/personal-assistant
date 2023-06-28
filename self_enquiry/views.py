@@ -1,4 +1,18 @@
-from typing import Any
+# BEGIN: xg9d4f6hj3k1
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+
+from .models import Journal
+
+
+@login_required
+def journal_detail(request, journal_id):
+    """
+    This view displays the details of a journal.
+    """
+    journal = get_object_or_404(Journal, pk=journal_id, author=request.user)
+    return render(request, "self_enquiry/journal_detail.html", {"journal": journal})
+# END: xg9d4f6hj3k1from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
@@ -56,7 +70,7 @@ class JournalListView(ListView):
         "page_title": JOURNAL_LIST_PAGE_TITLE,
     }
 
-    def get_queryset(self) -> QuerySet[Any]:
+    def get_queryset(self):
         """
         Override the default queryset to only return journals that belong to the current user.
         """
@@ -88,12 +102,31 @@ class JournalUpdateView(UpdateView):
         "page_title": JOURNAL_UPDATE_PAGE_TITLE,
         "form_button_text": JOURNAL_UPDATE_FORM_BUTTON_TEXT,
     }
+    object = None
+
+    def form_valid(self, form):
+        """
+        Override the default form_valid method to add the current user to the `author` field.
+        """
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_queryset(self):
+        """
+        Override the default queryset to only return journals that belong to the current user.
+        """
+        return super().get_queryset().filter(author=self.request.user)
 
     def get_success_url(self):
         """
         Override the default `get_success_url` method to redirect to the journal detail page.
         """
-        return reverse("self_enquiry:detail", kwargs={"pk": self.object.pk})
+        if self.object:
+            # Assuming you pass the journal ID in the URL
+            return reverse("self_enquiry:detail", kwargs={"pk": self.object.pk})
+        else:
+            # If the object doesn't exist, redirect to the journal list page
+            return reverse("self_enquiry:list")
 
 
 class JournalConfirmDeleteView(View):
