@@ -47,7 +47,13 @@ class Journal(models.Model):
         )
 
     def get_absolute_url(self):
+        """
+        This function returns the absolute URL for a journal. It is used for the view which needs to be redirected to after a journal is created or updated.
+        """
         return reverse("self_enquiry:detail", args=[str(self.id)])
 
     def display_content(self):
+        """
+        This function returns a truncated version of the journal's content. This can be used in the admin panel and other places where the full content is not needed.
+        """
         return self.content[:50] + ("..." if len(self.content) > 50 else "")
