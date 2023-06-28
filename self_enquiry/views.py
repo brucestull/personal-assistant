@@ -104,7 +104,8 @@ class JournalConfirmDeleteView(View):
     template_name = "self_enquiry/journal_confirm_delete.html"
 
     def get(self, request, *args, **kwargs):
-        journal_id = kwargs["pk"]  # Assuming you pass the journal ID in the URL
+        # Assuming you pass the journal ID in the URL
+        journal_id = kwargs["pk"]
         journal = get_object_or_404(Journal, pk=journal_id)
         context = {
             "journal": journal,
@@ -116,7 +117,8 @@ class JournalConfirmDeleteView(View):
 
 class JournalDeleteView(DeleteView):
     model = Journal
-    template_name = "self_enquiry/journal_confirm_delete.html"  # Template for the confirmation page
+    # Template for the confirmation page
+    template_name = "self_enquiry/journal_confirm_delete.html"
 
     # TODO: Add a `message` that the Journal was deleted successfully.
 
