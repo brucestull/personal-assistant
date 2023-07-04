@@ -29,12 +29,12 @@ class SelfEnquiryAdmin(admin.ModelAdmin):
         "title",
         "content",
     )
-    # The `readonly_fields` attribute controls which fields are displayed as read-only on the edit page for the model.
+    # The `readonly_fields` attribute controls which fields are displayed as read-only on the update page for the model.
     readonly_fields = (
         "created",
         "updated",
     )
-    # The `fieldsets` attribute controls how the fields are grouped on the edit page for the model.
+    # The `fieldsets` attribute controls how the fields are grouped on the update page for the model.
     fieldsets = (
         (
             None,
@@ -82,12 +82,12 @@ class GrowthOpportunityAdmin(admin.ModelAdmin):
         "question",
         "author__username",
     )
-    # The `readonly_fields` attribute controls which fields are displayed as read-only on the edit page for the model.
+    # The `readonly_fields` attribute controls which fields are displayed as read-only on the update page for the model.
     readonly_fields = (
         "created",
         "updated",
     )
-    # The `fieldsets` attribute controls how the fields are grouped on the edit page for the model.
+    # The `fieldsets` attribute controls how the fields are grouped on the update page for the model.
     fieldsets = (
         (
             "Content",

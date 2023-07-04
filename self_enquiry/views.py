@@ -12,7 +12,7 @@ from .models import Journal
 JOURNAL_LIST_PAGE_TITLE = "Journals"
 JOURNAL_CREATE_PAGE_TITLE = "Create a Journal"
 JOURNAL_CREATE_FORM_BUTTON_TEXT = "Create your Journal!"
-JOURNAL_UPDATE_PAGE_TITLE = "Edit a Journal"
+JOURNAL_UPDATE_PAGE_TITLE = "Update a Journal"
 JOURNAL_UPDATE_FORM_BUTTON_TEXT = "Update your Journal!"
 JOURNAL_DELETE_PAGE_TITLE = "Delete a Journal"
 JOURNAL_DELETE_FORM_BUTTON_TEXT = "Delete your Journal!"

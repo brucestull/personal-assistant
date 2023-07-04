@@ -23,9 +23,9 @@ urlpatterns = [
         name="detail",
     ),
     path(
-        "<int:pk>/edit/",
+        "<int:pk>/update/",
         JournalUpdateView.as_view(),
-        name="edit",
+        name="update",
     ),
     path(
         "<int:pk>/delete/",
