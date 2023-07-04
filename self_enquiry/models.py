@@ -88,11 +88,11 @@ class GrowthOpportunity(models.Model):
         help_text="Required",
     )
     created = models.DateTimeField(
-        help_text="The date and time the learning opportunity was created.",
+        help_text="The date and time the growth opportunity was created.",
         auto_now_add=True,
     )
     updated = models.DateTimeField(
-        help_text="The date and time the learning opportunity was last updated.",
+        help_text="The date and time the growth opportunity was last updated.",
         auto_now=True,
     )
 

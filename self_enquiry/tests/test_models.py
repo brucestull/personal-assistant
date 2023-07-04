@@ -47,11 +47,11 @@ GROWTH_OPPORTUNITY_QUESTION_VERBOSE_NAME = "Question"
 GROWTH_OPPORTUNITY_QUESTION_HELP_TEXT = "Required"
 
 GROWTH_OPPORTUNITY_CREATED_HELP_TEXT = (
-    "The date and time the learning opportunity was created."
+    "The date and time the growth opportunity was created."
 )
 
 GROWTH_OPPORTUNITY_UPDATED_HELP_TEXT = (
-    "The date and time the learning opportunity was last updated."
+    "The date and time the growth opportunity was last updated."
 )
 
 GROWTH_OPPORTUNITY_QUESTION_LESS_THAN_TWENTY_FOUR = "Growth Opportunity"
@@ -281,7 +281,7 @@ class GrowthOpportunityModelTest(TestCase):
         `author`.
         """
         field = GrowthOpportunity._meta.get_field("author")
-        self.assertEqual(field.verbose_name, "author")
+        self.assertEqual(field.verbose_name, GROWTH_OPPORTUNITY_AUTHOR_LABEL)
 
     def test_author_uses_custom_user_model(self):
         """
@@ -325,3 +325,35 @@ class GrowthOpportunityModelTest(TestCase):
         """
         field = GrowthOpportunity._meta.get_field("question")
         self.assertEqual(field.help_text, GROWTH_OPPORTUNITY_QUESTION_HELP_TEXT)
+
+    def test_created_help_text(self):
+        """
+        `GrowthOpportunity` model `created` field `help_text` should be
+        `The date and time the growth opportunity was created.`.
+        """
+        field = GrowthOpportunity._meta.get_field("created")
+        self.assertEqual(field.help_text, GROWTH_OPPORTUNITY_CREATED_HELP_TEXT)
+
+    def test_created_auto_now_add_true(self):
+        """
+        `GrowthOpportunity` model `created` field `auto_now_add` should be
+        `True`.
+        """
+        field = GrowthOpportunity._meta.get_field("created")
+        self.assertTrue(field.auto_now_add)
+
+    def test_updated_help_text(self):
+        """
+        `GrowthOpportunity` model `updated` field `help_text` should be
+        `The date and time the growth opportunity was last updated.`.
+        """
+        field = GrowthOpportunity._meta.get_field("updated")
+        self.assertEqual(field.help_text, GROWTH_OPPORTUNITY_UPDATED_HELP_TEXT)
+
+    def test_updated_auto_now_true(self):
+        """
+        `GrowthOpportunity` model `updated` field `auto_now` should be
+        `True`.
+        """
+        field = GrowthOpportunity._meta.get_field("updated")
+        self.assertTrue(field.auto_now)
