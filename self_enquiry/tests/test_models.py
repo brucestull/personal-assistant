@@ -357,3 +357,23 @@ class GrowthOpportunityModelTest(TestCase):
         """
         field = GrowthOpportunity._meta.get_field("updated")
         self.assertTrue(field.auto_now)
+
+    def test_dunder_string_method(self):
+        """
+        `GrowthOpportunity` model `__str__` method should return
+        something.
+        """
+        growth_opportunity = GrowthOpportunity.objects.get(
+            id=self.growth_opportunity_less_than_24.id
+        )
+        self.assertEqual(
+            str(growth_opportunity),
+            f"{growth_opportunity.question}",
+        )
+        growth_opportunity = GrowthOpportunity.objects.get(
+            id=self.growth_opportunity_greater_than_24.id
+        )
+        self.assertEqual(
+            str(growth_opportunity),
+            f"{growth_opportunity.question[:24]}...",
+        )
