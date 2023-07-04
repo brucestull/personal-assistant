@@ -35,6 +35,6 @@ urlpatterns = [
     path(
         "<int:pk>/confirm-delete/",
         JournalConfirmDeleteView.as_view(),
-        name="delete-confirmation",
+        name="confirm-delete",
     ),
 ]

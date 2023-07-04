@@ -116,19 +116,6 @@ class JournalUpdateView(UpdateView):
     #         return reverse("self_enquiry:list")
 
 
-class JournalDeleteView(DeleteView):
-    model = Journal
-    # Template for the confirmation page
-    template_name = "self_enquiry/journal_confirm_delete.html"
-
-    # TODO: Add a `message` that the Journal was deleted successfully.
-
-    def get_success_url(self):
-        return reverse(
-            "self_enquiry:list",
-        )
-
-
 class JournalConfirmDeleteView(View):
     """
     Confirm delete view for a single `self_enquiry.Journal`.
@@ -146,4 +133,18 @@ class JournalConfirmDeleteView(View):
             "page_title": JOURNAL_DELETE_PAGE_TITLE,
         }
         return render(request, self.template_name, context)
+
+
+class JournalDeleteView(DeleteView):
+    model = Journal
+    # Template for the confirmation page
+    template_name = "self_enquiry/journal_confirm_delete.html"
+
+    # TODO: Add a `message` that the Journal was deleted successfully.
+
+    def get_success_url(self):
+        return reverse(
+            "self_enquiry:list",
+        )
+
 

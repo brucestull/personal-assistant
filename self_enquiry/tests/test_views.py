@@ -7,6 +7,7 @@ from self_enquiry.views import (
     JournalListView,
     JournalDetailView,
     JournalUpdateView,
+    JournalDeleteView,
 )
 from accounts.models import CustomUser
 
@@ -39,6 +40,18 @@ JOURNAL_UPDATE_VIEW_NAME = "self_enquiry:update"
 JOURNAL_UPDATE_TEMPLATE = "self_enquiry/journal_form.html"
 JOURNAL_UPDATE_PAGE_TITLE = "Update a Journal"
 JOURNAL_UPDATE_FORM_BUTTON_TEXT = "Update your Journal!"
+
+JOURNAL_CONFIRM_DELETE_URL = "/journals/1/confirm-delete/"
+JOURNAL_CONFIRM_DELETE_VIEW_NAME = "self_enquiry:confirm-delete"
+JOURNAL_CONFIRM_DELETE_TEMPLATE = "self_enquiry/journal_confirm_delete.html"
+JOURNAL_CONFIRM_DELETE_PAGE_TITLE = "Delete a Journal"
+JOURNAL_CONFIRM_DELETE_FORM_BUTTON_TEXT = "Confirm Delete your Journal!"
+
+JOURNAL_DELETE_URL = "/journals/1/delete/"
+JOURNAL_DELETE_VIEW_NAME = "self_enquiry:delete"
+JOURNAL_DELETE_TEMPLATE = "self_enquiry/journal_confirm_delete.html"
+JOURNAL_DELETE_PAGE_TITLE = "Delete a Journal"
+JOURNAL_DELETE_FORM_BUTTON_TEXT = "Delete your Journal!"
 
 TEST_JOURNAL_TITLE = "Test Journal Title"
 TEST_JOURNAL_CONTENT = "Test Journal Content"
@@ -493,7 +506,9 @@ class JournalUpdateViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
         self.assertEqual(response.context["page_title"], JOURNAL_UPDATE_PAGE_TITLE)
-        self.assertEqual(response.context["form_button_text"], JOURNAL_UPDATE_FORM_BUTTON_TEXT)
+        self.assertEqual(
+            response.context["form_button_text"], JOURNAL_UPDATE_FORM_BUTTON_TEXT
+        )
 
     def test_form_valid_method(self):
         """
@@ -511,7 +526,9 @@ class JournalUpdateViewTest(TestCase):
             },
         )
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(Journal.objects.get(id=self.journal_one.id).author, self.user_one)
+        self.assertEqual(
+            Journal.objects.get(id=self.journal_one.id).author, self.user_one
+        )
 
     # TODO: Probably not needed.
     # def test_get_queryset_method(self):
@@ -563,4 +580,122 @@ class JournalUpdateViewTest(TestCase):
     #         response.url,
     #         reverse(JOURNAL_LIST_VIEW_NAME),
     #     )
-        
+
+
+class JournalConfirmDeleteViewTest(TestCase):
+    """
+    Test for `JournalConfirmDeleteView` view.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up a test user and journal.
+        """
+        cls.user_one = CustomUser.objects.create_user(
+            username=TEST_USERNAME_ONE,
+            password=TEST_PASSWORD_ONE,
+        )
+        cls.journal_one = Journal.objects.create(
+            author=cls.user_one,
+            title=TEST_JOURNAL_TITLE,
+            content=TEST_JOURNAL_CONTENT,
+        )
+        cls.journal_two = Journal.objects.create(
+            author=cls.user_one,
+            title=TEST_JOURNAL_TITLE,
+            content=TEST_JOURNAL_CONTENT,
+        )
+
+    def test_uses_correct_template(self):
+        """
+        `JournalConfirmDeleteView` view should use the correct template.
+        """
+        login = self.client.login(
+            username=TEST_USERNAME_ONE,
+            password=TEST_PASSWORD_ONE,
+        )
+        response = self.client.get(
+            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME, args=[self.journal_one.id])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, JOURNAL_CONFIRM_DELETE_TEMPLATE)
+
+    def test_get_method(self):
+        """
+        `JournalConfirmDeleteView` view should return a confirmation page.
+        """
+        login = self.client.login(
+            username=TEST_USERNAME_ONE,
+            password=TEST_PASSWORD_ONE,
+        )
+        response = self.client.get(
+            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME, args=[self.journal_one.id])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["journal"], self.journal_one)
+        self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
+        self.assertEqual(response.context["page_title"], JOURNAL_CONFIRM_DELETE_PAGE_TITLE)
+        # self.assertEqual(
+        #     response.context["form_button_text"], JOURNAL_CONFIRM_DELETE_FORM_BUTTON_TEXT
+        # )
+
+
+class JournalDeleteViewTest(TestCase):
+    """
+    Test `JournalDeleteView` view.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up a test user and journal.
+        """
+        cls.user_one = CustomUser.objects.create_user(
+            username=TEST_USERNAME_ONE,
+            password=TEST_PASSWORD_ONE,
+        )
+        cls.journal_one = Journal.objects.create(
+            author=cls.user_one,
+            title=TEST_JOURNAL_TITLE,
+            content=TEST_JOURNAL_CONTENT,
+        )
+        cls.journal_two = Journal.objects.create(
+            author=cls.user_one,
+            title=TEST_JOURNAL_TITLE,
+            content=TEST_JOURNAL_CONTENT,
+        )
+
+    def test_uses_correct_model(self):
+        """
+        `JournalDeleteView` view should use the correct model.
+        """
+        self.assertEqual(JournalDeleteView.model, Journal)
+
+    def test_uses_correct_template(self):
+        """
+        `JournalDeleteView` view should use the correct template.
+        """
+        login = self.client.login(
+            username=TEST_USERNAME_ONE,
+            password=TEST_PASSWORD_ONE,
+        )
+        response = self.client.get(
+            reverse(JOURNAL_DELETE_VIEW_NAME, args=[self.journal_one.id])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, JOURNAL_DELETE_TEMPLATE)
+
+    def test_get_success_url_method(self):
+        """
+        `get_success_url` method should return the Journal List page.
+        """
+        login = self.client.login(
+            username=TEST_USERNAME_ONE,
+            password=TEST_PASSWORD_ONE,
+        )
+        response = self.client.post(
+            reverse(JOURNAL_DELETE_VIEW_NAME, args=[self.journal_one.pk])
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse(JOURNAL_LIST_VIEW_NAME))

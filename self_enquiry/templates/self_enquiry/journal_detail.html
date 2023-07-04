@@ -6,5 +6,5 @@
 <h2>{{ journal.title }} - {{ journal.created }}</h2>
 {{ journal.content | linebreaks }}
 <a href="{% url 'self_enquiry:update' journal.id %}">Edit Journal</a>
-<a href="{% url 'self_enquiry:delete-confirmation' journal.id %}">Delete Journal</a>
+<a href="{% url 'self_enquiry:confirm-delete' journal.id %}">Delete Journal</a>
 {% endblock content %}
