@@ -8,14 +8,14 @@ from self_enquiry.views import JournalDeleteView, JournalConfirmDeleteView
 app_name = "self_enquiry"
 urlpatterns = [
     path(
-        "list/",
-        JournalListView.as_view(),
-        name="list",
-    ),
-    path(
         "create/",
         JournalCreateView.as_view(),
         name="create",
+    ),
+    path(
+        "list/",
+        JournalListView.as_view(),
+        name="list",
     ),
     path(
         "<int:pk>/detail/",
@@ -23,9 +23,9 @@ urlpatterns = [
         name="detail",
     ),
     path(
-        "<int:pk>/edit/",
+        "<int:pk>/update/",
         JournalUpdateView.as_view(),
-        name="edit",
+        name="update",
     ),
     path(
         "<int:pk>/delete/",
@@ -35,6 +35,6 @@ urlpatterns = [
     path(
         "<int:pk>/confirm-delete/",
         JournalConfirmDeleteView.as_view(),
-        name="delete-confirmation",
+        name="confirm-delete",
     ),
 ]

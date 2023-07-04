@@ -1,20 +1,4 @@
-# BEGIN: xg9d4f6hj3k1
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
-
-from .models import Journal
-
-
-@login_required
-def journal_detail(request, journal_id):
-    """
-    This view displays the details of a journal.
-    """
-    journal = get_object_or_404(Journal, pk=journal_id, author=request.user)
-    return render(request, "self_enquiry/journal_detail.html", {"journal": journal})
-# END: xg9d4f6hj3k1from typing import Any
-from django.db.models.query import QuerySet
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse
@@ -24,10 +8,11 @@ from django.shortcuts import get_object_or_404
 from config.settings.common import THE_SITE_NAME
 from .models import Journal
 
+
 JOURNAL_LIST_PAGE_TITLE = "Journals"
 JOURNAL_CREATE_PAGE_TITLE = "Create a Journal"
 JOURNAL_CREATE_FORM_BUTTON_TEXT = "Create your Journal!"
-JOURNAL_UPDATE_PAGE_TITLE = "Edit a Journal"
+JOURNAL_UPDATE_PAGE_TITLE = "Update a Journal"
 JOURNAL_UPDATE_FORM_BUTTON_TEXT = "Update your Journal!"
 JOURNAL_DELETE_PAGE_TITLE = "Delete a Journal"
 JOURNAL_DELETE_FORM_BUTTON_TEXT = "Delete your Journal!"
@@ -111,22 +96,24 @@ class JournalUpdateView(UpdateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    def get_queryset(self):
-        """
-        Override the default queryset to only return journals that belong to the current user.
-        """
-        return super().get_queryset().filter(author=self.request.user)
+    # TODO: Probably not needed.
+    # def get_queryset(self):
+    #     """
+    #     Override the default queryset to only return journals that belong to the current user.
+    #     """
+    #     return super().get_queryset().filter(author=self.request.user)
 
-    def get_success_url(self):
-        """
-        Override the default `get_success_url` method to redirect to the journal detail page.
-        """
-        if self.object:
-            # Assuming you pass the journal ID in the URL
-            return reverse("self_enquiry:detail", kwargs={"pk": self.object.pk})
-        else:
-            # If the object doesn't exist, redirect to the journal list page
-            return reverse("self_enquiry:list")
+    # TODO: Probably not needed.
+    # def get_success_url(self):
+    #     """
+    #     Override the default `get_success_url` method to redirect to the journal detail page.
+    #     """
+    #     if self.object:
+    #         # Assuming you pass the journal ID in the URL
+    #         return reverse("self_enquiry:detail", kwargs={"pk": self.object.pk})
+    #     else:
+    #         # If the object doesn't exist, redirect to the journal list page
+    #         return reverse("self_enquiry:list")
 
 
 class JournalConfirmDeleteView(View):
@@ -159,3 +146,5 @@ class JournalDeleteView(DeleteView):
         return reverse(
             "self_enquiry:list",
         )
+
+
