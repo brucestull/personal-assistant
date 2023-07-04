@@ -96,22 +96,24 @@ class JournalUpdateView(UpdateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    def get_queryset(self):
-        """
-        Override the default queryset to only return journals that belong to the current user.
-        """
-        return super().get_queryset().filter(author=self.request.user)
+    # TODO: Probably not needed.
+    # def get_queryset(self):
+    #     """
+    #     Override the default queryset to only return journals that belong to the current user.
+    #     """
+    #     return super().get_queryset().filter(author=self.request.user)
 
-    def get_success_url(self):
-        """
-        Override the default `get_success_url` method to redirect to the journal detail page.
-        """
-        if self.object:
-            # Assuming you pass the journal ID in the URL
-            return reverse("self_enquiry:detail", kwargs={"pk": self.object.pk})
-        else:
-            # If the object doesn't exist, redirect to the journal list page
-            return reverse("self_enquiry:list")
+    # TODO: Probably not needed.
+    # def get_success_url(self):
+    #     """
+    #     Override the default `get_success_url` method to redirect to the journal detail page.
+    #     """
+    #     if self.object:
+    #         # Assuming you pass the journal ID in the URL
+    #         return reverse("self_enquiry:detail", kwargs={"pk": self.object.pk})
+    #     else:
+    #         # If the object doesn't exist, redirect to the journal list page
+    #         return reverse("self_enquiry:list")
 
 
 class JournalDeleteView(DeleteView):

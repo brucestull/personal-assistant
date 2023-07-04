@@ -13,8 +13,11 @@ from accounts.models import CustomUser
 
 THE_SITE_NAME = "Flynnt Knapp"
 
-TEST_USERNAME_ONE = "test_username"
-TEST_PASSWORD = "test_password"
+TEST_USERNAME_ONE = "test_username_one"
+TEST_PASSWORD_ONE = "test_password_one"
+
+TEST_USERNAME_TWO = "test_username_two"
+TEST_PASSWORD_TWO = "test_password_two"
 
 JOURNAL_CREATE_URL = "/journals/create/"
 JOURNAL_CREATE_VIEW_NAME = "self_enquiry:create"
@@ -56,7 +59,7 @@ class JournalCreateViewTest(TestCase):
         """
         cls.user = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
 
     def test_journal_create_url_returns_200(self):
@@ -65,7 +68,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
@@ -76,7 +79,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -87,7 +90,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -99,7 +102,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
@@ -112,7 +115,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
@@ -125,7 +128,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
@@ -138,7 +141,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.post(
             JOURNAL_CREATE_URL,
@@ -156,7 +159,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         self.client.post(
             JOURNAL_CREATE_URL,
@@ -173,7 +176,7 @@ class JournalCreateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         self.client.post(
             JOURNAL_CREATE_URL,
@@ -203,7 +206,7 @@ class JournalListViewTest(TestCase):
         """
         cls.user = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         # Create 13 journals for pagination tests.
         number_of_journals = 13
@@ -229,7 +232,7 @@ class JournalListViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(JOURNAL_LIST_URL)
         self.assertEqual(response.status_code, 200)
@@ -240,7 +243,7 @@ class JournalListViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -251,7 +254,7 @@ class JournalListViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -263,7 +266,7 @@ class JournalListViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -277,7 +280,7 @@ class JournalListViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -291,7 +294,7 @@ class JournalListViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -309,7 +312,7 @@ class JournalListViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
         self.assertEqual(response.status_code, 200)
@@ -323,7 +326,7 @@ class JournalListViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response_page_one = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response_page_one.status_code, 200)
@@ -352,7 +355,7 @@ class JournalDetailViewTest(TestCase):
         """
         cls.user = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         cls.journal = Journal.objects.create(
             author=cls.user,
@@ -366,7 +369,7 @@ class JournalDetailViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(self.journal.get_absolute_url())
         self.assertEqual(response.status_code, 200)
@@ -377,7 +380,7 @@ class JournalDetailViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
@@ -390,7 +393,7 @@ class JournalDetailViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id]),
@@ -404,7 +407,7 @@ class JournalDetailViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
@@ -426,12 +429,16 @@ class JournalUpdateViewTest(TestCase):
         """
         Set up a test user and journal.
         """
-        cls.user = CustomUser.objects.create_user(
+        cls.user_one = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
-        cls.journal = Journal.objects.create(
-            author=cls.user,
+        cls.user_two = CustomUser.objects.create_user(
+            username=TEST_USERNAME_TWO,
+            password=TEST_PASSWORD_TWO,
+        )
+        cls.journal_one = Journal.objects.create(
+            author=cls.user_one,
             title=TEST_JOURNAL_TITLE,
             content=TEST_JOURNAL_CONTENT,
         )
@@ -448,10 +455,10 @@ class JournalUpdateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(
-            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal.id])
+            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, JOURNAL_UPDATE_TEMPLATE)
@@ -462,10 +469,10 @@ class JournalUpdateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(
-            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal.id])
+            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Title")
@@ -478,10 +485,10 @@ class JournalUpdateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.get(
-            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal.id])
+            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
@@ -494,33 +501,66 @@ class JournalUpdateViewTest(TestCase):
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
-            password=TEST_PASSWORD,
+            password=TEST_PASSWORD_ONE,
         )
         response = self.client.post(
-            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal.id]),
+            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id]),
             data={
                 "title": TEST_JOURNAL_TITLE,
                 "content": TEST_JOURNAL_CONTENT,
             },
         )
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(Journal.objects.get(id=self.journal.id).author, self.user)
+        self.assertEqual(Journal.objects.get(id=self.journal_one.id).author, self.user_one)
 
+    # TODO: Probably not needed.
     # def test_get_queryset_method(self):
     #     """
     #     `get_queryset` method should return only journals of the current user.
     #     """
     #     login = self.client.login(
-    #         username=TEST_USERNAME_ONE,
-    #         password=TEST_PASSWORD,
-    #     )
-    #     Journal.objects.create(
-    #         author=self.user,
-    #         title=TEST_JOURNAL_TITLE,
-    #         content=TEST_JOURNAL_CONTENT,
+    #         username=self.user_one.username,
+    #         password=TEST_PASSWORD_ONE,
     #     )
     #     response = self.client.get(
-    #         reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal.id])
+    #         reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.pk])
     #     )
     #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(len(response.context["object_list"]), 2)
+    #     # The returned journal should be owned by the current user.
+    #     self.assertEqual(response.context["object"].author, self.user_one)
+
+    # TODO: Probably not needed.
+    # def test_get_success_url_method(self):
+    #     """
+    #     `get_success_url` method should return the detail page of the journal.
+    #     """
+    #     login = self.client.login(
+    #         username=self.user_one.username,
+    #         password=TEST_PASSWORD_ONE,
+    #     )
+    #     response = self.client.post(
+    #         reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.pk]),
+    #         data={
+    #             "title": TEST_JOURNAL_TITLE,
+    #             "content": TEST_JOURNAL_CONTENT,
+    #         },
+    #     )
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertEqual(
+    #         response.url,
+    #         reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal_one.pk]),
+    #     )
+    #     # I self.object doesn't exist, the method should return the Journal List page.
+    #     response = self.client.post(
+    #         reverse(JOURNAL_UPDATE_VIEW_NAME, args=[3]),
+    #         data={
+    #             "title": TEST_JOURNAL_TITLE,
+    #             "content": TEST_JOURNAL_CONTENT,
+    #         },
+    #     )
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertEqual(
+    #         response.url,
+    #         reverse(JOURNAL_LIST_VIEW_NAME),
+    #     )
+        
