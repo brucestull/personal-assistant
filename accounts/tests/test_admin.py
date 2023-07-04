@@ -5,15 +5,20 @@ from accounts.admin import CustomUserAdmin
 from accounts.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
-A_TEST_USERNAME = 'ACustomUser'
-A_TEST_PASSWORD = 'a_test_password'
-A_TEST_FIRST_NAME = 'A'
+USER_1_TEST_USERNAME = "user_1_test_username"
+USER_1_TEST_PASSWORD = "user_1_test_password"
+USER_1_FIRST_NAME = "User1"
 
-ANOTHER_TEST_USERNAME = 'AnotherCustomUser'
-ANOTHER_TEST_PASSWORD = 'another_test_password'
-ANOTHER_TEST_FIRST_NAME = 'Another'
+USER_2_TEST_USERNAME = "user_2_test_username"
+USER_2_TEST_PASSWORD = "user_2_test_password"
+USER_2_FIRST_NAME = "User2"
+
 
 class TestCustomUserAdmin(TestCase):
+    """
+    Inherit from `django.test.TestCase` to access `self.client` and `self.assert*` methods.
+    `self` will be an instance of `django.test.TestCase` and `django.test.TestCase` inherits from `unittest.TestCase`.
+    """
     @classmethod
     def setUpTestData(cls):
         """
@@ -21,9 +26,10 @@ class TestCustomUserAdmin(TestCase):
 
         This specific function name `setUpTestData` is required by Django.
         """
-        cls.user = CustomUser.objects.create(
-            username=A_TEST_USERNAME,
-            first_name=A_TEST_FIRST_NAME,
+        cls.user = CustomUser.objects.create_user(
+            username=USER_1_TEST_USERNAME,
+            password=USER_1_TEST_PASSWORD,
+            first_name=USER_1_FIRST_NAME,
         )
 
     def test_uses_correct_add_form(self):
@@ -92,4 +98,3 @@ class TestCustomUserAdmin(TestCase):
         fieldsets = custom_user_admin.get_fieldsets(request=None, obj=None)
         fieldsets_as_list = list(fieldsets)
         self.assertIn("Moderator Permissions", fieldsets_as_list[1])
-

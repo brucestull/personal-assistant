@@ -14,7 +14,7 @@ class Journal(models.Model):
         content (TextField): The content of the journal.
         created (DateTimeField): The date and time the journal was created.
     """
-    
+
     author = models.ForeignKey(
         AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -41,19 +41,64 @@ class Journal(models.Model):
     )
 
     def __str__(self):
-        return self.author.username + " : " + str(self.id) + (
-            # If title is not `None`, then add it to the string.
-            (" - " + self.title[:24]) if self.title else ""
+        return (
+            self.author.username
+            + " : "
+            + str(self.pk)
+            + (
+                # If title is not `None`, then add it to the string.
+                (" - " + self.title[:24])
+                if self.title
+                else ""
+            )
         )
 
     def get_absolute_url(self):
         """
         This function returns the absolute URL for a journal. It is used for the view which needs to be redirected to after a journal is created or updated.
         """
-        return reverse("self_enquiry:detail", args=[str(self.id)])
+        return reverse("self_enquiry:detail", args=[str(self.pk)])
 
     def display_content(self):
         """
         This function returns a truncated version of the journal's content. This can be used in the admin panel and other places where the full content is not needed.
         """
         return self.content[:50] + ("..." if len(self.content) > 50 else "")
+
+
+class GrowthOpportunity(models.Model):
+    """
+    The `GrowthOpportunity` model represents a growth opportunity or
+    question that a user is interested in pursuing.
+
+    Attributes:
+        author (ForeignKey): The user that owns the growth opportunity.
+        question (TextField): The question or growth opportunity.
+        created (DateTimeField): The date and time the growth opportunity was created.
+        updated (DateTimeField): The date and time the growth opportunity was last updated.
+    """
+
+    author = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="growth_opportunities",
+    )
+    question = models.TextField(
+        verbose_name="Question",
+        help_text="Required",
+    )
+    created = models.DateTimeField(
+        help_text="The date and time the learning opportunity was created.",
+        auto_now_add=True,
+    )
+    updated = models.DateTimeField(
+        help_text="The date and time the learning opportunity was last updated.",
+        auto_now=True,
+    )
+
+    def __str__(self):
+        return self.question[:24] + ("..." if len(self.question) > 24 else "")
+
+    class Meta:
+        verbose_name = "Growth Opportunity"
+        verbose_name_plural = "Growth Opportunities"

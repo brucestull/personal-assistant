@@ -6,10 +6,10 @@ from self_enquiry.views import JournalListView, JournalCreateView
 from accounts.models import CustomUser
 
 
-THE_SITE_NAME = "Health Activities"
+THE_SITE_NAME = "Flynnt Knapp"
 
-A_TEST_USERNAME = "ACustomUser"
-A_TEST_PASSWORD = "Apassword123"
+TEST_USERNAME = "test_username"
+TEST_PASSWORD = "test_password"
 
 JOURNAL_CREATE_URL = "/journals/create/"
 JOURNAL_CREATE_VIEW_NAME = "self_enquiry:create"
@@ -44,8 +44,8 @@ class JournalCreateViewTest(TestCase):
         Set up a test user.
         """
         cls.user = CustomUser.objects.create_user(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
 
     def test_journal_create_url_returns_200(self):
@@ -53,8 +53,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view `url` should return a 200 response.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
@@ -64,8 +64,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view should be accessible by name.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -75,8 +75,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view should use the correct template.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -87,8 +87,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view should use the correct page title.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
@@ -100,8 +100,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view should use the correct site name.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
@@ -113,8 +113,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view should have the proper fields.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
@@ -126,8 +126,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view should redirect to the list view on success.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.post(
             JOURNAL_CREATE_URL,
@@ -144,8 +144,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view should create a journal on success.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         self.client.post(
             JOURNAL_CREATE_URL,
@@ -161,8 +161,8 @@ class JournalCreateViewTest(TestCase):
         `JournalCreateView` view should create a journal owned by the current user.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         self.client.post(
             JOURNAL_CREATE_URL,
@@ -191,8 +191,8 @@ class JournalListViewTest(TestCase):
         Set up a test user and journal.
         """
         cls.user = CustomUser.objects.create_user(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         # Create 13 journals for pagination tests.
         number_of_journals = 13
@@ -217,8 +217,8 @@ class JournalListViewTest(TestCase):
         `JournalListView` view `url` should return a 200 response.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(JOURNAL_LIST_URL)
         self.assertEqual(response.status_code, 200)
@@ -228,8 +228,8 @@ class JournalListViewTest(TestCase):
         `JournalListView` view should be accessible by name.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -239,8 +239,8 @@ class JournalListViewTest(TestCase):
         `JournalListView` view should use the correct template.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -251,8 +251,8 @@ class JournalListViewTest(TestCase):
         `JournalListView` view should use the correct page title.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -265,8 +265,8 @@ class JournalListViewTest(TestCase):
         `JournalListView` view should paginate by ten.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -279,8 +279,8 @@ class JournalListViewTest(TestCase):
         `JournalListView` view should return journal objects.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
@@ -297,8 +297,8 @@ class JournalListViewTest(TestCase):
         `JournalListView` view should paginate correctly.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
         self.assertEqual(response.status_code, 200)
@@ -311,8 +311,8 @@ class JournalListViewTest(TestCase):
         `JournalListView` view should return all journals.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response_page_one = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response_page_one.status_code, 200)
@@ -340,8 +340,8 @@ class JournalDetailViewTest(TestCase):
         Set up a test user and journal.
         """
         cls.user = CustomUser.objects.create_user(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         cls.journal = Journal.objects.create(
             author=cls.user,
@@ -354,8 +354,8 @@ class JournalDetailViewTest(TestCase):
         `JournalDetailView` view `url` should return a 200 response.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(self.journal.get_absolute_url())
         self.assertEqual(response.status_code, 200)
@@ -365,8 +365,8 @@ class JournalDetailViewTest(TestCase):
         `JournalDetailView` view should be accessible by name.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
@@ -378,8 +378,8 @@ class JournalDetailViewTest(TestCase):
         `JournalDetailView` view should use the correct template.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id]),
@@ -392,8 +392,8 @@ class JournalDetailViewTest(TestCase):
         `JournalDetailView` view should use the correct page title.
         """
         login = self.client.login(
-            username=A_TEST_USERNAME,
-            password=A_TEST_PASSWORD,
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])

@@ -1,20 +1,4 @@
-# BEGIN: xg9d4f6hj3k1
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
-
-from .models import Journal
-
-
-@login_required
-def journal_detail(request, journal_id):
-    """
-    This view displays the details of a journal.
-    """
-    journal = get_object_or_404(Journal, pk=journal_id, author=request.user)
-    return render(request, "self_enquiry/journal_detail.html", {"journal": journal})
-# END: xg9d4f6hj3k1from typing import Any
-from django.db.models.query import QuerySet
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse
@@ -23,6 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from config.settings.common import THE_SITE_NAME
 from .models import Journal
+
 
 JOURNAL_LIST_PAGE_TITLE = "Journals"
 JOURNAL_CREATE_PAGE_TITLE = "Create a Journal"
@@ -129,6 +114,19 @@ class JournalUpdateView(UpdateView):
             return reverse("self_enquiry:list")
 
 
+class JournalDeleteView(DeleteView):
+    model = Journal
+    # Template for the confirmation page
+    template_name = "self_enquiry/journal_confirm_delete.html"
+
+    # TODO: Add a `message` that the Journal was deleted successfully.
+
+    def get_success_url(self):
+        return reverse(
+            "self_enquiry:list",
+        )
+
+
 class JournalConfirmDeleteView(View):
     """
     Confirm delete view for a single `self_enquiry.Journal`.
@@ -147,15 +145,3 @@ class JournalConfirmDeleteView(View):
         }
         return render(request, self.template_name, context)
 
-
-class JournalDeleteView(DeleteView):
-    model = Journal
-    # Template for the confirmation page
-    template_name = "self_enquiry/journal_confirm_delete.html"
-
-    # TODO: Add a `message` that the Journal was deleted successfully.
-
-    def get_success_url(self):
-        return reverse(
-            "self_enquiry:list",
-        )
