@@ -4,8 +4,8 @@
 
 ## Production Links
 
-* [Health Activity Tracker](https://health-activity-tracker.herokuapp.com/)
-* <https://git.heroku.com/health-activity-tracker.git>
+* [Health Activity Tracker](https://flynnt-knapp-8e0b83ab9b88.herokuapp.com/)
+* <https://git.heroku.com/flynnt-knapp.git>
 
 ## Django Applications
 
