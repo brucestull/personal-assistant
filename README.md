@@ -11,30 +11,17 @@
 
 ## Models
 
-- [x] CustomUser
-- [x] Journal
-- [ ] BloodPressure
+### `Accounts` - `accounts`
 
-## Views
+- [ ] `CustomUser`
 
-* `CustomUser`:
-  - [x] Create
-  - [x] Read
-  - [x] Update
+### `SelfEnquiry` - `self_enquiry`
 
-* `Journal`:
-  - [x] Create
-  - [x] Read
-  - [x] List
-  - [x] Update
-  - [x] Delete
+- [ ] `Journal`
+- [ ] `GrowthOppurtunity`
 
-* `BloodPressure`:
-  - [ ] Create
-  - [ ] Read
-  - [ ] List
-  - [ ] Update
-  - [ ] Delete
+### `Vitals` - `vitals`
+- [ ] `BloodPressure`
 
 ## Templates
 
