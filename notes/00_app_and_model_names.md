@@ -30,13 +30,13 @@
         * `Exercise`
         * `Medication`
     * Subjective values:
-        * `Pain`
-        * `Mood`
-        * `Energy`
+        * `Pain` - {0, 1, 2, 3, 4, 5}
+        * `Mood` - {0, 1, 2, 3, 4, 5}
+        * `Energy` - {0, 1, 2, 3, 4, 5}
+        * `Motivation` - {0, 1, 2, 3, 4, 5}
         * `Diet`
         * `Symptoms`
         * `Notes`
-        * `Motivation` - {0, 1, 2, 3, 4, 5}
 
 ### RO-DBT Tracker
 
@@ -45,22 +45,26 @@
 * Model Names:
     * ¿`DiaryCardInstance`? - Probably won't need this since most related models will be free-field text.
     * `DiaryCard`
+        * This will be a weekly diary card:
+            * Possibly use a calendar widget to select the week.
+            * Possibly use a table to display the diary card.
+            * How would this work with the `DiaryCardInstance` model?
         * `PrivateBehaviors`
         * `SocialSignalingBehaviors`
-    * `DayOfWeek`
-    * `SkillsPractice`
-    * `SkillsUse`
-    * `ChainAnalysis`
-    * `Notes`
-    * `Comments`
-    * `MedicationsAsPrescribed`
-    * `DrugsOrAlcohol`
-    * `DateStarted`
-    * `DateEnded`
-    * `CurrentOCTheme`
-    * `ValuedGoalsPursued`
-    * `SelfEnquiryQuestion`
-    * `SuicidalUrge` - {0, 1, 2, 3, 4, 5}
+        * `DayOfWeek`
+        * `SkillsPractice`
+        * `SkillsUse`
+        * `ChainAnalysis`
+        * `Notes`
+        * `Comments`
+        * `MedicationsAsPrescribed`
+        * `DrugsOrAlcohol`
+        * `DateStarted`
+        * `DateEnded`
+        * `CurrentOCTheme`
+        * `ValuedGoalsPursued`
+        * `SelfEnquiryQuestion`
+        * `SuicidalUrge` - {0, 1, 2, 3, 4, 5}
 
 ## ChatGPT
 
