@@ -5,7 +5,6 @@
 ## Production Links
 
 * [Health Activity Tracker](https://flynnt-knapp-8e0b83ab9b88.herokuapp.com/)
-* <https://git.heroku.com/flynnt-knapp.git>
 
 ## Django Applications
 
@@ -22,6 +21,11 @@
 
 ### `Vitals` - `vitals`
 - [ ] `BloodPressure`
+
+### Misc Models
+
+- [ ] `Gratitude`
+- [ ] `Strenth`
 
 ## Templates
 
