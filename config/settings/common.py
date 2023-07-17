@@ -120,4 +120,4 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_REDIRECT_URL = "home" 
 LOGOUT_REDIRECT_URL = "home"
 
-THE_SITE_NAME = "Flynnt Knapp"
+THE_SITE_NAME = "Health Activity Tracker"

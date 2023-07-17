@@ -12,7 +12,7 @@ ANOTHER_TEST_USERNAME = "AnotherCustomUser"
 ANOTHER_TEST_PASSWORD = "another_test_password"
 ANOTHER_TEST_FIRST_NAME = "Another"
 
-THE_SITE_NAME = "Flynnt Knapp"
+THE_SITE_NAME = "Health Activity Tracker"
 
 FORBIDDEN_VIEW_PAGE_TITLE = "Forbidden"
 FORBIDDEN_VIEW_URL = "/accounts/403/"
