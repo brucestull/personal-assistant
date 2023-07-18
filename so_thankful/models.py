@@ -7,7 +7,7 @@ class Strength(models.Model):
     owner = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
-        related_name='strengths',
+        related_name="strengths",
     )
 
     def __str__(self):
@@ -19,7 +19,7 @@ class Gratitude(models.Model):
     owner = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
-        related_name='gratitudes',
+        related_name="gratitudes",
     )
 
     def __str__(self):
@@ -31,7 +31,7 @@ class LovedOne(models.Model):
     owner = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
-        related_name='loved_ones',
+        related_name="loved_ones",
     )
 
     def __str__(self):
