@@ -1,10 +1,10 @@
-# Health Activity Tracker
+# Personal Assistant
 
 ## Table of Contents
 
 ## Production Links
 
-* [Health Activity Tracker](https://flynnt-knapp-8e0b83ab9b88.herokuapp.com/)
+* [Personal Assistant](https://flynnt-knapp-8e0b83ab9b88.herokuapp.com/)
 
 ## Django Applications
 
@@ -25,7 +25,7 @@
 ### Misc Models
 
 - [ ] `Gratitude`
-- [ ] `Strenth`
+- [ ] `Strength`
 
 ## Templates
 
