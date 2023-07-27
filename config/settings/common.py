@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.admindocs",
     "self_enquiry.apps.SelfEnquiryConfig",
     "so_thankful.apps.SoThankfulConfig",
+    "vitals.apps.VitalsConfig",
 ]
 
 MIDDLEWARE = [
