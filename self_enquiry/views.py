@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -19,7 +20,7 @@ JOURNAL_DELETE_FORM_BUTTON_TEXT = "Delete your Journal!"
 JOURNAL_DETAIL_PAGE_TITLE = "Journal Detail"
 
 
-class JournalCreateView(CreateView):
+class JournalCreateView(LoginRequiredMixin, CreateView):
     """
     Create view for a new `self_enquiry.Journal`.
     """
@@ -42,9 +43,9 @@ class JournalCreateView(CreateView):
         return super().form_valid(form)
 
 
-class JournalListView(ListView):
+class JournalListView(LoginRequiredMixin, ListView):
     """
-    List view for all `self_enquiry.journals`.
+    List view a user's `self_enquiry.Journal`s.
     """
 
     model = Journal
@@ -62,7 +63,7 @@ class JournalListView(ListView):
         return super().get_queryset().filter(author=self.request.user)
 
 
-class JournalDetailView(DetailView):
+class JournalDetailView(LoginRequiredMixin, DetailView):
     """
     Detail view for a single `self_enquiry.Journal`.
     """
@@ -74,7 +75,7 @@ class JournalDetailView(DetailView):
     }
 
 
-class JournalUpdateView(UpdateView):
+class JournalUpdateView(LoginRequiredMixin, UpdateView):
     """
     Update view for a single `self_enquiry.Journal`.
     """
@@ -116,7 +117,7 @@ class JournalUpdateView(UpdateView):
     #         return reverse("self_enquiry:list")
 
 
-class JournalConfirmDeleteView(View):
+class JournalConfirmDeleteView(LoginRequiredMixin, View):
     """
     Confirm delete view for a single `self_enquiry.Journal`.
     """
@@ -135,7 +136,7 @@ class JournalConfirmDeleteView(View):
         return render(request, self.template_name, context)
 
 
-class JournalDeleteView(DeleteView):
+class JournalDeleteView(LoginRequiredMixin, DeleteView):
     model = Journal
     # Template for the confirmation page
     template_name = "self_enquiry/journal_confirm_delete.html"
