@@ -9,10 +9,14 @@ class DateTimeBase(models.Model):
     """
 
     created = models.DateTimeField(
-        "Created", auto_now_add=True, help_text="The date and time this object was created."
+        "Created",
+        auto_now_add=True,
+        help_text="The date and time this object was created.",
     )
     updated = models.DateTimeField(
-        "Updated", auto_now=True, help_text="The date and time this object was last updated."
+        "Updated",
+        auto_now=True,
+        help_text="The date and time this object was last updated.",
     )
 
     class Meta:
@@ -41,4 +45,4 @@ class BloodPressure(DateTimeBase):
         verbose_name_plural = "Blood Pressures"
 
     def __str__(self):
-        return f"{self.user.username} : {self.systolic}/{self.diastolic}"
+        return f"{self.user.username} | {self.systolic}/{self.diastolic} mmHg"

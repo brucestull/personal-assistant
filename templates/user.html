@@ -6,6 +6,8 @@
     <br>
     <a href="{% url 'self_enquiry:create' %}">Create Journal</a>
     <br>
+    <a href={% url 'vitals:bloodpressure-list' %}>Blood Pressures</a>
+    <br>
     {% endif %}
     {% if user.is_authenticated %}
         <span>Greetings, {{ user.username | capfirst }}!</span>
