@@ -46,3 +46,26 @@ class BloodPressure(DateTimeBase):
 
     def __str__(self):
         return f"{self.user.username} | {self.systolic}/{self.diastolic} mmHg"
+
+
+class Pulse(DateTimeBase):
+    """
+    Model class for a user's pulse.
+    """
+
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="pulses",
+        help_text="The user that measures their pulse.",
+    )
+    bpm = models.PositiveSmallIntegerField(
+        help_text="The pulse reading."
+    )
+
+    class Meta:
+        verbose_name = "Pulse Measurement"
+        verbose_name_plural = "Pulse Measurements"
+
+    def __str__(self):
+        return f"{self.user.username} | {self.bpm} bpm"

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from vitals.models import BloodPressure
+from vitals.models import BloodPressure, Pulse
 
 
 @admin.register(BloodPressure)
@@ -37,6 +37,52 @@ class VitalsAdmin(admin.ModelAdmin):
                     "user",
                     "systolic",
                     "diastolic",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
+
+
+@admin.register(Pulse)
+class PulseAdmin(admin.ModelAdmin):
+    """
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `Pulse` model.
+    """
+
+    list_display = (
+        "user",
+        "bpm",
+        "created",
+    )
+    ordering = ("-created",)
+    list_filter = (
+        "user",
+        "created",
+    )
+    search_fields = (
+        "user__username",
+        "bpm",
+    )
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "user",
+                    "bpm",
                 )
             },
         ),
