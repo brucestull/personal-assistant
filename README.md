@@ -2,6 +2,11 @@
 
 ## Table of Contents
 
+## Development Links
+
+- <http://localhost:8000/vitals/>
+- <http://localhost:8000/vitals/bloodpressures/>
+
 ## Production Links
 
 * [Personal Assistant](https://flynnt-knapp-8e0b83ab9b88.herokuapp.com/)
