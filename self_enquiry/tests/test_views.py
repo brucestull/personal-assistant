@@ -12,7 +12,7 @@ from self_enquiry.views import (
 from accounts.models import CustomUser
 
 
-THE_SITE_NAME = "Health Activity Tracker"
+THE_SITE_NAME = "Personal Assistant"
 
 TEST_USERNAME_ONE = "test_username_one"
 TEST_PASSWORD_ONE = "test_password_one"
