@@ -32,11 +32,6 @@ class BloodPressureListView(ListView):
         "the_site_name": THE_SITE_NAME,
         "page_title": BLOOD_PRESSURE_LIST_PAGE_TITLE,
     }
-    ordering = [
-        "-date",
-        "-time",
-        "-pk",
-    ]
 
     def get_queryset(self):
-        return BloodPressure.objects.filter(user=self.request.user)
+        return BloodPressure.objects.filter(user=self.request.user).order_by("-created")
