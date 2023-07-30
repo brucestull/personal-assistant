@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, View
@@ -63,7 +64,7 @@ class JournalListView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(author=self.request.user)
 
 
-class JournalDetailView(LoginRequiredMixin, DetailView):
+class JournalDetailView(UserPassesTestMixin, DetailView):
     """
     Detail view for a single `self_enquiry.Journal`.
     """
@@ -74,8 +75,15 @@ class JournalDetailView(LoginRequiredMixin, DetailView):
         "page_title": JOURNAL_DETAIL_PAGE_TITLE,
     }
 
+    def test_func(self):
+        """
+        Override the default test_func method to only allow the author of the journal to view it.
+        """
+        journal = self.get_object()
+        return self.request.user == journal.author
 
-class JournalUpdateView(LoginRequiredMixin, UpdateView):
+
+class JournalUpdateView(UserPassesTestMixin, UpdateView):
     """
     Update view for a single `self_enquiry.Journal`.
     """
@@ -97,24 +105,12 @@ class JournalUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    # TODO: Probably not needed.
-    # def get_queryset(self):
-    #     """
-    #     Override the default queryset to only return journals that belong to the current user.
-    #     """
-    #     return super().get_queryset().filter(author=self.request.user)
-
-    # TODO: Probably not needed.
-    # def get_success_url(self):
-    #     """
-    #     Override the default `get_success_url` method to redirect to the journal detail page.
-    #     """
-    #     if self.object:
-    #         # Assuming you pass the journal ID in the URL
-    #         return reverse("self_enquiry:detail", kwargs={"pk": self.object.pk})
-    #     else:
-    #         # If the object doesn't exist, redirect to the journal list page
-    #         return reverse("self_enquiry:list")
+    def test_func(self):
+        """
+        Override the default test_func method to only allow the author of the journal to view it.
+        """
+        journal = self.get_object()
+        return self.request.user == journal.author
 
 
 class JournalConfirmDeleteView(LoginRequiredMixin, View):

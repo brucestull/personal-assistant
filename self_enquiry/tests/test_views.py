@@ -366,12 +366,16 @@ class JournalDetailViewTest(TestCase):
         """
         Set up a test user and journal.
         """
-        cls.user = CustomUser.objects.create_user(
+        cls.user_one = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        cls.user_two = CustomUser.objects.create_user(
+            username=TEST_USERNAME_TWO,
+            password=TEST_PASSWORD_TWO,
+        )
         cls.journal = Journal.objects.create(
-            author=cls.user,
+            author=cls.user_one,
             title=TEST_JOURNAL_TITLE,
             content=TEST_JOURNAL_CONTENT,
         )
@@ -430,6 +434,32 @@ class JournalDetailViewTest(TestCase):
             response,
             f"<title>{THE_SITE_NAME} - {JOURNAL_DETAIL_PAGE_TITLE}</title>",
         )
+
+    def test_view_accessible_by_user(self):
+        """
+        `JournalDetailView` view should be accessible by the user who created the journal.
+        """
+        login = self.client.login(
+            username=TEST_USERNAME_ONE,
+            password=TEST_PASSWORD_ONE,
+        )
+        response = self.client.get(
+            reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_inaccessible_by_another_user(self):
+        """
+        `JournalDetailView` view should be inaccessible by another user.
+        """
+        login = self.client.login(
+            username=TEST_USERNAME_TWO,
+            password=TEST_PASSWORD_TWO,
+        )
+        response = self.client.get(
+            reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
+        )
+        self.assertEqual(response.status_code, 403)
 
 
 class JournalUpdateViewTest(TestCase):
@@ -530,56 +560,31 @@ class JournalUpdateViewTest(TestCase):
             Journal.objects.get(id=self.journal_one.id).author, self.user_one
         )
 
-    # TODO: Probably not needed.
-    # def test_get_queryset_method(self):
-    #     """
-    #     `get_queryset` method should return only journals of the current user.
-    #     """
-    #     login = self.client.login(
-    #         username=self.user_one.username,
-    #         password=TEST_PASSWORD_ONE,
-    #     )
-    #     response = self.client.get(
-    #         reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.pk])
-    #     )
-    #     self.assertEqual(response.status_code, 200)
-    #     # The returned journal should be owned by the current user.
-    #     self.assertEqual(response.context["object"].author, self.user_one)
+    def test_view_accessible_by_user(self):
+        """
+        `JournalUpdateView` view should be accessible by the user who created the journal.
+        """
+        login = self.client.login(
+            username=TEST_USERNAME_ONE,
+            password=TEST_PASSWORD_ONE,
+        )
+        response = self.client.get(
+            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
+        )
+        self.assertEqual(response.status_code, 200)
 
-    # TODO: Probably not needed.
-    # def test_get_success_url_method(self):
-    #     """
-    #     `get_success_url` method should return the detail page of the journal.
-    #     """
-    #     login = self.client.login(
-    #         username=self.user_one.username,
-    #         password=TEST_PASSWORD_ONE,
-    #     )
-    #     response = self.client.post(
-    #         reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.pk]),
-    #         data={
-    #             "title": TEST_JOURNAL_TITLE,
-    #             "content": TEST_JOURNAL_CONTENT,
-    #         },
-    #     )
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertEqual(
-    #         response.url,
-    #         reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal_one.pk]),
-    #     )
-    #     # I self.object doesn't exist, the method should return the Journal List page.
-    #     response = self.client.post(
-    #         reverse(JOURNAL_UPDATE_VIEW_NAME, args=[3]),
-    #         data={
-    #             "title": TEST_JOURNAL_TITLE,
-    #             "content": TEST_JOURNAL_CONTENT,
-    #         },
-    #     )
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertEqual(
-    #         response.url,
-    #         reverse(JOURNAL_LIST_VIEW_NAME),
-    #     )
+    def test_view_inaccessible_by_another_user(self):
+        """
+        `JournalUpdateView` view should be inaccessible by another user.
+        """
+        login = self.client.login(
+            username=TEST_USERNAME_TWO,
+            password=TEST_PASSWORD_TWO,
+        )
+        response = self.client.get(
+            reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
+        )
+        self.assertEqual(response.status_code, 403)
 
 
 class JournalConfirmDeleteViewTest(TestCase):
