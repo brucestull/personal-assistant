@@ -5,7 +5,7 @@ from config.settings.common import AUTH_USER_MODEL
 
 class DateTimeBase(models.Model):
     """
-    An abstract base class model that provides self-updating ``created`` and ``updated`` fields.
+    An abstract base class model that provides self-updating `created` and `updated` fields.
     """
 
     created = models.DateTimeField(
