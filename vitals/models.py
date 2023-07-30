@@ -35,10 +35,12 @@ class BloodPressure(DateTimeBase):
         help_text="The user that measures their blood pressure.",
     )
     systolic = models.PositiveSmallIntegerField(
-        help_text="The systolic blood pressure reading."
+        verbose_name="Systolic Blood Pressure",
+        help_text="The systolic blood pressure reading.",
     )
     diastolic = models.PositiveSmallIntegerField(
-        help_text="The diastolic blood pressure reading."
+        verbose_name="Diastolic Blood Pressure",
+        help_text="The diastolic blood pressure reading.",
     )
 
     class Meta:
@@ -60,7 +62,8 @@ class Pulse(DateTimeBase):
         help_text="The user that measures their pulse.",
     )
     bpm = models.PositiveSmallIntegerField(
-        help_text="The pulse reading."
+        verbose_name="Beats Per Minute",
+        help_text="The pulse rate in beats per minute.",
     )
 
     class Meta:
@@ -68,4 +71,4 @@ class Pulse(DateTimeBase):
         verbose_name_plural = "Pulse Measurements"
 
     def __str__(self):
-        return f"{self.user.username} | {self.bpm} bpm"
+        return f"{self.user.username} | {self.bpm} Beats Per Minute"
