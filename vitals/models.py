@@ -47,7 +47,7 @@ class BloodPressure(DateTimeBase):
         verbose_name_plural = "Blood Pressure Measurements"
 
     def __str__(self):
-        return f"{self.user.username} | {self.systolic}/{self.diastolic} mmHg"
+        return f"{self.user.username} | {self.systolic} / {self.diastolic} mmHg"
 
 
 class Pulse(DateTimeBase):

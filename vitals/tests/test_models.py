@@ -261,7 +261,7 @@ class BloodPressureModelTest(TestCase):
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure.pk)
         self.assertEqual(
             str(blood_pressure),
-            f"{blood_pressure.user.username} | {blood_pressure.systolic}/{blood_pressure.diastolic} mmHg",
+            f"{blood_pressure.user.username} | {blood_pressure.systolic} / {blood_pressure.diastolic} mmHg",
         )
 
 
