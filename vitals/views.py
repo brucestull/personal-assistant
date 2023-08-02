@@ -11,7 +11,7 @@ BLOOD_PRESSURE_LIST_PAGE_TITLE = "Blood Pressures"
 
 def home(request):
     """
-    View function for the home page of the site.
+    View function for the home page of the `vitals` app.
     """
     return render(
         request,
@@ -23,23 +23,25 @@ def home(request):
     )
 
 
-class BloodPressureListView(ListView):
+class BloodPressureListView(LoginRequiredMixin, ListView):
     """
     `ListView` for a user's blood pressure measurements.
     """
 
-    # The model attribute `model = BloodPressure` is not needed because the
-    # `get_queryset` method is defined.
-    # model = BloodPressure
+    """
+    The model attribute `model = BloodPressure` is not needed because the
+    `get_queryset` method is defined.
+    model = BloodPressure
 
-    # The template_name attribute `template_name = "vitals/bloodpressure_list.html"` is not needed since Django will use the default template name.
-    # template_name = "vitals/bloodpressure_list.html"
+    The template_name attribute `template_name = "vitals/bloodpressure_list.html"` is not needed since Django will use the default template name.
+    template_name = "vitals/bloodpressure_list.html"
 
-    # The context_object_name attribute `context_object_name = "bloodpressure_list"` is not needed since Django will use the default context object name.
-    # context_object_name = "bloodpressure_list"
+    The context_object_name attribute `context_object_name = "bloodpressure_list"` is not needed since Django will use the default context object name.
+    context_object_name = "bloodpressure_list"
 
-    # This attribute `paginate_by = 10` will be implemented in the future.
-    # paginate_by = 10
+    This attribute `paginate_by = 10` will be implemented in the future.
+    paginate_by = 10
+    """
 
     # Get the average and median of all the blood pressure measurements.
     average_and_median_all = BloodPressure.get_average_and_median()
