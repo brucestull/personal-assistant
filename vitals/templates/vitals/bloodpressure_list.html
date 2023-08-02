@@ -6,23 +6,19 @@
     <h1>{{ page_title }}</h1>
 
     {% if user.registration_accepted %}
-        <span>
-        <h2>Median</h2>
-        {{ average_and_median_all.systolic_median }} / {{ average_and_median_all.diastolic_median }}
-        </span>
-        <span>
-        <h2>Average</h2>
-        {{ average_and_median_all.systolic_average }} / {{ average_and_median_all.diastolic_average }}
-        </span>
         <hr>
+        <h2>All Users</h2>
+        <h3>Median</h3>
+        {{ average_and_median_all.systolic_median }} / {{ average_and_median_all.diastolic_median }}
         <span>
-        <h2>Median</h2>
+        <h3>Average</h3>
+        {{ average_and_median_all.systolic_average }} / {{ average_and_median_all.diastolic_average }}
+        <hr>
+        <h2>Current User</h2>
+        <h3>Median</h3>
         {{ user_averages_and_medians.systolic_median }} / {{ user_averages_and_medians.diastolic_median }}
-        </span>
-        <span>
-        <h2>Average</h2>
+        <h3>Average</h3>
         {{ user_averages_and_medians.systolic_average }} / {{ user_averages_and_medians.diastolic_average }}
-        </span>
         <hr>
         {% for blood_pressure in bloodpressure_list %}
             {% comment %} <h2><a href="{% url 'self_enquiry:detail' blood_pressure.id %}">{{ blood_pressure }}</a></h2> {% endcomment %}
