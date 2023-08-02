@@ -1,0 +1,9 @@
+{% block content %}
+<h3>Applications</h3>
+<ul>
+    <li><a href={% url "app_tracker:home" %}>App Tracker</a></li>
+    <li><a href={% url "vitals:home" %}>Vitals</a></li>
+    <li><a href={% url "self_enquiry:list" %}>Self Enquiry</a></li>
+</ul>
+
+{% endblock content %}
