@@ -77,10 +77,10 @@ class BloodPressure(DateTimeBase):
             systolic_median = median(systolic_values)
             diastolic_median = median(diastolic_values)
         return {
-            'systolic_average': systolic_average,
-            'diastolic_average': diastolic_average,
-            'systolic_median': systolic_median,
-            'diastolic_median': diastolic_median,
+            'systolic_average': round(systolic_average, 2),
+            'diastolic_average': round(diastolic_average, 2),
+            'systolic_median': round(systolic_median, 2),
+            'diastolic_median': round(diastolic_median, 2),
         }
 
 
