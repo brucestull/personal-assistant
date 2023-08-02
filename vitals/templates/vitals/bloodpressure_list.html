@@ -8,11 +8,20 @@
     {% if user.registration_accepted %}
         <span>
         <h2>Median</h2>
-        {{ average_and_median.systolic_median }} / {{ average_and_median.diastolic_median }}
+        {{ average_and_median_all.systolic_median }} / {{ average_and_median_all.diastolic_median }}
         </span>
         <span>
         <h2>Average</h2>
-        {{ average_and_median.systolic_average }} / {{ average_and_median.diastolic_average }}
+        {{ average_and_median_all.systolic_average }} / {{ average_and_median_all.diastolic_average }}
+        </span>
+        <hr>
+        <span>
+        <h2>Median</h2>
+        {{ user_averages_and_medians.systolic_median }} / {{ user_averages_and_medians.diastolic_median }}
+        </span>
+        <span>
+        <h2>Average</h2>
+        {{ user_averages_and_medians.systolic_average }} / {{ user_averages_and_medians.diastolic_average }}
         </span>
         <hr>
         {% for blood_pressure in bloodpressure_list %}

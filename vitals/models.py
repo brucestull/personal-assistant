@@ -50,6 +50,37 @@ class BloodPressure(DateTimeBase):
     def __str__(self):
         return f"{self.user.username} | {self.systolic} / {self.diastolic} mmHg"
 
+    def get_user_average_and_median(self):
+        """
+        Method to get the average and median of the systolic and diastolic
+        blood pressure readings of all the `systolic` and `diastolic` values
+        of `BloodPressure` objects for the current user.
+        """
+        systolic_values = BloodPressure.objects.filter(
+            user=self.user,
+        ).values_list("systolic", flat=True)
+        diastolic_values = BloodPressure.objects.filter(
+            user=self.user,
+        ).values_list("diastolic", flat=True)
+        if len(systolic_values) == 0:
+            return {
+                "systolic_average": None,
+                "diastolic_average": None,
+                "systolic_median": None,
+                "diastolic_median": None,
+            }
+        else:
+            systolic_average = sum(systolic_values) / len(systolic_values)
+            diastolic_average = sum(diastolic_values) / len(diastolic_values)
+            systolic_median = median(systolic_values)
+            diastolic_median = median(diastolic_values)
+        return {
+            "systolic_average": round(systolic_average, 2),
+            "diastolic_average": round(diastolic_average, 2),
+            "systolic_median": round(systolic_median, 2),
+            "diastolic_median": round(diastolic_median, 2),
+        }
+
     # Use the `@staticmethod` decorator to define a static method.
     # A `static method` is a method that doesn't need to be called on an instance of the class.
     # An `instance of the class` means an object created from the class.
@@ -62,14 +93,20 @@ class BloodPressure(DateTimeBase):
         """
         Method to get the average and median of the systolic and diastolic blood pressure readings of all the `systolic` and `diastolic` values of `BloodPressure` objects.
         """
-        systolic_values = BloodPressure.objects.values_list('systolic', flat=True)
-        diastolic_values = BloodPressure.objects.values_list('diastolic', flat=True)
+        systolic_values = BloodPressure.objects.values_list(
+            "systolic",
+            flat=True,
+        )
+        diastolic_values = BloodPressure.objects.values_list(
+            "diastolic",
+            flat=True,
+        )
         if len(systolic_values) == 0:
             return {
-                'systolic_average': None,
-                'diastolic_average': None,
-                'systolic_median': None,
-                'diastolic_median': None,
+                "systolic_average": None,
+                "diastolic_average": None,
+                "systolic_median": None,
+                "diastolic_median": None,
             }
         else:
             systolic_average = sum(systolic_values) / len(systolic_values)
@@ -77,10 +114,10 @@ class BloodPressure(DateTimeBase):
             systolic_median = median(systolic_values)
             diastolic_median = median(diastolic_values)
         return {
-            'systolic_average': round(systolic_average, 2),
-            'diastolic_average': round(diastolic_average, 2),
-            'systolic_median': round(systolic_median, 2),
-            'diastolic_median': round(diastolic_median, 2),
+            "systolic_average": round(systolic_average, 2),
+            "diastolic_average": round(diastolic_average, 2),
+            "systolic_median": round(systolic_median, 2),
+            "diastolic_median": round(diastolic_median, 2),
         }
 
 
