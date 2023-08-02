@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "self_enquiry.apps.SelfEnquiryConfig",
     "so_thankful.apps.SoThankfulConfig",
     "vitals.apps.VitalsConfig",
+    "app_tracker.apps.AppTrackerConfig",
 ]
 
 MIDDLEWARE = [
