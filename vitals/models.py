@@ -44,18 +44,22 @@ class BloodPressure(DateTimeBase):
         help_text="The diastolic blood pressure reading.",
     )
 
-    class Meta:
-        verbose_name_plural = "Blood Pressure Measurements"
-
-    def __str__(self):
-        return f"{self.user.username} | {self.systolic} / {self.diastolic} mmHg"
-
     def get_user_average_and_median(self):
         """
         Method to get the average and median of the systolic and diastolic
         blood pressure readings of all the `systolic` and `diastolic` values
         of `BloodPressure` objects for the current user.
-        
+
+        Returns a dictionary with the following keys and values:
+        - `systolic_average` is the average of the systolic blood pressure
+        readings of all the `BloodPressure` objects for the current user.
+        - `diastolic_average` is the average of the diastolic blood pressure
+        readings of all the `BloodPressure` objects for the current user.
+        - `systolic_median` is the median of the systolic blood pressure
+        readings of all the `BloodPressure` objects for the current user.
+        - `diastolic_median` is the median of the diastolic blood pressure
+        readings of all the `BloodPressure` objects for the current user.
+                
         - `self` is the current `BloodPressure` object.
         - `self.user` is the current user associated with the current
         `BloodPressure` object.
@@ -125,6 +129,13 @@ class BloodPressure(DateTimeBase):
             "systolic_median": round(systolic_median, 2),
             "diastolic_median": round(diastolic_median, 2),
         }
+
+    class Meta:
+        verbose_name_plural = "Blood Pressure Measurements"
+
+    def __str__(self):
+        return f"{self.user.username} | {self.systolic} / {self.diastolic} mmHg"
+
 
 
 class Pulse(DateTimeBase):
