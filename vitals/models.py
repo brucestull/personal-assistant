@@ -55,6 +55,10 @@ class BloodPressure(DateTimeBase):
         Method to get the average and median of the systolic and diastolic
         blood pressure readings of all the `systolic` and `diastolic` values
         of `BloodPressure` objects for the current user.
+        
+        - `self` is the current `BloodPressure` object.
+        - `self.user` is the current user associated with the current
+        `BloodPressure` object.
         """
         systolic_values = BloodPressure.objects.filter(
             user=self.user,
@@ -91,7 +95,9 @@ class BloodPressure(DateTimeBase):
     @staticmethod
     def get_average_and_median():
         """
-        Method to get the average and median of the systolic and diastolic blood pressure readings of all the `systolic` and `diastolic` values of `BloodPressure` objects.
+        Method to get the average and median of the systolic and diastolic
+        blood pressure readings of all the `systolic` and `diastolic`
+        values of `BloodPressure` objects.
         """
         systolic_values = BloodPressure.objects.values_list(
             "systolic",

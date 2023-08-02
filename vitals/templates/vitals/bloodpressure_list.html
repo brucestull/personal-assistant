@@ -6,13 +6,13 @@
     <h1>{{ page_title }}</h1>
 
     {% if user.registration_accepted %}
-        <hr>
+        {% comment %} <hr>
         <h2>All Users</h2>
         <h3>Median</h3>
         {{ average_and_median_all.systolic_median }} / {{ average_and_median_all.diastolic_median }}
         <span>
         <h3>Average</h3>
-        {{ average_and_median_all.systolic_average }} / {{ average_and_median_all.diastolic_average }}
+        {{ average_and_median_all.systolic_average }} / {{ average_and_median_all.diastolic_average }} {% endcomment %}
         <hr>
         <h2>Current User</h2>
         <h3>Median</h3>
