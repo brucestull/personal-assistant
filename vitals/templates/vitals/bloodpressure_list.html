@@ -6,6 +6,14 @@
     <h1>{{ page_title }}</h1>
 
     {% if user.registration_accepted %}
+        <span>
+        <h2>Median</h2>
+        {{ average_and_median.systolic_median }} / {{ average_and_median.diastolic_median }}
+        </span>
+        <span>
+        <h2>Average</h2>
+        {{ average_and_median.systolic_average }} / {{ average_and_median.diastolic_average }}
+        </span>
         <hr>
         {% for blood_pressure in bloodpressure_list %}
             {% comment %} <h2><a href="{% url 'self_enquiry:detail' blood_pressure.id %}">{{ blood_pressure }}</a></h2> {% endcomment %}
