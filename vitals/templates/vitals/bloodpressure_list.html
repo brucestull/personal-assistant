@@ -22,7 +22,7 @@
         <hr>
         {% for blood_pressure in bloodpressure_list %}
             {% comment %} <h2><a href="{% url 'self_enquiry:detail' blood_pressure.id %}">{{ blood_pressure }}</a></h2> {% endcomment %}
-            <h2>{{ blood_pressure }} | {{ blood_pressure.created }}</h2>
+            <h3>{{ blood_pressure }} | {{ blood_pressure.created }}</h3>
             {% comment %} {{ blood_pressure.content | linebreaks }} {% endcomment %}
             <hr>
         {% endfor %}
