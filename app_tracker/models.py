@@ -60,15 +60,20 @@ class Application(DateTimeBase):
     )
     repository_url = models.URLField(
         help_text="The URL of the application's repository.",
+        null=True,
+        blank=True,
     )
     has_custom_user = models.BooleanField(
         help_text="Whether or not the application has a custom user model.",
+        default=False,
     )
     has_sticky_footer = models.BooleanField(
         help_text="Whether or not the application has a sticky footer.",
+        default=False,
     )
     has_prod_deployment = models.BooleanField(
         help_text="Whether or not the application has a production deployment.",
+        default=False,
     )
     # `TESTING_LEVEL_CHOICES` is a list of tuples that represent the
     # choices for the `testing_level` field.
@@ -83,6 +88,8 @@ class Application(DateTimeBase):
         max_length=6,
         choices=TESTING_LEVEL_CHOICES,
         help_text="The relative amount of testing coverage for the application.",
+        null=True,
+        blank=True,
     )
     # `language_framework_systems` is a many-to-many relationship with the
     # `LanguageFrameworkSystem` model.
@@ -126,6 +133,8 @@ class Note(DateTimeBase):
         # This allows us to access the notes for an application by
         # using `application.notes`.
         related_name="notes",
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
