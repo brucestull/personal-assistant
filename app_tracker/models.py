@@ -40,7 +40,7 @@ class LanguageFrameworkSystem(DateTimeBase):
         Returns the string representation of the language, framework, or system.
         """
         return self.name
-    
+
     class Meta:
         verbose_name_plural = "Language/Framework/Systems"
 
@@ -82,6 +82,7 @@ class Application(DateTimeBase):
     testing_level = models.CharField(
         max_length=6,
         choices=TESTING_LEVEL_CHOICES,
+        help_text="The relative amount of testing coverage for the application.",
     )
     # `language_framework_systems` is a many-to-many relationship with the
     # `LanguageFrameworkSystem` model.
@@ -92,6 +93,7 @@ class Application(DateTimeBase):
         # language, framework, or system by using
         # `language_framework_system.applications`.
         related_name="applications",
+        help_text="The languages, frameworks, and systems used in the application.",
     )
 
     def __str__(self):
@@ -107,9 +109,14 @@ class Note(DateTimeBase):
     """
 
     # `title` is the title of the note.
-    title = models.CharField(max_length=255)
+    title = models.CharField(
+        max_length=255,
+        help_text="The title of the note.",
+    )
     # `content` is the content of the note.
-    content = models.TextField()
+    content = models.TextField(
+        help_text="The content of the note.",
+    )
     # `application` is a foreign key to the `Application` model.
     application = models.ForeignKey(
         Application,
@@ -143,9 +150,12 @@ class DjangoModel(DateTimeBase):
     name = models.CharField(
         max_length=255,
         unique=True,
+        help_text="The name of the Django model.",
     )
     # `description` is a description of the Django model.
-    description = models.TextField()
+    description = models.TextField(
+        help_text="The description of the Django model.",
+    )
     # `is_current_model` is a boolean that indicates whether the Django model
     # is a current model or a future model.
     # If `is_current_model` is `True`, then the Django model is a current
