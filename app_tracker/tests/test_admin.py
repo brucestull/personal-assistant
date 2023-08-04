@@ -7,6 +7,10 @@ from app_tracker.models import LanguageFrameworkSystem, Application, Note, Djang
 
 
 class AdminTests(TestCase):
+    """
+    Tests for the admin panel.
+    """
+
     @classmethod
     def setUpTestData(cls):
         cls.client = Client()
@@ -15,7 +19,7 @@ class AdminTests(TestCase):
             password='testpass',
             is_staff=True,
         )
-        cls.client.login(username='testuser', password='testpass')
+        cls.client.force_login(cls.user)
         cls.lfs = LanguageFrameworkSystem.objects.create(name='Test LFS')
         cls.app = Application.objects.create(
             name='Test App',
@@ -39,22 +43,32 @@ class AdminTests(TestCase):
         )
 
     def test_language_framework_system_admin(self):
-        response = self.client.get(reverse('admin:app_tracker_languageframeworksystem_change', args=[self.lfs.id]))
+        response = self.client.get(
+            reverse(
+                "admin:app_tracker_languageframeworksystem_change", args=[self.lfs.id]
+            )
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Test LFS')
+        self.assertContains(response, "Test LFS")
 
     def test_application_admin(self):
-        response = self.client.get(reverse('admin:app_tracker_application_change', args=[self.app.id]))
+        response = self.client.get(
+            reverse("admin:app_tracker_application_change", args=[self.app.id])
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Test App')
+        self.assertContains(response, "Test App")
 
     def test_note_admin(self):
-        response = self.client.get(reverse('admin:app_tracker_note_change', args=[self.note.id]))
+        response = self.client.get(
+            reverse("admin:app_tracker_note_change", args=[self.note.id])
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Test Note')
-        self.assertContains(response, 'Test Content')
+        self.assertContains(response, "Test Note")
+        self.assertContains(response, "Test Content")
 
     def test_django_model_admin(self):
-        response = self.client.get(reverse('admin:app_tracker_djangomodel_change', args=[self.model.id]))
+        response = self.client.get(
+            reverse("admin:app_tracker_djangomodel_change", args=[self.model.id])
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Test Model')
+        self.assertContains(response, "Test Model")
