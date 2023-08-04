@@ -1,5 +1,10 @@
 from django.db import models
 
+class LanguageFrameworkSystem(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
 
 class Application(models.Model):
     name = models.CharField(max_length=255)
@@ -16,24 +21,12 @@ class Application(models.Model):
     has_sticky_footer = models.BooleanField()
     has_prod_deployment = models.BooleanField()
     TESTING_LEVEL_CHOICES = [
-        ("high", "High"),
-        ("medium", "Medium"),
-        ("low", "Low"),
+        ('high', 'High'),
+        ('medium', 'Medium'),
+        ('low', 'Low'),
     ]
-    testing_level = models.CharField(
-        max_length=6,
-        choices=TESTING_LEVEL_CHOICES,
-    )
-    LANGUAGE_FRAMEWORK_SYSTEM_CHOICES = [
-        ("Django", "Django"),
-        ("Django REST", "Django REST"),
-        ("Vue.js", "Vue.js"),
-        ("Python", "Python"),
-        ("Docker", "Docker"),
-        ("MongoDB", "MongoDB"),
-        ("pymongo", "pymongo"),
-    ]
-    language_framework_system = models.CharField(
-        max_length=20,
-        choices=LANGUAGE_FRAMEWORK_SYSTEM_CHOICES,
-    )
+    testing_level = models.CharField(max_length=6, choices=TESTING_LEVEL_CHOICES)
+    language_framework_systems = models.ManyToManyField(LanguageFrameworkSystem)
+
+    def __str__(self):
+        return self.name
