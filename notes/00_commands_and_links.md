@@ -7,6 +7,7 @@
   * [HTML](http://localhost:8000/valued-goals/html/)
   * [Goals](http://localhost:8000/valued-goals/goals/)
   * [Goals Create](http://localhost:8000/valued-goals/goals/create/)
+  * [App Tracker](http://localhost:8000/app-tracker/)
 * Create user:
   * <http://localhost:8000/accounts/signup/>
 * Server Root:
