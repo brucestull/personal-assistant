@@ -2,11 +2,40 @@ from django.test import TestCase
 from django.db import models
 
 from accounts.models import CustomUser
+from vitals.models import BloodPressure
 
 A_TEST_USERNAME = "ACustomUser"
 
 CUSTOM_USER_REGISTRATION_ACCEPTED_HELP_TEXT = (
     "Designates whether this user's registration has been accepted."
+)
+
+BLOOD_PRESSURE_SYSTOLIC_1 = 120
+BLOOD_PRESSURE_DIASTOLIC_1 = 80
+BLOOD_PRESSURE_SYSTOLIC_2 = 110
+BLOOD_PRESSURE_DIASTOLIC_2 = 70
+BLOOD_PRESSURE_SYSTOLIC_3 = 115
+BLOOD_PRESSURE_DIASTOLIC_3 = 75
+
+SYSTOLIC_MIN = min(
+    BLOOD_PRESSURE_SYSTOLIC_1,
+    BLOOD_PRESSURE_SYSTOLIC_2,
+    BLOOD_PRESSURE_SYSTOLIC_3,
+)
+DIASTOLIC_MIN = min(
+    BLOOD_PRESSURE_DIASTOLIC_1,
+    BLOOD_PRESSURE_DIASTOLIC_2,
+    BLOOD_PRESSURE_DIASTOLIC_3,
+)
+SYSTOLIC_MAX = max(
+    BLOOD_PRESSURE_SYSTOLIC_1,
+    BLOOD_PRESSURE_SYSTOLIC_2,
+    BLOOD_PRESSURE_SYSTOLIC_3,
+)
+DIASTOLIC_MAX = max(
+    BLOOD_PRESSURE_DIASTOLIC_1,
+    BLOOD_PRESSURE_DIASTOLIC_2,
+    BLOOD_PRESSURE_DIASTOLIC_3,
 )
 
 
@@ -22,8 +51,23 @@ class CustomUserModelTest(TestCase):
 
         This specific function name `setUpTestData` is required by Django.
         """
-        user = CustomUser.objects.create(
+        cls.user = CustomUser.objects.create(
             username=A_TEST_USERNAME,
+        )
+        cls.blood_pressure_1 = BloodPressure.objects.create(
+            user=cls.user,
+            systolic=BLOOD_PRESSURE_SYSTOLIC_1,
+            diastolic=BLOOD_PRESSURE_DIASTOLIC_1,
+        )
+        cls.blood_pressure_2 = BloodPressure.objects.create(
+            user=cls.user,
+            systolic=BLOOD_PRESSURE_SYSTOLIC_2,
+            diastolic=BLOOD_PRESSURE_DIASTOLIC_2,
+        )
+        cls.blood_pressure_3 = BloodPressure.objects.create(
+            user=cls.user,
+            systolic=BLOOD_PRESSURE_SYSTOLIC_3,
+            diastolic=BLOOD_PRESSURE_DIASTOLIC_3,
         )
 
     def test_new_user_has_registration_accepted_false(self):
@@ -75,3 +119,21 @@ class CustomUserModelTest(TestCase):
         """
         user = CustomUser.objects.get(id=1)
         self.assertEqual(user.__str__(), user.username)
+
+    def test_get_user_blood_pressure_range_method(self):
+        """
+        `CustomUser` model `get_user_blood_pressure_range` method should
+        return the maximum and minimum systolic and diastolic blood pressure
+        readings for the current user.
+        """
+        user = CustomUser.objects.get(id=1)
+        self.assertEqual(
+            user.get_user_blood_pressure_range(),
+            {
+                "systolic_min": SYSTOLIC_MIN,
+                "diastolic_min": DIASTOLIC_MIN,
+                "systolic_max": SYSTOLIC_MAX,
+                "diastolic_max": DIASTOLIC_MAX,
+            },
+        )
+
