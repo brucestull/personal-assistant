@@ -1,74 +1,155 @@
-# from django.test import TestCase, Client
-# from django.urls import reverse
+from django.contrib import admin
+from django.test import TestCase, RequestFactory
+from django.urls import reverse
 
-# from accounts.models import CustomUser
+from app_tracker.admin import LanguageFrameworkSystemAdmin
+from app_tracker.admin import ApplicationAdmin
+from app_tracker.admin import NoteAdmin
+from app_tracker.admin import DjangoModelAdmin
 
-# from app_tracker.models import LanguageFrameworkSystem, Application, Note, DjangoModel
+from app_tracker.models import LanguageFrameworkSystem
+from app_tracker.models import Application
+from app_tracker.models import Note
+from app_tracker.models import DjangoModel
+
+from accounts.models import CustomUser
 
 
-# class AdminTests(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         cls.client = Client()
-#         cls.user = CustomUser.objects.create_user(
-#             username="testuser",
-#             password="testpass",
-#             is_staff=True,
-#         )
-#         cls.client.force_login(cls.user)
-#         cls.lfs = LanguageFrameworkSystem.objects.create(name="Test LFS")
-#         cls.app = Application.objects.create(
-#             name="Test App",
-#             description="Test Description",
-#             repository_url="https://github.com/testuser/testrepo",
-#             has_custom_user=True,
-#             has_sticky_footer=False,
-#             has_prod_deployment=True,
-#             testing_level="UNIT",
-#         )
-#         cls.note = Note.objects.create(
-#             title="Test Note",
-#             content="Test Content",
-#             application=cls.app,
-#         )
-#         cls.model = DjangoModel.objects.create(
-#             name="Test Model",
-#             description="Test Description",
-#             is_current_model=True,
-#             application=cls.app,
-#         )
+class LanguageFrameworkSystemAdminTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            email="testuser@email.app",
+            password="testpass",
+        )
+        self.language_framework_system_01 = LanguageFrameworkSystem.objects.create(
+            name="Python",
+        )
+        self.language_framework_system_02 = LanguageFrameworkSystem.objects.create(
+            name="Django",
+        )
+        self.admin = LanguageFrameworkSystemAdmin(LanguageFrameworkSystem, admin.site)
 
-#     def test_language_framework_system_admin(self):
-#         response = self.client.get(
-#             reverse(
-#                 "admin:app_tracker_languageframeworksystem_change", args=[self.lfs.id]
-#             ),
-#             follow=True,
-#         )
-#         self.assertEqual(response.status_code, 200)
-#         self.assertContains(response, "Test LFS")
+    def test_list_display(self):
+        self.assertEqual(
+            self.admin.list_display,
+            ("name", "created"),
+        )
 
-#     def test_application_admin(self):
-#         response = self.client.get(
-#             reverse("admin:app_tracker_application_change", args=[self.app.id]),
-#             follow=True,
-#         )
-#         self.assertEqual(response.status_code, 200)
-#         self.assertContains(response, "Test App")
+    def test_ordering(self):
+        self.assertEqual(self.admin.ordering, ("-created",))
 
-#     def test_note_admin(self):
-#         response = self.client.get(
-#             reverse("admin:app_tracker_note_change", args=[self.note.id]),
-#             follow=True,
-#         )
-#         self.assertEqual(response.status_code, 200)
-#         self.assertContains(response, "Test Note")
-#         self.assertContains(response, "Test Content")
+    def test_list_filter(self):
+        self.assertEqual(
+            self.admin.list_filter,
+            ("created",),
+        )
 
-#     def test_django_model_admin(self):
-#         response = self.client.get(
-#             reverse("admin:app_tracker_djangomodel_change", args=[self.model.id]),
-#             follow=True,
-#         )
-#         self.assertEqual(response.status_code, 200)
-#         self.assertContains(response, "Test Model")
+    def test_search_fields(self):
+        self.assertEqual(
+            self.admin.search_fields,
+            ("name",),
+        )
+
+    def test_readonly_fields(self):
+        self.assertEqual(
+            self.admin.readonly_fields,
+            ("created", "updated"),
+        )
+
+    def test_fieldsets(self):
+        self.assertEqual(
+            self.admin.fieldsets,
+            (
+                (
+                    None,
+                    {
+                        "fields": ("name",),
+                    },
+                ),
+                (
+                    "Dates",
+                    {
+                        "fields": (
+                            "created",
+                            "updated",
+                        )
+                    },
+                ),
+            ),
+        )
+
+
+class ApplicationAdminTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            email="testuser@email.app",
+            password="testpass",
+        )
+        self.application_01 = (
+            Application.objects.create(
+                name="Big Django App",
+                description="A big Django app.",
+            ),
+        )
+        self.admin = ApplicationAdmin(Application, admin.site)
+
+    def test_list_display(self):
+        self.assertEqual(
+            self.admin.list_display,
+            ("name", "created"),
+        )
+
+    def test_ordering(self):
+        self.assertEqual(self.admin.ordering, ("-created",))
+
+    def test_list_filter(self):
+        self.assertEqual(
+            self.admin.list_filter,
+            ("created",),
+        )
+
+    def test_search_fields(self):
+        self.assertEqual(
+            self.admin.search_fields,
+            ("name",),
+        )
+
+    def test_readonly_fields(self):
+        self.assertEqual(
+            self.admin.readonly_fields,
+            ("created", "updated"),
+        )
+
+    def test_fieldsets(self):
+        self.assertEqual(
+            self.admin.fieldsets,
+            (
+                (
+                    None,
+                    {
+                        "fields": (
+                            "name",
+                            "description",
+                            "repository_url",
+                            "has_custom_user",
+                            "has_sticky_footer",
+                            "has_prod_deployment",
+                            "testing_level",
+                        )
+                    },
+                ),
+                (
+                    "Dates",
+                    {
+                        "fields": (
+                            "created",
+                            "updated",
+                        )
+                    },
+                ),
+            ),
+        )
