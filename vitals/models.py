@@ -44,6 +44,7 @@ class BloodPressure(DateTimeBase):
         help_text="The diastolic blood pressure reading.",
     )
 
+    # TODO: This method should be moved to `CustomUser` model, since it's a method that depends on a `CustomUser` object.
     def get_user_average_and_median(self):
         """
         Method to get the average and median of the systolic and diastolic
@@ -87,31 +88,6 @@ class BloodPressure(DateTimeBase):
             "diastolic_average": round(diastolic_average, 2),
             "systolic_median": round(systolic_median, 2),
             "diastolic_median": round(diastolic_median, 2),
-        }
-
-    # TODO: Should this be a `CustomUser` method instead of a `BloodPressure` method?
-    def get_user_max_blood_pressures(self):
-        """
-        Returns the maximum systolic and diastolic blood pressure readings
-
-        Attributes:
-        - `self` is the current `BloodPressure` object.
-        - `self.user` is the current user associated with the current
-        `BloodPressure` object.
-        - `systolic_max` is the maximum systolic blood pressure reading of all
-        the `BloodPressure` objects for the current user.
-        - `diastolic_max` is the maximum diastolic blood pressure reading of
-        all the `BloodPressure` objects for the current user.
-        """
-        systolic_max = BloodPressure.objects.filter(
-            user=self.user,
-        ).order_by("-systolic").first()
-        diastolic_max = BloodPressure.objects.filter(
-            user=self.user,
-        ).order_by("-diastolic").first()
-        return {
-            "systolic_max": systolic_max,
-            "diastolic_max": diastolic_max,
         }
 
     # Use the `@staticmethod` decorator to define a static method.
