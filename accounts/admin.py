@@ -19,9 +19,11 @@ class CustomUserAdmin(UserAdmin):
 
     def get_fieldsets(self, request, obj=None):
         """
-        Override `get_fieldsets()` to add `registration_accepted` to a `Moderator Permissions` section of `CustomUser` change view.
+        Override `get_fieldsets()` to add `registration_accepted` to a
+        `Moderator Permissions` section of `CustomUser` change view.
         """
-        # Get the default `fieldsets` from the superclass `django.contrib.auth.UserAdmin`:
+        # Get the default `fieldsets` from the superclass
+        # `django.contrib.auth.UserAdmin`:
         fieldsets = super().get_fieldsets(request, obj)
         # Convert fieldsets to list:
         fieldsets_as_list = list(fieldsets)
@@ -30,6 +32,7 @@ class CustomUserAdmin(UserAdmin):
             "Moderator Permissions",
             {"fields": ("registration_accepted",)},
         )
-        # Insert `moderator_permissions` into `fieldsets_as_list` at index 2, this will be after "Personal info" and before "Permissions":
+        # Insert `moderator_permissions` into `fieldsets_as_list` at index 2,
+        # this will be after "Personal info" and before "Permissions":
         fieldsets_as_list.insert(2, moderator_permissions)
         return fieldsets_as_list
