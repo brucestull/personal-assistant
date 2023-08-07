@@ -44,52 +44,6 @@ class BloodPressure(DateTimeBase):
         help_text="The diastolic blood pressure reading.",
     )
 
-    # TODO: This method should be moved to `CustomUser` model, since it's a method that depends on a `CustomUser` object.
-    def get_user_average_and_median(self):
-        """
-        Method to get the average and median of the systolic and diastolic
-        blood pressure readings of all the `systolic` and `diastolic` values
-        of `BloodPressure` objects for the current user.
-
-        Returns a dictionary with the following keys and values:
-        - `systolic_average` is the average of the systolic blood pressure
-        readings of all the `BloodPressure` objects for the current user.
-        - `diastolic_average` is the average of the diastolic blood pressure
-        readings of all the `BloodPressure` objects for the current user.
-        - `systolic_median` is the median of the systolic blood pressure
-        readings of all the `BloodPressure` objects for the current user.
-        - `diastolic_median` is the median of the diastolic blood pressure
-        readings of all the `BloodPressure` objects for the current user.
-                
-        - `self` is the current `BloodPressure` object.
-        - `self.user` is the current user associated with the current
-        `BloodPressure` object.
-        """
-        systolic_values = BloodPressure.objects.filter(
-            user=self.user,
-        ).values_list("systolic", flat=True)
-        diastolic_values = BloodPressure.objects.filter(
-            user=self.user,
-        ).values_list("diastolic", flat=True)
-        if len(systolic_values) == 0:
-            return {
-                "systolic_average": None,
-                "diastolic_average": None,
-                "systolic_median": None,
-                "diastolic_median": None,
-            }
-        else:
-            systolic_average = sum(systolic_values) / len(systolic_values)
-            diastolic_average = sum(diastolic_values) / len(diastolic_values)
-            systolic_median = median(systolic_values)
-            diastolic_median = median(diastolic_values)
-        return {
-            "systolic_average": round(systolic_average, 2),
-            "diastolic_average": round(diastolic_average, 2),
-            "systolic_median": round(systolic_median, 2),
-            "diastolic_median": round(diastolic_median, 2),
-        }
-
     # Use the `@staticmethod` decorator to define a static method.
     # A `static method` is a method that doesn't need to be called on an instance of the class.
     # An `instance of the class` means an object created from the class.
