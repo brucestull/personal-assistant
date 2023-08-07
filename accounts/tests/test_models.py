@@ -38,6 +38,40 @@ DIASTOLIC_MAX = max(
     BLOOD_PRESSURE_DIASTOLIC_3,
 )
 
+    # "systolic_average": 115,
+    # "diastolic_average": 75,
+    # "systolic_median": 115,
+    # "diastolic_median": 75,
+
+SYSTOLIC_AVERAGE = sum(
+    [
+        BLOOD_PRESSURE_SYSTOLIC_1,
+        BLOOD_PRESSURE_SYSTOLIC_2,
+        BLOOD_PRESSURE_SYSTOLIC_3,
+    ]
+) / 3
+DIASTOLIC_AVERAGE = sum(
+    [
+        BLOOD_PRESSURE_DIASTOLIC_1,
+        BLOOD_PRESSURE_DIASTOLIC_2,
+        BLOOD_PRESSURE_DIASTOLIC_3,
+    ]
+) / 3
+SYSTOLIC_MEDIAN = sorted(
+    [
+        BLOOD_PRESSURE_SYSTOLIC_1,
+        BLOOD_PRESSURE_SYSTOLIC_2,
+        BLOOD_PRESSURE_SYSTOLIC_3,
+    ]
+)[1]
+DIASTOLIC_MEDIAN = sorted(
+    [
+        BLOOD_PRESSURE_DIASTOLIC_1,
+        BLOOD_PRESSURE_DIASTOLIC_2,
+        BLOOD_PRESSURE_DIASTOLIC_3,
+    ]
+)[1]
+
 
 class CustomUserModelTest(TestCase):
     """
@@ -70,6 +104,20 @@ class CustomUserModelTest(TestCase):
             diastolic=BLOOD_PRESSURE_DIASTOLIC_3,
         )
 
+    def test_registration_accepted_default_attribute_false(self):
+        """
+        `CustomUser` model `registration_accepted` field `default` should
+        be `False`.
+
+        This tests the `default` attribute of the `registration_accepted`
+        field of the `CustomUser` model.
+        """
+        user = CustomUser.objects.get(id=1)
+        field_registration_accepted = user._meta.get_field(
+            "registration_accepted",
+        )
+        self.assertEqual(field_registration_accepted.default, False)
+
     def test_new_user_has_registration_accepted_false(self):
         """
         A newly created `CustomUser` should have `registration_accepted`
@@ -86,20 +134,6 @@ class CustomUserModelTest(TestCase):
         user = CustomUser.objects.get(id=1)
         self.assertFalse(user.registration_accepted)
 
-    def test_registration_accepted_default_attribute_false(self):
-        """
-        `CustomUser` model `registration_accepted` field `default` should
-        be `False`.
-
-        This tests the `default` attribute of the `registration_accepted`
-        field of the `CustomUser` model.
-        """
-        user = CustomUser.objects.get(id=1)
-        field_registration_accepted = user._meta.get_field(
-            "registration_accepted",
-        )
-        self.assertEqual(field_registration_accepted.default, False)
-
     def test_registration_accepted_help_text(self):
         """
         `CustomUser` model `registration_accepted` field `help_text` should
@@ -112,13 +146,6 @@ class CustomUserModelTest(TestCase):
             ).help_text,
             CUSTOM_USER_REGISTRATION_ACCEPTED_HELP_TEXT,
         )
-
-    def test_dunder_string_method(self):
-        """
-        `CustomUser` model `__str__` method should return `username`.
-        """
-        user = CustomUser.objects.get(id=1)
-        self.assertEqual(user.__str__(), user.username)
 
     def test_get_user_blood_pressure_range_method(self):
         """
@@ -136,4 +163,28 @@ class CustomUserModelTest(TestCase):
                 "diastolic_max": DIASTOLIC_MAX,
             },
         )
+
+    def test_get_average_and_median_blood_pressure_method(self):
+        """
+        `CustomUser` model `get_average_and_median_blood_pressure` method
+        should return the average and median systolic and diastolic blood
+        pressure readings for the current user.
+        """
+        user = CustomUser.objects.get(id=1)
+        self.assertEqual(
+            user.get_average_and_median_blood_pressure(),
+            {
+                "systolic_average": SYSTOLIC_AVERAGE,
+                "diastolic_average": DIASTOLIC_AVERAGE,
+                "systolic_median": SYSTOLIC_MEDIAN,
+                "diastolic_median": DIASTOLIC_MEDIAN,
+            },
+        )
+
+    def test_dunder_string_method(self):
+        """
+        `CustomUser` model `__str__` method should return `username`.
+        """
+        user = CustomUser.objects.get(id=1)
+        self.assertEqual(user.__str__(), user.username)
 
