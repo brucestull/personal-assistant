@@ -52,15 +52,15 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
         Override the `get_context_data` method to add `user_averages_and_medians`.
         """
         context = super().get_context_data(**kwargs)
-        user_blood_pressures = BloodPressure.objects.filter(user=self.request.user).first()
+        user = self.request.user
+        user_blood_pressures = user.get_average_and_median_blood_pressure()
         if user_blood_pressures is None:
             context["systolic_average"] = None
             context["diastolic_average"] = None
             context["systolic_median"] = None
             context["diastolic_median"] = None
         else:
-            user_averages_and_medians = user_blood_pressures.get_user_average_and_median()
-            context["user_averages_and_medians"] = user_averages_and_medians
+            context["user_averages_and_medians"] = user_blood_pressures
         return context
 
     extra_context = {
