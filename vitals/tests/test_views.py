@@ -88,7 +88,7 @@ class BloodPressureListViewTest(TestCase):
             diastolic=BLOOD_PRESSURE_DIASTOLIC_1,
         )
 
-    def test_blood_pressure_list_view_url_exists_at_desired_location(self):
+    def test_url_exists_at_desired_location(self):
         """
         Test that the `BloodPressureListView` view is rendered at the desired location.
         """
@@ -99,7 +99,7 @@ class BloodPressureListViewTest(TestCase):
         response = self.client.get(BLOOD_PRESSURE_LIST_URL)
         self.assertEqual(response.status_code, 200)
 
-    def test_blood_pressure_list_view_url_accessible_by_name(self):
+    def test_url_accessible_by_name(self):
         """
         Test that the `BloodPressureListView` view is rendered at the desired location by name.
         """
@@ -110,7 +110,7 @@ class BloodPressureListViewTest(TestCase):
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
 
-    def test_blood_pressure_list_view_uses_correct_template(self):
+    def test_uses_correct_template(self):
         """
         Test that the `BloodPressureListView` view uses the correct template.
         """
@@ -122,7 +122,7 @@ class BloodPressureListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, BLOOD_PRESSURE_LIST_TEMPLATE)
 
-    def test_blood_pressure_list_view_uses_correct_context(self):
+    def test_has_correct_context_with_one_blood_pressure(self):
         """
         Test that the `BloodPressureListView` view uses the correct context.
         """
@@ -135,10 +135,12 @@ class BloodPressureListViewTest(TestCase):
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
         self.assertEqual(response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
         self.assertEqual(
-            response.context["bloodpressure_list"][0].systolic, BLOOD_PRESSURE_SYSTOLIC_1
+            response.context["bloodpressure_list"][0].systolic,
+            BLOOD_PRESSURE_SYSTOLIC_1,
         )
         self.assertEqual(
-            response.context["bloodpressure_list"][0].diastolic, BLOOD_PRESSURE_DIASTOLIC_1
+            response.context["bloodpressure_list"][0].diastolic,
+            BLOOD_PRESSURE_DIASTOLIC_1,
         )
         self.assertEqual(
             response.context["bloodpressure_list"][0].user.registration_accepted, True
@@ -148,7 +150,48 @@ class BloodPressureListViewTest(TestCase):
             USERNAME_REGISTRATION_ACCEPTED_TRUE,
         )
 
-    def test_blood_pressure_list_view_redirects_to_login_if_not_logged_in(self):
+    def test_has_basic_context_with_zero_blood_pressures(self):
+        """
+        Test that the `BloodPressureListView` view uses the correct context.
+        """
+        login = self.client.login(
+            username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
+            password=PASSWORD_FOR_TESTING,
+        )
+        # Verify that user is logged in.
+        self.assertTrue(login)
+        # Delete the `BloodPressure` object for testing.
+        self.blood_pressure.delete()
+        response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
+        self.assertEqual(response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
+
+    def test_has_blood_pressure_context_with_zero_blood_pressures(self):
+        """
+        Test that the `BloodPressureListView` view uses the correct context.
+        """
+        login = self.client.login(
+            username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
+            password=PASSWORD_FOR_TESTING,
+        )
+        # Verify that user is logged in.
+        self.assertTrue(login)
+        # Delete the `BloodPressure` object for testing.
+        self.blood_pressure.delete()
+        response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context["user_averages_and_medians"],
+            {
+                "systolic_average": None,
+                "diastolic_average": None,
+                "systolic_median": None,
+                "diastolic_median": None,
+            }
+        )
+
+    def test_redirects_to_login_if_not_logged_in(self):
         """
         Test that the `BloodPressureListView` view redirects to login if not logged in.
         """
@@ -161,7 +204,7 @@ class BloodPressureListViewTest(TestCase):
             fetch_redirect_response=True,
         )
 
-    def test_blood_pressure_list_view_redirects_to_login_if_logged_in_but_registration_not_accepted(
+    def test_redirects_to_login_if_logged_in_but_registration_not_accepted(
         self,
     ):
         """
@@ -179,62 +222,3 @@ class BloodPressureListViewTest(TestCase):
             target_status_code=200,
             fetch_redirect_response=True,
         )
-
-    # def test_blood_pressure_list_view_get_context_data_with_averages_and_medians(self):
-    #     """
-    #     Test that the `BloodPressureListView` view get_context_data method works correctly.
-    #     """
-    #     login = self.client.login(
-    #         username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
-    #         password=PASSWORD_FOR_TESTING,
-    #     )
-    #     request = self.factory.get("/")
-    #     request.user = self.user
-    #     view = BloodPressureListView()
-    #     view.setup(request=request)
-    #     view.object_list = BloodPressure.objects.all()
-    #     context = view.get_context_data()
-    #     self.assertEqual(context["user_averages_and_medians"]["systolic_average"], 120)
-    #     self.assertEqual(context["user_averages_and_medians"]["diastolic_average"], 80)
-    #     self.assertEqual(context["user_averages_and_medians"]["systolic_median"], 120)
-    #     self.assertEqual(context["user_averages_and_medians"]["diastolic_median"], 80)
-
-    # def test_blood_pressure_list_view_get_context_data_with_averages_and_medians(self):
-    #     """
-    #     Test that the `BloodPressureListView` view get_context_data method works correctly.
-    #     """
-    #     login = self.client.login(
-    #         username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
-    #         password=PASSWORD_FOR_TESTING,
-    #     )
-    #     request = self.factory.get("/")
-    #     request.user = self.user
-    #     view = BloodPressureListView()
-    #     view.setup(request=request)
-    #     view.object_list = CustomUser.get_average_and_median_blood_pressure(self)
-    #     context = view.get_context_data()
-    #     self.assertEqual(context["user_averages_and_medians"]["systolic_average"], 120)
-    #     self.assertEqual(context["user_averages_and_medians"]["diastolic_average"], 80)
-    #     self.assertEqual(context["user_averages_and_medians"]["systolic_median"], 120)
-    #     self.assertEqual(context["user_averages_and_medians"]["diastolic_median"], 80)
-
-    # def test_blood_pressure_list_view_get_context_data_when_no_blood_pressures(self):
-    #     """
-    #     Test that the `BloodPressureListView` view get_context_data method works when there are no blood pressures.
-    #     """
-    #     login = self.client.login(
-    #         username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
-    #         password=PASSWORD_FOR_TESTING,
-    #     )
-    #     request = self.factory.get("/")
-    #     request.user = self.user
-    #     view = BloodPressureListView()
-    #     view.setup(request=request)
-    #     for blood_pressure in BloodPressure.objects.all():
-    #         blood_pressure.delete()
-    #     view.object_list = BloodPressure.objects.all()
-    #     context = view.get_context_data()
-    #     self.assertEqual(context["systolic_average"], None)
-    #     self.assertEqual(context["diastolic_average"], None)
-    #     self.assertEqual(context["systolic_median"], None)
-    #     self.assertEqual(context["diastolic_median"], None)

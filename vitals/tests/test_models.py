@@ -265,48 +265,28 @@ class BloodPressureModelTest(TestCase):
             diastolic_field_help_text, "The diastolic blood pressure reading."
         )
 
-    def test_get_user_average_and_median_method_calculates_properly(self):
+    def test_get_average_and_median_with_no_blood_pressures(self):
         """
-        `get_user_average_and_median` method should return the proper average and median values.
+        `get_average_and_median` method should return None if there are
+        no blood pressures.
         """
-        user = CustomUser.objects.get(id=self.user.pk)
-        blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        average_and_median = user.get_average_and_median_blood_pressure()
-        # TODO: Decide how to better use proper test values.
+        blood_pressure_01 = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
+        blood_pressure_01.delete()
+        blood_pressure_02 = BloodPressure.objects.get(id=self.blood_pressure_2.pk)
+        blood_pressure_02.delete()
+        blood_pressure_03 = BloodPressure.objects.get(id=self.blood_pressure_3.pk)
+        blood_pressure_03.delete()
+        average_and_median = BloodPressure.get_average_and_median()
         self.assertEqual(
-            average_and_median["systolic_average"],
-            BLOOD_PRESSURE_SYSTOLIC_AVERAGE,
+            average_and_median,
+            {
+                "systolic_average": None,
+                "diastolic_average": None,
+                "systolic_median": None,
+                "diastolic_median": None,
+            }
         )
-        self.assertEqual(
-            average_and_median["systolic_median"],
-            BLOOD_PRESSURE_SYSTOLIC_MEDIAN,
-        )
-        self.assertEqual(
-            average_and_median["diastolic_average"],
-            BLOOD_PRESSURE_DIASTOLIC_AVERAGE,
-        )
-        self.assertEqual(
-            average_and_median["diastolic_median"],
-            BLOOD_PRESSURE_DIASTOLIC_MEDIAN,
-        )
-
-    # def test_get_user_average_and_median_method_returns_none_when_no_readings(self):
-    #     """
-    #     `get_user_average_and_median` method should return None when no readings exist.
-    #     """
-    #     blood_pressure_1 = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-    #     blood_pressure_1.delete()
-    #     blood_pressure_2 = BloodPressure.objects.get(id=self.blood_pressure_2.pk)
-    #     blood_pressure_2.delete()
-    #     blood_pressure_3 = BloodPressure.objects.get(id=self.blood_pressure_3.pk)
-    #     blood_pressure_3.delete()
-    #     average_and_median = blood_pressure_1.get_user_average_and_median()
-    #     self.assertIsNone(average_and_median['systolic_average'])
-    #     self.assertIsNone(average_and_median['systolic_median'])
-    #     self.assertIsNone(average_and_median['diastolic_average'])
-    #     self.assertIsNone(average_and_median['diastolic_median'])
-
-    def test_get_average_and_median_calculates_properly(self):
+    def test_get_average_and_median_with_three_blood_pressures(self):
         """
         `get_average_and_median` method should return the proper average and median values.
         """

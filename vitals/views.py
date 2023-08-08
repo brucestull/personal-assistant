@@ -55,10 +55,12 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
         user = self.request.user
         user_blood_pressures = user.get_average_and_median_blood_pressure()
         if user_blood_pressures is None:
-            context["systolic_average"] = None
-            context["diastolic_average"] = None
-            context["systolic_median"] = None
-            context["diastolic_median"] = None
+            context["user_averages_and_medians"] = {
+                "systolic_average": None,
+                "diastolic_average": None,
+                "systolic_median": None,
+                "diastolic_median": None,
+            }
         else:
             context["user_averages_and_medians"] = user_blood_pressures
         return context

@@ -38,25 +38,31 @@ DIASTOLIC_MAX = max(
     BLOOD_PRESSURE_DIASTOLIC_3,
 )
 
-    # "systolic_average": 115,
-    # "diastolic_average": 75,
-    # "systolic_median": 115,
-    # "diastolic_median": 75,
+# "systolic_average": 115,
+# "diastolic_average": 75,
+# "systolic_median": 115,
+# "diastolic_median": 75,
 
-SYSTOLIC_AVERAGE = sum(
-    [
-        BLOOD_PRESSURE_SYSTOLIC_1,
-        BLOOD_PRESSURE_SYSTOLIC_2,
-        BLOOD_PRESSURE_SYSTOLIC_3,
-    ]
-) / 3
-DIASTOLIC_AVERAGE = sum(
-    [
-        BLOOD_PRESSURE_DIASTOLIC_1,
-        BLOOD_PRESSURE_DIASTOLIC_2,
-        BLOOD_PRESSURE_DIASTOLIC_3,
-    ]
-) / 3
+SYSTOLIC_AVERAGE = (
+    sum(
+        [
+            BLOOD_PRESSURE_SYSTOLIC_1,
+            BLOOD_PRESSURE_SYSTOLIC_2,
+            BLOOD_PRESSURE_SYSTOLIC_3,
+        ]
+    )
+    / 3
+)
+DIASTOLIC_AVERAGE = (
+    sum(
+        [
+            BLOOD_PRESSURE_DIASTOLIC_1,
+            BLOOD_PRESSURE_DIASTOLIC_2,
+            BLOOD_PRESSURE_DIASTOLIC_3,
+        ]
+    )
+    / 3
+)
 SYSTOLIC_MEDIAN = sorted(
     [
         BLOOD_PRESSURE_SYSTOLIC_1,
@@ -164,13 +170,13 @@ class CustomUserModelTest(TestCase):
             },
         )
 
-    def test_get_average_and_median_blood_pressure_method(self):
+    def test_get_average_and_median_blood_pressure_method_with_blood_pressures(self):
         """
         `CustomUser` model `get_average_and_median_blood_pressure` method
         should return the average and median systolic and diastolic blood
         pressure readings for the current user.
         """
-        user = CustomUser.objects.get(id=1)
+        user = CustomUser.objects.get(id=self.user.id)
         self.assertEqual(
             user.get_average_and_median_blood_pressure(),
             {
@@ -181,10 +187,28 @@ class CustomUserModelTest(TestCase):
             },
         )
 
+    def test_get_average_and_median_blood_pressure_method_with_no_blood_pressures(self):
+        """
+        `CustomUser` model `get_average_and_median_blood_pressure` method
+        should return `None` for the average and median systolic and diastolic
+        blood pressure readings for the current user if there are no blood
+        pressures.
+        """
+        user = CustomUser.objects.get(id=1)
+        user.blood_pressures.all().delete()
+        self.assertEqual(
+            user.get_average_and_median_blood_pressure(),
+            {
+                "systolic_average": None,
+                "diastolic_average": None,
+                "systolic_median": None,
+                "diastolic_median": None,
+            },
+        )
+
     def test_dunder_string_method(self):
         """
         `CustomUser` model `__str__` method should return `username`.
         """
         user = CustomUser.objects.get(id=1)
         self.assertEqual(user.__str__(), user.username)
-
