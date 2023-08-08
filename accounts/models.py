@@ -33,18 +33,45 @@ class CustomUser(AbstractUser):
         - `diastolic_max` is the maximum diastolic blood pressure reading of
         all the `BloodPressure` objects for the current user.
         """
-        systolic_min = BloodPressure.objects.filter(
-            user=self,
-        ).order_by("systolic").first().systolic
-        diastolic_min = BloodPressure.objects.filter(
-            user=self,
-        ).order_by("diastolic").first().diastolic
-        systolic_max = BloodPressure.objects.filter(
-            user=self,
-        ).order_by("-systolic").first().systolic
-        diastolic_max = BloodPressure.objects.filter(
-            user=self,
-        ).order_by("-diastolic").first().diastolic
+        systolic_min = (
+            BloodPressure.objects.filter(
+                user=self,
+            )
+            .order_by("systolic")
+            .first()
+            .systolic
+        )
+        diastolic_min = (
+            BloodPressure.objects.filter(
+                user=self,
+            )
+            .order_by("diastolic")
+            .first()
+            .diastolic
+        )
+        systolic_max = (
+            BloodPressure.objects.filter(
+                user=self,
+            )
+            .order_by("-systolic")
+            .first()
+            .systolic
+        )
+        diastolic_max = (
+            BloodPressure.objects.filter(
+                user=self,
+            )
+            .order_by("-diastolic")
+            .first()
+            .diastolic
+        )
+        if BloodPressure.objects.filter(user=self).count() == 0:
+            return {
+                "systolic_min": None,
+                "diastolic_min": None,
+                "systolic_max": None,
+                "diastolic_max": None,
+            }
         return {
             "systolic_min": systolic_min,
             "diastolic_min": diastolic_min,
@@ -68,24 +95,40 @@ class CustomUser(AbstractUser):
         - `diastolic_median` is the median diastolic blood pressure reading of
         all the `BloodPressure` objects for the current user.
         """
-        systolic_average = BloodPressure.objects.filter(
-            user=self,
-        ).values_list("systolic", flat=True).aggregate(models.Avg("systolic"))
-        diastolic_average = BloodPressure.objects.filter(
-            user=self,
-        ).values_list("diastolic", flat=True).aggregate(models.Avg("diastolic"))
-        systolic_median = median(
-            BloodPressure.objects.filter(user=self).values_list("systolic", flat=True)
+        systolic_average = (
+            BloodPressure.objects.filter(
+                user=self,
+            )
+            .values_list("systolic", flat=True)
+            .aggregate(models.Avg("systolic"))
         )
-        diastolic_median = median(
-            BloodPressure.objects.filter(user=self).values_list("diastolic", flat=True)
+        diastolic_average = (
+            BloodPressure.objects.filter(
+                user=self,
+            )
+            .values_list("diastolic", flat=True)
+            .aggregate(models.Avg("diastolic"))
         )
-        return {
-            "systolic_average": round(systolic_average["systolic__avg"], 2),
-            "diastolic_average": round(diastolic_average["diastolic__avg"], 2),
-            "systolic_median": systolic_median,
-            "diastolic_median": diastolic_median,
-        }
+        if BloodPressure.objects.filter(user=self).count() == 0:
+            return {
+                "systolic_average": None,
+                "diastolic_average": None,
+                "systolic_median": None,
+                "diastolic_median": None,
+            }
+        else:
+            systolic_median = median(
+                BloodPressure.objects.filter(user=self).values_list("systolic", flat=True)
+            )
+            diastolic_median = median(
+                BloodPressure.objects.filter(user=self).values_list("diastolic", flat=True)
+            )
+            return {
+                "systolic_average": round(systolic_average["systolic__avg"], 2),
+                "diastolic_average": round(diastolic_average["diastolic__avg"], 2),
+                "systolic_median": systolic_median,
+                "diastolic_median": diastolic_median,
+            }
 
     def __str__(self):
         """
