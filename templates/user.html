@@ -1,14 +1,5 @@
 <div>
-    <a href="{% url 'home' %}">Home</a>
-    {% if user.is_authenticated %}
     <br>
-    <a href="{% url 'self_enquiry:list' %}">Journals</a>
-    <br>
-    <a href="{% url 'self_enquiry:create' %}">Create Journal</a>
-    <br>
-    <a href={% url 'vitals:bloodpressure-list' %}>Blood Pressure</a>
-    <br>
-    {% endif %}
     {% if user.is_authenticated %}
         <span>Greetings, {{ user.username | capfirst }}!</span>
         <br>
