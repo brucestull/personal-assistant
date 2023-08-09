@@ -31,7 +31,14 @@ class CognativeDistortion(DateTimeBase):
         """
         String representation of a `CognativeDistortion` object.
         """
-        return f"{self.name} --- {self.description[:57] + '...' if len(self.description) > 57 else self.description}"
+        return (
+            # f"{self.name[:50] + '...' if len(self.name) > 50 else self.name.ljust(50)} "
+            # f"{self.name.ljust(50)} "
+            f"{self.name} "
+            f"--- "
+            # Truncate the description to 57 characters, if necessary.
+            f"{self.description[:57] + '...' if len(self.description) > 57 else self.description}"
+        )
 
     class Meta:
         ordering = ["name"]
