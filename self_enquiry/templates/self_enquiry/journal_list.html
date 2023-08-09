@@ -2,9 +2,9 @@
 
 {% block title %}{{ the_site_name }} - {{ page_title }}{% endblock title %}
 
-<a href="{% url 'self_enquiry:create' %}">Create Journal</a>
 {% block content %}
     <h1>{{ page_title }}</h1>
+    <a href="{% url 'self_enquiry:create' %}">Create Journal</a>
 
     {% if user.registration_accepted %}
         {% for journal in journal_list %}
