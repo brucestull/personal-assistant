@@ -62,42 +62,6 @@ class CognativeDistortionAdmin(admin.ModelAdmin):
     filter_vertical = []
     list_select_related = []
     list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable
     """
 
 
@@ -161,33 +125,4 @@ class ThoughtAdmin(admin.ModelAdmin):
     filter_vertical = []
     list_select_related = []
     list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable = []
-    preserve_filters = False
-    view_on_site = True
-    show_full_result_count = True
-    list_max_show_all = 200
-    list_exclude = []
-    list_display_links = ["name"]
-    list_editable
     """
