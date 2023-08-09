@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.db import models as d_db_models
 
 from accounts.models import CustomUser
-from vitals.models import DateTimeBase
 from vitals.models import BloodPressure
 from vitals.models import Pulse
 

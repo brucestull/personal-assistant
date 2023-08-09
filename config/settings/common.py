@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "so_thankful.apps.SoThankfulConfig",
     "vitals.apps.VitalsConfig",
     "app_tracker.apps.AppTrackerConfig",
+    "cbt.apps.CbtConfig",
 ]
 
 MIDDLEWARE = [
