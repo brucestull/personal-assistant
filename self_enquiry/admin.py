@@ -47,7 +47,7 @@ class SelfEnquiryAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Dates",
+            "Dates/Metadata",
             {
                 "fields": (
                     "created",

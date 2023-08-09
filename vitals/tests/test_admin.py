@@ -60,7 +60,7 @@ class VitalsAdminTest(TestCase):
                     },
                 ),
                 (
-                    "Dates",
+                    "Dates/Metadata",
                     {
                         "fields": ("created", "updated"),
                     },

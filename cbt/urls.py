@@ -1,9 +1,9 @@
 from django.urls import path
 
-from app_tracker.views import home
+from cbt.views import home
 
 
-app_name = "app_tracker"
+app_name = "cbt"
 urlpatterns = [
     path(
         "",

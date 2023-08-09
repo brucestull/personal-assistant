@@ -1,0 +1,193 @@
+from django.contrib import admin
+
+from cbt.models import CognativeDistortion
+from cbt.models import Thought
+
+
+@admin.register(CognativeDistortion)
+class CognativeDistortionAdmin(admin.ModelAdmin):
+    
+    """
+    Admin class for the `CognativeDistortion` model.
+    """
+
+    list_display = ["name", "truncated_description"]
+    list_filter = ["name"]
+    search_fields = ["name", "description"]
+    readonly_fields = ["created", "updated"]
+    fieldsets = (
+        (
+            "Cognative Distortion",
+            {
+                "fields": (
+                    "name",
+                    "description",
+                )
+            },
+        ),
+        (
+            "Dates/Metadata",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
+    ordering = ["name", "description"]
+    def truncated_description(self, obj):
+        return obj.description[:57] + "..." if len(obj.description) > 57 else obj.description
+
+    truncated_description.short_description = "Description"
+
+    # Additional options:
+    """
+    save_on_top = True
+    save_as = True
+    list_per_page = 25
+    actions_on_top = True
+    actions_on_bottom = True
+    empty_value_display = "-empty-"
+    date_hierarchy = "created"
+    readonly_fields = ["created", "updated"]
+    autocomplete_fields = []
+    inlines = []
+    exclude = []
+    raw_id_fields = []
+    radio_fields = {}
+    prepopulated_fields = {}
+    formfield_overrides = {}
+    filter_horizontal = []
+    filter_vertical = []
+    list_select_related = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable
+    """
+
+
+@admin.register(Thought)
+class ThoughtAdmin(admin.ModelAdmin):
+    """
+    Admin class for the `Thought` model.
+    """
+
+    list_display = ["user", "name", "truncated_description"]
+    list_filter = ["user", "name"]
+    search_fields = ["user", "name", "description"]
+    readonly_fields = ["created", "updated"]
+    fieldsets = (
+        (
+            "Thought",
+            {
+                "fields": (
+                    "user",
+                    "name",
+                    "cognative_distortion",
+                    "description",
+                )
+            },
+        ),
+        (
+            "Dates/Metadata",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
+    ordering = ["name", "description"]
+
+    def truncated_description(self, obj):
+        return obj.description[:57] + "..." if len(obj.description) > 57 else obj.description
+
+    truncated_description.short_description = "Description"
+
+    # Additional options:
+    """
+    save_on_top = True
+    save_as = True
+    list_per_page = 25
+    actions_on_top = True
+    actions_on_bottom = True
+    empty_value_display = "-empty-"
+    date_hierarchy = "created"
+    readonly_fields = ["created", "updated"]
+    autocomplete_fields = []
+    inlines = []
+    exclude = []
+    raw_id_fields = []
+    radio_fields = {}
+    prepopulated_fields = {}
+    formfield_overrides = {}
+    filter_horizontal = []
+    filter_vertical = []
+    list_select_related = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable = []
+    preserve_filters = False
+    view_on_site = True
+    show_full_result_count = True
+    list_max_show_all = 200
+    list_exclude = []
+    list_display_links = ["name"]
+    list_editable
+    """
