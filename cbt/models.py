@@ -70,6 +70,7 @@ class Thought(DateTimeBase):
         null=True,
         blank=True,
         related_name="thoughts",
+        help_text="The cognative distortion of the thought."
     )
     name = models.CharField(
         verbose_name="Summary",
