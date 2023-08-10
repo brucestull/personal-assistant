@@ -28,22 +28,24 @@ class CustomUserSignUpView(CreateView):
     """
     View for user to create a new account.
     """
+
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'registration/signup.html'
+    success_url = reverse_lazy("login")
+    template_name = "registration/signup.html"
 
     def get_context_data(self, **kwargs):
         """
         Get the parent `context` and add `the_site_name` to the it.
         """
         context = super().get_context_data(**kwargs)
-        context['the_site_name'] = THE_SITE_NAME
+        context["the_site_name"] = THE_SITE_NAME
         return context
 
 
 class CustomLoginView(LoginView):
     """
-    Override the default login view. This will allow us to add the site name to the context and then display it on the page.
+    Override the default login view. This will allow us to add the site
+    name to the context and then display it on the page.
     """
 
     def get_context_data(self, **kwargs):
@@ -51,11 +53,15 @@ class CustomLoginView(LoginView):
         Get the parent `context` and add `the_site_name` to the it.
         """
         context = super().get_context_data(**kwargs)
-        context['the_site_name'] = THE_SITE_NAME
+        context["the_site_name"] = THE_SITE_NAME
         return context
 
 
-class CustomUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CustomUserUpdateView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    UpdateView,
+):
     """
     View for user to update an existing account.
     """
@@ -67,7 +73,11 @@ class CustomUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         """
-        Only allow the user to edit their own account.
+        Allow the user to edit only their own account.
+
+        The `self.request.user` is the user that is currently logged in.
+        The `self.get_object()` is the user (object) that is being updated
+        (`UpdateView`).
         """
         return self.request.user == self.get_object()
 
@@ -75,17 +85,25 @@ class CustomUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         """
         Get the parent `context` and add `the_site_name` to the it.
         """
+        # Call the base implementation first to get a context:
+        # In other words, get the existing context that Django is going to already use and then add our new dictionary item to the `context` dictionary.
         context = super().get_context_data(**kwargs)
-        context['the_site_name'] = THE_SITE_NAME
+        context["the_site_name"] = THE_SITE_NAME
         return context
 
 
-class CustomUserDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class CustomUserDetailView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    DetailView,
+):
     """
     View for user to view their account details.
 
-    We are only specifying the `model` here because we are using the default template name that is created by Django.
+    We are only specifying the `model` here because we are using the default
+    template name that is created by Django.
     """
+
     model = CustomUser
 
     def test_func(self):
@@ -99,6 +117,6 @@ class CustomUserDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         Get the parent `context` and add `the_site_name` and/or `page_title` to the it.
         """
         context = super().get_context_data(**kwargs)
-        # context['the_site_name'] = THE_SITE_NAME
-        context['page_title'] = f"{self.object.username}'s User Information"
+        context['the_site_name'] = THE_SITE_NAME
+        context["page_title"] = f"{self.object.username}'s User Information"
         return context

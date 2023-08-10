@@ -5,6 +5,7 @@ from accounts.models import CustomUser
 from vitals.models import BloodPressure
 
 A_TEST_USERNAME = "ACustomUser"
+ANOTHER_TEST_USERNAME = "AnotherCustomUser"
 
 CUSTOM_USER_REGISTRATION_ACCEPTED_HELP_TEXT = (
     "Designates whether this user's registration has been accepted."
@@ -37,11 +38,6 @@ DIASTOLIC_MAX = max(
     BLOOD_PRESSURE_DIASTOLIC_2,
     BLOOD_PRESSURE_DIASTOLIC_3,
 )
-
-# "systolic_average": 115,
-# "diastolic_average": 75,
-# "systolic_median": 115,
-# "diastolic_median": 75,
 
 SYSTOLIC_AVERAGE = (
     sum(
@@ -156,10 +152,10 @@ class CustomUserModelTest(TestCase):
     def test_get_user_blood_pressure_range_method(self):
         """
         `CustomUser` model `get_user_blood_pressure_range` method should
-        return the maximum and minimum systolic and diastolic blood pressure
+        return the minimum and maximum systolic and diastolic blood pressure
         readings for the current user.
         """
-        user = CustomUser.objects.get(id=1)
+        user = CustomUser.objects.get(id=self.user.id)
         self.assertEqual(
             user.get_user_blood_pressure_range(),
             {
@@ -169,6 +165,16 @@ class CustomUserModelTest(TestCase):
                 "diastolic_max": DIASTOLIC_MAX,
             },
         )
+
+    def test_get_user_blood_pressure_range_method_with_no_blood_pressures(self):
+        """
+        `CustomUser` model `get_user_blood_pressure_range` method should
+        return `None` if the current user has no blood pressure readings.
+        """
+        user = CustomUser.objects.create(
+            username=ANOTHER_TEST_USERNAME,
+        )
+        self.assertIsNone(user.get_user_blood_pressure_range())
 
     def test_get_average_and_median_blood_pressure_method_with_blood_pressures(self):
         """
