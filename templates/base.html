@@ -8,11 +8,11 @@
     </head>
     <body>
         <main>
+            {% include 'user.html' %}
+
             {% if user.is_staff %}
                 {% include 'staff.html' %}
             {% endif %}
-
-            {% include 'user.html' %}
 
             {% include "applications.html" %}
 
