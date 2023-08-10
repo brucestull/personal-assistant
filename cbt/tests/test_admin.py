@@ -131,3 +131,4 @@ class CognativeDistortionAdminTest(TestCase):
             else self.cognative_distortion.description,
         )
 
+    # TODO: Test the `truncated_description()` method by using a hard-coded string to compare against the method's output
