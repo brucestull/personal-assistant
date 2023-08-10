@@ -33,51 +33,48 @@ class CustomUser(AbstractUser):
         - `diastolic_max` is the maximum diastolic blood pressure reading of
         all the `BloodPressure` objects for the current user.
         """
-        systolic_min = (
-            BloodPressure.objects.filter(
-                user=self,
-            )
-            .order_by("systolic")
-            .first()
-            .systolic
-        )
-        diastolic_min = (
-            BloodPressure.objects.filter(
-                user=self,
-            )
-            .order_by("diastolic")
-            .first()
-            .diastolic
-        )
-        systolic_max = (
-            BloodPressure.objects.filter(
-                user=self,
-            )
-            .order_by("-systolic")
-            .first()
-            .systolic
-        )
-        diastolic_max = (
-            BloodPressure.objects.filter(
-                user=self,
-            )
-            .order_by("-diastolic")
-            .first()
-            .diastolic
-        )
         if BloodPressure.objects.filter(user=self).count() == 0:
+            # TODO: Determine if there is a better way to handle this.
+            return None
+        else:
+            systolic_min = (
+                BloodPressure.objects.filter(
+                    user=self,
+                )
+                .order_by("systolic")
+                .first()
+                .systolic
+            )
+            diastolic_min = (
+                BloodPressure.objects.filter(
+                    user=self,
+                )
+                .order_by("diastolic")
+                .first()
+                .diastolic
+            )
+            systolic_max = (
+                BloodPressure.objects.filter(
+                    user=self,
+                )
+                .order_by("-systolic")
+                .first()
+                .systolic
+            )
+            diastolic_max = (
+                BloodPressure.objects.filter(
+                    user=self,
+                )
+                .order_by("-diastolic")
+                .first()
+                .diastolic
+            )
             return {
-                "systolic_min": None,
-                "diastolic_min": None,
-                "systolic_max": None,
-                "diastolic_max": None,
+                "systolic_min": systolic_min,
+                "diastolic_min": diastolic_min,
+                "systolic_max": systolic_max,
+                "diastolic_max": diastolic_max,
             }
-        return {
-            "systolic_min": systolic_min,
-            "diastolic_min": diastolic_min,
-            "systolic_max": systolic_max,
-            "diastolic_max": diastolic_max,
-        }
 
     def get_average_and_median_blood_pressure(self):
         """
