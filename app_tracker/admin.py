@@ -48,6 +48,9 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     list_display = (
         "name",
+        # We can use the `language_framework_systems_list` method, defined below, to display the
+        # `LanguageFrameworkSystem` objects associated with the `Application` object.
+        "language_framework_systems_list",
         "created",
     )
     ordering = ("-created",)
@@ -84,6 +87,21 @@ class ApplicationAdmin(admin.ModelAdmin):
         ),
     )
 
+    def language_framework_systems_list(self, obj):
+        """
+        Return a list of the `LanguageFrameworkSystem` objects associated
+        with the `Application` object.
+
+        :param obj: The `Application` object.
+        :return: A queryset of the `LanguageFrameworkSystem` objects associated
+        with the `Application` object.
+        """
+        return list(obj.language_framework_systems.all())
+
+    # Set the `short_description` attribute of the `language_framework_systems_list` method
+    # to "Language Framework Systems" so that the `Language Framework Systems` column in the
+    # admin panel will display "Language Framework Systems" instead of "Language Framework Systems List".
+    language_framework_systems_list.short_description = "Languages-Frameworks-Systems"
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
