@@ -35,6 +35,14 @@ class CustomUser(AbstractUser):
         """
         if BloodPressure.objects.filter(user=self).count() == 0:
             # TODO: Determine if there is a better way to handle this.
+            """
+            {
+                "systolic_min": None,
+                "diastolic_min": None,
+                "systolic_max": None,
+                "diastolic_max": None,
+            }
+            """
             return None
         else:
             systolic_min = (
