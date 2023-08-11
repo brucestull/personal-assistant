@@ -81,6 +81,7 @@ class Application(DateTimeBase):
         ("high", "High"),
         ("medium", "Medium"),
         ("low", "Low"),
+        ("none", "None"),
     ]
     # `testing_level` is the relative amount of testing coverage for the
     # application.
