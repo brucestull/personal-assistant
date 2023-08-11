@@ -65,6 +65,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "name",
                     "description",
                     "repository_url",
+                    "language_framework_systems",
                     "has_custom_user",
                     "has_sticky_footer",
                     "has_prod_deployment",
