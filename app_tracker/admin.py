@@ -61,6 +61,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "has_prod_deployment",
         "has_custom_user",
         "has_sticky_footer",
+        "has_email_sending",
         "created",
     )
     search_fields = (
@@ -83,6 +84,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "has_custom_user",
                     "has_sticky_footer",
                     "has_prod_deployment",
+                    "has_email_sending",
                     "testing_level",
                 )
             },

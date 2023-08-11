@@ -75,6 +75,13 @@ class Application(DateTimeBase):
         help_text="Whether or not the application has a production deployment.",
         default=False,
     )
+    has_email_sending = models.BooleanField(
+        help_text=(
+            "Whether or not the application had email sending capabilities "
+            "(email settings in Config Vars)"
+        ),
+        default=False,
+    )
     # `TESTING_LEVEL_CHOICES` is a list of tuples that represent the
     # choices for the `testing_level` field.
     TESTING_LEVEL_CHOICES = [
