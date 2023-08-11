@@ -51,11 +51,21 @@ class ApplicationAdmin(admin.ModelAdmin):
         # We can use the `language_framework_systems_list` method, defined below, to display the
         # `LanguageFrameworkSystem` objects associated with the `Application` object.
         "language_framework_systems_list",
+        "testing_level",
         "created",
     )
     ordering = ("-created",)
-    list_filter = ("created",)
-    search_fields = ("name",)
+    list_filter = (
+        "has_custom_user",
+        "has_sticky_footer",
+        "has_prod_deployment",
+        "testing_level",
+        "created",
+    )
+    search_fields = (
+        "name",
+        "language_framework_systems__name",
+    )
     readonly_fields = (
         "created",
         "updated",
