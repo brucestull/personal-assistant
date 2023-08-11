@@ -56,10 +56,11 @@ class ApplicationAdmin(admin.ModelAdmin):
     )
     ordering = ("-created",)
     list_filter = (
+        "language_framework_systems",
+        "testing_level",
+        "has_prod_deployment",
         "has_custom_user",
         "has_sticky_footer",
-        "has_prod_deployment",
-        "testing_level",
         "created",
     )
     search_fields = (
