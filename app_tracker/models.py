@@ -76,10 +76,11 @@ class Application(DateTimeBase):
         default=False,
     )
     has_email_sending = models.BooleanField(
-        help_text=(
-            "Whether or not the application had email sending capabilities "
-            "(email settings in Config Vars)"
-        ),
+        help_text="Whether or not the application has email sending capabilities.",
+        default=False,
+    )
+    repository_is_public = models.BooleanField(
+        help_text="Whether or not the application's repository is public.",
         default=False,
     )
     # `TESTING_LEVEL_CHOICES` is a list of tuples that represent the
