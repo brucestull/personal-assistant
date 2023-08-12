@@ -13,7 +13,7 @@
 
 ## Django Applications
 
-## Models
+## Applications and Models
 
 ### `Accounts` - `accounts`
 
