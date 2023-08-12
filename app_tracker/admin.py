@@ -52,7 +52,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         # `LanguageFrameworkSystem` objects associated with the `Application` object.
         "language_framework_systems_list",
         "testing_level",
-        "created",
+        "repository_is_public",
     )
     ordering = ("-created",)
     list_filter = (
@@ -62,7 +62,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "has_custom_user",
         "has_sticky_footer",
         "has_email_sending",
-        "created",
+        "repository_is_public",
     )
     search_fields = (
         "name",

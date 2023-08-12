@@ -100,7 +100,12 @@ class ApplicationAdminTest(TestCase):
     def test_list_display(self):
         self.assertEqual(
             self.admin.list_display,
-            ("name", "created"),
+            (
+                "name",
+                "language_framework_systems_list",
+                "testing_level",
+                "repository_is_public",
+            ),
         )
 
     def test_ordering(self):
@@ -109,13 +114,24 @@ class ApplicationAdminTest(TestCase):
     def test_list_filter(self):
         self.assertEqual(
             self.admin.list_filter,
-            ("created",),
+            (
+                "language_framework_systems",
+                "testing_level",
+                "has_prod_deployment",
+                "has_custom_user",
+                "has_sticky_footer",
+                "has_email_sending",
+                "repository_is_public",
+            ),
         )
 
     def test_search_fields(self):
         self.assertEqual(
             self.admin.search_fields,
-            ("name",),
+            (
+                "name",
+                "language_framework_systems__name",
+            ),
         )
 
     def test_readonly_fields(self):
@@ -135,9 +151,11 @@ class ApplicationAdminTest(TestCase):
                             "name",
                             "description",
                             "repository_url",
+                            "language_framework_systems",
                             "has_custom_user",
                             "has_sticky_footer",
                             "has_prod_deployment",
+                            "has_email_sending",
                             "testing_level",
                         )
                     },

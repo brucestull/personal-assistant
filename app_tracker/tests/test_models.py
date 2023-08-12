@@ -14,51 +14,51 @@ TEST_APPLICATION_NAME_02 = "App Tracker"
 TEST_APPLICATION_NAME_MAX_LENGTH = 255
 TEST_APPLICATION_NAME_HELP_TEXT = "The name of the application."
 
-TEST_APPLICATION_DESCRIPTION_HELP_TEXT = "The description of the application."
+APPLICATION_DESCRIPTION_HELP_TEXT = "The description of the application."
 
-TEST_APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
+APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
 
 TEST_APPLICATION_HAS_CUSTOM_USER_MODEL_HELP_TEXT = (
     "Whether or not the application has a custom user model."
 )
 
-TEST_APPLICATION_HAS_STICKY_FOOTER_HELP_TEXT = (
+APPLICATION_HAS_STICKY_FOOTER_HELP_TEXT = (
     "Whether or not the application has a sticky footer."
 )
 
-TEST_APPLICATION_HAS_PROD_DEPLOYMENT_HELP_TEXT = (
+APPLICATION_HAS_PROD_DEPLOYMENT_HELP_TEXT = (
     "Whether or not the application has a production deployment."
 )
 
-TEST_APPLICATION_TESTING_LEVEL_MAX_LENGTH = 6
-TEST_APPLICATION_TESTING_LEVEL_HELP_TEXT = (
+APPLICATION_TESTING_LEVEL_MAX_LENGTH = 6
+APPLICATION_TESTING_LEVEL_HELP_TEXT = (
     "The relative amount of testing coverage for the application."
 )
 
-TEST_APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_RELATED_NAME = "applications"
-TEST_APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT = (
+APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_RELATED_NAME = "applications"
+APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT = (
     "The languages, frameworks, and systems used in the application."
 )
 
-TEST_NOTE_TITLE_MAX_LENGTH = 255
-TEST_NOTE_TITLE_HELP_TEXT = "The title of the note."
+NOTE_TITLE_MAX_LENGTH = 255
+NOTE_TITLE_HELP_TEXT = "The title of the note."
 
-TEST_NOTE_CONTENT_HELP_TEXT = "The content of the note."
+NOTE_CONTENT_HELP_TEXT = "The content of the note."
 
-TEST_NOTE_APPLICATION_RELATED_NAME = "notes"
+NOTE_APPLICATION_RELATED_NAME = "notes"
 
-TEST_DJANGO_MODEL_NAME_MAX_LENGTH = 255
-TEST_DJANGO_MODEL_NAME_HELP_TEXT = "The name of the Django model."
-TEST_DJANGO_MODEL_DESCRIPTION_HELP_TEXT = "The description of the Django model."
+DJANGO_MODEL_NAME_MAX_LENGTH = 255
+DJANGO_MODEL_NAME_HELP_TEXT = "The name of the Django model."
+DJANGO_MODEL_DESCRIPTION_HELP_TEXT = "The description of the Django model."
 
-TEST_DJANGO_MODEL_IS_CURRENT_MODEL_HELP_TEXT = (
+DJANGO_MODEL_IS_CURRENT_MODEL_HELP_TEXT = (
     (
         "'True' if this model is currently used in the application, "
         "'False' if this model is not currently used in the application."
     ),
 )
 
-TEST_DJANGO_MODEL_APPLICATION_RELATED_NAME = "django_models"
+DJANGO_MODEL_APPLICATION_RELATED_NAME = "django_models"
 
 
 TEST_APPLICATION_DESCRIPTION_01 = "A personal assistant application."
