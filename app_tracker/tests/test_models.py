@@ -6,54 +6,99 @@ from app_tracker.models import Note
 from app_tracker.models import DjangoModel
 
 
-TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_01 = "Python"
-TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_02 = "Django"
+DATE_TIME_BASE_CREATED_LABEL = "created"
+DATE_TIME_BASE_CREATED_HELP_TEXT = "The date and time this object was created."
 
-TEST_APPLICATION_NAME_01 = "Personal Assistant"
-TEST_APPLICATION_NAME_02 = "App Tracker"
-TEST_APPLICATION_NAME_MAX_LENGTH = 255
-TEST_APPLICATION_NAME_HELP_TEXT = "The name of the application."
+DATE_TIME_BASE_UPDATED_LABEL = "updated"
+DATE_TIME_BASE_UPDATED_HELP_TEXT = "The date and time this object was last updated."
 
+LANGUAGE_FRAMEWORK_SYSTEM_NAME_LABEL = "name"
+LANGUAGE_FRAMEWORK_SYSTEM_NAME_HELP_TEXT = (
+    "The name of the language, framework, or system used in the application.",
+)
+LANGUAGE_FRAMEWORK_SYSTEM_NAME_MAX_LENGTH = 30
+
+LANGUAGE_FRAMEWORK_SYSTEM_VERBOSE_NAME_PLURAL = "language/framework/systems"
+
+APPLICATION_NAME_LABEL = "name"
+APPLICATION_NAME_HELP_TEXT = "The name of the application."
+APPLICATION_NAME_MAX_LENGTH = 255
+
+APPLICATION_DESCRIPTION_LABEL = "description"
 APPLICATION_DESCRIPTION_HELP_TEXT = "The description of the application."
 
+APPLICATION_REPOSITORY_URL_LABEL = "Repository URL"
 APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
 
-# APPLICATION_PRODUCTION_URL_LABEL = "Production URL"
+APPLICATION_PRODUCTION_URL_LABEL = "Production URL"
 APPLICATION_PRODUCTION_URL_HELP_TEXT = "The URL of the application's production deployment."
 
-TEST_APPLICATION_HAS_CUSTOM_USER_MODEL_HELP_TEXT = (
+APPLICATION_PROJECT_BOARD_URL_LABEL = "Project Board URL"
+APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = "The URL of the application's project board."
+
+APPLICATION_HAS_CUSTOM_USER_LABEL = "Has Custom User"
+APPLICATION_HAS_CUSTOM_USER_HELP_TEXT = (
     "Whether or not the application has a custom user model."
 )
 
+APPLICATION_HAS_STICKY_FOOTER_LABEL = "Has Sticky Footer"
 APPLICATION_HAS_STICKY_FOOTER_HELP_TEXT = (
     "Whether or not the application has a sticky footer."
 )
 
+APPLICATION_HAS_PROD_DEPLOYMENT_LABEL = "Has Production Deployment"
 APPLICATION_HAS_PROD_DEPLOYMENT_HELP_TEXT = (
     "Whether or not the application has a production deployment."
 )
 
-APPLICATION_TESTING_LEVEL_MAX_LENGTH = 6
+APPLICATION_HAS_EMAIL_SENDING_LABEL = "Email Sending"
+APPLICATION_HAS_EMAIL_SENDING_HELP_TEXT = (
+    "Whether or not the application has email sending capabilities."
+)
+
+APPLICATION_REPOSITORY_IS_PUBLIC_LABEL = "Repository is Public"
+APPLICATION_REPOSITORY_IS_PUBLIC_HELP_TEXT = (
+    "Whether or not the application's repository is public."
+)
+
+APPLICATION_TESTING_LEVEL_CHOICES = [
+    ("high", "High"),
+    ("medium", "Medium"),
+    ("low", "Low"),
+    ("none", "None"),
+]
+
+APPLICATION_TESTING_LEVEL_NAME = "Testing Level"
 APPLICATION_TESTING_LEVEL_HELP_TEXT = (
     "The relative amount of testing coverage for the application."
 )
+APPLICATION_TESTING_LEVEL_MAX_LENGTH = 6
 
-APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_RELATED_NAME = "applications"
+APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_LABEL = "Language/Framework/Systems"
 APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT = (
     "The languages, frameworks, and systems used in the application."
 )
+APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_RELATED_NAME = "applications"
 
-NOTE_TITLE_MAX_LENGTH = 255
+NOTE_TITLE_NAME = "title"
 NOTE_TITLE_HELP_TEXT = "The title of the note."
+NOTE_TITLE_MAX_LENGTH = 255
 
+NOTE_CONTENT_LABEL = "content"
 NOTE_CONTENT_HELP_TEXT = "The content of the note."
 
+NOTE_APPLICATION_NAME = "application"
+NOTE_APPLICATION_HELP_TEXT = "The application that the note is associated with."
 NOTE_APPLICATION_RELATED_NAME = "notes"
 
-DJANGO_MODEL_NAME_MAX_LENGTH = 255
+DJANGO_MODEL_NAME_LABEL = "name"
 DJANGO_MODEL_NAME_HELP_TEXT = "The name of the Django model."
+DJANGO_MODEL_NAME_MAX_LENGTH = 255
+
+DJANGO_MODEL_DESCRIPTION_NAME = "description"
 DJANGO_MODEL_DESCRIPTION_HELP_TEXT = "The description of the Django model."
 
+DJANGO_MODEL_IS_CURRENT_MODEL_NAME = "is_current_model"
 DJANGO_MODEL_IS_CURRENT_MODEL_HELP_TEXT = (
     (
         "'True' if this model is currently used in the application, "
@@ -61,14 +106,18 @@ DJANGO_MODEL_IS_CURRENT_MODEL_HELP_TEXT = (
     ),
 )
 
+DJANGO_MODEL_APPLICATION_NAME = "application"
 DJANGO_MODEL_APPLICATION_RELATED_NAME = "django_models"
 
 
+TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_01 = "Python"
+TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_02 = "Django"
+
+TEST_APPLICATION_NAME_01 = "Personal Assistant"
+TEST_APPLICATION_NAME_02 = "App Tracker"
+
 TEST_APPLICATION_DESCRIPTION_01 = "A personal assistant application."
 TEST_APPLICATION_DESCRIPTION_02 = "An application for tracking applications."
-
-TEST_APPLICATION_REPOSITORY_URL_01 = ""
-TEST_APPLICATION_REPOSITORY_URL_02 = ""
 
 TEST_NOTE_TITLE_01 = "Note Title One"
 TEST_NOTE_TITLE_02 = "Note Title Two"
@@ -96,8 +145,8 @@ class LanguageFrameworkSystemModelTest(TestCase):
         language_framework_system = LanguageFrameworkSystem.objects.get(
             id=self.lfs_01.pk
         )
-        field_label = language_framework_system._meta.get_field("name").verbose_name
-        self.assertEquals(field_label, "name")
+        field_label = language_framework_system._meta.get_field(LANGUAGE_FRAMEWORK_SYSTEM_NAME_LABEL).verbose_name
+        self.assertEquals(field_label, LANGUAGE_FRAMEWORK_SYSTEM_NAME_LABEL)
 
     def test_name_max_length(self):
         language_framework_system = LanguageFrameworkSystem.objects.get(
@@ -134,7 +183,6 @@ class ApplicationModelTest(TestCase):
         cls.application_01 = Application.objects.create(
             name=TEST_APPLICATION_NAME_01,
             description=TEST_APPLICATION_DESCRIPTION_01,
-            repository_url=TEST_APPLICATION_REPOSITORY_URL_01,
             has_custom_user=True,
             has_sticky_footer=False,
             has_prod_deployment=True,
@@ -144,7 +192,6 @@ class ApplicationModelTest(TestCase):
         cls.application_02 = Application.objects.create(
             name=TEST_APPLICATION_NAME_02,
             description=TEST_APPLICATION_DESCRIPTION_02,
-            repository_url=TEST_APPLICATION_REPOSITORY_URL_02,
             has_custom_user=False,
             has_sticky_footer=True,
             has_prod_deployment=False,
@@ -172,10 +219,40 @@ class ApplicationModelTest(TestCase):
         field_label = application._meta.get_field("description").verbose_name
         self.assertEquals(field_label, "description")
 
+    def test_description_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("description").help_text
+        self.assertEquals(help_text, APPLICATION_DESCRIPTION_HELP_TEXT)
+
+    def test_description_null_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        null = application._meta.get_field("description").null
+        self.assertEquals(null, True)
+
+    def test_description_blank_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        blank = application._meta.get_field("description").blank
+        self.assertEquals(blank, True)
+
     def test_repository_url_label(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("repository_url").verbose_name
         self.assertEquals(field_label, "repository url")
+
+    def test_repository_url_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("repository_url").help_text
+        self.assertEquals(help_text, APPLICATION_REPOSITORY_URL_HELP_TEXT)
+
+    def test_repository_url_null_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        null = application._meta.get_field("repository_url").null
+        self.assertEquals(null, True)
+
+    def test_repository_url_blank_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        blank = application._meta.get_field("repository_url").blank
+        self.assertEquals(blank, True)
 
     def test_production_url_label(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -196,6 +273,8 @@ class ApplicationModelTest(TestCase):
         application = Application.objects.get(id=self.application_01.pk)
         blank = application._meta.get_field("production_url").blank
         self.assertEquals(blank, True)
+
+
 
     def test_has_custom_user_label(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -244,7 +323,6 @@ class NoteModelTest(TestCase):
         cls.application_01 = Application.objects.create(
             name=TEST_APPLICATION_NAME_01,
             description=TEST_APPLICATION_DESCRIPTION_01,
-            repository_url=TEST_APPLICATION_REPOSITORY_URL_01,
             has_custom_user=True,
             has_sticky_footer=False,
             has_prod_deployment=True,
@@ -305,7 +383,6 @@ class DjangoModelModelTest(TestCase):
         cls.application_01 = Application.objects.create(
             name=TEST_APPLICATION_NAME_01,
             description=TEST_APPLICATION_DESCRIPTION_01,
-            repository_url=TEST_APPLICATION_REPOSITORY_URL_01,
             has_custom_user=True,
             has_sticky_footer=False,
             has_prod_deployment=True,
