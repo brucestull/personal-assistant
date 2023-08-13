@@ -18,6 +18,9 @@ APPLICATION_DESCRIPTION_HELP_TEXT = "The description of the application."
 
 APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
 
+# APPLICATION_PRODUCTION_URL_LABEL = "Production URL"
+APPLICATION_PRODUCTION_URL_HELP_TEXT = "The URL of the application's production deployment."
+
 TEST_APPLICATION_HAS_CUSTOM_USER_MODEL_HELP_TEXT = (
     "Whether or not the application has a custom user model."
 )
@@ -173,6 +176,26 @@ class ApplicationModelTest(TestCase):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("repository_url").verbose_name
         self.assertEquals(field_label, "repository url")
+
+    def test_production_url_label(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("production_url").verbose_name
+        self.assertEquals(field_label, "production url")
+
+    def test_production_url_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("production_url").help_text
+        self.assertEquals(help_text, APPLICATION_PRODUCTION_URL_HELP_TEXT)
+
+    def test_production_url_null_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        null = application._meta.get_field("production_url").null
+        self.assertEquals(null, True)
+
+    def test_production_url_blank_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        blank = application._meta.get_field("production_url").blank
+        self.assertEquals(blank, True)
 
     def test_has_custom_user_label(self):
         application = Application.objects.get(id=self.application_01.pk)
