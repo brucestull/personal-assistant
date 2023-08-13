@@ -52,6 +52,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         # `LanguageFrameworkSystem` objects associated with the `Application` object.
         "language_framework_systems_list",
         "testing_level",
+        "has_prod_deployment",
         "repository_is_public",
     )
     ordering = ("-created",)

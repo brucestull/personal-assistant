@@ -104,6 +104,7 @@ class ApplicationAdminTest(TestCase):
                 "name",
                 "language_framework_systems_list",
                 "testing_level",
+                "has_prod_deployment",
                 "repository_is_public",
             ),
         )
