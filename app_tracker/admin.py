@@ -81,6 +81,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "name",
                     "description",
                     "repository_url",
+                    "production_url",
                     "language_framework_systems",
                     "repository_is_public",
                     "has_custom_user",

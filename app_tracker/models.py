@@ -63,6 +63,11 @@ class Application(DateTimeBase):
         null=True,
         blank=True,
     )
+    production_url = models.URLField(
+        help_text="The URL of the application's production deployment.",
+        null=True,
+        blank=True,
+    )
     has_custom_user = models.BooleanField(
         help_text="Whether or not the application has a custom user model.",
         default=False,
