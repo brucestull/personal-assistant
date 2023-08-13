@@ -68,6 +68,11 @@ class Application(DateTimeBase):
         null=True,
         blank=True,
     )
+    project_board_url = models.URLField(
+        help_text="The URL of the application's project board.",
+        null=True,
+        blank=True,
+    )
     has_custom_user = models.BooleanField(
         help_text="Whether or not the application has a custom user model.",
         default=False,
