@@ -31,6 +31,7 @@ class LanguageFrameworkSystem(DateTimeBase):
 
     # `name` is the name of the language, framework, or system.
     name = models.CharField(
+        help_text="The name of the language, framework, or system used in the application.",
         max_length=30,
         unique=True,
     )
@@ -51,12 +52,14 @@ class Application(DateTimeBase):
     """
 
     name = models.CharField(
+        help_text="The name of the application.",
         max_length=255,
         unique=True,
-        help_text="The name of the application.",
     )
     description = models.TextField(
-        help_text="A description of the application.",
+        help_text="The description of the application.",
+        null=True,
+        blank=True,
     )
     repository_url = models.URLField(
         help_text="The URL of the application's repository.",
@@ -69,6 +72,7 @@ class Application(DateTimeBase):
         blank=True,
     )
     project_board_url = models.URLField(
+        verbose_name="Project Board URL",
         help_text="The URL of the application's project board.",
         null=True,
         blank=True,
@@ -104,9 +108,9 @@ class Application(DateTimeBase):
     # `testing_level` is the relative amount of testing coverage for the
     # application.
     testing_level = models.CharField(
+        help_text="The relative amount of testing coverage for the application.",
         max_length=6,
         choices=TESTING_LEVEL_CHOICES,
-        help_text="The relative amount of testing coverage for the application.",
         null=True,
         blank=True,
     )
@@ -114,12 +118,12 @@ class Application(DateTimeBase):
     # `LanguageFrameworkSystem` model.
     language_framework_systems = models.ManyToManyField(
         LanguageFrameworkSystem,
+        help_text="The languages, frameworks, and systems used in the application.",
         # The related name for the `language_framework_systems` field is
         # `applications`. This allows us to access the applications for a
         # language, framework, or system by using
         # `language_framework_system.applications`.
         related_name="applications",
-        help_text="The languages, frameworks, and systems used in the application.",
     )
 
     def __str__(self):
@@ -136,8 +140,8 @@ class Note(DateTimeBase):
 
     # `title` is the title of the note.
     title = models.CharField(
-        max_length=255,
         help_text="The title of the note.",
+        max_length=255,
     )
     # `content` is the content of the note.
     content = models.TextField(
@@ -146,6 +150,7 @@ class Note(DateTimeBase):
     # `application` is a foreign key to the `Application` model.
     application = models.ForeignKey(
         Application,
+        help_text="The application that the note is associated with.",
         # If the application is deleted, delete this note.
         on_delete=models.CASCADE,
         # The related name for the `application` field is `notes`.
@@ -176,9 +181,9 @@ class DjangoModel(DateTimeBase):
 
     # `name` is the name of the Django model.
     name = models.CharField(
+        help_text="The name of the Django model.",
         max_length=255,
         unique=True,
-        help_text="The name of the Django model.",
     )
     # `description` is a description of the Django model.
     description = models.TextField(
