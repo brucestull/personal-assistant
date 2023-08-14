@@ -83,14 +83,17 @@ class Application(DateTimeBase):
         blank=True,
     )
     has_custom_user = models.BooleanField(
+        verbose_name="Has Custom User",
         help_text="Whether or not the application has a custom user model.",
         default=False,
     )
     has_sticky_footer = models.BooleanField(
+        verbose_name="Has Sticky Footer",
         help_text="Whether or not the application has a sticky footer.",
         default=False,
     )
     has_prod_deployment = models.BooleanField(
+        verbose_name="Has Production Deployment",
         help_text="Whether or not the application has a production deployment.",
         default=False,
     )

@@ -328,15 +328,47 @@ class ApplicationModelTest(TestCase):
         field_label = application._meta.get_field("has_custom_user").verbose_name
         self.assertEquals(field_label, APPLICATION_HAS_CUSTOM_USER_VERBOSE_NAME)
 
+    def test_has_custom_user_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("has_custom_user").help_text
+        self.assertEquals(help_text, APPLICATION_HAS_CUSTOM_USER_HELP_TEXT)
+
+    def test_has_custom_user_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("has_custom_user").default
+        self.assertFalse(default)
+        # NOTE: Alternatively:
+        # self.assertEquals(default, False)
+
     def test_has_sticky_footer_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("has_sticky_footer").verbose_name
-        self.assertEquals(field_label, "has sticky footer")
+        self.assertEquals(field_label, APPLICATION_HAS_STICKY_FOOTER_VERBOSE_NAME)
+
+    def test_has_sticky_footer_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("has_sticky_footer").help_text
+        self.assertEquals(help_text, APPLICATION_HAS_STICKY_FOOTER_HELP_TEXT)
+
+    def test_has_sticky_footer_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("has_sticky_footer").default
+        self.assertFalse(default)
 
     def test_has_prod_deployment_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("has_prod_deployment").verbose_name
-        self.assertEquals(field_label, "has prod deployment")
+        self.assertEquals(field_label, APPLICATION_HAS_PROD_DEPLOYMENT_VERBOSE_NAME)
+
+    def test_has_prod_deployment_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("has_prod_deployment").help_text
+        self.assertEquals(help_text, APPLICATION_HAS_PROD_DEPLOYMENT_HELP_TEXT)
+
+    def test_has_prod_deployment_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("has_prod_deployment").default
+        self.assertFalse(default)
 
     def test_testing_level_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
