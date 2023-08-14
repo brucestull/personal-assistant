@@ -1,62 +1,65 @@
 from django.test import TestCase
 
+from app_tracker.models import DateTimeBase
 from app_tracker.models import LanguageFrameworkSystem
 from app_tracker.models import Application
 from app_tracker.models import Note
 from app_tracker.models import DjangoModel
 
 
-DATE_TIME_BASE_CREATED_LABEL = "created"
+DATE_TIME_BASE_CREATED_VERBOSE_NAME = "Created"
 DATE_TIME_BASE_CREATED_HELP_TEXT = "The date and time this object was created."
 
-DATE_TIME_BASE_UPDATED_LABEL = "updated"
+DATE_TIME_BASE_UPDATED_VERBOSE_NAME = "Updated"
 DATE_TIME_BASE_UPDATED_HELP_TEXT = "The date and time this object was last updated."
 
-LANGUAGE_FRAMEWORK_SYSTEM_NAME_LABEL = "name"
+LANGUAGE_FRAMEWORK_SYSTEM_NAME_VERBOSE_NAME = "Name"
 LANGUAGE_FRAMEWORK_SYSTEM_NAME_HELP_TEXT = (
-    "The name of the language, framework, or system used in the application.",
+    "The name of the language, framework, or system used in the application."
 )
 LANGUAGE_FRAMEWORK_SYSTEM_NAME_MAX_LENGTH = 30
 
-LANGUAGE_FRAMEWORK_SYSTEM_VERBOSE_NAME_PLURAL = "language/framework/systems"
+LANGUAGE_FRAMEWORK_SYSTEM_VERBOSE_NAME_PLURAL = "Language/Framework/Systems"
 
-APPLICATION_NAME_LABEL = "name"
+APPLICATION_NAME_VERBOSE_NAME = "name"
 APPLICATION_NAME_HELP_TEXT = "The name of the application."
 APPLICATION_NAME_MAX_LENGTH = 255
 
-APPLICATION_DESCRIPTION_LABEL = "description"
+APPLICATION_DESCRIPTION_VERBOSE_NAME = "description"
 APPLICATION_DESCRIPTION_HELP_TEXT = "The description of the application."
 
-APPLICATION_REPOSITORY_URL_LABEL = "Repository URL"
+APPLICATION_REPOSITORY_URL_VERBOSE_NAME = "Repository URL"
 APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
 
-APPLICATION_PRODUCTION_URL_LABEL = "Production URL"
-APPLICATION_PRODUCTION_URL_HELP_TEXT = "The URL of the application's production deployment."
+APPLICATION_PRODUCTION_URL_VERBOSE_NAME = "Production URL"
+APPLICATION_PRODUCTION_URL_HELP_TEXT = (
+    "The URL of the application's production deployment."
+)
 
-APPLICATION_PROJECT_BOARD_URL_LABEL = "Project Board URL"
+APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME = "Project Board URL"
 APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = "The URL of the application's project board."
 
-APPLICATION_HAS_CUSTOM_USER_LABEL = "Has Custom User"
+APPLICATION_HAS_CUSTOM_USER_VERBOSE_NAME = "Has Custom User"
 APPLICATION_HAS_CUSTOM_USER_HELP_TEXT = (
     "Whether or not the application has a custom user model."
 )
 
-APPLICATION_HAS_STICKY_FOOTER_LABEL = "Has Sticky Footer"
+APPLICATION_HAS_STICKY_FOOTER_VERBOSE_NAME = "Has Sticky Footer"
 APPLICATION_HAS_STICKY_FOOTER_HELP_TEXT = (
     "Whether or not the application has a sticky footer."
 )
 
-APPLICATION_HAS_PROD_DEPLOYMENT_LABEL = "Has Production Deployment"
+APPLICATION_HAS_PROD_DEPLOYMENT_VERBOSE_NAME = "Has Production Deployment"
 APPLICATION_HAS_PROD_DEPLOYMENT_HELP_TEXT = (
     "Whether or not the application has a production deployment."
 )
 
-APPLICATION_HAS_EMAIL_SENDING_LABEL = "Email Sending"
+APPLICATION_HAS_EMAIL_SENDING_VERBOSE_NAME = "Email Sending"
 APPLICATION_HAS_EMAIL_SENDING_HELP_TEXT = (
     "Whether or not the application has email sending capabilities."
 )
 
-APPLICATION_REPOSITORY_IS_PUBLIC_LABEL = "Repository is Public"
+APPLICATION_REPOSITORY_IS_PUBLIC_VERBOSE_NAME = "Repository is Public"
 APPLICATION_REPOSITORY_IS_PUBLIC_HELP_TEXT = (
     "Whether or not the application's repository is public."
 )
@@ -74,7 +77,7 @@ APPLICATION_TESTING_LEVEL_HELP_TEXT = (
 )
 APPLICATION_TESTING_LEVEL_MAX_LENGTH = 6
 
-APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_LABEL = "Language/Framework/Systems"
+APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_VERBOSE_NAME = "Language/Framework/Systems"
 APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT = (
     "The languages, frameworks, and systems used in the application."
 )
@@ -84,14 +87,14 @@ NOTE_TITLE_NAME = "title"
 NOTE_TITLE_HELP_TEXT = "The title of the note."
 NOTE_TITLE_MAX_LENGTH = 255
 
-NOTE_CONTENT_LABEL = "content"
+NOTE_CONTENT_VERBOSE_NAME = "content"
 NOTE_CONTENT_HELP_TEXT = "The content of the note."
 
 NOTE_APPLICATION_NAME = "application"
 NOTE_APPLICATION_HELP_TEXT = "The application that the note is associated with."
 NOTE_APPLICATION_RELATED_NAME = "notes"
 
-DJANGO_MODEL_NAME_LABEL = "name"
+DJANGO_MODEL_NAME_VERBOSE_NAME = "name"
 DJANGO_MODEL_NAME_HELP_TEXT = "The name of the Django model."
 DJANGO_MODEL_NAME_MAX_LENGTH = 255
 
@@ -141,12 +144,19 @@ class LanguageFrameworkSystemModelTest(TestCase):
             name=TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_02
         )
 
-    def test_name_label(self):
+    def test_name_verbose_name(self):
         language_framework_system = LanguageFrameworkSystem.objects.get(
             id=self.lfs_01.pk
         )
-        field_label = language_framework_system._meta.get_field(LANGUAGE_FRAMEWORK_SYSTEM_NAME_LABEL).verbose_name
-        self.assertEquals(field_label, LANGUAGE_FRAMEWORK_SYSTEM_NAME_LABEL)
+        field_label = language_framework_system._meta.get_field("name").verbose_name
+        self.assertEquals(field_label, LANGUAGE_FRAMEWORK_SYSTEM_NAME_VERBOSE_NAME)
+
+    def test_name_help_text(self):
+        language_framework_system = LanguageFrameworkSystem.objects.get(
+            id=self.lfs_01.pk
+        )
+        help_text = language_framework_system._meta.get_field("name").help_text
+        self.assertEquals(help_text, LANGUAGE_FRAMEWORK_SYSTEM_NAME_HELP_TEXT)
 
     def test_name_max_length(self):
         language_framework_system = LanguageFrameworkSystem.objects.get(
@@ -155,7 +165,7 @@ class LanguageFrameworkSystemModelTest(TestCase):
         max_length = language_framework_system._meta.get_field("name").max_length
         self.assertEquals(max_length, 30)
 
-    def test_name_unique(self):
+    def test_name_unique_true(self):
         language_framework_system = LanguageFrameworkSystem.objects.get(
             id=self.lfs_01.pk
         )
@@ -169,8 +179,19 @@ class LanguageFrameworkSystemModelTest(TestCase):
         expected_object_name = f"{language_framework_system.name}"
         self.assertEquals(expected_object_name, str(language_framework_system))
 
+    def test_meta_verbose_name_plural(self):
+        self.assertEquals(
+            # str(LanguageFrameworkSystem._meta.verbose_name_plural),
+            LanguageFrameworkSystem._meta.verbose_name_plural,
+            LANGUAGE_FRAMEWORK_SYSTEM_VERBOSE_NAME_PLURAL,
+        )
+
 
 class ApplicationModelTest(TestCase):
+    """
+    Tests for the `Application` model.
+    """
+
     @classmethod
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
@@ -199,10 +220,10 @@ class ApplicationModelTest(TestCase):
         )
         cls.application_02.language_framework_systems.add(cls.lfs_01)
 
-    def test_name_label(self):
+    def test_name_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("name").verbose_name
-        self.assertEquals(field_label, "name")
+        self.assertEquals(field_label, APPLICATION_NAME_VERBOSE_NAME)
 
     def test_name_max_length(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -214,7 +235,7 @@ class ApplicationModelTest(TestCase):
         unique = application._meta.get_field("name").unique
         self.assertEquals(unique, True)
 
-    def test_description_label(self):
+    def test_description_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("description").verbose_name
         self.assertEquals(field_label, "description")
@@ -234,7 +255,7 @@ class ApplicationModelTest(TestCase):
         blank = application._meta.get_field("description").blank
         self.assertEquals(blank, True)
 
-    def test_repository_url_label(self):
+    def test_repository_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("repository_url").verbose_name
         self.assertEquals(field_label, "repository url")
@@ -254,7 +275,7 @@ class ApplicationModelTest(TestCase):
         blank = application._meta.get_field("repository_url").blank
         self.assertEquals(blank, True)
 
-    def test_production_url_label(self):
+    def test_production_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("production_url").verbose_name
         self.assertEquals(field_label, "production url")
@@ -274,10 +295,10 @@ class ApplicationModelTest(TestCase):
         blank = application._meta.get_field("production_url").blank
         self.assertEquals(blank, True)
 
-    def test_project_board_url_label(self):
+    def test_project_board_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("project_board_url").verbose_name
-        self.assertEquals(field_label, APPLICATION_PROJECT_BOARD_URL_LABEL)
+        self.assertEquals(field_label, APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME)
 
     def test_project_board_url_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -288,8 +309,8 @@ class ApplicationModelTest(TestCase):
         application = Application.objects.get(id=self.application_01.pk)
         null = application._meta.get_field("project_board_url").null
         # NOTE: These two tests do the same thing:
-            # self.assertEquals(null, True)
-            # self.assertTrue(null)
+        # self.assertEquals(null, True)
+        # self.assertTrue(null)
         self.assertTrue(null)
 
     def test_project_board_url_blank_true(self):
@@ -297,27 +318,27 @@ class ApplicationModelTest(TestCase):
         blank = application._meta.get_field("project_board_url").blank
         self.assertTrue(blank)
 
-    def test_has_custom_user_label(self):
+    def test_has_custom_user_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("has_custom_user").verbose_name
         self.assertEquals(field_label, "has custom user")
 
-    def test_has_sticky_footer_label(self):
+    def test_has_sticky_footer_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("has_sticky_footer").verbose_name
         self.assertEquals(field_label, "has sticky footer")
 
-    def test_has_prod_deployment_label(self):
+    def test_has_prod_deployment_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("has_prod_deployment").verbose_name
         self.assertEquals(field_label, "has prod deployment")
 
-    def test_testing_level_label(self):
+    def test_testing_level_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("testing_level").verbose_name
         self.assertEquals(field_label, "testing level")
 
-    def test_language_framework_systems_label(self):
+    def test_language_framework_systems_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field(
             "language_framework_systems"
@@ -365,7 +386,7 @@ class NoteModelTest(TestCase):
             cls.note_02,
         )
 
-    def test_title_label(self):
+    def test_title_verbose_name(self):
         note = Note.objects.get(id=self.note_01.pk)
         field_label = note._meta.get_field("title").verbose_name
         self.assertEquals(field_label, "title")
@@ -375,12 +396,12 @@ class NoteModelTest(TestCase):
         max_length = note._meta.get_field("title").max_length
         self.assertEquals(max_length, 255)
 
-    def test_content_label(self):
+    def test_content_verbose_name(self):
         note = Note.objects.get(id=self.note_01.pk)
         field_label = note._meta.get_field("content").verbose_name
         self.assertEquals(field_label, "content")
 
-    def test_application_label(self):
+    def test_application_verbose_name(self):
         note = Note.objects.get(id=self.note_01.pk)
         field_label = note._meta.get_field("application").verbose_name
         self.assertEquals(field_label, "application")
@@ -427,7 +448,7 @@ class DjangoModelModelTest(TestCase):
             cls.django_model_02,
         )
 
-    def test_name_label(self):
+    def test_name_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("name").verbose_name
         self.assertEquals(field_label, "name")
@@ -437,12 +458,12 @@ class DjangoModelModelTest(TestCase):
         max_length = django_model._meta.get_field("name").max_length
         self.assertEquals(max_length, 255)
 
-    def test_description_label(self):
+    def test_description_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("description").verbose_name
         self.assertEquals(field_label, "description")
 
-    def test_is_current_model_label(self):
+    def test_is_current_model_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("is_current_model").verbose_name
         self.assertEquals(field_label, "is current model")
@@ -455,7 +476,7 @@ class DjangoModelModelTest(TestCase):
             "'True' if this model is currently used in the application, 'False' if this model is not currently used in the application.",
         )
 
-    def test_application_label(self):
+    def test_application_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("application").verbose_name
         self.assertEquals(field_label, "application")

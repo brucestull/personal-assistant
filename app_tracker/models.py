@@ -8,12 +8,12 @@ class DateTimeBase(models.Model):
     """
 
     created = models.DateTimeField(
-        "Created",
+        verbose_name="Created",
         auto_now_add=True,
         help_text="The date and time this object was created.",
     )
     updated = models.DateTimeField(
-        "Updated",
+        verbose_name="Updated",
         auto_now=True,
         help_text="The date and time this object was last updated.",
     )
@@ -31,6 +31,7 @@ class LanguageFrameworkSystem(DateTimeBase):
 
     # `name` is the name of the language, framework, or system.
     name = models.CharField(
+        verbose_name="Name",
         help_text="The name of the language, framework, or system used in the application.",
         max_length=30,
         unique=True,
