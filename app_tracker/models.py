@@ -72,6 +72,7 @@ class Application(DateTimeBase):
         blank=True,
     )
     project_board_url = models.URLField(
+        verbose_name="Project Board URL",
         help_text="The URL of the application's project board.",
         null=True,
         blank=True,

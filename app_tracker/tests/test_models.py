@@ -274,7 +274,28 @@ class ApplicationModelTest(TestCase):
         blank = application._meta.get_field("production_url").blank
         self.assertEquals(blank, True)
 
+    def test_project_board_url_label(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("project_board_url").verbose_name
+        self.assertEquals(field_label, APPLICATION_PROJECT_BOARD_URL_LABEL)
 
+    def test_project_board_url_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("project_board_url").help_text
+        self.assertEquals(help_text, APPLICATION_PROJECT_BOARD_URL_HELP_TEXT)
+
+    def test_project_board_url_null_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        null = application._meta.get_field("project_board_url").null
+        # NOTE: These two tests do the same thing:
+            # self.assertEquals(null, True)
+            # self.assertTrue(null)
+        self.assertTrue(null)
+
+    def test_project_board_url_blank_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        blank = application._meta.get_field("project_board_url").blank
+        self.assertTrue(blank)
 
     def test_has_custom_user_label(self):
         application = Application.objects.get(id=self.application_01.pk)
