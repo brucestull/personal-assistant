@@ -54,7 +54,7 @@ APPLICATION_HAS_PROD_DEPLOYMENT_HELP_TEXT = (
     "Whether or not the application has a production deployment."
 )
 
-APPLICATION_HAS_EMAIL_SENDING_VERBOSE_NAME = "Email Sending"
+APPLICATION_HAS_EMAIL_SENDING_VERBOSE_NAME = "Has Email Sending"
 APPLICATION_HAS_EMAIL_SENDING_HELP_TEXT = (
     "Whether or not the application has email sending capabilities."
 )
@@ -368,6 +368,21 @@ class ApplicationModelTest(TestCase):
     def test_has_prod_deployment_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
         default = application._meta.get_field("has_prod_deployment").default
+        self.assertFalse(default)
+
+    def test_has_email_sending_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("has_email_sending").verbose_name
+        self.assertEquals(field_label, APPLICATION_HAS_EMAIL_SENDING_VERBOSE_NAME)
+
+    def test_has_email_sending_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("has_email_sending").help_text
+        self.assertEquals(help_text, APPLICATION_HAS_EMAIL_SENDING_HELP_TEXT)
+
+    def test_has_email_sending_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("has_email_sending").default
         self.assertFalse(default)
 
     def test_testing_level_verbose_name(self):

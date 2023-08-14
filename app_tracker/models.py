@@ -98,6 +98,7 @@ class Application(DateTimeBase):
         default=False,
     )
     has_email_sending = models.BooleanField(
+        verbose_name="Has Email Sending",
         help_text="Whether or not the application has email sending capabilities.",
         default=False,
     )
