@@ -21,11 +21,11 @@ LANGUAGE_FRAMEWORK_SYSTEM_NAME_MAX_LENGTH = 30
 
 LANGUAGE_FRAMEWORK_SYSTEM_VERBOSE_NAME_PLURAL = "Language/Framework/Systems"
 
-APPLICATION_NAME_VERBOSE_NAME = "name"
+APPLICATION_NAME_VERBOSE_NAME = "Name"
 APPLICATION_NAME_HELP_TEXT = "The name of the application."
 APPLICATION_NAME_MAX_LENGTH = 255
 
-APPLICATION_DESCRIPTION_VERBOSE_NAME = "description"
+APPLICATION_DESCRIPTION_VERBOSE_NAME = "Description"
 APPLICATION_DESCRIPTION_HELP_TEXT = "The description of the application."
 
 APPLICATION_REPOSITORY_URL_VERBOSE_NAME = "Repository URL"
@@ -225,12 +225,17 @@ class ApplicationModelTest(TestCase):
         field_label = application._meta.get_field("name").verbose_name
         self.assertEquals(field_label, APPLICATION_NAME_VERBOSE_NAME)
 
+    def test_name_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("name").help_text
+        self.assertEquals(help_text, APPLICATION_NAME_HELP_TEXT)
+
     def test_name_max_length(self):
         application = Application.objects.get(id=self.application_01.pk)
         max_length = application._meta.get_field("name").max_length
         self.assertEquals(max_length, 255)
 
-    def test_name_unique(self):
+    def test_name_unique_true(self):
         application = Application.objects.get(id=self.application_01.pk)
         unique = application._meta.get_field("name").unique
         self.assertEquals(unique, True)
@@ -238,7 +243,7 @@ class ApplicationModelTest(TestCase):
     def test_description_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("description").verbose_name
-        self.assertEquals(field_label, "description")
+        self.assertEquals(field_label, APPLICATION_DESCRIPTION_VERBOSE_NAME)
 
     def test_description_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -258,7 +263,7 @@ class ApplicationModelTest(TestCase):
     def test_repository_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("repository_url").verbose_name
-        self.assertEquals(field_label, "repository url")
+        self.assertEquals(field_label, APPLICATION_REPOSITORY_URL_VERBOSE_NAME)
 
     def test_repository_url_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -278,7 +283,7 @@ class ApplicationModelTest(TestCase):
     def test_production_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("production_url").verbose_name
-        self.assertEquals(field_label, "production url")
+        self.assertEquals(field_label, APPLICATION_PRODUCTION_URL_VERBOSE_NAME)
 
     def test_production_url_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -321,7 +326,7 @@ class ApplicationModelTest(TestCase):
     def test_has_custom_user_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("has_custom_user").verbose_name
-        self.assertEquals(field_label, "has custom user")
+        self.assertEquals(field_label, APPLICATION_HAS_CUSTOM_USER_VERBOSE_NAME)
 
     def test_has_sticky_footer_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)

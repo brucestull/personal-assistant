@@ -53,21 +53,25 @@ class Application(DateTimeBase):
     """
 
     name = models.CharField(
+        verbose_name="Name",
         help_text="The name of the application.",
         max_length=255,
         unique=True,
     )
     description = models.TextField(
+        verbose_name="Description",
         help_text="The description of the application.",
         null=True,
         blank=True,
     )
     repository_url = models.URLField(
+        verbose_name="Repository URL",
         help_text="The URL of the application's repository.",
         null=True,
         blank=True,
     )
     production_url = models.URLField(
+        verbose_name="Production URL",
         help_text="The URL of the application's production deployment.",
         null=True,
         blank=True,
