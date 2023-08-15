@@ -8,12 +8,12 @@ class DateTimeBase(models.Model):
     """
 
     created = models.DateTimeField(
-        "Created",
+        verbose_name="Created",
         auto_now_add=True,
         help_text="The date and time this object was created.",
     )
     updated = models.DateTimeField(
-        "Updated",
+        verbose_name="Updated",
         auto_now=True,
         help_text="The date and time this object was last updated.",
     )
@@ -31,6 +31,7 @@ class LanguageFrameworkSystem(DateTimeBase):
 
     # `name` is the name of the language, framework, or system.
     name = models.CharField(
+        verbose_name="Name",
         help_text="The name of the language, framework, or system used in the application.",
         max_length=30,
         unique=True,
@@ -52,21 +53,25 @@ class Application(DateTimeBase):
     """
 
     name = models.CharField(
+        verbose_name="Name",
         help_text="The name of the application.",
         max_length=255,
         unique=True,
     )
     description = models.TextField(
+        verbose_name="Description",
         help_text="The description of the application.",
         null=True,
         blank=True,
     )
     repository_url = models.URLField(
+        verbose_name="Repository URL",
         help_text="The URL of the application's repository.",
         null=True,
         blank=True,
     )
     production_url = models.URLField(
+        verbose_name="Production URL",
         help_text="The URL of the application's production deployment.",
         null=True,
         blank=True,
@@ -78,22 +83,27 @@ class Application(DateTimeBase):
         blank=True,
     )
     has_custom_user = models.BooleanField(
+        verbose_name="Has Custom User",
         help_text="Whether or not the application has a custom user model.",
         default=False,
     )
     has_sticky_footer = models.BooleanField(
+        verbose_name="Has Sticky Footer",
         help_text="Whether or not the application has a sticky footer.",
         default=False,
     )
     has_prod_deployment = models.BooleanField(
+        verbose_name="Has Production Deployment",
         help_text="Whether or not the application has a production deployment.",
         default=False,
     )
     has_email_sending = models.BooleanField(
+        verbose_name="Has Email Sending",
         help_text="Whether or not the application has email sending capabilities.",
         default=False,
     )
     repository_is_public = models.BooleanField(
+        verbose_name="Repository is Public",
         help_text="Whether or not the application's repository is public.",
         default=False,
     )
@@ -108,6 +118,7 @@ class Application(DateTimeBase):
     # `testing_level` is the relative amount of testing coverage for the
     # application.
     testing_level = models.CharField(
+        verbose_name="Testing Level",
         help_text="The relative amount of testing coverage for the application.",
         max_length=6,
         choices=TESTING_LEVEL_CHOICES,
@@ -118,6 +129,7 @@ class Application(DateTimeBase):
     # `LanguageFrameworkSystem` model.
     language_framework_systems = models.ManyToManyField(
         LanguageFrameworkSystem,
+        verbose_name="Language/Framework/Systems",
         help_text="The languages, frameworks, and systems used in the application.",
         # The related name for the `language_framework_systems` field is
         # `applications`. This allows us to access the applications for a
@@ -181,12 +193,14 @@ class DjangoModel(DateTimeBase):
 
     # `name` is the name of the Django model.
     name = models.CharField(
+        verbose_name="Name",
         help_text="The name of the Django model.",
         max_length=255,
         unique=True,
     )
     # `description` is a description of the Django model.
     description = models.TextField(
+        verbose_name="Description",
         help_text="The description of the Django model.",
     )
     # `is_current_model` is a boolean that indicates whether the Django model
@@ -196,15 +210,17 @@ class DjangoModel(DateTimeBase):
     # If `is_current_model` is `False`, then the Django model is a future
     # model.
     is_current_model = models.BooleanField(
-        default=False,
+        verbose_name="Is Current Model",
         help_text=(
             "'True' if this model is currently used in the application, "
             "'False' if this model is not currently used in the application."
         ),
+        default=False,
     )
     # `application` is a foreign key to the `Application` model.
     application = models.ForeignKey(
         Application,
+        verbose_name="Application",
         # If the application is deleted, delete this Django model.
         on_delete=models.CASCADE,
         # The related name for the `application` field is `django_models`.
