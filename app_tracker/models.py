@@ -103,6 +103,7 @@ class Application(DateTimeBase):
         default=False,
     )
     repository_is_public = models.BooleanField(
+        verbose_name="Repository is Public",
         help_text="Whether or not the application's repository is public.",
         default=False,
     )
@@ -117,6 +118,7 @@ class Application(DateTimeBase):
     # `testing_level` is the relative amount of testing coverage for the
     # application.
     testing_level = models.CharField(
+        verbose_name="Testing Level",
         help_text="The relative amount of testing coverage for the application.",
         max_length=6,
         choices=TESTING_LEVEL_CHOICES,
@@ -127,6 +129,7 @@ class Application(DateTimeBase):
     # `LanguageFrameworkSystem` model.
     language_framework_systems = models.ManyToManyField(
         LanguageFrameworkSystem,
+        verbose_name="Language/Framework/Systems",
         help_text="The languages, frameworks, and systems used in the application.",
         # The related name for the `language_framework_systems` field is
         # `applications`. This allows us to access the applications for a
@@ -190,12 +193,14 @@ class DjangoModel(DateTimeBase):
 
     # `name` is the name of the Django model.
     name = models.CharField(
+        verbose_name="Name",
         help_text="The name of the Django model.",
         max_length=255,
         unique=True,
     )
     # `description` is a description of the Django model.
     description = models.TextField(
+        verbose_name="Description",
         help_text="The description of the Django model.",
     )
     # `is_current_model` is a boolean that indicates whether the Django model
@@ -205,15 +210,17 @@ class DjangoModel(DateTimeBase):
     # If `is_current_model` is `False`, then the Django model is a future
     # model.
     is_current_model = models.BooleanField(
-        default=False,
+        verbose_name="Is Current Model",
         help_text=(
             "'True' if this model is currently used in the application, "
             "'False' if this model is not currently used in the application."
         ),
+        default=False,
     )
     # `application` is a foreign key to the `Application` model.
     application = models.ForeignKey(
         Application,
+        verbose_name="Application",
         # If the application is deleted, delete this Django model.
         on_delete=models.CASCADE,
         # The related name for the `application` field is `django_models`.

@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.db import models as d_db_models
 
 from app_tracker.models import DateTimeBase
 from app_tracker.models import LanguageFrameworkSystem
@@ -64,18 +65,17 @@ APPLICATION_REPOSITORY_IS_PUBLIC_HELP_TEXT = (
     "Whether or not the application's repository is public."
 )
 
+APPLICATION_TESTING_LEVEL_VERBOSE_NAME = "Testing Level"
+APPLICATION_TESTING_LEVEL_HELP_TEXT = (
+    "The relative amount of testing coverage for the application."
+)
+APPLICATION_TESTING_LEVEL_MAX_LENGTH = 6
 APPLICATION_TESTING_LEVEL_CHOICES = [
     ("high", "High"),
     ("medium", "Medium"),
     ("low", "Low"),
     ("none", "None"),
 ]
-
-APPLICATION_TESTING_LEVEL_NAME = "Testing Level"
-APPLICATION_TESTING_LEVEL_HELP_TEXT = (
-    "The relative amount of testing coverage for the application."
-)
-APPLICATION_TESTING_LEVEL_MAX_LENGTH = 6
 
 APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_VERBOSE_NAME = "Language/Framework/Systems"
 APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT = (
@@ -94,22 +94,20 @@ NOTE_APPLICATION_NAME = "application"
 NOTE_APPLICATION_HELP_TEXT = "The application that the note is associated with."
 NOTE_APPLICATION_RELATED_NAME = "notes"
 
-DJANGO_MODEL_NAME_VERBOSE_NAME = "name"
+DJANGO_MODEL_NAME_VERBOSE_NAME = "Name"
 DJANGO_MODEL_NAME_HELP_TEXT = "The name of the Django model."
 DJANGO_MODEL_NAME_MAX_LENGTH = 255
 
-DJANGO_MODEL_DESCRIPTION_NAME = "description"
+DJANGO_MODEL_DESCRIPTION_VERBOSE_NAME = "Description"
 DJANGO_MODEL_DESCRIPTION_HELP_TEXT = "The description of the Django model."
 
-DJANGO_MODEL_IS_CURRENT_MODEL_NAME = "is_current_model"
+DJANGO_MODEL_IS_CURRENT_MODEL_VERBOSE_NAME = "Is Current Model"
 DJANGO_MODEL_IS_CURRENT_MODEL_HELP_TEXT = (
-    (
-        "'True' if this model is currently used in the application, "
-        "'False' if this model is not currently used in the application."
-    ),
+    "'True' if this model is currently used in the application, "
+    "'False' if this model is not currently used in the application."
 )
 
-DJANGO_MODEL_APPLICATION_NAME = "application"
+DJANGO_MODEL_APPLICATION_VERBOSE_NAME = "Application"
 DJANGO_MODEL_APPLICATION_RELATED_NAME = "django_models"
 
 
@@ -385,29 +383,88 @@ class ApplicationModelTest(TestCase):
         default = application._meta.get_field("has_email_sending").default
         self.assertFalse(default)
 
+    def test_repository_is_public_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("repository_is_public").verbose_name
+        self.assertEquals(field_label, APPLICATION_REPOSITORY_IS_PUBLIC_VERBOSE_NAME)
+
+    def test_repository_is_public_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("repository_is_public").help_text
+        self.assertEquals(help_text, APPLICATION_REPOSITORY_IS_PUBLIC_HELP_TEXT)
+
+    def test_repository_is_public_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("repository_is_public").default
+        self.assertFalse(default)
+
     def test_testing_level_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("testing_level").verbose_name
-        self.assertEquals(field_label, "testing level")
+        self.assertEquals(field_label, APPLICATION_TESTING_LEVEL_VERBOSE_NAME)
+
+    def test_testing_level_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("testing_level").help_text
+        self.assertEquals(help_text, APPLICATION_TESTING_LEVEL_HELP_TEXT)
+
+    def test_testing_level_max_length(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        max_length = application._meta.get_field("testing_level").max_length
+        self.assertEquals(max_length, APPLICATION_TESTING_LEVEL_MAX_LENGTH)
+
+    def test_testing_level_choices_has_four_choices(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        choices = application._meta.get_field("testing_level").choices
+        self.assertEquals(len(choices), 4)
+
+    def test_testing_level_choices_has_correct_choices(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        choices = application._meta.get_field("testing_level").choices
+        self.assertEquals(choices, APPLICATION_TESTING_LEVEL_CHOICES)
+
+    def test_testing_level_null_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        null = application._meta.get_field("testing_level").null
+        self.assertTrue(null)
+
+    def test_testing_level_blank_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        blank = application._meta.get_field("testing_level").blank
+        self.assertTrue(blank)
+
+    def test_language_framework_systems_uses_proper_model(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field = application._meta.get_field("language_framework_systems")
+        self.assertEquals(field.related_model, LanguageFrameworkSystem)
 
     def test_language_framework_systems_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field(
             "language_framework_systems"
         ).verbose_name
-        self.assertEquals(field_label, "language framework systems")
+        self.assertEquals(
+            field_label, APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_VERBOSE_NAME
+        )
 
-    def test_object_name_is_name(self):
+    def test_language_framework_systems_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        expected_object_name = f"{application.name}"
-        self.assertEquals(expected_object_name, str(application))
+        help_text = application._meta.get_field("language_framework_systems").help_text
+        self.assertEquals(help_text, APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT)
 
     def test_language_framework_systems_related_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        language_framework_system = LanguageFrameworkSystem.objects.get(id=1)
-        application.language_framework_systems.add(language_framework_system)
-        related_name = language_framework_system.applications.all()
-        self.assertEquals(related_name.count(), 2)
+        related_name = application._meta.get_field(
+            "language_framework_systems"
+        ).related_query_name()
+        self.assertEquals(
+            related_name, APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_RELATED_NAME
+        )
+
+    def test_language_framework_systems_dunder_string_method(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        expected_object_name = application.name
+        self.assertEquals(expected_object_name, str(application))
 
 
 class NoteModelTest(TestCase):
@@ -464,7 +521,7 @@ class NoteModelTest(TestCase):
         related_name = application.notes.all()
         self.assertEquals(related_name.count(), 2)
 
-    def test_object_name_is_title_and_application_name(self):
+    def test_dunder_string_method(self):
         note = Note.objects.get(id=self.note_01.pk)
         expected_object_name = f"{note.title} - {note.application.name}"
         self.assertEquals(expected_object_name, str(note))
@@ -503,7 +560,23 @@ class DjangoModelModelTest(TestCase):
     def test_name_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("name").verbose_name
-        self.assertEquals(field_label, "name")
+        self.assertEquals(field_label, DJANGO_MODEL_NAME_VERBOSE_NAME)
+
+    def test_name_help_text(self):
+        django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
+        help_text = django_model._meta.get_field("name").help_text
+        self.assertEquals(help_text, DJANGO_MODEL_NAME_HELP_TEXT)
+
+    def test_name_max_length(self):
+        django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
+        max_length = django_model._meta.get_field("name").max_length
+        self.assertEquals(max_length, DJANGO_MODEL_NAME_MAX_LENGTH)
+
+    def test_name_unique_true(self):
+        django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
+        is_unique = django_model._meta.get_field("name").unique
+        self.assertEquals(is_unique, True)
+        self.assertTrue(is_unique)
 
     def test_name_max_length(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
@@ -513,25 +586,43 @@ class DjangoModelModelTest(TestCase):
     def test_description_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("description").verbose_name
-        self.assertEquals(field_label, "description")
+        self.assertEquals(field_label, DJANGO_MODEL_DESCRIPTION_VERBOSE_NAME)
+
+    def test_description_help_text(self):
+        django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
+        help_text = django_model._meta.get_field("description").help_text
+        self.assertEquals(help_text, DJANGO_MODEL_DESCRIPTION_HELP_TEXT)
 
     def test_is_current_model_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("is_current_model").verbose_name
-        self.assertEquals(field_label, "is current model")
+        self.assertEquals(
+            field_label,
+            DJANGO_MODEL_IS_CURRENT_MODEL_VERBOSE_NAME,
+        )
 
     def test_is_current_model_help_text(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         help_text = django_model._meta.get_field("is_current_model").help_text
         self.assertEquals(
             help_text,
-            "'True' if this model is currently used in the application, 'False' if this model is not currently used in the application.",
+            DJANGO_MODEL_IS_CURRENT_MODEL_HELP_TEXT,
         )
+
+    def test_is_current_model_default_false(self):
+        django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
+        default = django_model._meta.get_field("is_current_model").default
+        self.assertEquals(default, False)
+        self.assertFalse(default)
 
     def test_application_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("application").verbose_name
-        self.assertEquals(field_label, "application")
+        self.assertEquals(field_label, DJANGO_MODEL_APPLICATION_VERBOSE_NAME)
+
+    def test_application_on_delete_cascade(self):
+        field = DjangoModel._meta.get_field("application")
+        self.assertEqual(field.remote_field.on_delete, d_db_models.CASCADE)
 
     def test_application_related_name(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -539,7 +630,7 @@ class DjangoModelModelTest(TestCase):
         related_name = application.django_models.all()
         self.assertEquals(related_name.count(), 2)
 
-    def test_object_name_is_name(self):
+    def test_dunder_string_method(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         expected_object_name = django_model.name
         self.assertEquals(expected_object_name, str(django_model))
