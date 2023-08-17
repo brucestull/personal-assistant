@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
+from django.utils.translation import gettext_lazy as _
+
 from app_tracker.admin import LanguageFrameworkSystemAdmin
 from app_tracker.admin import ApplicationAdmin
 from app_tracker.admin import NoteAdmin
@@ -147,7 +149,7 @@ class ApplicationAdminTest(TestCase):
             self.admin.fieldsets,
             (
                 (
-                    None,
+                    _("General"),
                     {
                         "fields": (
                             "name",
@@ -156,17 +158,44 @@ class ApplicationAdminTest(TestCase):
                             "production_url",
                             "project_board_url",
                             "is_favorite",
-                            "has_custom_user",
-                            "has_sticky_footer",
-                            "has_prod_deployment",
-                            "has_email_sending",
-                            "repository_is_public",
+                        ),
+                        "classes": ("wide", "extrapretty"),
+                    },
+                ),
+                (
+                    _("Language/Framework/Systems"),
+                    {
+                        "fields": ("language_framework_systems",),
+                        "classes": ("wide", "extrapretty"),
+                    },
+                ),
+                (
+                    _("Miscellaneous"),
+                    {
+                        "fields": (
+                            (
+                                "has_custom_user",
+                                "has_sticky_footer",
+                                "has_prod_deployment",
+                            ),
+                            (
+                                "has_email_sending",
+                                "repository_is_public",
+                                "is_template_repository",
+                            ),
+                            "testing_level",
+                        ),
+                        "classes": ("wide", "extrapretty", "collapse"),
+                    },
+                ),
+                (
+                    _("Environment Settings"),
+                    {
+                        "fields": (
                             "settings_in_dot_env_file",
                             "settings_in_dot_yml_file",
-                            "is_template_repository",
-                            "testing_level",
-                            "language_framework_systems",
-                        )
+                        ),
+                        "classes": ("wide", "extrapretty", "collapse"),
                     },
                 ),
                 (
@@ -175,7 +204,8 @@ class ApplicationAdminTest(TestCase):
                         "fields": (
                             "created",
                             "updated",
-                        )
+                        ),
+                        "classes": ("wide", "extrapretty", "collapse"),
                     },
                 ),
             ),

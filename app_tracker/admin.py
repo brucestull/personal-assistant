@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from app_tracker.models import LanguageFrameworkSystem
 from app_tracker.models import Application
@@ -93,7 +94,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     # The second item in the tuple is a dictionary of the fields in the fieldset.
     fieldsets = (
         (
-            None,
+            _("General"),
             {
                 "fields": (
                     "name",
@@ -102,17 +103,45 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "production_url",
                     "project_board_url",
                     "is_favorite",
-                    "has_custom_user",
-                    "has_sticky_footer",
-                    "has_prod_deployment",
-                    "has_email_sending",
-                    "repository_is_public",
+                ),
+                "classes": ("wide", "extrapretty"),
+            },
+        ),
+        (
+            _("Language/Framework/Systems"),
+            {
+                "fields": ("language_framework_systems",),
+                "classes": ("wide", "extrapretty"),
+            },
+        ),
+        (
+            _("Miscellaneous"),
+            {
+                "fields": (
+                    (
+                        "has_custom_user",
+                        "has_sticky_footer",
+                        "has_prod_deployment",
+                    ),
+                    (
+                        "has_email_sending",
+                        "repository_is_public",
+                        "is_template_repository",
+                    ),
+                        "testing_level",
+                ),
+                "classes": ("wide", "extrapretty", "collapse"),
+            },
+        ),
+        (
+            _("Environment Settings"),
+            {
+                "fields": (
                     "settings_in_dot_env_file",
                     "settings_in_dot_yml_file",
-                    "is_template_repository",
-                    "testing_level",
-                    "language_framework_systems",
-                )
+                ),
+                "classes": ("wide", "extrapretty", "collapse"),
+                # "classes": ("wide", "extrapretty"),
             },
         ),
         (
@@ -121,7 +150,8 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": (
                     "created",
                     "updated",
-                )
+                ),
+                "classes": ("wide", "extrapretty", "collapse"),
             },
         ),
     )
