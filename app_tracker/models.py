@@ -107,6 +107,11 @@ class Application(DateTimeBase):
         help_text="Whether or not the application's repository is public.",
         default=False,
     )
+    is_template_repository = models.BooleanField(
+        verbose_name="Is Template Repository",
+        help_text="Whether or not the application's repository is a template repository.",
+        default=False,
+    )
     # `TESTING_LEVEL_CHOICES` is a list of tuples that represent the
     # choices for the `testing_level` field.
     TESTING_LEVEL_CHOICES = [

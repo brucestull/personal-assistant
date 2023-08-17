@@ -65,6 +65,11 @@ APPLICATION_REPOSITORY_IS_PUBLIC_HELP_TEXT = (
     "Whether or not the application's repository is public."
 )
 
+APPLICATION_IS_TEMPLATE_REPOSITORY_VERBOSE_NAME = "Is Template Repository"
+APPLICATION_IS_TEMPLATE_REPOSITORY_HELP_TEXT = (
+    "Whether or not the application's repository is a template repository."
+)
+
 APPLICATION_TESTING_LEVEL_VERBOSE_NAME = "Testing Level"
 APPLICATION_TESTING_LEVEL_HELP_TEXT = (
     "The relative amount of testing coverage for the application."

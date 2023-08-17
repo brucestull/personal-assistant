@@ -64,6 +64,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "has_sticky_footer",
         "has_email_sending",
         "repository_is_public",
+        "is_template_repository",
     )
     search_fields = (
         "name",
@@ -85,6 +86,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "project_board_url",
                     "language_framework_systems",
                     "repository_is_public",
+                    "is_template_repository",
                     "has_custom_user",
                     "has_sticky_footer",
                     "has_prod_deployment",
