@@ -157,6 +157,8 @@ class ApplicationAdminTest(TestCase):
                             "project_board_url",
                             "language_framework_systems",
                             "repository_is_public",
+                            "settings_in_dot_env_file",
+                            "settings_in_dot_yml_file",
                             "is_template_repository",
                             "has_custom_user",
                             "has_sticky_footer",

@@ -43,19 +43,27 @@ class LanguageFrameworkSystemAdmin(admin.ModelAdmin):
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `Application` model.
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel
+    for the `Application` model.
     """
 
+    # Items in the `list_display` attribute will be displayed as columns
+    # in the admin panel.
     list_display = (
         "name",
-        # We can use the `language_framework_systems_list` method, defined below, to display the
-        # `LanguageFrameworkSystem` objects associated with the `Application` object.
+        # We can use the `language_framework_systems_list` method, defined
+        # below, to display the
+        # `LanguageFrameworkSystem` objects associated with the `Application`
+        # object.
         "language_framework_systems_list",
         "testing_level",
         "has_prod_deployment",
         "repository_is_public",
     )
+    # The `ordering` attribute will order the `Application` objects in the
+    # admin panel.
     ordering = ("-created",)
+    # The `list_filter` attribute will display filters in the admin panel.
     list_filter = (
         "language_framework_systems",
         "testing_level",
@@ -66,14 +74,23 @@ class ApplicationAdmin(admin.ModelAdmin):
         "repository_is_public",
         "is_template_repository",
     )
+    # The `search_fields` attribute will display a search bar in the admin
+    # panel.
+    # It will allow searching for `Application` objects by the `name` and
+    # `language_framework_systems__name` fields.
     search_fields = (
         "name",
         "language_framework_systems__name",
     )
+    # The `readonly_fields` attribute will make the `created` and `updated` fields
+    # read-only in the admin panel.
     readonly_fields = (
         "created",
         "updated",
     )
+    # The `fieldsets` attribute will group fields in the admin panel.
+    # The first item in the tuple is the title of the fieldset.
+    # The second item in the tuple is a dictionary of the fields in the fieldset.
     fieldsets = (
         (
             None,
@@ -86,6 +103,8 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "project_board_url",
                     "language_framework_systems",
                     "repository_is_public",
+                    "settings_in_dot_env_file",
+                    "settings_in_dot_yml_file",
                     "is_template_repository",
                     "has_custom_user",
                     "has_sticky_footer",
@@ -121,6 +140,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     # to "Language Framework Systems" so that the `Language Framework Systems` column in the
     # admin panel will display "Language Framework Systems" instead of "Language Framework Systems List".
     language_framework_systems_list.short_description = "Languages-Frameworks-Systems"
+
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):

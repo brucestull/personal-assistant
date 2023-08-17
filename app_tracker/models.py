@@ -107,6 +107,16 @@ class Application(DateTimeBase):
         help_text="Whether or not the application's repository is public.",
         default=False,
     )
+    settings_in_dot_env_file = models.BooleanField(
+        verbose_name="Settings in Environment File",
+        help_text="Whether or not the application's settings are in an environment file.",
+        default=False,
+    )
+    settings_in_dot_yml_file = models.BooleanField(
+        verbose_name="Settings in YAML File",
+        help_text="Whether or not the application's settings are in a YAML file.",
+        default=False,
+    )
     is_template_repository = models.BooleanField(
         verbose_name="Is Template Repository",
         help_text="Whether or not the application's repository is a template repository.",
