@@ -40,6 +40,9 @@ APPLICATION_PRODUCTION_URL_HELP_TEXT = (
 APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME = "Project Board URL"
 APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = "The URL of the application's project board."
 
+APPLICATION_IS_FAVORITE_VERBOSE_NAME = "Is Favorite"
+APPLICATION_IS_FAVORITE_HELP_TEXT = "Whether or not the application is a favorite."
+
 APPLICATION_HAS_CUSTOM_USER_VERBOSE_NAME = "Has Custom User"
 APPLICATION_HAS_CUSTOM_USER_HELP_TEXT = (
     "Whether or not the application has a custom user model."
@@ -335,6 +338,21 @@ class ApplicationModelTest(TestCase):
         application = Application.objects.get(id=self.application_01.pk)
         blank = application._meta.get_field("project_board_url").blank
         self.assertTrue(blank)
+
+    def test_is_favorite_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("is_favorite").verbose_name
+        self.assertEquals(field_label, APPLICATION_IS_FAVORITE_VERBOSE_NAME)
+
+    def test_is_favorite_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("is_favorite").help_text
+        self.assertEquals(help_text, APPLICATION_IS_FAVORITE_HELP_TEXT)
+
+    def test_is_favorite_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("is_favorite").default
+        self.assertFalse(default)
 
     def test_has_custom_user_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)

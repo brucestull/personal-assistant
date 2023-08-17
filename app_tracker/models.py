@@ -82,6 +82,11 @@ class Application(DateTimeBase):
         null=True,
         blank=True,
     )
+    is_favorite = models.BooleanField(
+        verbose_name="Is Favorite",
+        help_text="Whether or not the application is a favorite.",
+        default=False,
+    )
     has_custom_user = models.BooleanField(
         verbose_name="Has Custom User",
         help_text="Whether or not the application has a custom user model.",
