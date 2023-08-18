@@ -52,14 +52,13 @@ class ApplicationAdmin(admin.ModelAdmin):
     # in the admin panel.
     list_display = (
         "name",
+        "repository_is_public",
         # We can use the `language_framework_systems_list` method, defined
-        # below, to display the
-        # `LanguageFrameworkSystem` objects associated with the `Application`
-        # object.
+        # below, to display the `LanguageFrameworkSystem` objects associated
+        # with the `Application` object.
         "language_framework_systems_list",
         "testing_level",
         "has_prod_deployment",
-        "repository_is_public",
     )
     # The `ordering` attribute will order the `Application` objects in the
     # admin panel.
@@ -83,15 +82,16 @@ class ApplicationAdmin(admin.ModelAdmin):
         "name",
         "language_framework_systems__name",
     )
-    # The `readonly_fields` attribute will make the `created` and `updated` fields
-    # read-only in the admin panel.
+    # The `readonly_fields` attribute will make the `created` and `updated`
+    # fields read-only in the admin panel.
     readonly_fields = (
         "created",
         "updated",
     )
     # The `fieldsets` attribute will group fields in the admin panel.
     # The first item in the tuple is the title of the fieldset.
-    # The second item in the tuple is a dictionary of the fields in the fieldset.
+    # The second item in the tuple is a dictionary of the fields in the
+    # fieldset.
     fieldsets = (
         (
             _("General"),
