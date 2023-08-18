@@ -64,15 +64,15 @@ class Application(DateTimeBase):
         null=True,
         blank=True,
     )
-    repository_url = models.URLField(
-        verbose_name="Repository URL",
-        help_text="The URL of the application's repository.",
-        null=True,
-        blank=True,
-    )
     production_url = models.URLField(
         verbose_name="Production URL",
         help_text="The URL of the application's production deployment.",
+        null=True,
+        blank=True,
+    )
+    repository_url = models.URLField(
+        verbose_name="Repository URL",
+        help_text="The URL of the application's repository.",
         null=True,
         blank=True,
     )

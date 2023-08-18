@@ -99,8 +99,8 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": (
                     "name",
                     "description",
-                    "repository_url",
                     "production_url",
+                    "repository_url",
                     "project_board_url",
                     "is_favorite",
                 ),
