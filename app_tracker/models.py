@@ -112,6 +112,11 @@ class Application(DateTimeBase):
         help_text="Whether or not the application's repository is public.",
         default=False,
     )
+    settings_in_environment = models.BooleanField(
+        verbose_name="Settings in Environment",
+        help_text="Whether or not the application's settings are in the environment.",
+        default=False,
+    )
     settings_in_dot_env_file = models.BooleanField(
         verbose_name="Settings in Environment File",
         help_text="Whether or not the application's settings are in an environment file.",
