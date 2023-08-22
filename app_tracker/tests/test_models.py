@@ -68,8 +68,13 @@ APPLICATION_REPOSITORY_IS_PUBLIC_HELP_TEXT = (
     "Whether or not the application's repository is public."
 )
 
-APPLICATION_SETTINGS_IN_ENV_FILE_VERBOSE_NAME = "Settings in Environment File"
-APPLICATION_SETTINGS_IN_ENV_FILE_HELP_TEXT = (
+APPLICATION_SETTINGS_IN_ENVIRONMENT_VERBOSE_NAME = "Settings in Environment"
+APPLICATION_SETTINGS_IN_ENVIRONMENT_HELP_TEXT = (
+    "Whether or not the application's settings are in the environment."
+)
+
+APPLICATION_SETTINGS_IN_DOT_ENV_FILE_VERBOSE_NAME = "Settings in Environment File"
+APPLICATION_SETTINGS_IN_DOT_ENV_FILE_HELP_TEXT = (
     "Whether or not the application's settings are in an environment file."
 )
 
@@ -431,15 +436,30 @@ class ApplicationModelTest(TestCase):
         default = application._meta.get_field("repository_is_public").default
         self.assertFalse(default)
 
+    def test_settings_in_environment_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("settings_in_environment").verbose_name
+        self.assertEquals(field_label, APPLICATION_SETTINGS_IN_ENVIRONMENT_VERBOSE_NAME)
+
+    def test_settings_in_environment_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("settings_in_environment").help_text
+        self.assertEquals(help_text, APPLICATION_SETTINGS_IN_ENVIRONMENT_HELP_TEXT)
+
+    def test_settings_in_environment_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("settings_in_environment").default
+        self.assertFalse(default)
+
     def test_settings_in_dot_env_file_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("settings_in_dot_env_file").verbose_name
-        self.assertEquals(field_label, APPLICATION_SETTINGS_IN_ENV_FILE_VERBOSE_NAME)
+        self.assertEquals(field_label, APPLICATION_SETTINGS_IN_DOT_ENV_FILE_VERBOSE_NAME)
 
     def test_settings_in_dot_env_file_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
         help_text = application._meta.get_field("settings_in_dot_env_file").help_text
-        self.assertEquals(help_text, APPLICATION_SETTINGS_IN_ENV_FILE_HELP_TEXT)
+        self.assertEquals(help_text, APPLICATION_SETTINGS_IN_DOT_ENV_FILE_HELP_TEXT)
 
     def test_settings_in_dot_env_file_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
