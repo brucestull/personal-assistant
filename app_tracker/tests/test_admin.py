@@ -192,6 +192,7 @@ class ApplicationAdminTest(TestCase):
                     _("Environment Settings"),
                     {
                         "fields": (
+                            "settings_in_environment",
                             "settings_in_dot_env_file",
                             "settings_in_dot_yml_file",
                         ),
