@@ -33,13 +33,13 @@ ELEVATOR_SPEECH_TEXT_HELP_TEXT = "The text of the elevator speech."
 ELEVATOR_SPEECH_VERBOSE_NAME_PLURAL = "Elevator Speeches"
 
 
-TEST_USER_USERNAME = "test_user"
+TEST_USER_USERNAME = "test_username"
 TEST_USER_PASSWORD = "test_password"
 
-TEST_BULLET_POINT_TEXT = "test_text"
+TEST_BULLET_POINT_TEXT = "test_bullet_point_text"
 
-TEST_ELEVATOR_SPEECH_THEME = "test_theme"
-TEST_ELEVATOR_SPEECH_TEXT = "test_text"
+TEST_ELEVATOR_SPEECH_THEME = "test_elevator_speech_theme"
+TEST_ELEVATOR_SPEECH_TEXT = "test_elevator_speech_text"
 
 
 class BulletPointTestCase(TestCase):
