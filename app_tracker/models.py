@@ -76,6 +76,12 @@ class Application(DateTimeBase):
         null=True,
         blank=True,
     )
+    reference_repository_url = models.URLField(
+        verbose_name="Reference Repository URL",
+        help_text="The URL of the application's reference repository.",
+        null=True,
+        blank=True,
+    )
     project_board_url = models.URLField(
         verbose_name="Project Board URL",
         help_text="The URL of the application's project board.",

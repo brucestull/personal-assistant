@@ -101,6 +101,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "description",
                     "production_url",
                     "repository_url",
+                    "reference_repository_url",
                     "project_board_url",
                     "is_favorite",
                 ),

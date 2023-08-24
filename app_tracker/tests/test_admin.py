@@ -156,6 +156,7 @@ class ApplicationAdminTest(TestCase):
                             "description",
                             "production_url",
                             "repository_url",
+                            "reference_repository_url",
                             "project_board_url",
                             "is_favorite",
                         ),
