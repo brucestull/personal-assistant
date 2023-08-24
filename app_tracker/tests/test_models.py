@@ -32,6 +32,11 @@ APPLICATION_DESCRIPTION_HELP_TEXT = "The description of the application."
 APPLICATION_REPOSITORY_URL_VERBOSE_NAME = "Repository URL"
 APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
 
+APPLICATION_REFERENCE_REPOSITORY_URL_VERBOSE_NAME = "Reference Repository URL"
+APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT = (
+    "The URL of the application's reference repository."
+)
+
 APPLICATION_PRODUCTION_URL_VERBOSE_NAME = "Production URL"
 APPLICATION_PRODUCTION_URL_HELP_TEXT = (
     "The URL of the application's production deployment."
@@ -300,6 +305,20 @@ class ApplicationModelTest(TestCase):
         application = Application.objects.get(id=self.application_01.pk)
         blank = application._meta.get_field("repository_url").blank
         self.assertEquals(blank, True)
+
+    def test_reference_repository_url_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("reference_repository_url").verbose_name
+        self.assertEquals(
+            field_label, APPLICATION_REFERENCE_REPOSITORY_URL_VERBOSE_NAME
+        )
+
+    def test_reference_repository_url_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("reference_repository_url").help_text
+        self.assertEquals(
+            help_text, APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT
+        )
 
     def test_production_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
