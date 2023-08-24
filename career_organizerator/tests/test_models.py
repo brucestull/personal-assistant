@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.db import models as d_db_models
 
+from django.contrib.auth import get_user_model
+
 from career_organizerator.models import (
     BulletPoint,
     ElevatorSpeech,
@@ -47,6 +49,20 @@ class BulletPointTestCase(TestCase):
     Tests for the BulletPoint model.
     """
 
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up test data for the BulletPoint model.
+        """
+        cls.user = get_user_model().objects.create_user(
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD,
+        )
+        cls.bullet_point = BulletPoint.objects.create(
+            user=cls.user,
+            text=TEST_BULLET_POINT_TEXT,
+        )
+
     def test_bullet_point_user_verbose_name(self):
         """
         Test that the verbose name of the user field is correct.
@@ -63,9 +79,7 @@ class BulletPointTestCase(TestCase):
         """
         Test that the help text of the user field is correct.
         """
-        bullet_point_user_help_text = BulletPoint._meta.get_field(
-            "user"
-        ).help_text
+        bullet_point_user_help_text = BulletPoint._meta.get_field("user").help_text
         self.assertEqual(
             bullet_point_user_help_text,
             BULLET_POINT_USER_HELP_TEXT,
@@ -98,9 +112,7 @@ class BulletPointTestCase(TestCase):
         """
         Test that the help text of the text field is correct.
         """
-        bullet_point_text_help_text = BulletPoint._meta.get_field(
-            "text"
-        ).help_text
+        bullet_point_text_help_text = BulletPoint._meta.get_field("text").help_text
         self.assertEqual(
             bullet_point_text_help_text,
             BULLET_POINT_TEXT_HELP_TEXT,
@@ -110,12 +122,20 @@ class BulletPointTestCase(TestCase):
         """
         Test that the max length of the text field is correct.
         """
-        bullet_point_text_max_length = BulletPoint._meta.get_field(
-            "text"
-        ).max_length
+        bullet_point_text_max_length = BulletPoint._meta.get_field("text").max_length
         self.assertEqual(
             bullet_point_text_max_length,
             BULLET_POINT_TEXT_MAX_LENGTH,
+        )
+
+    def test_bullet_point_dunder_string_method(self):
+        """
+        Test that the string representation of the BulletPoint model is correct.
+        """
+        bullet_point_dunder_string = str(self.bullet_point)
+        self.assertEqual(
+            bullet_point_dunder_string,
+            TEST_BULLET_POINT_TEXT,
         )
 
     def test_bullet_point_verbose_name_plural(self):
