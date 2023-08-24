@@ -31,7 +31,7 @@ class SelfEnquiryAdmin(admin.ModelAdmin):
     )
     # The `readonly_fields` attribute controls which fields are displayed as read-only on the update page for the model.
     readonly_fields = (
-        # "updated",
+        "updated",
         "created",
     )
     # The `fieldsets` attribute controls how the fields are grouped on the update page for the model.
