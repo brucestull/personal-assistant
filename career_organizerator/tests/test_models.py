@@ -118,3 +118,13 @@ class BulletPointTestCase(TestCase):
             BULLET_POINT_TEXT_MAX_LENGTH,
         )
 
+    def test_bullet_point_verbose_name_plural(self):
+        """
+        Test that the verbose name plural of the BulletPoint model is correct.
+        """
+        bullet_point_verbose_name_plural = BulletPoint._meta.verbose_name_plural
+        self.assertEqual(
+            bullet_point_verbose_name_plural,
+            BULLET_POINT_VERBOSE_NAME_PLURAL,
+        )
+
