@@ -33,11 +33,11 @@ class Journal(models.Model):
     )
     created = models.DateTimeField(
         help_text="The date and time the journal was created.",
-        # auto_now_add=True,
+        auto_now_add=True,
     )
     updated = models.DateTimeField(
         help_text="The date and time the journal was last updated.",
-        # auto_now=True,
+        auto_now=True,
     )
 
     def __str__(self):
