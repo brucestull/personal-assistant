@@ -19,7 +19,7 @@
         {{ user_pressure_range.systolic_max }} / {{ user_pressure_range.diastolic_max }}
         <hr>
         {% for blood_pressure in bloodpressure_list %}
-            <h3>{{ blood_pressure }} | {{ blood_pressure.created }}</h3>
+            <p>{{ blood_pressure.systolic }} / {{ blood_pressure.diastolic }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ blood_pressure.created }}</p>
             <hr>
         {% endfor %}
     {% endif %}
