@@ -1,0 +1,75 @@
+from django.db import models
+
+from config.settings.common import AUTH_USER_MODEL
+from base.models import DateTimeBase
+
+
+class BulletPoint(DateTimeBase):
+    """
+    This model represents a single bullet point.
+    """
+
+    # `user` is the user who created the bullet point.
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="User",
+        help_text="The user who created the bullet point.",
+        on_delete=models.CASCADE,
+    )
+
+    # `text` is the text of the bullet point.
+    text = models.TextField(
+        verbose_name="Text",
+        help_text="The text of the bullet point.",
+        max_length=500,
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the bullet point.
+        """
+        return self.text
+
+    class Meta:
+        verbose_name_plural = "Bullet Points"
+
+
+class ElevatorSpeech(DateTimeBase):
+    """
+    This model represents a single elevator speech.
+    """
+
+    # `user` is the user who created the elevator speech.
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="User",
+        help_text="The user who created the elevator speech.",
+        on_delete=models.CASCADE,
+    )
+
+    theme = models.CharField(
+        verbose_name="Theme",
+        help_text="The theme of the elevator speech.",
+        max_length=255,
+    )
+
+    bullet_points = models.ManyToManyField(
+        BulletPoint,
+        verbose_name="Bullet Points",
+        help_text="The bullet points that can be used in the elevator speech.",
+    )
+
+    # `text` is the text of the elevator speech.
+    text = models.TextField(
+        verbose_name="Text",
+        help_text="The text of the elevator speech.",
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the elevator speech.
+        """
+        return self.theme
+
+    class Meta:
+        verbose_name_plural = "Elevator Speeches"

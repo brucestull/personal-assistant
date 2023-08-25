@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.db import models as d_db_models
 
-from app_tracker.models import DateTimeBase
 from app_tracker.models import LanguageFrameworkSystem
 from app_tracker.models import Application
 from app_tracker.models import Note

@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from app_tracker.models import LanguageFrameworkSystem
-from app_tracker.models import Application
-from app_tracker.models import Note
-from app_tracker.models import DjangoModel
+from app_tracker.models import (
+    LanguageFrameworkSystem,
+    Application,
+    Note,
+    DjangoModel,
+)
 
 
 @admin.register(LanguageFrameworkSystem)
@@ -129,7 +131,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                         "repository_is_public",
                         "is_template_repository",
                     ),
-                        "testing_level",
+                    "testing_level",
                 ),
                 "classes": ("wide", "extrapretty", "collapse"),
             },
