@@ -262,8 +262,8 @@ class NoteAdmin(admin.ModelAdmin):
 
     list_display = (
         "title",
-        "content",
         "application",
+        "content",
         "created",
     )
     ordering = ("-created",)
