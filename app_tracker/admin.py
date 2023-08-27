@@ -104,7 +104,7 @@ class ProjectAdmin(admin.ModelAdmin):
     # Set the `short_description` attribute of the `application_list` method
     # to "Applications" so that the `Applications` column in the admin panel
     # will display "Applications" instead of "Application List".
-    application_list.short_description = "Applications"
+    application_list.short_description = "Application(s)"
 
     def owner_list(self, obj):
         """
