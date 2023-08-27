@@ -153,6 +153,7 @@ class ApplicationAdminTest(TestCase):
                     {
                         "fields": (
                             "name",
+                            "project",
                             "description",
                             "production_url",
                             "repository_url",
