@@ -1,5 +1,7 @@
 from django.db import models
 
+from config.settings.common import AUTH_USER_MODEL
+
 
 class DateTimeBase(models.Model):
     """
@@ -47,11 +49,57 @@ class LanguageFrameworkSystem(DateTimeBase):
         verbose_name_plural = "Language/Framework/Systems"
 
 
+class Project(DateTimeBase):
+    """
+    Model for a single `Project`.
+
+    A `Project` can have multiple `owner`s (`CustomUser`s).
+    """
+
+    name = models.CharField(
+        verbose_name="Name",
+        help_text="The name of the project.",
+        max_length=255,
+        unique=True,
+    )
+    # `owner` is a many-to-many relationship with the `CustomUser` model.
+    owner = models.ManyToManyField(
+        AUTH_USER_MODEL,
+        verbose_name="Owner",
+        help_text="The owner(s) of the project.",
+        # The related name for the `owner` field is `projects`.
+        # This allows us to access the projects for a user by
+        # using `user.projects`.
+        related_name="projects",
+    )
+    description = models.TextField(
+        verbose_name="Description",
+        help_text="The description of the project.",
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the project.
+        """
+        return self.name
+
+
 class Application(DateTimeBase):
     """
     This model represents a single application that is being tracked.
     """
 
+    project = models.ManyToManyField(
+        Project,
+        verbose_name="Project",
+        help_text="The project(s) that the application is associated with.",
+        # The related name for the `project` field is `applications`.
+        # This allows us to access the applications for a project by
+        # using `project.applications`.
+        related_name="applications",
+    )
     name = models.CharField(
         verbose_name="Name",
         help_text="The name of the application.",

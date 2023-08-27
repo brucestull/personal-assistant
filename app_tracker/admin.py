@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app_tracker.models import (
     LanguageFrameworkSystem,
+    Project,
     Application,
     Note,
     DjangoModel,
@@ -42,6 +43,81 @@ class LanguageFrameworkSystemAdmin(admin.ModelAdmin):
         ),
     )
 
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    """
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `Project` model.
+    """
+
+    list_display = (
+        "name",
+        "owner_list",
+        "application_list",
+        "created",
+    )
+    ordering = ("-created",)
+    list_filter = (
+        "owner__username",
+        "created",
+        )
+    search_fields = (
+        "name",
+        "owner__username",
+        "description",
+    )
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "name",
+                    "owner",
+                    "description",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
+
+    def application_list(self, obj):
+        """
+        Return a list of the `Application` objects associated with the `Project` object.
+
+        :param obj: The `Project` object.
+        :return: A queryset of the `Application` objects associated with the `Project` object.
+        """
+        return list(obj.applications.all())
+
+    # Set the `short_description` attribute of the `application_list` method
+    # to "Applications" so that the `Applications` column in the admin panel
+    # will display "Applications" instead of "Application List".
+    application_list.short_description = "Applications"
+
+    def owner_list(self, obj):
+        """
+        Return a list of the `CustomUser` objects associated with the `Project` object.
+
+        :param obj: The `Project` object.
+        :return: A queryset of the `CustomUser` objects associated with the `Project` object.
+        """
+        return list(obj.owner.all())
+    # Set the `short_description` attribute of the `owner_list` method
+    # to "Owners" so that the `Owners` column in the admin panel
+    # will display "Owners" instead of "Owner List".
+    owner_list.short_description = "Owners"
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
@@ -100,6 +176,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "name",
+                    "project",
                     "description",
                     "production_url",
                     "repository_url",
