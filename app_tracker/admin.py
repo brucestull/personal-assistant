@@ -117,7 +117,7 @@ class ProjectAdmin(admin.ModelAdmin):
     # Set the `short_description` attribute of the `owner_list` method
     # to "Owners" so that the `Owners` column in the admin panel
     # will display "Owners" instead of "Owner List".
-    owner_list.short_description = "Owners"
+    owner_list.short_description = "Owner(s)"
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
