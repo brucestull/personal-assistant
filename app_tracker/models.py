@@ -65,7 +65,7 @@ class Project(DateTimeBase):
     # `owner` is a many-to-many relationship with the `CustomUser` model.
     owner = models.ManyToManyField(
         AUTH_USER_MODEL,
-        verbose_name="Owner",
+        verbose_name="Owner(s)",
         help_text="The owner(s) of the project.",
         # The related name for the `owner` field is `projects`.
         # This allows us to access the projects for a user by
