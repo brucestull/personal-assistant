@@ -51,6 +51,12 @@ APPLICATION_IS_OFFICIAL_REPOSITORY_HELP_TEXT = (
             "app maintained by some other organization."
 )
 
+APPLICATION_IS_ARCHIVE_REPOSITORY_VERBOSE_NAME = "Is Archive Repository"
+APPLICATION_IS_ARCHIVE_REPOSITORY_HELP_TEXT = (
+            "Whether or not the application is a repository for an archived "
+            "app that is no longer maintained."
+)
+
 APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME = "Project Board URL"
 APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = "The URL of the application's project board."
 
@@ -386,6 +392,25 @@ class ApplicationModelTest(TestCase):
     def test_is_official_repository_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
         default = application._meta.get_field("is_official_repository").default
+        self.assertFalse(default)
+
+    def test_is_archive_repository_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("is_archive_repository").verbose_name
+        self.assertEquals(
+            field_label, APPLICATION_IS_ARCHIVE_REPOSITORY_VERBOSE_NAME
+        )
+
+    def test_is_archive_repository_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("is_archive_repository").help_text
+        self.assertEquals(
+            help_text, APPLICATION_IS_ARCHIVE_REPOSITORY_HELP_TEXT
+        )
+
+    def test_is_archive_repository_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("is_archive_repository").default
         self.assertFalse(default)
 
     def test_project_board_url_verbose_name(self):

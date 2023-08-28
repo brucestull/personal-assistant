@@ -141,6 +141,14 @@ class Application(DateTimeBase):
         ),
         default=False,
     )
+    is_archive_repository = models.BooleanField(
+        verbose_name="Is Archive Repository",
+        help_text=(
+            "Whether or not the application is a repository for an archived "
+            "app that is no longer maintained."
+        ),
+        default=False,
+    )
     project_board_url = models.URLField(
         verbose_name="Project Board URL",
         help_text="The URL of the application's project board.",
