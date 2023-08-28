@@ -99,6 +99,9 @@ class Application(DateTimeBase):
         # This allows us to access the applications for a project by
         # using `project.applications`.
         related_name="applications",
+        # Use blank here so that we can create an application without
+        # associating it with a project.
+        blank=True,
     )
     name = models.CharField(
         verbose_name="Name",
@@ -129,6 +132,14 @@ class Application(DateTimeBase):
         help_text="The URL of the application's reference repository.",
         null=True,
         blank=True,
+    )
+    is_official_repository = models.BooleanField(
+        verbose_name="Is Official Repository",
+        help_text=(
+            "Whether or not the application is a repository for an official "
+            "app maintained by some other organization."
+        ),
+        default=False,
     )
     project_board_url = models.URLField(
         verbose_name="Project Board URL",

@@ -21,12 +21,21 @@ LANGUAGE_FRAMEWORK_SYSTEM_NAME_MAX_LENGTH = 30
 
 LANGUAGE_FRAMEWORK_SYSTEM_VERBOSE_NAME_PLURAL = "Language/Framework/Systems"
 
+APPLICATION_PROJECT_VERBOSE_NAME = "Project"
+APPLICATION_PROJECT_HELP_TEXT = "The project(s) that the application is associated with."
+APPLICATION_PROJECT_RELATED_NAME = "applications"
+
 APPLICATION_NAME_VERBOSE_NAME = "Name"
 APPLICATION_NAME_HELP_TEXT = "The name of the application."
 APPLICATION_NAME_MAX_LENGTH = 255
 
 APPLICATION_DESCRIPTION_VERBOSE_NAME = "Description"
 APPLICATION_DESCRIPTION_HELP_TEXT = "The description of the application."
+
+APPLICATION_PRODUCTION_URL_VERBOSE_NAME = "Production URL"
+APPLICATION_PRODUCTION_URL_HELP_TEXT = (
+    "The URL of the application's production deployment."
+)
 
 APPLICATION_REPOSITORY_URL_VERBOSE_NAME = "Repository URL"
 APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
@@ -36,9 +45,10 @@ APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT = (
     "The URL of the application's reference repository."
 )
 
-APPLICATION_PRODUCTION_URL_VERBOSE_NAME = "Production URL"
-APPLICATION_PRODUCTION_URL_HELP_TEXT = (
-    "The URL of the application's production deployment."
+APPLICATION_IS_OFFICIAL_REPOSITORY_VERBOSE_NAME = "Is Official Repository"
+APPLICATION_IS_OFFICIAL_REPOSITORY_HELP_TEXT = (
+            "Whether or not the application is a repository for an official "
+            "app maintained by some other organization."
 )
 
 APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME = "Project Board URL"
@@ -245,6 +255,26 @@ class ApplicationModelTest(TestCase):
         )
         cls.application_02.language_framework_systems.add(cls.lfs_01)
 
+    def test_project_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("project").verbose_name
+        self.assertEquals(field_label, APPLICATION_PROJECT_VERBOSE_NAME)
+
+    def test_project_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("project").help_text
+        self.assertEquals(help_text, APPLICATION_PROJECT_HELP_TEXT)
+
+    def test_project_related_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        related_query_name = application._meta.get_field("project").related_query_name()
+        self.assertEquals(related_query_name, APPLICATION_PROJECT_RELATED_NAME)
+
+    def test_project_blank_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        blank = application._meta.get_field("project").blank
+        self.assertTrue(blank)
+
     def test_name_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("name").verbose_name
@@ -285,6 +315,26 @@ class ApplicationModelTest(TestCase):
         blank = application._meta.get_field("description").blank
         self.assertEquals(blank, True)
 
+    def test_production_url_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("production_url").verbose_name
+        self.assertEquals(field_label, APPLICATION_PRODUCTION_URL_VERBOSE_NAME)
+
+    def test_production_url_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("production_url").help_text
+        self.assertEquals(help_text, APPLICATION_PRODUCTION_URL_HELP_TEXT)
+
+    def test_production_url_null_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        null = application._meta.get_field("production_url").null
+        self.assertEquals(null, True)
+
+    def test_production_url_blank_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        blank = application._meta.get_field("production_url").blank
+        self.assertEquals(blank, True)
+
     def test_repository_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("repository_url").verbose_name
@@ -319,25 +369,24 @@ class ApplicationModelTest(TestCase):
             help_text, APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT
         )
 
-    def test_production_url_verbose_name(self):
+    def test_is_official_repository_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field("production_url").verbose_name
-        self.assertEquals(field_label, APPLICATION_PRODUCTION_URL_VERBOSE_NAME)
+        field_label = application._meta.get_field("is_official_repository").verbose_name
+        self.assertEquals(
+            field_label, APPLICATION_IS_OFFICIAL_REPOSITORY_VERBOSE_NAME
+        )
 
-    def test_production_url_help_text(self):
+    def test_is_official_repository_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field("production_url").help_text
-        self.assertEquals(help_text, APPLICATION_PRODUCTION_URL_HELP_TEXT)
+        help_text = application._meta.get_field("is_official_repository").help_text
+        self.assertEquals(
+            help_text, APPLICATION_IS_OFFICIAL_REPOSITORY_HELP_TEXT
+        )
 
-    def test_production_url_null_true(self):
+    def test_is_official_repository_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
-        null = application._meta.get_field("production_url").null
-        self.assertEquals(null, True)
-
-    def test_production_url_blank_true(self):
-        application = Application.objects.get(id=self.application_01.pk)
-        blank = application._meta.get_field("production_url").blank
-        self.assertEquals(blank, True)
+        default = application._meta.get_field("is_official_repository").default
+        self.assertFalse(default)
 
     def test_project_board_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)

@@ -126,6 +126,7 @@ class ApplicationAdminTest(TestCase):
                 "has_email_sending",
                 "repository_is_public",
                 "is_template_repository",
+                "is_official_repository",
             ),
         )
 
@@ -175,6 +176,7 @@ class ApplicationAdminTest(TestCase):
                     _("Miscellaneous"),
                     {
                         "fields": (
+                            "testing_level",
                             (
                                 "has_custom_user",
                                 "has_sticky_footer",
@@ -184,8 +186,8 @@ class ApplicationAdminTest(TestCase):
                                 "has_email_sending",
                                 "repository_is_public",
                                 "is_template_repository",
+                                "is_official_repository",
                             ),
-                            "testing_level",
                         ),
                         "classes": ("wide", "extrapretty", "collapse"),
                     },
