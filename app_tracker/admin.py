@@ -152,6 +152,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "repository_is_public",
         "is_template_repository",
         "is_official_repository",
+        "is_archive_repository",
     )
     # The `search_fields` attribute will display a search bar in the admin
     # panel.
@@ -204,12 +205,13 @@ class ApplicationAdmin(admin.ModelAdmin):
                         "has_custom_user",
                         "has_sticky_footer",
                         "has_prod_deployment",
+                        "has_email_sending",
                     ),
                     (
-                        "has_email_sending",
                         "repository_is_public",
                         "is_template_repository",
                         "is_official_repository",
+                        "is_archive_repository",
                     ),
                 ),
                 "classes": ("wide", "extrapretty", "collapse"),

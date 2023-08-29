@@ -127,6 +127,7 @@ class ApplicationAdminTest(TestCase):
                 "repository_is_public",
                 "is_template_repository",
                 "is_official_repository",
+                "is_archive_repository",
             ),
         )
 
@@ -181,12 +182,13 @@ class ApplicationAdminTest(TestCase):
                                 "has_custom_user",
                                 "has_sticky_footer",
                                 "has_prod_deployment",
+                                "has_email_sending",
                             ),
                             (
-                                "has_email_sending",
                                 "repository_is_public",
                                 "is_template_repository",
                                 "is_official_repository",
+                                "is_archive_repository",
                             ),
                         ),
                         "classes": ("wide", "extrapretty", "collapse"),
