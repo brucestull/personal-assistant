@@ -187,6 +187,8 @@ class ApplicationAdminTest(TestCase):
                             (
                                 "repository_is_public",
                                 "is_template_repository",
+                            ),
+                            (
                                 "is_official_repository",
                                 "is_archive_repository",
                             ),

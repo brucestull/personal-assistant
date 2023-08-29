@@ -60,7 +60,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = (
         "owner__username",
         "created",
-        )
+    )
     search_fields = (
         "name",
         "owner__username",
@@ -114,10 +114,12 @@ class ProjectAdmin(admin.ModelAdmin):
         :return: A queryset of the `CustomUser` objects associated with the `Project` object.
         """
         return list(obj.owner.all())
+
     # Set the `short_description` attribute of the `owner_list` method
     # to "Owners" so that the `Owners` column in the admin panel
     # will display "Owners" instead of "Owner List".
     owner_list.short_description = "Owner(s)"
+
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
@@ -210,6 +212,8 @@ class ApplicationAdmin(admin.ModelAdmin):
                     (
                         "repository_is_public",
                         "is_template_repository",
+                    ),
+                    (
                         "is_official_repository",
                         "is_archive_repository",
                     ),
