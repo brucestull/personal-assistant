@@ -1,6 +1,6 @@
 from django.db import models
 
-class DateTimeBase(models.Model):
+class CreatedUpdatedBase(models.Model):
     """
     An abstract base class model that provides self-updating `created` and `updated` fields.
     """

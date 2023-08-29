@@ -2,10 +2,10 @@ from django.db import models
 from statistics import median
 
 from config.settings.common import AUTH_USER_MODEL
-from base.models import DateTimeBase
+from base.models import CreatedUpdatedBase
 
 
-class BloodPressure(DateTimeBase):
+class BloodPressure(CreatedUpdatedBase):
     """
     Model class for a user's blood pressure.
     """
@@ -74,7 +74,7 @@ class BloodPressure(DateTimeBase):
 
 
 
-class Pulse(DateTimeBase):
+class Pulse(CreatedUpdatedBase):
     """
     Model class for a user's pulse.
     """

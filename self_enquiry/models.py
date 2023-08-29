@@ -2,10 +2,10 @@ from django.db import models
 from django.urls import reverse
 
 from config.settings.common import AUTH_USER_MODEL
-from base.models import DateTimeBase
+from base.models import CreatedUpdatedBase
 
 
-class Journal(DateTimeBase):
+class Journal(CreatedUpdatedBase):
     """
     Model for a User's Journal.
 
@@ -59,7 +59,7 @@ class Journal(DateTimeBase):
         return self.content[:50] + ("..." if len(self.content) > 50 else "")
 
 
-class GrowthOpportunity(DateTimeBase):
+class GrowthOpportunity(CreatedUpdatedBase):
     """
     The `GrowthOpportunity` model represents a growth opportunity or
     question that a user is interested in pursuing.

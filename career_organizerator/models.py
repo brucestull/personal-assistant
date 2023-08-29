@@ -1,10 +1,10 @@
 from django.db import models
 
 from config.settings.common import AUTH_USER_MODEL
-from base.models import DateTimeBase
+from base.models import CreatedUpdatedBase
 
 
-class BulletPoint(DateTimeBase):
+class BulletPoint(CreatedUpdatedBase):
     """
     This model represents a single bullet point.
     """
@@ -34,7 +34,7 @@ class BulletPoint(DateTimeBase):
         verbose_name_plural = "Bullet Points"
 
 
-class ElevatorSpeech(DateTimeBase):
+class ElevatorSpeech(CreatedUpdatedBase):
     """
     This model represents a single elevator speech.
     """

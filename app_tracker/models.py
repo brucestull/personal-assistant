@@ -1,10 +1,10 @@
 from django.db import models
 
 from config.settings.common import AUTH_USER_MODEL
-from base.models import DateTimeBase
+from base.models import CreatedUpdatedBase
 
 
-class LanguageFrameworkSystem(DateTimeBase):
+class LanguageFrameworkSystem(CreatedUpdatedBase):
     """
     This model represents a single language, framework, or system that is
     being tracked. (e.g. Python, Django, Docker, CSS, JavaScript, Vue.js,
@@ -29,7 +29,7 @@ class LanguageFrameworkSystem(DateTimeBase):
         verbose_name_plural = "Language/Framework/Systems"
 
 
-class Project(DateTimeBase):
+class Project(CreatedUpdatedBase):
     """
     Model for a single `Project`.
 
@@ -66,7 +66,7 @@ class Project(DateTimeBase):
         return self.name
 
 
-class Application(DateTimeBase):
+class Application(CreatedUpdatedBase):
     """
     This model represents a single application that is being tracked.
     """
@@ -223,7 +223,7 @@ class Application(DateTimeBase):
         return self.name
 
 
-class Note(DateTimeBase):
+class Note(CreatedUpdatedBase):
     """
     This model represents a single note that is being tracked.
     """
@@ -262,7 +262,7 @@ class Note(DateTimeBase):
         return f"{self.title} - {self.application.name}"
 
 
-class DjangoModel(DateTimeBase):
+class DjangoModel(CreatedUpdatedBase):
     """
     This model represents a single Django model that is being tracked. This
     model can be a current model that is part of the application or a future

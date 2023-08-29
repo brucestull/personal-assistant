@@ -1,10 +1,10 @@
 from django.db import models
 
-from base.models import DateTimeBase
+from base.models import CreatedUpdatedBase
 from config.settings.common import AUTH_USER_MODEL
 
 
-class CognativeDistortion(DateTimeBase):
+class CognativeDistortion(CreatedUpdatedBase):
     """
     Model class for a user's cognative distortion.
 
@@ -46,7 +46,7 @@ class CognativeDistortion(DateTimeBase):
         verbose_name_plural = "Cognative Distortions"
 
 
-class Thought(DateTimeBase):
+class Thought(CreatedUpdatedBase):
     """
     Model class for a user's thought.
 
