@@ -33,9 +33,9 @@ JOURNAL_CONTENT_MORE_THAN_FIFTY = (
     "Test Journal Content"
 )
 
-JOURNAL_CREATED_HELP_TEXT = "The date and time the journal was created."
+JOURNAL_CREATED_HELP_TEXT = "The date and time this object was created."
 
-JOURNAL_UPDATED_HELP_TEXT = "The date and time the journal was last updated."
+JOURNAL_UPDATED_HELP_TEXT = "The date and time this object was last updated."
 
 GROWTH_OPPORTUNITY_VERBOSE_NAME = "Growth Opportunity"
 GROWTH_OPPORTUNITY_VERBOSE_NAME_PLURAL = "Growth Opportunities"
@@ -47,11 +47,11 @@ GROWTH_OPPORTUNITY_QUESTION_VERBOSE_NAME = "Question"
 GROWTH_OPPORTUNITY_QUESTION_HELP_TEXT = "Required"
 
 GROWTH_OPPORTUNITY_CREATED_HELP_TEXT = (
-    "The date and time the growth opportunity was created."
+    "The date and time this object was created."
 )
 
 GROWTH_OPPORTUNITY_UPDATED_HELP_TEXT = (
-    "The date and time the growth opportunity was last updated."
+    "The date and time this object was last updated."
 )
 
 GROWTH_OPPORTUNITY_QUESTION_LESS_THAN_TWENTY_FOUR = "Growth Opportunity"
@@ -169,7 +169,7 @@ class JournalModelTest(TestCase):
         `Journal` model `created` field `label` should be `created`.
         """
         field = Journal._meta.get_field("created")
-        self.assertEqual(field.verbose_name, "created")
+        self.assertEqual(field.verbose_name, "Created")
 
     def test_created_help_text(self):
         """
@@ -192,7 +192,7 @@ class JournalModelTest(TestCase):
         `Journal` model `updated` field `label` should be `updated`.
         """
         field = Journal._meta.get_field("updated")
-        self.assertEqual(field.verbose_name, "updated")
+        self.assertEqual(field.verbose_name, "Updated")
 
     def test_updated_help_text(self):
         """

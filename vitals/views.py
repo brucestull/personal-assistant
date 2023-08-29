@@ -3,7 +3,10 @@ from django.shortcuts import render
 from django.views.generic import ListView
 
 from config.settings.common import THE_SITE_NAME
-from vitals.models import BloodPressure
+from vitals.models import (
+    BloodPressure,
+    Pulse,
+)
 
 
 BLOOD_PRESSURE_LIST_PAGE_TITLE = "Blood Pressures"
@@ -43,9 +46,9 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
     paginate_by = 10
     """
 
+    # TODO: Remove this?
     # Get the average and median of all the blood pressure measurements.
     average_and_median_all = BloodPressure.get_average_and_median()
-    # Get the average and median of the current user's blood pressure measurements.
 
     def get_context_data(self, **kwargs):
         """
@@ -53,8 +56,11 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
         """
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        user_blood_pressure_averages_and_medians = user.get_average_and_median_blood_pressure()
-        user_blood_pressure_range = user.get_user_blood_pressure_range()
+        # Get the average and median of the current user's blood pressure measurements.
+        user_blood_pressure_averages_and_medians = (
+            user.get_average_and_median_blood_pressure()
+        )
+        user_blood_pressure_range = user.get_blood_pressure_range()
         if user_blood_pressure_averages_and_medians is None:
             context["user_averages_and_medians"] = {
                 "systolic_average": None,
@@ -63,7 +69,9 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
                 "diastolic_median": None,
             }
         else:
-            context["user_averages_and_medians"] = user_blood_pressure_averages_and_medians
+            context[
+                "user_averages_and_medians"
+            ] = user_blood_pressure_averages_and_medians
             context["user_pressure_range"] = user_blood_pressure_range
         return context
 

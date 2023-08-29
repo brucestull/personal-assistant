@@ -149,15 +149,15 @@ class CustomUserModelTest(TestCase):
             CUSTOM_USER_REGISTRATION_ACCEPTED_HELP_TEXT,
         )
 
-    def test_get_user_blood_pressure_range_method(self):
+    def test_get_blood_pressure_range_method(self):
         """
-        `CustomUser` model `get_user_blood_pressure_range` method should
+        `CustomUser` model `get_blood_pressure_range` method should
         return the minimum and maximum systolic and diastolic blood pressure
         readings for the current user.
         """
         user = CustomUser.objects.get(id=self.user.id)
         self.assertEqual(
-            user.get_user_blood_pressure_range(),
+            user.get_blood_pressure_range(),
             {
                 "systolic_min": SYSTOLIC_MIN,
                 "diastolic_min": DIASTOLIC_MIN,
@@ -166,15 +166,15 @@ class CustomUserModelTest(TestCase):
             },
         )
 
-    def test_get_user_blood_pressure_range_method_with_no_blood_pressures(self):
+    def test_get_blood_pressure_range_method_with_no_blood_pressures(self):
         """
-        `CustomUser` model `get_user_blood_pressure_range` method should
+        `CustomUser` model `get_blood_pressure_range` method should
         return `None` if the current user has no blood pressure readings.
         """
         user = CustomUser.objects.create(
             username=ANOTHER_TEST_USERNAME,
         )
-        self.assertIsNone(user.get_user_blood_pressure_range())
+        self.assertIsNone(user.get_blood_pressure_range())
 
     def test_get_average_and_median_blood_pressure_method_with_blood_pressures(self):
         """

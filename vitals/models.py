@@ -2,26 +2,7 @@ from django.db import models
 from statistics import median
 
 from config.settings.common import AUTH_USER_MODEL
-
-
-class DateTimeBase(models.Model):
-    """
-    An abstract base class model that provides self-updating `created` and `updated` fields.
-    """
-
-    created = models.DateTimeField(
-        "Created",
-        auto_now_add=True,
-        help_text="The date and time this object was created.",
-    )
-    updated = models.DateTimeField(
-        "Updated",
-        auto_now=True,
-        help_text="The date and time this object was last updated.",
-    )
-
-    class Meta:
-        abstract = True
+from base.models import DateTimeBase
 
 
 class BloodPressure(DateTimeBase):

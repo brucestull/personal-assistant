@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
         help_text="Designates whether this user's registration has been accepted.",
     )
 
-    def get_user_blood_pressure_range(self):
+    def get_blood_pressure_range(self):
         """
         Returns the maximum and minimum systolic and diastolic blood pressure readings
         for the current user.

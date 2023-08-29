@@ -2,9 +2,10 @@ from django.db import models
 from django.urls import reverse
 
 from config.settings.common import AUTH_USER_MODEL
+from base.models import DateTimeBase
 
 
-class Journal(models.Model):
+class Journal(DateTimeBase):
     """
     Model for a User's Journal.
 
@@ -30,14 +31,6 @@ class Journal(models.Model):
     content = models.TextField(
         verbose_name="Journal Content",
         help_text="Required",
-    )
-    created = models.DateTimeField(
-        help_text="The date and time the journal was created.",
-        auto_now_add=True,
-    )
-    updated = models.DateTimeField(
-        help_text="The date and time the journal was last updated.",
-        auto_now=True,
     )
 
     def __str__(self):
@@ -66,7 +59,7 @@ class Journal(models.Model):
         return self.content[:50] + ("..." if len(self.content) > 50 else "")
 
 
-class GrowthOpportunity(models.Model):
+class GrowthOpportunity(DateTimeBase):
     """
     The `GrowthOpportunity` model represents a growth opportunity or
     question that a user is interested in pursuing.
@@ -87,15 +80,6 @@ class GrowthOpportunity(models.Model):
         verbose_name="Question",
         help_text="Required",
     )
-    created = models.DateTimeField(
-        help_text="The date and time the growth opportunity was created.",
-        auto_now_add=True,
-    )
-    updated = models.DateTimeField(
-        help_text="The date and time the growth opportunity was last updated.",
-        auto_now=True,
-    )
-
     def __str__(self):
         return self.question[:24] + ("..." if len(self.question) > 24 else "")
 
