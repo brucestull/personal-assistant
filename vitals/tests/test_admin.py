@@ -26,7 +26,7 @@ class VitalsAdminTest(TestCase):
     def test_list_display(self):
         self.assertEqual(
             self.admin.list_display,
-            ("user", "systolic", "diastolic", "created"),
+            ("user", "systolic", "diastolic", "pulse", "created"),
         )
 
     def test_ordering(self):
@@ -41,7 +41,7 @@ class VitalsAdminTest(TestCase):
     def test_search_fields(self):
         self.assertEqual(
             self.admin.search_fields,
-            ("user__username", "systolic", "diastolic"),
+            ("user__username", "systolic", "diastolic", "pulse"),
         )
 
     def test_readonly_fields(self):
@@ -57,7 +57,7 @@ class VitalsAdminTest(TestCase):
                 (
                     None,
                     {
-                        "fields": ("user", "systolic", "diastolic"),
+                        "fields": ("user", "systolic", "diastolic", "pulse"),
                     },
                 ),
                 (
