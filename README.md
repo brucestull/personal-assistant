@@ -147,11 +147,11 @@
         - `verbose_name_plural`
 
 ## Templates
-- [403 template](accounts\templates\403.html)
+- [accounts/templates/403.html](https://github.com/brucestull/personal-assistant/blob/main/accounts/templates/403.html)
 
 ## Interesting Features
 
-- Custom [403 template](accounts/templates/403.html) (This template is currently in `accounts` application, but may be moved to root level).
+- Custom [accounts/templates/403.html](https://github.com/brucestull/personal-assistant/blob/main/accounts/templates/403.html) (This template is currently in `accounts` application, but may be moved to root level).
 - Moved `created` and `updated` fields to `DateTimeBase` model.
     - I first extracted a base class `DateTimeBase` in the same module, but then moved it to the `base` package for use in any application.
 
