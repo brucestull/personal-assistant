@@ -15,10 +15,13 @@ TEST_FIRST_NAME = "Test"
 
 BLOOD_PRESSURE_SYSTOLIC_1 = 120
 BLOOD_PRESSURE_DIASTOLIC_1 = 80
+BLOOD_PRESSURE_PULSE_1 = 71
 BLOOD_PRESSURE_SYSTOLIC_2 = 110
 BLOOD_PRESSURE_DIASTOLIC_2 = 70
+BLOOD_PRESSURE_PULSE_2 = 71
 BLOOD_PRESSURE_SYSTOLIC_3 = 115
 BLOOD_PRESSURE_DIASTOLIC_3 = 75
+BLOOD_PRESSURE_PULSE_3 = 71
 
 BLOOD_PRESSURE_SYSTOLIC_AVERAGE = 115
 BLOOD_PRESSURE_DIASTOLIC_AVERAGE = 75
@@ -38,6 +41,9 @@ BLOOD_PRESSURE_SYSTOLIC_HELP_TEXT = "The systolic blood pressure reading."
 
 BLOOD_PRESSURE_DIASTOLIC_LABEL = "Diastolic Blood Pressure"
 BLOOD_PRESSURE_DIASTOLIC_HELP_TEXT = "The diastolic blood pressure reading."
+
+BLOOD_PRESSURE_PULSE_LABEL = "Pulse"
+BLOOD_PRESSURE_PULSE_HELP_TEXT = "The pulse rate in beats per minute."
 
 BLOOD_PRESSURE_VERBOSE_NAME_PLURAL = "Blood Pressure Measurements"
 
@@ -72,16 +78,19 @@ class BloodPressureModelTest(TestCase):
             user=cls.user,
             systolic=BLOOD_PRESSURE_SYSTOLIC_1,
             diastolic=BLOOD_PRESSURE_DIASTOLIC_1,
+            pulse=BLOOD_PRESSURE_PULSE_1,
         )
         cls.blood_pressure_2 = BloodPressure.objects.create(
             user=cls.user,
             systolic=BLOOD_PRESSURE_SYSTOLIC_2,
             diastolic=BLOOD_PRESSURE_DIASTOLIC_2,
+            pulse=BLOOD_PRESSURE_PULSE_2,
         )
         cls.blood_pressure_3 = BloodPressure.objects.create(
             user=cls.user,
             systolic=BLOOD_PRESSURE_SYSTOLIC_3,
             diastolic=BLOOD_PRESSURE_DIASTOLIC_3,
+            pulse=BLOOD_PRESSURE_PULSE_3,
         )
 
     def test_created_field_name(self):
@@ -264,6 +273,22 @@ class BloodPressureModelTest(TestCase):
             diastolic_field_help_text, "The diastolic blood pressure reading."
         )
 
+    def test_pulse_field_verbose_name(self):
+        """
+        Test the verbose name of the `Pulse` model.
+        """
+        blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
+        pulse_field_verbose_name = blood_pressure._meta.get_field("pulse").verbose_name
+        self.assertEqual(pulse_field_verbose_name, BLOOD_PRESSURE_PULSE_LABEL)
+
+    def test_pulse_field_help_text(self):
+        """
+        Test the `pulse` field help text.
+        """
+        blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
+        pulse_field_help_text = blood_pressure._meta.get_field("pulse").help_text
+        self.assertEqual(pulse_field_help_text, BLOOD_PRESSURE_PULSE_HELP_TEXT)
+
     def test_get_average_and_median_with_no_blood_pressures(self):
         """
         `get_average_and_median` method should return None if there are
@@ -283,8 +308,9 @@ class BloodPressureModelTest(TestCase):
                 "diastolic_average": None,
                 "systolic_median": None,
                 "diastolic_median": None,
-            }
+            },
         )
+
     def test_get_average_and_median_with_three_blood_pressures(self):
         """
         `get_average_and_median` method should return the proper average and median values.
@@ -323,8 +349,7 @@ class BloodPressureModelTest(TestCase):
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
         self.assertEqual(
-            str(blood_pressure),
-            f"{blood_pressure.user.username} | {blood_pressure.systolic} / {blood_pressure.diastolic} mmHg",
+            str(blood_pressure), f"{blood_pressure.user.username} | {blood_pressure.systolic} / {blood_pressure.diastolic} mmHg | {blood_pressure.pulse} bpm"
         )
 
 

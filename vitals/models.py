@@ -24,6 +24,10 @@ class BloodPressure(CreatedUpdatedBase):
         verbose_name="Diastolic Blood Pressure",
         help_text="The diastolic blood pressure reading.",
     )
+    pulse = models.PositiveSmallIntegerField(
+        verbose_name="Pulse",
+        help_text="The pulse rate in beats per minute.",
+    )
 
     # Use the `@staticmethod` decorator to define a static method.
     # A `static method` is a method that doesn't need to be called on an instance of the class.
@@ -70,8 +74,7 @@ class BloodPressure(CreatedUpdatedBase):
         verbose_name_plural = "Blood Pressure Measurements"
 
     def __str__(self):
-        return f"{self.user.username} | {self.systolic} / {self.diastolic} mmHg"
-
+        return f"{self.user.username} | {self.systolic} / {self.diastolic} mmHg | {self.pulse} bpm"
 
 
 class Pulse(CreatedUpdatedBase):

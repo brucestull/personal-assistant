@@ -13,6 +13,7 @@ class VitalsAdmin(admin.ModelAdmin):
         "user",
         "systolic",
         "diastolic",
+        "pulse",
         "created",
     )
     ordering = ("-created",)
@@ -24,6 +25,7 @@ class VitalsAdmin(admin.ModelAdmin):
         "user__username",
         "systolic",
         "diastolic",
+        "pulse",
     )
     readonly_fields = (
         "created",
@@ -37,6 +39,7 @@ class VitalsAdmin(admin.ModelAdmin):
                     "user",
                     "systolic",
                     "diastolic",
+                    "pulse",
                 )
             },
         ),

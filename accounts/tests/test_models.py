@@ -13,10 +13,13 @@ CUSTOM_USER_REGISTRATION_ACCEPTED_HELP_TEXT = (
 
 BLOOD_PRESSURE_SYSTOLIC_1 = 120
 BLOOD_PRESSURE_DIASTOLIC_1 = 80
+BLOOD_PRESSURE_PULSE_1 = 73
 BLOOD_PRESSURE_SYSTOLIC_2 = 110
 BLOOD_PRESSURE_DIASTOLIC_2 = 70
+BLOOD_PRESSURE_PULSE_2 = 73
 BLOOD_PRESSURE_SYSTOLIC_3 = 115
 BLOOD_PRESSURE_DIASTOLIC_3 = 75
+BLOOD_PRESSURE_PULSE_3 = 73
 
 SYSTOLIC_MIN = min(
     BLOOD_PRESSURE_SYSTOLIC_1,
@@ -94,16 +97,19 @@ class CustomUserModelTest(TestCase):
             user=cls.user,
             systolic=BLOOD_PRESSURE_SYSTOLIC_1,
             diastolic=BLOOD_PRESSURE_DIASTOLIC_1,
+            pulse=BLOOD_PRESSURE_PULSE_1,
         )
         cls.blood_pressure_2 = BloodPressure.objects.create(
             user=cls.user,
             systolic=BLOOD_PRESSURE_SYSTOLIC_2,
             diastolic=BLOOD_PRESSURE_DIASTOLIC_2,
+            pulse=BLOOD_PRESSURE_PULSE_2,
         )
         cls.blood_pressure_3 = BloodPressure.objects.create(
             user=cls.user,
             systolic=BLOOD_PRESSURE_SYSTOLIC_3,
             diastolic=BLOOD_PRESSURE_DIASTOLIC_3,
+            pulse=BLOOD_PRESSURE_PULSE_3,
         )
 
     def test_registration_accepted_default_attribute_false(self):
