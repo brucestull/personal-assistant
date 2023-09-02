@@ -19,6 +19,7 @@ class VitalsAdminTest(TestCase):
             user=self.user,
             systolic=120,
             diastolic=80,
+            pulse=72,
         )
         self.admin = VitalsAdmin(BloodPressure, admin.site)
 

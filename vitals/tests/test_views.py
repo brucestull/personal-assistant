@@ -25,8 +25,10 @@ BLOOD_PRESSURE_LIST_TEMPLATE = "vitals/bloodpressure_list.html"
 
 BLOOD_PRESSURE_SYSTOLIC_1 = 120
 BLOOD_PRESSURE_DIASTOLIC_1 = 80
+BLOOD_PRESSURE_PULSE__1 = 72
 BLOOD_PRESSURE_SYSTOLIC_2 = 110
 BLOOD_PRESSURE_DIASTOLIC_2 = 70
+BLOOD_PRESSURE_PULSE__2 = 72
 
 BLOOD_PRESSURE_SYSTOLIC_MAX = 120
 BLOOD_PRESSURE_SYSTOLIC_MIN = 110
@@ -94,11 +96,13 @@ class BloodPressureListViewTest(TestCase):
             user=cls.user,
             systolic=BLOOD_PRESSURE_SYSTOLIC_1,
             diastolic=BLOOD_PRESSURE_DIASTOLIC_1,
+            pulse=BLOOD_PRESSURE_PULSE__1,
         )
         cls.blood_pressure_2 = BloodPressure.objects.create(
             user=cls.user,
             systolic=BLOOD_PRESSURE_SYSTOLIC_2,
             diastolic=BLOOD_PRESSURE_DIASTOLIC_2,
+            pulse=BLOOD_PRESSURE_PULSE__2,
         )
 
     def test_url_exists_at_desired_location(self):
