@@ -64,11 +64,8 @@ class Thought(CreatedUpdatedBase):
         related_name="thoughts",
         help_text="The user that has the thought.",
     )
-    cognative_distortion = models.ForeignKey(
+    cognative_distortion = models.ManyToManyField(
         CognativeDistortion,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
         related_name="thoughts",
         help_text="The cognative distortion of the thought."
     )
