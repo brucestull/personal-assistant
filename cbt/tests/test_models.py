@@ -169,10 +169,12 @@ class ThoughtModelTest(TestCase):
         )
         cls.thought = Thought.objects.create(
             user=cls.user,
-            cognative_distortion=cls.cognative_distortion,
             name=THOUGHT_NAME,
             description=THOUGHT_DESCRIPTION,
         )
+        # TODO: LEARN how this works.
+        # cls.thought.cognative_distortion.add(cls.cognative_distortion)
+        cls.thought.cognative_distortion.set([cls.cognative_distortion])
 
     def test_user_label(self):
         """
