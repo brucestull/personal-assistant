@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from django.utils.translation import gettext_lazy as _
 
+from app_tracker.admin import OrganizationalConceptAdmin
 from app_tracker.admin import LanguageFrameworkSystemAdmin
 from app_tracker.admin import ApplicationAdmin
 from app_tracker.admin import NoteAdmin
@@ -15,6 +16,74 @@ from app_tracker.models import Note
 from app_tracker.models import DjangoModel
 
 from accounts.models import CustomUser
+
+
+class OrganizationalConceptAdminTest(TestCase):
+    """
+    Test OrganizationalConceptAdmin
+    """
+
+    def test_list_display(self):
+        self.assertEqual(
+            OrganizationalConceptAdmin.list_display,
+            (
+                "name",
+                "description",
+                "created",
+            ),
+        )
+
+    def test_ordering(self):
+        self.assertEqual(OrganizationalConceptAdmin.ordering, ("-created",))
+
+    def test_list_filter(self):
+        self.assertEqual(
+            OrganizationalConceptAdmin.list_filter,
+            ("created",),
+        )
+
+    def test_search_fields(self):
+        self.assertEqual(
+            OrganizationalConceptAdmin.search_fields,
+            (
+                "name",
+                "description",
+            ),
+        )
+
+    def test_readonly_fields(self):
+        self.assertEqual(
+            OrganizationalConceptAdmin.readonly_fields,
+            (
+                "created",
+                "updated",
+            ),
+        )
+
+    def test_fieldsets(self):
+        self.assertEqual(
+            OrganizationalConceptAdmin.fieldsets,
+            (
+                (
+                    None,
+                    {
+                        "fields": (
+                            "name",
+                            "description",
+                        ),
+                    },
+                ),
+                (
+                    "Dates",
+                    {
+                        "fields": (
+                            "created",
+                            "updated",
+                        )
+                    },
+                ),
+            ),
+        )
 
 
 class LanguageFrameworkSystemAdminTest(TestCase):

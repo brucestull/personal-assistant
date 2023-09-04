@@ -4,6 +4,48 @@ from config.settings.common import AUTH_USER_MODEL
 from base.models import CreatedUpdatedBase
 
 
+class OrganizationalConcept(CreatedUpdatedBase):
+    """
+    This model represents a single organizational concept that is being
+    stored. (e.g. Repository Naming, 'TODO' Tags, 'LEARN' Tags, Important Best Practices,
+    My Standards, etc.)
+
+    Attributes:
+        name (str): The name of the organizational concept.
+        description (str): The description of the organizational concept.
+        applications (list): Any application(s) that the organizational concept is associated with.
+    """
+
+    name = models.CharField(
+        verbose_name="Name",
+        help_text="The name of the organizational concept.",
+        max_length=50,
+        unique=True,  # `unique=True` ensures that we can't create two organizational concepts with the same name.
+    )
+    description = models.TextField(
+        verbose_name="Description",
+        help_text="The description of the organizational concept.",
+        null=True,  # `null=True` allows us to create an organizational concept without a description.
+        blank=True,  # `blank=True` allows the create organizational concept form to be submitted without a description.
+    )
+    applications = models.ManyToManyField(
+        "Application",
+        verbose_name="Application(s)",
+        help_text="The application(s) that the organizational concept is associated with.",
+        blank=True,  # `blank=True` allows the create organizational concept form to be submitted without associating it with an application.
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the organizational concept.
+        """
+        return f"{self.name}{' - ' if self.applications.all() else ''}{self.applications.all() if self.applications.all() else ''}"
+
+    class Meta:
+        verbose_name = "Organizational Concept"
+        verbose_name_plural = "Organizational Concepts"
+
+
 class LanguageFrameworkSystem(CreatedUpdatedBase):
     """
     This model represents a single language, framework, or system that is

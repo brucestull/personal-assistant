@@ -2,12 +2,56 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from app_tracker.models import (
+    OrganizationalConcept,
     LanguageFrameworkSystem,
     Project,
     Application,
     Note,
     DjangoModel,
 )
+
+
+@admin.register(OrganizationalConcept)
+class OrganizationalConceptAdmin(admin.ModelAdmin):
+    """
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `OrganizationalConcept` model.
+    """
+
+    list_display = (
+        "name",
+        "description",
+        "created",
+    )
+    ordering = ("-created",)
+    list_filter = ("created",)
+    search_fields = (
+        "name",
+        "description",
+    )
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "name",
+                    "description",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
 
 
 @admin.register(LanguageFrameworkSystem)
