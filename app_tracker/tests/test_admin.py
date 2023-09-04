@@ -29,6 +29,7 @@ class OrganizationalConceptAdminTest(TestCase):
             (
                 "name",
                 "description",
+                "applications_list",
                 "created",
             ),
         )
@@ -70,6 +71,7 @@ class OrganizationalConceptAdminTest(TestCase):
                         "fields": (
                             "name",
                             "description",
+                            "applications",
                         ),
                     },
                 ),

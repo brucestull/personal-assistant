@@ -20,6 +20,7 @@ class OrganizationalConceptAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "description",
+        "applications_list",
         "created",
     )
     ordering = ("-created",)
@@ -39,6 +40,7 @@ class OrganizationalConceptAdmin(admin.ModelAdmin):
                 "fields": (
                     "name",
                     "description",
+                    "applications",
                 )
             },
         ),
@@ -52,6 +54,17 @@ class OrganizationalConceptAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    def applications_list(self, obj):
+        """
+        Return a list of the `Application` objects associated with the `OrganizationalConcept` object.
+
+        :param obj: The `OrganizationalConcept` object.
+        :return: A queryset of the `Application` objects associated with the `OrganizationalConcept` object.
+        """
+        return list(obj.applications.all())
+
+    applications_list.short_description = "Application(s)"
 
 
 @admin.register(LanguageFrameworkSystem)
