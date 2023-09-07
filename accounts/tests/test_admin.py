@@ -2,23 +2,24 @@ from django.test import TestCase
 
 from accounts.models import CustomUser
 from accounts.admin import CustomUserAdmin
-from accounts.forms import CustomUserCreationForm, CustomUserChangeForm
+from accounts.forms import (
+    CustomUserCreationForm,
+    CustomUserChangeForm,
+)
 
 
-USER_1_TEST_USERNAME = "user_1_test_username"
-USER_1_TEST_PASSWORD = "user_1_test_password"
-USER_1_FIRST_NAME = "User1"
-
-USER_2_TEST_USERNAME = "user_2_test_username"
-USER_2_TEST_PASSWORD = "user_2_test_password"
-USER_2_FIRST_NAME = "User2"
+TEST_USER_USERNAME = "TestUser"
+TEST_USER_PASSWORD = "TestUserPassword"
+TEST_USER_EMAIL = "TestUser@email.app"
 
 
 class TestCustomUserAdmin(TestCase):
     """
-    Inherit from `django.test.TestCase` to access `self.client` and `self.assert*` methods.
-    `self` will be an instance of `django.test.TestCase` and `django.test.TestCase` inherits from `unittest.TestCase`.
+    Inherit from `django.test.TestCase` to access `self.client` and
+    `self.assert*` methods. `self` will be an instance of `django.test.TestCase`
+    and `django.test.TestCase` inherits from `unittest.TestCase`.
     """
+
     @classmethod
     def setUpTestData(cls):
         """
@@ -27,9 +28,8 @@ class TestCustomUserAdmin(TestCase):
         This specific function name `setUpTestData` is required by Django.
         """
         cls.user = CustomUser.objects.create_user(
-            username=USER_1_TEST_USERNAME,
-            password=USER_1_TEST_PASSWORD,
-            first_name=USER_1_FIRST_NAME,
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD,
         )
 
     def test_uses_correct_add_form(self):

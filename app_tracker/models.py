@@ -148,6 +148,7 @@ class Application(CreatedUpdatedBase):
         help_text="The URL of the application's repository.",
         null=True,
         blank=True,
+        unique=True,
     )
     reference_repository_url = models.URLField(
         verbose_name="Reference Repository URL",

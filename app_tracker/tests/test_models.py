@@ -522,6 +522,11 @@ class ApplicationModelTest(TestCase):
         blank = application._meta.get_field("repository_url").blank
         self.assertEquals(blank, True)
 
+    def test_repository_url_unique_true(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        unique = application._meta.get_field("repository_url").unique
+        self.assertEquals(unique, True)
+
     def test_reference_repository_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field(
