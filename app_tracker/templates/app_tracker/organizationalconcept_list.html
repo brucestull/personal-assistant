@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ the_site_name }}
+    -
+    {{ page_title }}
+{% endblock title %}
+
+{% block content %}
+
+    <h1>{{ page_title }}</h1>
+    {% for organizational_concept in object_list %}
+        <h2>{{ organizational_concept.name }}</h2>
+        <pre>{{ organizational_concept.description|linebreaksbr }}</pre>
+        {% if organizational_concept.applications.all %}
+            <p>Applications: </p>
+            <p>
+                {% for application in organizational_concept.applications.all %}
+                    {{ application.name}}{% if not forloop.last %} | {% endif %}
+                {% endfor %}
+            </p>
+        {% endif %}
+        {% comment %} <p><a href="{% url 'organizational_concept_detail' organizational_concept.id %}">Details</a></p> {% endcomment %}
+    {% endfor %}
+
+{% endblock content %}
