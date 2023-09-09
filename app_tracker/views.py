@@ -1,3 +1,8 @@
+from typing import Any
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+)
 from django.shortcuts import render
 
 from config.settings.common import THE_SITE_NAME
