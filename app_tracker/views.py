@@ -33,7 +33,7 @@ def home(request):
         "app_tracker/home.html",
         {
             "the_site_name": THE_SITE_NAME,
-            "page_title": HOME_PAGE_TITLE,
+            "page_title": "App Tracker Home",
         },
     )
 
