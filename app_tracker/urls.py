@@ -13,4 +13,9 @@ urlpatterns = [
         home,
         name="home",
     ),
+    path(
+        "organizational-concepts/",
+        OrganizationalConceptListView.as_view(),
+        name="organizational-concepts",
+    ),
 ]
