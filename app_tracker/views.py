@@ -4,10 +4,10 @@ from django.contrib.auth.mixins import (
     UserPassesTestMixin,
 )
 from django.shortcuts import render
+from django.views.generic import ListView
 
 from config.settings.common import THE_SITE_NAME
-
-HOME_PAGE_TITLE = "App Tracker Home"
+from app_tracker.models import OrganizationalConcept
 
 
 def home(request):
@@ -22,3 +22,28 @@ def home(request):
             "page_title": HOME_PAGE_TITLE,
         },
     )
+
+
+class OrganizationalConceptListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    """
+    View function for the list of a user's `OrganizationalConcept`s.
+    """
+
+    model = OrganizationalConcept
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """
+        Adds the `the_site_name` and `page_title` variables to the context dictionary.
+
+        These variables are used in the base template to set the page title and the site name.
+        """
+        context = super().get_context_data(**kwargs)
+        context["the_site_name"] = THE_SITE_NAME
+        context["page_title"] = "Organizational Concepts"
+        return context
+
+    def test_func(self) -> bool:
+        """
+        Test whether user has `registration_accepted` set to True.
+        """
+        return self.request.user.registration_accepted
