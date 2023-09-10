@@ -1,11 +1,8 @@
-from django.http import HttpRequest
 from django.test import TestCase
 from django.test import RequestFactory
 from django.urls import reverse
 
 from vitals.models import BloodPressure
-from vitals.models import Pulse
-from vitals.views import BloodPressureListView
 
 from accounts.models import CustomUser
 
@@ -34,7 +31,6 @@ BLOOD_PRESSURE_SYSTOLIC_MAX = 120
 BLOOD_PRESSURE_SYSTOLIC_MIN = 110
 BLOOD_PRESSURE_DIASTOLIC_MAX = 80
 BLOOD_PRESSURE_DIASTOLIC_MIN = 70
-
 
 
 class HomeViewTest(TestCase):
@@ -107,23 +103,27 @@ class BloodPressureListViewTest(TestCase):
 
     def test_url_exists_at_desired_location(self):
         """
-        Test that the `BloodPressureListView` view is rendered at the desired location.
+        Test that the `BloodPressureListView` view is rendered at the desired
+        location.
         """
         login = self.client.login(
             username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
             password=PASSWORD_FOR_TESTING,
         )
+        self.assertTrue(login)
         response = self.client.get(BLOOD_PRESSURE_LIST_URL)
         self.assertEqual(response.status_code, 200)
 
     def test_url_accessible_by_name(self):
         """
-        Test that the `BloodPressureListView` view is rendered at the desired location by name.
+        Test that the `BloodPressureListView` view is rendered at the desired
+        location by name.
         """
         login = self.client.login(
             username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
             password=PASSWORD_FOR_TESTING,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
 
@@ -135,6 +135,7 @@ class BloodPressureListViewTest(TestCase):
             username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
             password=PASSWORD_FOR_TESTING,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, BLOOD_PRESSURE_LIST_TEMPLATE)
@@ -166,11 +167,13 @@ class BloodPressureListViewTest(TestCase):
             username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
             password=PASSWORD_FOR_TESTING,
         )
+        self.assertTrue(login)
         self.blood_pressure_2.delete()
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
+        self.assertEqual(
+            response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
         self.assertEqual(
             response.context["bloodpressure_list"][0].systolic,
             BLOOD_PRESSURE_SYSTOLIC_1,
@@ -180,7 +183,10 @@ class BloodPressureListViewTest(TestCase):
             BLOOD_PRESSURE_DIASTOLIC_1,
         )
         self.assertEqual(
-            response.context["bloodpressure_list"][0].user.registration_accepted, True
+            response.context[
+                "bloodpressure_list"
+            ][0].user.registration_accepted,
+            True,
         )
         self.assertEqual(
             response.context["bloodpressure_list"][0].user.username,
@@ -195,10 +201,12 @@ class BloodPressureListViewTest(TestCase):
             username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
             password=PASSWORD_FOR_TESTING,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
+        self.assertEqual(
+            response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
         self.assertEqual(
             response.context["user_pressure_range"],
             {
@@ -224,7 +232,8 @@ class BloodPressureListViewTest(TestCase):
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
+        self.assertEqual(
+            response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
 
     def test_has_blood_pressure_context_with_zero_blood_pressures(self):
         """
@@ -253,7 +262,8 @@ class BloodPressureListViewTest(TestCase):
 
     def test_redirects_to_login_if_not_logged_in(self):
         """
-        Test that the `BloodPressureListView` view redirects to login if not logged in.
+        Test that the `BloodPressureListView` view redirects to login if not
+        logged in.
         """
         response = self.client.get(BLOOD_PRESSURE_LIST_URL)
         self.assertRedirects(
@@ -268,12 +278,14 @@ class BloodPressureListViewTest(TestCase):
         self,
     ):
         """
-        Test that the `BloodPressureListView` view redirects to login if logged in but registration not accepted.
+        Test that the `BloodPressureListView` view redirects to login if logged
+        in but registration not accepted.
         """
         login = self.client.login(
             username=USERNAME_REGISTRATION_ACCEPTED_FALSE,
             password=PASSWORD_FOR_TESTING,
         )
+        self.assertFalse(login)
         response = self.client.get(BLOOD_PRESSURE_LIST_URL)
         self.assertRedirects(
             response,

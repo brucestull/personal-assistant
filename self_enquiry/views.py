@@ -136,7 +136,6 @@ class JournalUpdateView(UserPassesTestMixin, UpdateView):
 
 class JournalConfirmDeleteView(
     LoginRequiredMixin,
-    UserPassesTestMixin,
     View,
 ):
     """
@@ -155,14 +154,6 @@ class JournalConfirmDeleteView(
             "page_title": JOURNAL_DELETE_PAGE_TITLE,
         }
         return render(request, self.template_name, context)
-
-    def test_func(self):
-        """
-        Override the default test_func method to only allow the author of the
-        journal to confirm deletion of it.
-        """
-        journal = self.get_object()
-        return self.request.user == journal.author
 
 
 class JournalDeleteView(

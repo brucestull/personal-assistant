@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.urls import reverse
 from django.db import models as d_db_models
 
 from accounts.models import CustomUser
@@ -116,7 +115,8 @@ class BloodPressureModelTest(TestCase):
         Test the `created` field help text.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        created_field_help_text = blood_pressure._meta.get_field("created").help_text
+        created_field_help_text = blood_pressure._meta.get_field(
+            "created").help_text
         self.assertEqual(
             created_field_help_text, "The date and time this object was created."
         )
@@ -154,7 +154,8 @@ class BloodPressureModelTest(TestCase):
         Test the `updated` field help text.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        updated_field_help_text = blood_pressure._meta.get_field("updated").help_text
+        updated_field_help_text = blood_pressure._meta.get_field(
+            "updated").help_text
         self.assertEqual(
             updated_field_help_text, "The date and time this object was last updated."
         )
@@ -164,7 +165,8 @@ class BloodPressureModelTest(TestCase):
         Test the `updated` field auto_now=True.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        updated_field_auto_now = blood_pressure._meta.get_field("updated").auto_now
+        updated_field_auto_now = blood_pressure._meta.get_field(
+            "updated").auto_now
         self.assertTrue(updated_field_auto_now)
 
     def test_uses_correct_user_model(self):
@@ -231,14 +233,16 @@ class BloodPressureModelTest(TestCase):
         systolic_field_verbose_name = blood_pressure._meta.get_field(
             "systolic"
         ).verbose_name
-        self.assertEqual(systolic_field_verbose_name, "Systolic Blood Pressure")
+        self.assertEqual(systolic_field_verbose_name,
+                         "Systolic Blood Pressure")
 
     def test_systolic_field_help_text(self):
         """
         Test the `systolic` field help text.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        systolic_field_help_text = blood_pressure._meta.get_field("systolic").help_text
+        systolic_field_help_text = blood_pressure._meta.get_field(
+            "systolic").help_text
         self.assertEqual(
             systolic_field_help_text, "The systolic blood pressure reading."
         )
@@ -259,7 +263,8 @@ class BloodPressureModelTest(TestCase):
         diastolic_field_verbose_name = blood_pressure._meta.get_field(
             "diastolic"
         ).verbose_name
-        self.assertEqual(diastolic_field_verbose_name, BLOOD_PRESSURE_DIASTOLIC_LABEL)
+        self.assertEqual(diastolic_field_verbose_name,
+                         BLOOD_PRESSURE_DIASTOLIC_LABEL)
 
     def test_diastolic_field_help_text(self):
         """
@@ -278,7 +283,8 @@ class BloodPressureModelTest(TestCase):
         Test the verbose name of the `Pulse` model.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        pulse_field_verbose_name = blood_pressure._meta.get_field("pulse").verbose_name
+        pulse_field_verbose_name = blood_pressure._meta.get_field(
+            "pulse").verbose_name
         self.assertEqual(pulse_field_verbose_name, BLOOD_PRESSURE_PULSE_LABEL)
 
     def test_pulse_field_help_text(self):
@@ -286,7 +292,8 @@ class BloodPressureModelTest(TestCase):
         Test the `pulse` field help text.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        pulse_field_help_text = blood_pressure._meta.get_field("pulse").help_text
+        pulse_field_help_text = blood_pressure._meta.get_field(
+            "pulse").help_text
         self.assertEqual(pulse_field_help_text, BLOOD_PRESSURE_PULSE_HELP_TEXT)
 
     def test_get_average_and_median_with_no_blood_pressures(self):
@@ -294,11 +301,14 @@ class BloodPressureModelTest(TestCase):
         `get_average_and_median` method should return None if there are
         no blood pressures.
         """
-        blood_pressure_01 = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
+        blood_pressure_01 = BloodPressure.objects.get(
+            id=self.blood_pressure_1.pk)
         blood_pressure_01.delete()
-        blood_pressure_02 = BloodPressure.objects.get(id=self.blood_pressure_2.pk)
+        blood_pressure_02 = BloodPressure.objects.get(
+            id=self.blood_pressure_2.pk)
         blood_pressure_02.delete()
-        blood_pressure_03 = BloodPressure.objects.get(id=self.blood_pressure_3.pk)
+        blood_pressure_03 = BloodPressure.objects.get(
+            id=self.blood_pressure_3.pk)
         blood_pressure_03.delete()
         average_and_median = BloodPressure.get_average_and_median()
         self.assertEqual(
@@ -386,7 +396,8 @@ class PulseModelTest(TestCase):
         Test the `user` field on_delete=cascade.
         """
         pulse = Pulse.objects.get(id=self.pulse.pk)
-        user_on_delete = pulse._meta.get_field(PULSE_USER_LABEL).remote_field.on_delete
+        user_on_delete = pulse._meta.get_field(
+            PULSE_USER_LABEL).remote_field.on_delete
         self.assertEqual(user_on_delete, d_db_models.CASCADE)
 
     def test_pulse_user_related_name(self):
@@ -429,7 +440,8 @@ class PulseModelTest(TestCase):
         """
         pulse = Pulse.objects.get(id=self.pulse.pk)
         bpm_field_help_text = pulse._meta.get_field("bpm").help_text
-        self.assertEqual(bpm_field_help_text, "The pulse rate in beats per minute.")
+        self.assertEqual(bpm_field_help_text,
+                         "The pulse rate in beats per minute.")
 
     def test_pulse_verbose_name(self):
         """

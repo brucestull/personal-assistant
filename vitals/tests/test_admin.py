@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.test import TestCase, RequestFactory
-from django.urls import reverse
 
 from vitals.admin import VitalsAdmin, PulseAdmin
 from vitals.models import BloodPressure, Pulse
