@@ -1,0 +1,546 @@
+./accounts/forms.py:5:1: E302 expected 2 blank lines, found 1
+./accounts/forms.py:16:1: E302 expected 2 blank lines, found 1
+./accounts/forms.py:33:10: W292 no newline at end of file
+./accounts/migrations/0001_initial.py:21:80: E501 line too long (117 > 79 characters)
+./accounts/migrations/0001_initial.py:22:80: E501 line too long (88 > 79 characters)
+./accounts/migrations/0001_initial.py:23:80: E501 line too long (103 > 79 characters)
+./accounts/migrations/0001_initial.py:24:80: E501 line too long (196 > 79 characters)
+./accounts/migrations/0001_initial.py:25:80: E501 line too long (329 > 79 characters)
+./accounts/migrations/0001_initial.py:26:80: E501 line too long (104 > 79 characters)
+./accounts/migrations/0001_initial.py:27:80: E501 line too long (102 > 79 characters)
+./accounts/migrations/0001_initial.py:28:80: E501 line too long (103 > 79 characters)
+./accounts/migrations/0001_initial.py:29:80: E501 line too long (165 > 79 characters)
+./accounts/migrations/0001_initial.py:30:80: E501 line too long (203 > 79 characters)
+./accounts/migrations/0001_initial.py:31:80: E501 line too long (117 > 79 characters)
+./accounts/migrations/0001_initial.py:32:80: E501 line too long (266 > 79 characters)
+./accounts/migrations/0001_initial.py:33:80: E501 line too long (229 > 79 characters)
+./accounts/migrations/0003_alter_customuser_registration_accepted.py:16:80: E501 line too long (129 > 79 characters)
+./accounts/models.py:17:80: E501 line too long (83 > 79 characters)
+./accounts/models.py:22:80: E501 line too long (86 > 79 characters)
+./accounts/models.py:126:80: E501 line too long (90 > 79 characters)
+./accounts/models.py:129:80: E501 line too long (91 > 79 characters)
+./accounts/models.py:132:80: E501 line too long (80 > 79 characters)
+./accounts/models.py:133:80: E501 line too long (83 > 79 characters)
+./accounts/tests/test_admin.py:19:80: E501 line too long (80 > 79 characters)
+./accounts/tests/test_admin.py:72:80: E501 line too long (80 > 79 characters)
+./accounts/tests/test_admin.py:86:80: E501 line too long (82 > 79 characters)
+./accounts/tests/test_admin.py:95:80: E501 line too long (120 > 79 characters)
+./accounts/tests/test_models.py:2:1: F401 'django.db.models' imported but unused
+./accounts/tests/test_models.py:137:80: E501 line too long (93 > 79 characters)
+./accounts/tests/test_models.py:185:80: E501 line too long (85 > 79 characters)
+./accounts/tests/test_models.py:202:80: E501 line too long (88 > 79 characters)
+./accounts/tests/test_views.py:5:1: F401 'accounts.forms.CustomUserChangeForm' imported but unused
+./accounts/tests/test_views.py:71:80: E501 line too long (83 > 79 characters)
+./accounts/tests/test_views.py:75:80: E501 line too long (81 > 79 characters)
+./accounts/tests/test_views.py:118:80: E501 line too long (81 > 79 characters)
+./accounts/tests/test_views.py:120:80: E501 line too long (81 > 79 characters)
+./accounts/tests/test_views.py:149:80: E501 line too long (84 > 79 characters)
+./accounts/tests/test_views.py:268:52: W291 trailing whitespace
+./accounts/views.py:89:80: E501 line too long (152 > 79 characters)
+./accounts/views.py:117:80: E501 line too long (87 > 79 characters)
+./app_tracker/admin.py:17:80: E501 line too long (110 > 79 characters)
+./app_tracker/admin.py:60:80: E501 line too long (102 > 79 characters)
+./app_tracker/admin.py:63:80: E501 line too long (108 > 79 characters)
+./app_tracker/admin.py:73:80: E501 line too long (112 > 79 characters)
+./app_tracker/admin.py:107:80: E501 line too long (96 > 79 characters)
+./app_tracker/admin.py:154:80: E501 line too long (88 > 79 characters)
+./app_tracker/admin.py:157:80: E501 line too long (94 > 79 characters)
+./app_tracker/admin.py:168:80: E501 line too long (87 > 79 characters)
+./app_tracker/admin.py:171:80: E501 line too long (93 > 79 characters)
+./app_tracker/admin.py:316:80: E501 line too long (91 > 79 characters)
+./app_tracker/admin.py:317:80: E501 line too long (92 > 79 characters)
+./app_tracker/admin.py:318:80: E501 line too long (105 > 79 characters)
+./app_tracker/admin.py:319:80: E501 line too long (86 > 79 characters)
+./app_tracker/admin.py:325:80: E501 line too long (93 > 79 characters)
+./app_tracker/admin.py:370:80: E501 line too long (100 > 79 characters)
+./app_tracker/migrations/0001_initial.py:18:80: E501 line too long (117 > 79 characters)
+./app_tracker/migrations/0001_initial.py:19:80: E501 line too long (149 > 79 characters)
+./app_tracker/migrations/0001_initial.py:20:80: E501 line too long (150 > 79 characters)
+./app_tracker/migrations/0001_initial.py:21:80: E501 line too long (114 > 79 characters)
+./app_tracker/migrations/0001_initial.py:22:80: E501 line too long (97 > 79 characters)
+./app_tracker/migrations/0001_initial.py:23:80: E501 line too long (106 > 79 characters)
+./app_tracker/migrations/0001_initial.py:24:80: E501 line too long (126 > 79 characters)
+./app_tracker/migrations/0001_initial.py:25:80: E501 line too long (124 > 79 characters)
+./app_tracker/migrations/0001_initial.py:26:80: E501 line too long (134 > 79 characters)
+./app_tracker/migrations/0001_initial.py:27:80: E501 line too long (132 > 79 characters)
+./app_tracker/migrations/0001_initial.py:36:80: E501 line too long (117 > 79 characters)
+./app_tracker/migrations/0001_initial.py:37:80: E501 line too long (149 > 79 characters)
+./app_tracker/migrations/0001_initial.py:38:80: E501 line too long (150 > 79 characters)
+./app_tracker/migrations/0001_initial.py:48:80: E501 line too long (117 > 79 characters)
+./app_tracker/migrations/0001_initial.py:49:80: E501 line too long (149 > 79 characters)
+./app_tracker/migrations/0001_initial.py:50:80: E501 line too long (150 > 79 characters)
+./app_tracker/migrations/0001_initial.py:53:80: E501 line too long (148 > 79 characters)
+./app_tracker/migrations/0001_initial.py:62:80: E501 line too long (117 > 79 characters)
+./app_tracker/migrations/0001_initial.py:63:80: E501 line too long (149 > 79 characters)
+./app_tracker/migrations/0001_initial.py:64:80: E501 line too long (150 > 79 characters)
+./app_tracker/migrations/0001_initial.py:67:80: E501 line too long (209 > 79 characters)
+./app_tracker/migrations/0001_initial.py:68:80: E501 line too long (156 > 79 characters)
+./app_tracker/migrations/0001_initial.py:77:80: E501 line too long (112 > 79 characters)
+./app_tracker/migrations/0002_alter_application_language_framework_systems_and_more.py:16:80: E501 line too long (189 > 79 characters)
+./app_tracker/migrations/0002_alter_application_language_framework_systems_and_more.py:21:80: E501 line too long (189 > 79 characters)
+./app_tracker/migrations/0002_alter_application_language_framework_systems_and_more.py:26:80: E501 line too long (85 > 79 characters)
+./app_tracker/migrations/0002_alter_application_language_framework_systems_and_more.py:31:80: E501 line too long (107 > 79 characters)
+./app_tracker/migrations/0002_alter_application_language_framework_systems_and_more.py:41:80: E501 line too long (87 > 79 characters)
+./app_tracker/migrations/0003_alter_application_has_custom_user.py:9:80: E501 line too long (86 > 79 characters)
+./app_tracker/migrations/0003_alter_application_has_custom_user.py:16:80: E501 line too long (122 > 79 characters)
+./app_tracker/migrations/0004_alter_application_has_prod_deployment_and_more.py:16:80: E501 line too long (126 > 79 characters)
+./app_tracker/migrations/0004_alter_application_has_prod_deployment_and_more.py:21:80: E501 line too long (118 > 79 characters)
+./app_tracker/migrations/0005_alter_application_repository_url_and_more.py:16:80: E501 line too long (111 > 79 characters)
+./app_tracker/migrations/0005_alter_application_repository_url_and_more.py:21:80: E501 line too long (212 > 79 characters)
+./app_tracker/migrations/0006_alter_note_application.py:17:80: E501 line too long (156 > 79 characters)
+./app_tracker/migrations/0007_application_has_email_sending_and_more.py:16:80: E501 line too long (160 > 79 characters)
+./app_tracker/migrations/0007_application_has_email_sending_and_more.py:21:80: E501 line too long (230 > 79 characters)
+./app_tracker/migrations/0008_application_repository_is_public_and_more.py:16:80: E501 line too long (121 > 79 characters)
+./app_tracker/migrations/0008_application_repository_is_public_and_more.py:21:80: E501 line too long (129 > 79 characters)
+./app_tracker/migrations/0009_application_production_url.py:16:80: E501 line too long (122 > 79 characters)
+./app_tracker/migrations/0010_application_project_board_url.py:16:80: E501 line too long (114 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:17:80: E501 line too long (175 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:22:80: E501 line too long (135 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:27:80: E501 line too long (154 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:32:80: E501 line too long (163 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:37:80: E501 line too long (168 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:42:80: E501 line too long (152 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:47:80: E501 line too long (232 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:52:80: E501 line too long (127 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:57:80: E501 line too long (153 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:62:80: E501 line too long (148 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:67:80: E501 line too long (158 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:72:80: E501 line too long (142 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:77:80: E501 line too long (260 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:82:80: E501 line too long (169 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:87:80: E501 line too long (113 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:92:80: E501 line too long (222 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:97:80: E501 line too long (128 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:102:80: E501 line too long (169 > 79 characters)
+./app_tracker/migrations/0011_application_is_template_repository_and_more.py:107:80: E501 line too long (219 > 79 characters)
+./app_tracker/migrations/0012_application_settings_in_dot_env_file.py:16:80: E501 line too long (181 > 79 characters)
+./app_tracker/migrations/0013_application_settings_in_dot_yml_file.py:16:80: E501 line too long (166 > 79 characters)
+./app_tracker/migrations/0014_application_is_favorite.py:16:80: E501 line too long (140 > 79 characters)
+./app_tracker/migrations/0015_application_settings_in_environment.py:16:80: E501 line too long (172 > 79 characters)
+./app_tracker/migrations/0016_application_reference_repository_url.py:16:80: E501 line too long (162 > 79 characters)
+./app_tracker/migrations/0017_project_application_project.py:18:80: E501 line too long (117 > 79 characters)
+./app_tracker/migrations/0017_project_application_project.py:19:80: E501 line too long (149 > 79 characters)
+./app_tracker/migrations/0017_project_application_project.py:20:80: E501 line too long (150 > 79 characters)
+./app_tracker/migrations/0017_project_application_project.py:21:80: E501 line too long (131 > 79 characters)
+./app_tracker/migrations/0017_project_application_project.py:22:80: E501 line too long (146 > 79 characters)
+./app_tracker/migrations/0017_project_application_project.py:23:80: E501 line too long (168 > 79 characters)
+./app_tracker/migrations/0017_project_application_project.py:32:80: E501 line too long (189 > 79 characters)
+./app_tracker/migrations/0018_alter_project_owner.py:18:80: E501 line too long (162 > 79 characters)
+./app_tracker/migrations/0019_application_is_official_repository.py:16:80: E501 line too long (210 > 79 characters)
+./app_tracker/migrations/0020_application_is_archive_repository_and_more.py:16:80: E501 line too long (201 > 79 characters)
+./app_tracker/migrations/0020_application_is_archive_repository_and_more.py:21:80: E501 line too long (211 > 79 characters)
+./app_tracker/migrations/0020_application_is_archive_repository_and_more.py:26:80: E501 line too long (201 > 79 characters)
+./app_tracker/migrations/0021_organizationalconcept.py:16:80: E501 line too long (117 > 79 characters)
+./app_tracker/migrations/0021_organizationalconcept.py:17:80: E501 line too long (149 > 79 characters)
+./app_tracker/migrations/0021_organizationalconcept.py:18:80: E501 line too long (150 > 79 characters)
+./app_tracker/migrations/0021_organizationalconcept.py:19:80: E501 line too long (145 > 79 characters)
+./app_tracker/migrations/0021_organizationalconcept.py:20:80: E501 line too long (161 > 79 characters)
+./app_tracker/migrations/0022_organizationalconcept_applications.py:16:80: E501 line too long (249 > 79 characters)
+./app_tracker/migrations/0023_alter_organizationalconcept_applications.py:16:80: E501 line too long (198 > 79 characters)
+./app_tracker/models.py:10:80: E501 line too long (89 > 79 characters)
+./app_tracker/models.py:16:80: E501 line too long (99 > 79 characters)
+./app_tracker/models.py:23:80: E501 line too long (114 > 79 characters)
+./app_tracker/models.py:28:80: E501 line too long (102 > 79 characters)
+./app_tracker/models.py:29:80: E501 line too long (120 > 79 characters)
+./app_tracker/models.py:34:80: E501 line too long (91 > 79 characters)
+./app_tracker/models.py:35:80: E501 line too long (141 > 79 characters)
+./app_tracker/models.py:42:80: E501 line too long (131 > 79 characters)
+./app_tracker/models.py:59:80: E501 line too long (92 > 79 characters)
+./app_tracker/models.py:66:80: E501 line too long (80 > 79 characters)
+./app_tracker/models.py:197:80: E501 line too long (80 > 79 characters)
+./app_tracker/models.py:202:80: E501 line too long (83 > 79 characters)
+./app_tracker/models.py:212:80: E501 line too long (86 > 79 characters)
+./app_tracker/models.py:217:80: E501 line too long (90 > 79 characters)
+./app_tracker/models.py:222:80: E501 line too long (82 > 79 characters)
+./app_tracker/models.py:227:80: E501 line too long (90 > 79 characters)
+./app_tracker/models.py:242:80: E501 line too long (81 > 79 characters)
+./app_tracker/models.py:253:80: E501 line too long (84 > 79 characters)
+./app_tracker/tests/test_admin.py:3:1: F401 'django.urls.reverse' imported but unused
+./app_tracker/tests/test_admin.py:10:1: F401 'app_tracker.admin.NoteAdmin' imported but unused
+./app_tracker/tests/test_admin.py:11:1: F401 'app_tracker.admin.DjangoModelAdmin' imported but unused
+./app_tracker/tests/test_admin.py:15:1: F401 'app_tracker.models.Note' imported but unused
+./app_tracker/tests/test_admin.py:16:1: F401 'app_tracker.models.DjangoModel' imported but unused
+./app_tracker/tests/test_admin.py:99:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_admin.py:102:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_admin.py:105:80: E501 line too long (86 > 79 characters)
+./app_tracker/tests/test_models.py:17:80: E501 line too long (84 > 79 characters)
+./app_tracker/tests/test_models.py:20:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:64:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:84:80: E501 line too long (87 > 79 characters)
+./app_tracker/tests/test_models.py:87:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:119:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:146:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:160:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:183:80: E501 line too long (85 > 79 characters)
+./app_tracker/tests/test_models.py:184:80: E501 line too long (85 > 79 characters)
+./app_tracker/tests/test_models.py:227:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:228:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:255:80: E501 line too long (88 > 79 characters)
+./app_tracker/tests/test_models.py:256:80: E501 line too long (87 > 79 characters)
+./app_tracker/tests/test_models.py:262:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:263:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:287:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:295:80: E501 line too long (89 > 79 characters)
+./app_tracker/tests/test_models.py:296:80: E501 line too long (88 > 79 characters)
+./app_tracker/tests/test_models.py:302:80: E501 line too long (84 > 79 characters)
+./app_tracker/tests/test_models.py:303:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:319:9: F841 local variable 'expected_object_name' is assigned to but never used
+./app_tracker/tests/test_models.py:320:80: E501 line too long (221 > 79 characters)
+./app_tracker/tests/test_models.py:353:80: E501 line too long (84 > 79 characters)
+./app_tracker/tests/test_models.py:354:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:367:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:437:80: E501 line too long (88 > 79 characters)
+./app_tracker/tests/test_models.py:487:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:507:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:536:80: E501 line too long (85 > 79 characters)
+./app_tracker/tests/test_models.py:537:80: E501 line too long (84 > 79 characters)
+./app_tracker/tests/test_models.py:541:80: E501 line too long (88 > 79 characters)
+./app_tracker/tests/test_models.py:542:80: E501 line too long (87 > 79 characters)
+./app_tracker/tests/test_models.py:546:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:547:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:556:80: E501 line too long (87 > 79 characters)
+./app_tracker/tests/test_models.py:557:80: E501 line too long (86 > 79 characters)
+./app_tracker/tests/test_models.py:561:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:562:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:571:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:572:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:609:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:610:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:626:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:627:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:641:80: E501 line too long (85 > 79 characters)
+./app_tracker/tests/test_models.py:642:80: E501 line too long (84 > 79 characters)
+./app_tracker/tests/test_models.py:646:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:656:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:657:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:671:80: E501 line too long (86 > 79 characters)
+./app_tracker/tests/test_models.py:672:80: E501 line too long (85 > 79 characters)
+./app_tracker/tests/test_models.py:676:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:677:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:689:80: E501 line too long (88 > 79 characters)
+./app_tracker/tests/test_models.py:693:80: E501 line too long (84 > 79 characters)
+./app_tracker/tests/test_models.py:694:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:698:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:712:80: E501 line too long (85 > 79 characters)
+./app_tracker/tests/test_models.py:713:80: E501 line too long (84 > 79 characters)
+./app_tracker/tests/test_models.py:717:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:725:80: E501 line too long (85 > 79 characters)
+./app_tracker/tests/test_models.py:729:80: E501 line too long (85 > 79 characters)
+./app_tracker/tests/test_models.py:730:80: E501 line too long (80 > 79 characters)
+./app_tracker/tests/test_models.py:734:80: E501 line too long (81 > 79 characters)
+./app_tracker/tests/test_models.py:739:80: E501 line too long (88 > 79 characters)
+./app_tracker/tests/test_models.py:740:80: E501 line too long (87 > 79 characters)
+./app_tracker/tests/test_models.py:744:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:745:80: E501 line too long (82 > 79 characters)
+./app_tracker/tests/test_models.py:803:80: E501 line too long (87 > 79 characters)
+./app_tracker/tests/test_models.py:804:80: E501 line too long (86 > 79 characters)
+./app_tracker/tests/test_models.py:871:9: F841 local variable 'note' is assigned to but never used
+./app_tracker/tests/test_models.py:932:5: F811 redefinition of unused 'test_name_max_length' from line 921
+./app_tracker/tests/test_models.py:949:80: E501 line too long (83 > 79 characters)
+./app_tracker/tests/test_models.py:980:9: F841 local variable 'django_model' is assigned to but never used
+./app_tracker/tests/test_views.py:12:1: E302 expected 2 blank lines, found 1
+./app_tracker/tests/test_views.py:49:1: W391 blank line at end of file
+./app_tracker/views.py:25:80: E501 line too long (89 > 79 characters)
+./app_tracker/views.py:41:80: E501 line too long (87 > 79 characters)
+./app_tracker/views.py:50:80: E501 line too long (86 > 79 characters)
+./app_tracker/views.py:52:80: E501 line too long (94 > 79 characters)
+./base/models.py:3:1: E302 expected 2 blank lines, found 1
+./base/models.py:5:80: E501 line too long (92 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:20:80: E501 line too long (117 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:21:80: E501 line too long (149 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:22:80: E501 line too long (150 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:23:80: E501 line too long (123 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:24:80: E501 line too long (191 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:33:80: E501 line too long (117 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:34:80: E501 line too long (149 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:35:80: E501 line too long (150 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:36:80: E501 line too long (129 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:37:80: E501 line too long (110 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:38:80: E501 line too long (199 > 79 characters)
+./career_organizerator/migrations/0001_initial.py:39:80: E501 line too long (194 > 79 characters)
+./career_organizerator/tests/test_models.py:6:1: F401 'career_organizerator.models.ElevatorSpeech' imported but unused
+./career_organizerator/tests/test_models.py:82:80: E501 line too long (83 > 79 characters)
+./career_organizerator/tests/test_models.py:115:80: E501 line too long (83 > 79 characters)
+./career_organizerator/tests/test_models.py:125:80: E501 line too long (85 > 79 characters)
+./career_organizerator/tests/test_models.py:133:80: E501 line too long (80 > 79 characters)
+./career_organizerator/tests/test_models.py:145:80: E501 line too long (80 > 79 characters)
+./career_organizerator/tests/test_models.py:150:1: W391 blank line at end of file
+./career_organizerator/views.py:1:1: F401 'django.shortcuts.render' imported but unused
+./cbt/admin.py:9:1: W293 blank line contains whitespace
+./cbt/admin.py:39:5: E301 expected 1 blank line, found 0
+./cbt/admin.py:40:80: E501 line too long (93 > 79 characters)
+./cbt/admin.py:103:80: E501 line too long (93 > 79 characters)
+./cbt/admin.py:128:8: W292 no newline at end of file
+./cbt/admin.py:128:80: E501 line too long (528 > 79 characters)
+./cbt/migrations/0001_initial.py:17:80: E501 line too long (117 > 79 characters)
+./cbt/migrations/0001_initial.py:18:80: E501 line too long (149 > 79 characters)
+./cbt/migrations/0001_initial.py:19:80: E501 line too long (150 > 79 characters)
+./cbt/migrations/0001_initial.py:20:80: E501 line too long (147 > 79 characters)
+./cbt/migrations/0001_initial.py:21:80: E501 line too long (136 > 79 characters)
+./cbt/migrations/0002_thought.py:19:80: E501 line too long (117 > 79 characters)
+./cbt/migrations/0002_thought.py:20:80: E501 line too long (149 > 79 characters)
+./cbt/migrations/0002_thought.py:21:80: E501 line too long (150 > 79 characters)
+./cbt/migrations/0002_thought.py:22:80: E501 line too long (122 > 79 characters)
+./cbt/migrations/0002_thought.py:23:80: E501 line too long (123 > 79 characters)
+./cbt/migrations/0002_thought.py:24:80: E501 line too long (187 > 79 characters)
+./cbt/migrations/0003_thought_cognative_distortion.py:17:80: E501 line too long (160 > 79 characters)
+./cbt/migrations/0004_alter_thought_cognative_distortion.py:17:80: E501 line too long (214 > 79 characters)
+./cbt/migrations/0005_remove_thought_cognative_distortion_and_more.py:20:80: E501 line too long (150 > 79 characters)
+./cbt/models.py:13:80: E501 line too long (116 > 79 characters)
+./cbt/models.py:35:80: E501 line too long (90 > 79 characters)
+./cbt/models.py:40:80: E501 line too long (98 > 79 characters)
+./cbt/models.py:58:80: E501 line too long (100 > 79 characters)
+./cbt/tests/test_admin.py:8:1: F401 'cbt.admin.ThoughtAdmin' imported but unused
+./cbt/tests/test_admin.py:11:1: F401 'cbt.models.Thought' imported but unused
+./cbt/tests/test_admin.py:134:80: E501 line too long (121 > 79 characters)
+./cbt/tests/test_models.py:2:1: F401 'django.db.models as d_db_models' imported but unused
+./cbt/tests/test_models.py:43:80: E501 line too long (83 > 79 characters)
+./cbt/tests/test_models.py:76:80: E501 line too long (83 > 79 characters)
+./cbt/tests/test_models.py:83:80: E501 line too long (86 > 79 characters)
+./cbt/tests/test_models.py:90:80: E501 line too long (84 > 79 characters)
+./cbt/tests/test_models.py:100:80: E501 line too long (83 > 79 characters)
+./cbt/tests/test_models.py:122:80: E501 line too long (165 > 79 characters)
+./cbt/tests/test_models.py:188:80: E501 line too long (86 > 79 characters)
+./cbt/tests/test_models.py:211:80: E501 line too long (88 > 79 characters)
+./cbt/tests/test_models.py:250:80: E501 line too long (84 > 79 characters)
+./cbt/tests/test_models.py:257:80: E501 line too long (85 > 79 characters)
+./cbt/tests/test_models.py:279:80: E501 line too long (84 > 79 characters)
+./config/settings/common.py:84:80: E501 line too long (91 > 79 characters)
+./config/settings/common.py:87:80: E501 line too long (81 > 79 characters)
+./config/settings/common.py:90:80: E501 line too long (82 > 79 characters)
+./config/settings/common.py:93:80: E501 line too long (83 > 79 characters)
+./config/settings/development.py:5:1: F403 'from config.settings.common import *' used; unable to detect undefined names
+./config/settings/development.py:17:17: F405 'BASE_DIR' may be undefined, or defined from star imports: config.settings.common
+./config/settings/development.py:35:80: E501 line too long (95 > 79 characters)
+./config/settings/development.py:36:5: E116 unexpected indentation (comment)
+./config/settings/development.py:36:80: E501 line too long (81 > 79 characters)
+./config/settings/development.py:37:9: E116 unexpected indentation (comment)
+./config/settings/development.py:38:9: E116 unexpected indentation (comment)
+./config/settings/development.py:38:80: E501 line too long (88 > 79 characters)
+./config/settings/development.py:39:9: E116 unexpected indentation (comment)
+./config/settings/development.py:39:80: E501 line too long (86 > 79 characters)
+./config/settings/development.py:44:5: E116 unexpected indentation (comment)
+./config/settings/development.py:44:80: E501 line too long (84 > 79 characters)
+./config/settings/development.py:45:5: E116 unexpected indentation (comment)
+./config/settings/production.py:3:1: F403 'from config.settings.common import *' used; unable to detect undefined names
+./config/settings/production.py:10:14: F405 'MIDDLEWARE' may be undefined, or defined from star imports: config.settings.common
+./config/settings/production.py:13:15: F405 'BASE_DIR' may be undefined, or defined from star imports: config.settings.common
+./config/settings/production.py:46:4: W292 no newline at end of file
+./config/settings/production.py:46:80: E501 line too long (136 > 79 characters)
+./config/utils.py:8:1: W191 indentation contains tabs
+./config/utils.py:8:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:8:2: E116 unexpected indentation (comment)
+./config/utils.py:11:1: W191 indentation contains tabs
+./config/utils.py:11:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:11:2: E116 unexpected indentation (comment)
+./config/utils.py:14:1: W191 indentation contains tabs
+./config/utils.py:14:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:14:2: E116 unexpected indentation (comment)
+./config/utils.py:15:1: W191 indentation contains tabs
+./config/utils.py:15:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:15:2: E116 unexpected indentation (comment)
+./config/utils.py:20:1: W191 indentation contains tabs
+./config/utils.py:20:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:20:2: E116 unexpected indentation (comment)
+./config/utils.py:33:6: W292 no newline at end of file
+./manage.py:9:80: E501 line too long (82 > 79 characters)
+./self_enquiry/__init__.py:1:1: F401 '.apps.SelfEnquiryConfig' imported but unused
+./self_enquiry/admin.py:9:80: E501 line too long (96 > 79 characters)
+./self_enquiry/admin.py:12:80: E501 line too long (102 > 79 characters)
+./self_enquiry/admin.py:19:80: E501 line too long (116 > 79 characters)
+./self_enquiry/admin.py:21:80: E501 line too long (123 > 79 characters)
+./self_enquiry/admin.py:26:80: E501 line too long (136 > 79 characters)
+./self_enquiry/admin.py:32:80: E501 line too long (120 > 79 characters)
+./self_enquiry/admin.py:37:80: E501 line too long (101 > 79 characters)
+./self_enquiry/admin.py:64:80: E501 line too long (106 > 79 characters)
+./self_enquiry/admin.py:67:80: E501 line too long (102 > 79 characters)
+./self_enquiry/admin.py:73:80: E501 line too long (116 > 79 characters)
+./self_enquiry/admin.py:75:80: E501 line too long (116 > 79 characters)
+./self_enquiry/admin.py:80:80: E501 line too long (136 > 79 characters)
+./self_enquiry/admin.py:85:80: E501 line too long (120 > 79 characters)
+./self_enquiry/admin.py:90:80: E501 line too long (101 > 79 characters)
+./self_enquiry/migrations/0001_initial.py:20:80: E501 line too long (117 > 79 characters)
+./self_enquiry/migrations/0001_initial.py:21:80: E501 line too long (161 > 79 characters)
+./self_enquiry/migrations/0001_initial.py:22:80: E501 line too long (100 > 79 characters)
+./self_enquiry/migrations/0001_initial.py:24:80: E501 line too long (145 > 79 characters)
+./self_enquiry/migrations/0002_journal_updated_alter_journal_created.py:16:80: E501 line too long (115 > 79 characters)
+./self_enquiry/migrations/0002_journal_updated_alter_journal_created.py:21:80: E501 line too long (114 > 79 characters)
+./self_enquiry/migrations/0003_growthopportunity.py:19:80: E501 line too long (117 > 79 characters)
+./self_enquiry/migrations/0003_growthopportunity.py:20:80: E501 line too long (94 > 79 characters)
+./self_enquiry/migrations/0003_growthopportunity.py:21:80: E501 line too long (138 > 79 characters)
+./self_enquiry/migrations/0003_growthopportunity.py:22:80: E501 line too long (139 > 79 characters)
+./self_enquiry/migrations/0003_growthopportunity.py:23:80: E501 line too long (159 > 79 characters)
+./self_enquiry/migrations/0004_alter_growthopportunity_options_and_more.py:18:80: E501 line too long (106 > 79 characters)
+./self_enquiry/migrations/0004_alter_growthopportunity_options_and_more.py:23:80: E501 line too long (147 > 79 characters)
+./self_enquiry/migrations/0004_alter_growthopportunity_options_and_more.py:28:80: E501 line too long (125 > 79 characters)
+./self_enquiry/migrations/0004_alter_growthopportunity_options_and_more.py:33:80: E501 line too long (126 > 79 characters)
+./self_enquiry/migrations/0005_alter_growthopportunity_created.py:16:80: E501 line too long (106 > 79 characters)
+./self_enquiry/migrations/0006_alter_growthopportunity_created_and_more.py:16:80: E501 line too long (125 > 79 characters)
+./self_enquiry/migrations/0006_alter_growthopportunity_created_and_more.py:21:80: E501 line too long (95 > 79 characters)
+./self_enquiry/migrations/0007_alter_journal_created.py:16:80: E501 line too long (114 > 79 characters)
+./self_enquiry/migrations/0008_alter_growthopportunity_created_and_more.py:16:80: E501 line too long (138 > 79 characters)
+./self_enquiry/migrations/0008_alter_growthopportunity_created_and_more.py:21:80: E501 line too long (139 > 79 characters)
+./self_enquiry/migrations/0008_alter_growthopportunity_created_and_more.py:26:80: E501 line too long (138 > 79 characters)
+./self_enquiry/migrations/0008_alter_growthopportunity_created_and_more.py:31:80: E501 line too long (139 > 79 characters)
+./self_enquiry/models.py:51:80: E501 line too long (156 > 79 characters)
+./self_enquiry/models.py:57:80: E501 line too long (166 > 79 characters)
+./self_enquiry/models.py:70:80: E501 line too long (86 > 79 characters)
+./self_enquiry/models.py:71:80: E501 line too long (91 > 79 characters)
+./self_enquiry/models.py:83:5: E301 expected 1 blank line, found 0
+./self_enquiry/tests/test_models.py:2:1: F401 'django.urls.reverse' imported but unused
+./self_enquiry/tests/test_models.py:219:80: E501 line too long (82 > 79 characters)
+./self_enquiry/tests/test_models.py:228:80: E501 line too long (87 > 79 characters)
+./self_enquiry/tests/test_models.py:248:80: E501 line too long (83 > 79 characters)
+./self_enquiry/tests/test_models.py:273:80: E501 line too long (82 > 79 characters)
+./self_enquiry/tests/test_models.py:301:1: W293 blank line contains whitespace
+./self_enquiry/tests/test_models.py:310:80: E501 line too long (101 > 79 characters)
+./self_enquiry/tests/test_models.py:319:80: E501 line too long (86 > 79 characters)
+./self_enquiry/tests/test_models.py:327:80: E501 line too long (80 > 79 characters)
+./self_enquiry/tests/test_views.py:2:1: F401 'django.urls.resolve' imported but unused
+./self_enquiry/tests/test_views.py:5:1: F401 'self_enquiry.views.JournalCreateView' imported but unused
+./self_enquiry/tests/test_views.py:5:1: F401 'self_enquiry.views.JournalListView' imported but unused
+./self_enquiry/tests/test_views.py:5:1: F401 'self_enquiry.views.JournalDetailView' imported but unused
+./self_enquiry/tests/test_views.py:82:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:93:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:104:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:116:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:123:80: E501 line too long (83 > 79 characters)
+./self_enquiry/tests/test_views.py:129:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:142:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:155:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:173:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:184:80: E501 line too long (82 > 79 characters)
+./self_enquiry/tests/test_views.py:188:80: E501 line too long (83 > 79 characters)
+./self_enquiry/tests/test_views.py:190:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:246:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:257:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:268:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:280:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:287:80: E501 line too long (83 > 79 characters)
+./self_enquiry/tests/test_views.py:294:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:301:58: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:308:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:315:58: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:317:80: E501 line too long (80 > 79 characters)
+./self_enquiry/tests/test_views.py:326:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:333:58: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:340:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:347:67: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:352:80: E501 line too long (88 > 79 characters)
+./self_enquiry/tests/test_views.py:355:67: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:387:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:398:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:411:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:425:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:440:80: E501 line too long (90 > 79 characters)
+./self_enquiry/tests/test_views.py:442:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:455:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:499:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:513:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:529:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:538:80: E501 line too long (83 > 79 characters)
+./self_enquiry/tests/test_views.py:540:80: E501 line too long (81 > 79 characters)
+./self_enquiry/tests/test_views.py:545:80: E501 line too long (93 > 79 characters)
+./self_enquiry/tests/test_views.py:547:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:565:80: E501 line too long (90 > 79 characters)
+./self_enquiry/tests/test_views.py:567:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:580:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:619:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:624:80: E501 line too long (81 > 79 characters)
+./self_enquiry/tests/test_views.py:633:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:638:80: E501 line too long (81 > 79 characters)
+./self_enquiry/tests/test_views.py:643:80: E501 line too long (91 > 79 characters)
+./self_enquiry/tests/test_views.py:645:80: E501 line too long (91 > 79 characters)
+./self_enquiry/tests/test_views.py:684:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:698:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/views.py:53:80: E501 line too long (93 > 79 characters)
+./self_enquiry/views.py:74:80: E501 line too long (94 > 79 characters)
+./self_enquiry/views.py:92:80: E501 line too long (97 > 79 characters)
+./self_enquiry/views.py:115:80: E501 line too long (93 > 79 characters)
+./self_enquiry/views.py:122:80: E501 line too long (97 > 79 characters)
+./self_enquiry/views.py:159:1: W391 blank line at end of file
+./vitals/admin.py:9:80: E501 line too long (102 > 79 characters)
+./vitals/admin.py:61:80: E501 line too long (94 > 79 characters)
+./vitals/admin.py:101:6: W292 no newline at end of file
+./vitals/migrations/0001_initial.py:20:80: E501 line too long (117 > 79 characters)
+./vitals/migrations/0001_initial.py:21:80: E501 line too long (149 > 79 characters)
+./vitals/migrations/0001_initial.py:22:80: E501 line too long (150 > 79 characters)
+./vitals/migrations/0001_initial.py:23:80: E501 line too long (113 > 79 characters)
+./vitals/migrations/0001_initial.py:24:80: E501 line too long (115 > 79 characters)
+./vitals/migrations/0001_initial.py:25:80: E501 line too long (208 > 79 characters)
+./vitals/migrations/0002_pulse.py:19:80: E501 line too long (117 > 79 characters)
+./vitals/migrations/0002_pulse.py:20:80: E501 line too long (149 > 79 characters)
+./vitals/migrations/0002_pulse.py:21:80: E501 line too long (150 > 79 characters)
+./vitals/migrations/0002_pulse.py:22:80: E501 line too long (90 > 79 characters)
+./vitals/migrations/0002_pulse.py:23:80: E501 line too long (190 > 79 characters)
+./vitals/migrations/0004_alter_bloodpressure_diastolic_and_more.py:16:80: E501 line too long (143 > 79 characters)
+./vitals/migrations/0004_alter_bloodpressure_diastolic_and_more.py:21:80: E501 line too long (141 > 79 characters)
+./vitals/migrations/0004_alter_bloodpressure_diastolic_and_more.py:26:80: E501 line too long (133 > 79 characters)
+./vitals/migrations/0005_bloodpressure_pulse.py:16:80: E501 line too long (133 > 79 characters)
+./vitals/models.py:33:80: E501 line too long (95 > 79 characters)
+./vitals/models.py:35:80: E501 line too long (83 > 79 characters)
+./vitals/models.py:36:80: E501 line too long (89 > 79 characters)
+./vitals/models.py:37:80: E501 line too long (109 > 79 characters)
+./vitals/models.py:77:80: E501 line too long (99 > 79 characters)
+./vitals/tests/test_admin.py:3:1: F401 'django.urls.reverse' imported but unused
+./vitals/tests/test_admin.py:131:10: W292 no newline at end of file
+./vitals/tests/test_models.py:2:1: F401 'django.urls.reverse' imported but unused
+./vitals/tests/test_models.py:119:80: E501 line too long (85 > 79 characters)
+./vitals/tests/test_models.py:121:80: E501 line too long (81 > 79 characters)
+./vitals/tests/test_models.py:157:80: E501 line too long (85 > 79 characters)
+./vitals/tests/test_models.py:159:80: E501 line too long (86 > 79 characters)
+./vitals/tests/test_models.py:167:80: E501 line too long (83 > 79 characters)
+./vitals/tests/test_models.py:234:80: E501 line too long (80 > 79 characters)
+./vitals/tests/test_models.py:241:80: E501 line too long (87 > 79 characters)
+./vitals/tests/test_models.py:262:80: E501 line too long (86 > 79 characters)
+./vitals/tests/test_models.py:281:80: E501 line too long (87 > 79 characters)
+./vitals/tests/test_models.py:289:80: E501 line too long (81 > 79 characters)
+./vitals/tests/test_models.py:297:80: E501 line too long (82 > 79 characters)
+./vitals/tests/test_models.py:299:80: E501 line too long (82 > 79 characters)
+./vitals/tests/test_models.py:301:80: E501 line too long (82 > 79 characters)
+./vitals/tests/test_models.py:316:80: E501 line too long (91 > 79 characters)
+./vitals/tests/test_models.py:352:80: E501 line too long (157 > 79 characters)
+./vitals/tests/test_models.py:389:80: E501 line too long (87 > 79 characters)
+./vitals/tests/test_models.py:432:80: E501 line too long (84 > 79 characters)
+./vitals/tests/test_views.py:1:1: F401 'django.http.HttpRequest' imported but unused
+./vitals/tests/test_views.py:7:1: F401 'vitals.models.Pulse' imported but unused
+./vitals/tests/test_views.py:8:1: F401 'vitals.views.BloodPressureListView' imported but unused
+./vitals/tests/test_views.py:40:1: E303 too many blank lines (3)
+./vitals/tests/test_views.py:110:80: E501 line too long (87 > 79 characters)
+./vitals/tests/test_views.py:112:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:121:80: E501 line too long (95 > 79 characters)
+./vitals/tests/test_views.py:123:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:134:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:165:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:173:80: E501 line too long (88 > 79 characters)
+./vitals/tests/test_views.py:183:80: E501 line too long (86 > 79 characters)
+./vitals/tests/test_views.py:194:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:201:80: E501 line too long (88 > 79 characters)
+./vitals/tests/test_views.py:227:80: E501 line too long (88 > 79 characters)
+./vitals/tests/test_views.py:256:80: E501 line too long (87 > 79 characters)
+./vitals/tests/test_views.py:271:80: E501 line too long (113 > 79 characters)
+./vitals/tests/test_views.py:273:9: F841 local variable 'login' is assigned to but never used
+./vitals/views.py:6:1: F401 'vitals.models.Pulse' imported but unused
+./vitals/views.py:39:80: E501 line too long (145 > 79 characters)
+./vitals/views.py:42:80: E501 line too long (151 > 79 characters)
+./vitals/views.py:55:80: E501 line too long (82 > 79 characters)
+./vitals/views.py:59:80: E501 line too long (87 > 79 characters)
+5     E101 indentation contains mixed spaces and tabs
+11    E116 unexpected indentation (comment)
+2     E301 expected 1 blank line, found 0
+4     E302 expected 2 blank lines, found 1
+1     E303 too many blank lines (3)
+410   E501 line too long (117 > 79 characters)
+5     E712 comparison to True should be 'if cond is True:' or 'if cond:'
+24    F401 'django.db.models' imported but unused
+2     F403 'from config.settings.common import *' used; unable to detect undefined names
+3     F405 'BASE_DIR' may be undefined, or defined from star imports: config.settings.common
+1     F811 redefinition of unused 'test_name_max_length' from line 921
+42    F841 local variable 'expected_object_name' is assigned to but never used
+5     W191 indentation contains tabs
+1     W291 trailing whitespace
+6     W292 no newline at end of file
+2     W293 blank line contains whitespace
+3     W391 blank line at end of file
+
+Exited with code exit status 1

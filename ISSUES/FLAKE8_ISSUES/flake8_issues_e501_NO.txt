@@ -1,0 +1,136 @@
+./accounts/forms.py:5:1: E302 expected 2 blank lines, found 1
+./accounts/forms.py:16:1: E302 expected 2 blank lines, found 1
+./accounts/forms.py:33:10: W292 no newline at end of file
+./accounts/tests/test_models.py:2:1: F401 'django.db.models' imported but unused
+./accounts/tests/test_views.py:5:1: F401 'accounts.forms.CustomUserChangeForm' imported but unused
+./accounts/tests/test_views.py:268:52: W291 trailing whitespace
+./app_tracker/tests/test_admin.py:3:1: F401 'django.urls.reverse' imported but unused
+./app_tracker/tests/test_admin.py:10:1: F401 'app_tracker.admin.NoteAdmin' imported but unused
+./app_tracker/tests/test_admin.py:11:1: F401 'app_tracker.admin.DjangoModelAdmin' imported but unused
+./app_tracker/tests/test_admin.py:15:1: F401 'app_tracker.models.Note' imported but unused
+./app_tracker/tests/test_admin.py:16:1: F401 'app_tracker.models.DjangoModel' imported but unused
+./app_tracker/tests/test_models.py:319:9: F841 local variable 'expected_object_name' is assigned to but never used
+./app_tracker/tests/test_models.py:871:9: F841 local variable 'note' is assigned to but never used
+./app_tracker/tests/test_models.py:932:5: F811 redefinition of unused 'test_name_max_length' from line 921
+./app_tracker/tests/test_models.py:980:9: F841 local variable 'django_model' is assigned to but never used
+./app_tracker/tests/test_views.py:12:1: E302 expected 2 blank lines, found 1
+./app_tracker/tests/test_views.py:49:1: W391 blank line at end of file
+./base/models.py:3:1: E302 expected 2 blank lines, found 1
+./career_organizerator/tests/test_models.py:6:1: F401 'career_organizerator.models.ElevatorSpeech' imported but unused
+./career_organizerator/tests/test_models.py:150:1: W391 blank line at end of file
+./career_organizerator/views.py:1:1: F401 'django.shortcuts.render' imported but unused
+./cbt/admin.py:9:1: W293 blank line contains whitespace
+./cbt/admin.py:39:5: E301 expected 1 blank line, found 0
+./cbt/admin.py:128:8: W292 no newline at end of file
+./cbt/tests/test_admin.py:8:1: F401 'cbt.admin.ThoughtAdmin' imported but unused
+./cbt/tests/test_admin.py:11:1: F401 'cbt.models.Thought' imported but unused
+./cbt/tests/test_models.py:2:1: F401 'django.db.models as d_db_models' imported but unused
+./config/settings/development.py:5:1: F403 'from config.settings.common import *' used; unable to detect undefined names
+./config/settings/development.py:17:17: F405 'BASE_DIR' may be undefined, or defined from star imports: config.settings.common
+./config/settings/development.py:36:5: E116 unexpected indentation (comment)
+./config/settings/development.py:37:9: E116 unexpected indentation (comment)
+./config/settings/development.py:38:9: E116 unexpected indentation (comment)
+./config/settings/development.py:39:9: E116 unexpected indentation (comment)
+./config/settings/development.py:44:5: E116 unexpected indentation (comment)
+./config/settings/development.py:45:5: E116 unexpected indentation (comment)
+./config/settings/production.py:3:1: F403 'from config.settings.common import *' used; unable to detect undefined names
+./config/settings/production.py:10:14: F405 'MIDDLEWARE' may be undefined, or defined from star imports: config.settings.common
+./config/settings/production.py:13:15: F405 'BASE_DIR' may be undefined, or defined from star imports: config.settings.common
+./config/settings/production.py:46:4: W292 no newline at end of file
+./config/utils.py:8:1: W191 indentation contains tabs
+./config/utils.py:8:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:8:2: E116 unexpected indentation (comment)
+./config/utils.py:11:1: W191 indentation contains tabs
+./config/utils.py:11:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:11:2: E116 unexpected indentation (comment)
+./config/utils.py:14:1: W191 indentation contains tabs
+./config/utils.py:14:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:14:2: E116 unexpected indentation (comment)
+./config/utils.py:15:1: W191 indentation contains tabs
+./config/utils.py:15:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:15:2: E116 unexpected indentation (comment)
+./config/utils.py:20:1: W191 indentation contains tabs
+./config/utils.py:20:1: E101 indentation contains mixed spaces and tabs
+./config/utils.py:20:2: E116 unexpected indentation (comment)
+./config/utils.py:33:6: W292 no newline at end of file
+./self_enquiry/__init__.py:1:1: F401 '.apps.SelfEnquiryConfig' imported but unused
+./self_enquiry/models.py:83:5: E301 expected 1 blank line, found 0
+./self_enquiry/tests/test_models.py:2:1: F401 'django.urls.reverse' imported but unused
+./self_enquiry/tests/test_models.py:301:1: W293 blank line contains whitespace
+./self_enquiry/tests/test_views.py:2:1: F401 'django.urls.resolve' imported but unused
+./self_enquiry/tests/test_views.py:5:1: F401 'self_enquiry.views.JournalCreateView' imported but unused
+./self_enquiry/tests/test_views.py:5:1: F401 'self_enquiry.views.JournalListView' imported but unused
+./self_enquiry/tests/test_views.py:5:1: F401 'self_enquiry.views.JournalDetailView' imported but unused
+./self_enquiry/tests/test_views.py:82:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:93:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:104:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:116:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:129:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:142:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:155:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:173:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:190:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:246:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:257:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:268:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:280:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:294:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:301:58: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:308:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:315:58: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:326:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:333:58: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:340:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:347:67: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:355:67: E712 comparison to True should be 'if cond is True:' or 'if cond:'
+./self_enquiry/tests/test_views.py:387:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:398:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:411:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:425:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:442:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:455:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:499:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:513:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:529:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:547:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:567:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:580:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:619:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:633:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:684:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/tests/test_views.py:698:9: F841 local variable 'login' is assigned to but never used
+./self_enquiry/views.py:159:1: W391 blank line at end of file
+./vitals/admin.py:101:6: W292 no newline at end of file
+./vitals/tests/test_admin.py:3:1: F401 'django.urls.reverse' imported but unused
+./vitals/tests/test_admin.py:131:10: W292 no newline at end of file
+./vitals/tests/test_models.py:2:1: F401 'django.urls.reverse' imported but unused
+./vitals/tests/test_views.py:1:1: F401 'django.http.HttpRequest' imported but unused
+./vitals/tests/test_views.py:7:1: F401 'vitals.models.Pulse' imported but unused
+./vitals/tests/test_views.py:8:1: F401 'vitals.views.BloodPressureListView' imported but unused
+./vitals/tests/test_views.py:40:1: E303 too many blank lines (3)
+./vitals/tests/test_views.py:112:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:123:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:134:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:165:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:194:9: F841 local variable 'login' is assigned to but never used
+./vitals/tests/test_views.py:273:9: F841 local variable 'login' is assigned to but never used
+./vitals/views.py:6:1: F401 'vitals.models.Pulse' imported but unused
+
+5     E101 indentation contains mixed spaces and tabs
+11    E116 unexpected indentation (comment)
+2     E301 expected 1 blank line, found 0
+4     E302 expected 2 blank lines, found 1
+1     E303 too many blank lines (3)
+5     E712 comparison to True should be 'if cond is True:' or 'if cond:'
+24    F401 'django.db.models' imported but unused
+2     F403 'from config.settings.common import *' used; unable to detect undefined names
+3     F405 'BASE_DIR' may be undefined, or defined from star imports: config.settings.common
+1     F811 redefinition of unused 'test_name_max_length' from line 921
+42    F841 local variable 'expected_object_name' is assigned to but never used
+5     W191 indentation contains tabs
+1     W291 trailing whitespace
+6     W292 no newline at end of file
+2     W293 blank line contains whitespace
+3     W391 blank line at end of file
+
+Exited with code exit status 1
