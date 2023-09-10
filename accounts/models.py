@@ -27,14 +27,14 @@ class CustomUser(AbstractUser):
 
         Attributes:
         - `self` is the current `CustomUser` object.
-        - `systolic_min` is the minimum systolic blood pressure 
-        reading of all the `BloodPressure` objects for the current user.
-        - `diastolic_min` is the minimum diastolic blood pressure 
-        reading of all the `BloodPressure` objects for the current user.
-        - `systolic_max` is the maximum systolic blood pressure 
-        reading of all the `BloodPressure` objects for the current user.
-        - `diastolic_max` is the maximum diastolic blood pressure 
-        reading of all the `BloodPressure` objects for the current user.
+        - `systolic_min` is the minimum systolic blood pressure reading of
+        all the `BloodPressure` objects for the current user.
+        - `diastolic_min` is the minimum diastolic blood pressure reading of
+        all the `BloodPressure` objects for the current user.
+        - `systolic_max` is the maximum systolic blood pressure reading of
+        all the `BloodPressure` objects for the current user.
+        - `diastolic_max` is the maximum diastolic blood pressure reading of
+        all the `BloodPressure` objects for the current user.
         """
         if BloodPressure.objects.filter(user=self).count() == 0:
             # TODO: Determine if there is a better way to handle this.
