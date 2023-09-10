@@ -24,12 +24,16 @@ from .models import Journal
 
 
 JOURNAL_LIST_PAGE_TITLE = "Journals"
+
 JOURNAL_CREATE_PAGE_TITLE = "Create a Journal"
 JOURNAL_CREATE_FORM_BUTTON_TEXT = "Create your Journal!"
+
 JOURNAL_UPDATE_PAGE_TITLE = "Update a Journal"
 JOURNAL_UPDATE_FORM_BUTTON_TEXT = "Update your Journal!"
+
 JOURNAL_DELETE_PAGE_TITLE = "Delete a Journal"
 JOURNAL_DELETE_FORM_BUTTON_TEXT = "Delete your Journal!"
+
 JOURNAL_DETAIL_PAGE_TITLE = "Journal Detail"
 
 
@@ -50,7 +54,8 @@ class JournalCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         """
-        Override the default form_valid method to add the current user to the `author` field.
+        Override the default form_valid method to add the current user to the
+        `author` field.
         """
         form.instance.author = self.request.user
         return super().form_valid(form)
@@ -71,7 +76,8 @@ class JournalListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         """
-        Override the default queryset to only return journals that belong to the current user.
+        Override the default queryset to only return journals that belong to
+        the current user.
         """
         return super().get_queryset().filter(author=self.request.user)
 
@@ -89,7 +95,8 @@ class JournalDetailView(UserPassesTestMixin, DetailView):
 
     def test_func(self):
         """
-        Override the default test_func method to only allow the author of the journal to view it.
+        Override the default test_func method to only allow the author of the
+        journal to view it.
         """
         journal = self.get_object()
         return self.request.user == journal.author
@@ -112,20 +119,26 @@ class JournalUpdateView(UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         """
-        Override the default form_valid method to add the current user to the `author` field.
+        Override the default form_valid method to add the current user to the
+        `author` field.
         """
         form.instance.author = self.request.user
         return super().form_valid(form)
 
     def test_func(self):
         """
-        Override the default test_func method to only allow the author of the journal to view it.
+        Override the default test_func method to only allow the author of the
+        journal to view it.
         """
         journal = self.get_object()
         return self.request.user == journal.author
 
 
-class JournalConfirmDeleteView(LoginRequiredMixin, View):
+class JournalConfirmDeleteView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    View,
+):
     """
     Confirm delete view for a single `self_enquiry.Journal`.
     """
@@ -143,8 +156,20 @@ class JournalConfirmDeleteView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
+    def test_func(self):
+        """
+        Override the default test_func method to only allow the author of the
+        journal to confirm deletion of it.
+        """
+        journal = self.get_object()
+        return self.request.user == journal.author
 
-class JournalDeleteView(LoginRequiredMixin, DeleteView):
+
+class JournalDeleteView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    DeleteView,
+):
     model = Journal
     # Template for the confirmation page
     template_name = "self_enquiry/journal_confirm_delete.html"
@@ -156,4 +181,10 @@ class JournalDeleteView(LoginRequiredMixin, DeleteView):
             "self_enquiry:list",
         )
 
-
+    def test_func(self):
+        """
+        Override the default test_func method to only allow the author of the
+        journal to confirm deletion of it.
+        """
+        journal = self.get_object()
+        return self.request.user == journal.author
