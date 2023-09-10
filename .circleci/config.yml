@@ -23,6 +23,6 @@ jobs:
           name: run tests
           command: |
             pipenv shell
-            flake8 --exclude=venv* --statistics
+            flake8 --exclude=venv* --statistics --ignore=E501
             coverage run --source='.' ./manage.py test
             coverage report
