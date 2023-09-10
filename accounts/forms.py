@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from accounts.models import CustomUser
 
+
 class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
@@ -12,6 +13,7 @@ class CustomUserCreationForm(UserCreationForm):
             # 'first_name',
             # 'last_name',
         )
+
 
 class CustomUserChangeForm(UserChangeForm):
 
