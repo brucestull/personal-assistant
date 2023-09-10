@@ -3,9 +3,15 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.views import LoginView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+)
 
-from accounts.forms import CustomUserCreationForm, CustomUserChangeForm
+from accounts.forms import (
+    CustomUserCreationForm,
+    CustomUserChangeForm,
+)
 from accounts.models import CustomUser
 from config.settings.common import THE_SITE_NAME
 
@@ -75,9 +81,9 @@ class CustomUserUpdateView(
         """
         Allow the user to edit only their own account.
 
-        The `self.request.user` is the user that is currently logged in.
-        The `self.get_object()` is the user (object) that is being updated
-        (`UpdateView`).
+        The `self.request.user` is the user that is currently logged
+        in. The `self.get_object()` is the user (object) that is being
+        updated (`UpdateView`).
         """
         return self.request.user == self.get_object()
 
@@ -86,7 +92,9 @@ class CustomUserUpdateView(
         Get the parent `context` and add `the_site_name` to the it.
         """
         # Call the base implementation first to get a context:
-        # In other words, get the existing context that Django is going to already use and then add our new dictionary item to the `context` dictionary.
+        # In other words, get the existing context that Django is going
+        # to already use and then add our new dictionary item to the
+        # `context` dictionary.
         context = super().get_context_data(**kwargs)
         context["the_site_name"] = THE_SITE_NAME
         return context
@@ -100,8 +108,8 @@ class CustomUserDetailView(
     """
     View for user to view their account details.
 
-    We are only specifying the `model` here because we are using the default
-    template name that is created by Django.
+    We are only specifying the `model` here because we are using the
+    default template name that is created by Django.
     """
 
     model = CustomUser
@@ -114,9 +122,12 @@ class CustomUserDetailView(
 
     def get_context_data(self, **kwargs):
         """
-        Get the parent `context` and add `the_site_name` and/or `page_title` to the it.
+        Get the parent `context` and add `the_site_name` and/or
+        `page_title` to the it.
         """
         context = super().get_context_data(**kwargs)
-        context['the_site_name'] = THE_SITE_NAME
-        context["page_title"] = f"{self.object.username}'s User Information"
+        context["the_site_name"] = THE_SITE_NAME
+        context["page_title"] = (
+            f"{self.object.username}'s User Information",
+        )
         return context
