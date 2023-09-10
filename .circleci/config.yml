@@ -20,7 +20,7 @@ jobs:
       - run:
           name: run linter
           command: |
-            pipenv run flake8 --exclude=venv* --statistics --ignore=E501
+            pipenv run flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics --ignore=E501
       - run:
           name: run tests and coverage
           command: |
