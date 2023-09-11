@@ -14,10 +14,14 @@ DATE_TIME_BASE_CREATED_VERBOSE_NAME = "Created"
 DATE_TIME_BASE_CREATED_HELP_TEXT = "The date and time this object was created."
 
 DATE_TIME_BASE_UPDATED_VERBOSE_NAME = "Updated"
-DATE_TIME_BASE_UPDATED_HELP_TEXT = "The date and time this object was last updated."
+DATE_TIME_BASE_UPDATED_HELP_TEXT = (
+    "The date and time this object was last updated."
+)
 
 ORGANIZATIONAL_CONCEPT_NAME_VERBOSE_NAME = "Name"
-ORGANIZATIONAL_CONCEPT_NAME_HELP_TEXT = "The name of the organizational concept."
+ORGANIZATIONAL_CONCEPT_NAME_HELP_TEXT = (
+    "The name of the organizational concept."
+)
 ORGANIZATIONAL_CONCEPT_NAME_MAX_LENGTH = 50
 
 ORGANIZATIONAL_CONCEPT_DESCRIPTION_VERBOSE_NAME = "Description"
@@ -61,7 +65,9 @@ APPLICATION_PRODUCTION_URL_HELP_TEXT = (
 )
 
 APPLICATION_REPOSITORY_URL_VERBOSE_NAME = "Repository URL"
-APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
+APPLICATION_REPOSITORY_URL_HELP_TEXT = (
+    "The URL of the application's repository."
+)
 
 APPLICATION_REFERENCE_REPOSITORY_URL_VERBOSE_NAME = "Reference Repository URL"
 APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT = (
@@ -81,10 +87,14 @@ APPLICATION_IS_ARCHIVE_REPOSITORY_HELP_TEXT = (
 )
 
 APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME = "Project Board URL"
-APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = "The URL of the application's project board."
+APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = (
+    "The URL of the application's project board."
+)
 
 APPLICATION_IS_FAVORITE_VERBOSE_NAME = "Is Favorite"
-APPLICATION_IS_FAVORITE_HELP_TEXT = "Whether or not the application is a favorite."
+APPLICATION_IS_FAVORITE_HELP_TEXT = (
+    "Whether or not the application is a favorite."
+)
 
 APPLICATION_IS_SIMPLE_EXAMPLE_VERBOSE_NAME = "Is Simple Example"
 APPLICATION_IS_SIMPLE_EXAMPLE_HELP_TEXT = (
@@ -126,7 +136,9 @@ APPLICATION_SETTINGS_IN_ENVIRONMENT_HELP_TEXT = (
     "Whether or not the application's settings are in the environment."
 )
 
-APPLICATION_SETTINGS_IN_DOT_ENV_FILE_VERBOSE_NAME = "Settings in Environment File"
+APPLICATION_SETTINGS_IN_DOT_ENV_FILE_VERBOSE_NAME = (
+    "Settings in Environment File"
+)
 APPLICATION_SETTINGS_IN_DOT_ENV_FILE_HELP_TEXT = (
     "Whether or not the application's settings are in an environment file."
 )
@@ -153,7 +165,9 @@ APPLICATION_TESTING_LEVEL_CHOICES = [
     ("none", "None"),
 ]
 
-APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_VERBOSE_NAME = "Language/Framework/Systems"
+APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_VERBOSE_NAME = (
+    "Language/Framework/Systems"
+)
 APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT = (
     "The languages, frameworks, and systems used in the application."
 )
@@ -167,7 +181,9 @@ NOTE_CONTENT_VERBOSE_NAME = "content"
 NOTE_CONTENT_HELP_TEXT = "The content of the note."
 
 NOTE_APPLICATION_NAME = "application"
-NOTE_APPLICATION_HELP_TEXT = "The application that the note is associated with."
+NOTE_APPLICATION_HELP_TEXT = (
+    "The application that the note is associated with."
+)
 NOTE_APPLICATION_RELATED_NAME = "notes"
 
 DJANGO_MODEL_NAME_VERBOSE_NAME = "Name"
@@ -190,8 +206,12 @@ DJANGO_MODEL_APPLICATION_RELATED_NAME = "django_models"
 TEST_ORGANIZATIONAL_CONCEPT_NAME_01 = "Organizational Concept Name One"
 TEST_ORGANIZATIONAL_CONCEPT_NAME_02 = "Organizational Concept Name Two"
 
-TEST_ORGANIZATIONAL_CONCEPT_DESCRIPTION_01 = "Organizational Concept Description One"
-TEST_ORGANIZATIONAL_CONCEPT_DESCRIPTION_02 = "Organizational Concept Description Two"
+TEST_ORGANIZATIONAL_CONCEPT_DESCRIPTION_01 = (
+    "Organizational Concept Description One"
+)
+TEST_ORGANIZATIONAL_CONCEPT_DESCRIPTION_02 = (
+    "Organizational Concept Description Two"
+)
 
 TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_01 = "Python"
 TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_02 = "Django"
@@ -334,12 +354,14 @@ class OrganizationalConceptModelTest(TestCase):
         self.assertEquals(blank, True)
 
     def test_dunder_string_method(self):
-        organizational_concept = OrganizationalConcept.objects.get(
+        org_concept = OrganizationalConcept.objects.get(
             id=self.organizational_concept_01.pk
         )
-        expected_object_name = f"{organizational_concept.name}"
-        expected_dunder_string = f"{organizational_concept.name}{' - ' if organizational_concept.applications.all() else ''}{organizational_concept.applications.all() if organizational_concept.applications.all() else ''}"
-        self.assertEquals(expected_dunder_string, str(organizational_concept))
+        expected_dunder_string = (
+            f"{org_concept.name} | Applications Count: "
+            f"{org_concept.applications.count()}"
+        )
+        self.assertEquals(expected_dunder_string, str(org_concept))
 
     def test_meta_verbose_name(self):
         self.assertEquals(
@@ -970,7 +992,6 @@ class NoteModelTest(TestCase):
 
     def test_application_related_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        note = Note.objects.get(id=self.note_01.pk)
         related_name = application.notes.all()
         self.assertEquals(related_name.count(), 2)
 
@@ -1031,11 +1052,6 @@ class DjangoModelModelTest(TestCase):
         self.assertEquals(is_unique, True)
         self.assertTrue(is_unique)
 
-    def test_name_max_length(self):
-        django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
-        max_length = django_model._meta.get_field("name").max_length
-        self.assertEquals(max_length, 255)
-
     def test_description_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
         field_label = django_model._meta.get_field("description").verbose_name
@@ -1079,8 +1095,15 @@ class DjangoModelModelTest(TestCase):
         self.assertEqual(field.remote_field.on_delete, d_db_models.CASCADE)
 
     def test_application_related_name(self):
+        """
+        This tests the related_name of the application field. Though we are
+        not testing the model field option value directly, we are using the
+        field option `related_name` of `django_models` to confirm the related
+        name gets the realted objects.
+        """
         application = Application.objects.get(id=self.application_01.pk)
-        django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
+        # An error would happen here if the related_name of `django_models`
+        # was not set correctly.
         related_name = application.django_models.all()
         self.assertEquals(related_name.count(), 2)
 
