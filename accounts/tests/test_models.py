@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.db import models
 
 from accounts.models import CustomUser
 from vitals.models import BloodPressure
@@ -134,9 +133,10 @@ class CustomUserModelTest(TestCase):
         This tests the actual `default` value of the `registration_accepted`
         field of a newly created user.
 
-        This test may be redundant with `test_registration_accepted_default_attribute_false`,
-        since Django makes sure to use the `registration_accepted` default
-        value we specify in the model, which is tested in
+        This test may be redundant with
+        `test_registration_accepted_default_attribute_false`, since Django
+        makes sure to use the `registration_accepted` default value we specify
+        in the model, which is tested in
         `test_registration_accepted_default_attribute_false`.
         """
         user = CustomUser.objects.get(id=1)
@@ -182,7 +182,7 @@ class CustomUserModelTest(TestCase):
         )
         self.assertIsNone(user.get_blood_pressure_range())
 
-    def test_get_average_and_median_blood_pressure_method_with_blood_pressures(self):
+    def test_get_average_and_median_blood_pressure_method_with_bp(self):
         """
         `CustomUser` model `get_average_and_median_blood_pressure` method
         should return the average and median systolic and diastolic blood
@@ -199,7 +199,7 @@ class CustomUserModelTest(TestCase):
             },
         )
 
-    def test_get_average_and_median_blood_pressure_method_with_no_blood_pressures(self):
+    def test_get_average_and_median_blood_pressure_method_with_no_bp(self):
         """
         `CustomUser` model `get_average_and_median_blood_pressure` method
         should return `None` for the average and median systolic and diastolic

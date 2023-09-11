@@ -3,7 +3,9 @@
 ## Table of Contents
 
 
-## Run `flake8` With Coverage Locally
+## Run `flake8`
+
+### Locally
 
 ```bash
 flake8 --exclude=migrations,settings.py,urls.py,wsgi.py,manage.py --statistics --count
@@ -17,14 +19,13 @@ flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics
 flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics --ignore=E501
 ```
 
+### In `.circleci/config.yml`
+
 ```bash
 pipenv run flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics --ignore=E501
 ```
 
 ## Development Links
-
-- <http://localhost:8000/vitals/>
-- <http://localhost:8000/vitals/bloodpressures/>
 
 ## Production Links
 
