@@ -201,6 +201,11 @@ class Application(CreatedUpdatedBase):
         help_text="Whether or not the application has a production deployment.",
         default=False,
     )
+    has_cicd = models.BooleanField(
+        verbose_name="Has CI/CD",
+        help_text="Whether or not the application has CI/CD implemented.",
+        default=False,
+    )
     has_email_sending = models.BooleanField(
         verbose_name="Has Email Sending",
         help_text="Whether or not the application has email sending capabilities.",
