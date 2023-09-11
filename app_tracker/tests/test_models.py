@@ -86,6 +86,11 @@ APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = "The URL of the application's project 
 APPLICATION_IS_FAVORITE_VERBOSE_NAME = "Is Favorite"
 APPLICATION_IS_FAVORITE_HELP_TEXT = "Whether or not the application is a favorite."
 
+APPLICATION_IS_SIMPLE_EXAMPLE_VERBOSE_NAME = "Is Simple Example"
+APPLICATION_IS_SIMPLE_EXAMPLE_HELP_TEXT = (
+    "Whether or not the application is a simple example."
+)
+
 APPLICATION_HAS_CUSTOM_USER_VERBOSE_NAME = "Has Custom User"
 APPLICATION_HAS_CUSTOM_USER_HELP_TEXT = (
     "Whether or not the application has a custom user model."
@@ -636,6 +641,24 @@ class ApplicationModelTest(TestCase):
     def test_is_favorite_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
         default = application._meta.get_field("is_favorite").default
+        self.assertFalse(default)
+
+    def test_is_simple_example_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field(
+            "is_simple_example").verbose_name
+        self.assertEquals(
+            field_label, APPLICATION_IS_SIMPLE_EXAMPLE_VERBOSE_NAME)
+
+    def test_is_simple_example_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("is_simple_example").help_text
+        self.assertEquals(
+            help_text, APPLICATION_IS_SIMPLE_EXAMPLE_HELP_TEXT)
+
+    def test_is_simple_example_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("is_simple_example").default
         self.assertFalse(default)
 
     def test_has_custom_user_verbose_name(self):
