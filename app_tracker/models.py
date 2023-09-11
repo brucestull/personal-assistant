@@ -7,35 +7,43 @@ from base.models import CreatedUpdatedBase
 class OrganizationalConcept(CreatedUpdatedBase):
     """
     This model represents a single organizational concept that is being
-    stored. (e.g. Repository Naming, 'TODO' Tags, 'LEARN' Tags, Important Best Practices,
-    My Standards, etc.)
+    stored. (e.g. Repository Naming, 'TODO' Tags, 'LEARN' Tags, Important
+    Best Practices, My Standards, etc.)
 
     Attributes:
         name (str): The name of the organizational concept.
         description (str): The description of the organizational concept.
-        applications (list): Any application(s) that the organizational concept is associated with.
+        applications (list): Any application(s) that the organizational
+        concept is associated with.
     """
 
     name = models.CharField(
         verbose_name="Name",
         help_text="The name of the organizational concept.",
         max_length=50,
-        # `unique=True` ensures that we can't create two organizational concepts with the same name.
+        # `unique=True` ensures that we can't create two organizational
+        # concepts with the same name.
         unique=True,
     )
     description = models.TextField(
         verbose_name="Description",
         help_text="The description of the organizational concept.",
-        # `null=True` allows us to create an organizational concept without a description.
+        # `null=True` allows us to create an organizational concept without
+        # a description.
         null=True,
-        # `blank=True` allows the create organizational concept form to be submitted without a description.
+        # `blank=True` allows the create organizational concept form to be
+        # submitted without a description.
         blank=True,
     )
     applications = models.ManyToManyField(
         "Application",
         verbose_name="Application(s)",
-        help_text="The application(s) that the organizational concept is associated with.",
-        # `blank=True` allows the create organizational concept form to be submitted without associating it with an application.
+        help_text=(
+            "The application(s) that the organizational concept is "
+            "associated with."
+        ),
+        # `blank=True` allows the create organizational concept form to be
+        # submitted without associating it with an application.
         blank=True,
     )
 
@@ -43,7 +51,10 @@ class OrganizationalConcept(CreatedUpdatedBase):
         """
         Returns the string representation of the organizational concept.
         """
-        return f"{self.name}{' - ' if self.applications.all() else ''}{self.applications.all() if self.applications.all() else ''}"
+        return (
+            f"{self.name}{' - ' if self.applications.all() else ''}"
+            f"{self.applications.all() if self.applications.all() else ''}"
+        )
 
     class Meta:
         verbose_name = "Organizational Concept"
@@ -60,14 +71,18 @@ class LanguageFrameworkSystem(CreatedUpdatedBase):
     # `name` is the name of the language, framework, or system.
     name = models.CharField(
         verbose_name="Name",
-        help_text="The name of the language, framework, or system used in the application.",
+        help_text=(
+            "The name of the language, framework, or system used in the "
+            "application."
+        ),
         max_length=30,
         unique=True,
     )
 
     def __str__(self):
         """
-        Returns the string representation of the language, framework, or system.
+        Returns the string representation of the language, framework, or
+        system.
         """
         return self.name
 
@@ -203,7 +218,9 @@ class Application(CreatedUpdatedBase):
     )
     has_prod_deployment = models.BooleanField(
         verbose_name="Has Production Deployment",
-        help_text="Whether or not the application has a production deployment.",
+        help_text=(
+            "Whether or not the application has a production deployment."
+        ),
         default=False,
     )
     has_cicd = models.BooleanField(
@@ -213,7 +230,9 @@ class Application(CreatedUpdatedBase):
     )
     has_email_sending = models.BooleanField(
         verbose_name="Has Email Sending",
-        help_text="Whether or not the application has email sending capabilities.",
+        help_text=(
+            "Whether or not the application has email sending capabilities."
+        ),
         default=False,
     )
     repository_is_public = models.BooleanField(
@@ -223,22 +242,33 @@ class Application(CreatedUpdatedBase):
     )
     settings_in_environment = models.BooleanField(
         verbose_name="Settings in Environment",
-        help_text="Whether or not the application's settings are in the environment.",
+        help_text=(
+            "Whether or not the application's settings are in the "
+            "environment."
+        ),
         default=False,
     )
     settings_in_dot_env_file = models.BooleanField(
         verbose_name="Settings in Environment File",
-        help_text="Whether or not the application's settings are in an environment file.",
+        help_text=(
+            "Whether or not the application's settings are in an environment "
+            "file."
+        ),
         default=False,
     )
     settings_in_dot_yml_file = models.BooleanField(
         verbose_name="Settings in YAML File",
-        help_text="Whether or not the application's settings are in a YAML file.",
+        help_text=(
+            "Whether or not the application's settings are in a YAML file."
+        ),
         default=False,
     )
     is_template_repository = models.BooleanField(
         verbose_name="Is Template Repository",
-        help_text="Whether or not the application's repository is a template repository.",
+        help_text=(
+            "Whether or not the application's repository is a template "
+            "repository."
+        ),
         default=False,
     )
     # `TESTING_LEVEL_CHOICES` is a list of tuples that represent the
@@ -253,7 +283,9 @@ class Application(CreatedUpdatedBase):
     # application.
     testing_level = models.CharField(
         verbose_name="Testing Level",
-        help_text="The relative amount of testing coverage for the application.",
+        help_text=(
+            "The relative amount of testing coverage for the application."
+        ),
         max_length=6,
         choices=TESTING_LEVEL_CHOICES,
         null=True,
@@ -264,7 +296,9 @@ class Application(CreatedUpdatedBase):
     language_framework_systems = models.ManyToManyField(
         LanguageFrameworkSystem,
         verbose_name="Language/Framework/Systems",
-        help_text="The languages, frameworks, and systems used in the application.",
+        help_text=(
+            "The languages, frameworks, and systems used in the application."
+        ),
         # The related name for the `language_framework_systems` field is
         # `applications`. This allows us to access the applications for a
         # language, framework, or system by using
