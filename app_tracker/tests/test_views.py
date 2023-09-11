@@ -9,6 +9,7 @@ HOME_VIEW_NAME = "app_tracker:home"
 HOME_TEMPLATE = "app_tracker/home.html"
 HOME_PAGE_TITLE = "App Tracker Home"
 
+
 class HomeViewTest(TestCase):
     """
     Test the `home` view.
@@ -44,6 +45,3 @@ class HomeViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
         self.assertEqual(response.context["page_title"], HOME_PAGE_TITLE)
-
-
-
