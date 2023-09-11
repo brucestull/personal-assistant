@@ -205,3 +205,4 @@ pipenv run flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --sta
 - [The Django admin documentation generator](https://docs.djangoproject.com/en/4.2/ref/contrib/admin/admindocs/)
 - [Configuring Django Settings for Production](https://thinkster.io/tutorials/configuring-django-settings-for-production)
 - [Django Debug Toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/)
+- [Continuous Integration With Python: An Introduction - realpython.com](https://realpython.com/python-continuous-integration/)
