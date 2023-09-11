@@ -1,12 +1,13 @@
 from django.contrib import admin
 
-from vitals.models import BloodPressure, Pulse
+from vitals.models import BloodPressure, Pulse, Temperature
 
 
 @admin.register(BloodPressure)
 class VitalsAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `BloodPressure` model.
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `BloodPressure` model.
     """
 
     list_display = (
@@ -58,7 +59,8 @@ class VitalsAdmin(admin.ModelAdmin):
 @admin.register(Pulse)
 class PulseAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `Pulse` model.
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `Pulse` model.
     """
 
     list_display = (
@@ -86,6 +88,53 @@ class PulseAdmin(admin.ModelAdmin):
                 "fields": (
                     "user",
                     "bpm",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
+
+
+@admin.register(Temperature)
+class TemperatureAdmin(admin.ModelAdmin):
+    """
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `Temperature` model.
+    """
+
+    list_display = (
+        "subject",
+        "measurement",
+        "created",
+    )
+    ordering = ("-created",)
+    list_filter = (
+        "subject",
+        "created",
+    )
+    search_fields = (
+        "subject__username",
+        "measurement",
+    )
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "subject",
+                    "measurement",
                 )
             },
         ),

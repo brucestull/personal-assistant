@@ -30,11 +30,15 @@ class BloodPressure(CreatedUpdatedBase):
     )
 
     # Use the `@staticmethod` decorator to define a static method.
-    # A `static method` is a method that doesn't need to be called on an instance of the class.
+    # A `static method` is a method that doesn't need to be called on an
+    # instance of the class.
     # An `instance of the class` means an object created from the class.
-    # A `static method` is a method that doesn't need `self` as the first argument.
-    # A `BloodPressure` object is not needed to call the `get_average_and_median` method.
-    # a_specific_blood_pressure_object = BloodPressure.objects.get(systolic=120, diastolic=80) is not needed.
+    # A `static method` is a method that doesn't need `self` as the first
+    # argument.
+    # A `BloodPressure` object is not needed to call the
+    # `get_average_and_median` method.
+    # a_specific_blood_pressure_object =
+    # BloodPressure.objects.get(systolic=120, diastolic=80) is not needed.
     # BloodPressure.get_average_and_median() is enough.
     @staticmethod
     def get_average_and_median():
@@ -74,7 +78,10 @@ class BloodPressure(CreatedUpdatedBase):
         verbose_name_plural = "Blood Pressure Measurements"
 
     def __str__(self):
-        return f"{self.user.username} | {self.systolic} / {self.diastolic} mmHg | {self.pulse} bpm"
+        return (
+            f"{self.user.username} | "
+            f"{self.systolic} / {self.diastolic} mmHg | {self.pulse} bpm"
+        )
 
 
 class Pulse(CreatedUpdatedBase):
@@ -99,3 +106,30 @@ class Pulse(CreatedUpdatedBase):
 
     def __str__(self):
         return f"{self.user.username} | {self.bpm} Beats Per Minute"
+
+
+class Temperature(CreatedUpdatedBase):
+    """
+    Model for `subject` temperature `measurement`.
+    """
+
+    subject = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="Subject",
+        on_delete=models.CASCADE,
+        related_name="temperatures",
+        help_text="The subject that gets their temperature measured.",
+    )
+    measurement = models.DecimalField(
+        verbose_name="Temperature Measurement",
+        max_digits=4,
+        decimal_places=1,
+        help_text="The temperature measurement in degrees Fahrenheit.",
+    )
+
+    class Meta:
+        verbose_name = "Temperature Measurement"
+        verbose_name_plural = "Temperature Measurements"
+
+    def __str__(self):
+        return f"{self.subject.username} | {self.measurement}°F"
