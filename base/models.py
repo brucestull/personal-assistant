@@ -1,8 +1,10 @@
 from django.db import models
 
+
 class CreatedUpdatedBase(models.Model):
     """
-    An abstract base class model that provides self-updating `created` and `updated` fields.
+    An abstract base class model that provides self-updating `created` and
+    `updated` fields.
     """
 
     created = models.DateTimeField(
