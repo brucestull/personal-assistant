@@ -5,7 +5,6 @@ from django.contrib.auth import get_user_model
 
 from career_organizerator.models import (
     BulletPoint,
-    ElevatorSpeech,
 )
 
 
@@ -79,7 +78,9 @@ class BulletPointTestCase(TestCase):
         """
         Test that the help text of the user field is correct.
         """
-        bullet_point_user_help_text = BulletPoint._meta.get_field("user").help_text
+        bullet_point_user_help_text = BulletPoint._meta.get_field(
+            "user",
+        ).help_text
         self.assertEqual(
             bullet_point_user_help_text,
             BULLET_POINT_USER_HELP_TEXT,
@@ -112,7 +113,9 @@ class BulletPointTestCase(TestCase):
         """
         Test that the help text of the text field is correct.
         """
-        bullet_point_text_help_text = BulletPoint._meta.get_field("text").help_text
+        bullet_point_text_help_text = BulletPoint._meta.get_field(
+            "text",
+        ).help_text
         self.assertEqual(
             bullet_point_text_help_text,
             BULLET_POINT_TEXT_HELP_TEXT,
@@ -122,7 +125,9 @@ class BulletPointTestCase(TestCase):
         """
         Test that the max length of the text field is correct.
         """
-        bullet_point_text_max_length = BulletPoint._meta.get_field("text").max_length
+        bullet_point_text_max_length = BulletPoint._meta.get_field(
+            "text",
+        ).max_length
         self.assertEqual(
             bullet_point_text_max_length,
             BULLET_POINT_TEXT_MAX_LENGTH,
@@ -130,7 +135,8 @@ class BulletPointTestCase(TestCase):
 
     def test_bullet_point_dunder_string_method(self):
         """
-        Test that the string representation of the BulletPoint model is correct.
+        Test that the string representation of the BulletPoint model is
+        correct.
         """
         bullet_point_dunder_string = str(self.bullet_point)
         self.assertEqual(
@@ -142,9 +148,8 @@ class BulletPointTestCase(TestCase):
         """
         Test that the verbose name plural of the BulletPoint model is correct.
         """
-        bullet_point_verbose_name_plural = BulletPoint._meta.verbose_name_plural
+        bullet_pt_verbose_name_plural = BulletPoint._meta.verbose_name_plural
         self.assertEqual(
-            bullet_point_verbose_name_plural,
+            bullet_pt_verbose_name_plural,
             BULLET_POINT_VERBOSE_NAME_PLURAL,
         )
-
