@@ -1,12 +1,14 @@
 from django.contrib import admin
 
-from cbt.models import CognativeDistortion
-from cbt.models import Thought
+from cbt.models import (
+    CognativeDistortion,
+    Thought,
+)
 
 
 @admin.register(CognativeDistortion)
 class CognativeDistortionAdmin(admin.ModelAdmin):
-    
+
     """
     Admin class for the `CognativeDistortion` model.
     """
@@ -36,8 +38,13 @@ class CognativeDistortionAdmin(admin.ModelAdmin):
         ),
     )
     ordering = ["name", "description"]
+
     def truncated_description(self, obj):
-        return obj.description[:57] + "..." if len(obj.description) > 57 else obj.description
+        return (
+            obj.description[:57] + "..."
+            if len(obj.description) > 57
+            else obj.description
+        )
 
     truncated_description.short_description = "Description"
 
@@ -100,7 +107,11 @@ class ThoughtAdmin(admin.ModelAdmin):
     ordering = ["name", "description"]
 
     def truncated_description(self, obj):
-        return obj.description[:57] + "..." if len(obj.description) > 57 else obj.description
+        return (
+            obj.description[:57] + "..."
+            if len(obj.description) > 57
+            else obj.description
+        )
 
     truncated_description.short_description = "Description"
 
