@@ -102,7 +102,8 @@ class LanguageFrameworkSystemAdminTest(TestCase):
         self.language_framework_system_02 = LanguageFrameworkSystem.objects.create(
             name="Django",
         )
-        self.admin = LanguageFrameworkSystemAdmin(LanguageFrameworkSystem, admin.site)
+        self.admin = LanguageFrameworkSystemAdmin(
+            LanguageFrameworkSystem, admin.site)
 
     def test_list_display(self):
         self.assertEqual(
@@ -192,6 +193,7 @@ class ApplicationAdminTest(TestCase):
                 "language_framework_systems",
                 "testing_level",
                 "has_prod_deployment",
+                "has_cicd",
                 "has_custom_user",
                 "has_sticky_footer",
                 "has_email_sending",
@@ -253,6 +255,7 @@ class ApplicationAdminTest(TestCase):
                                 "has_custom_user",
                                 "has_sticky_footer",
                                 "has_prod_deployment",
+                                "has_cicd",
                                 "has_email_sending",
                             ),
                             (

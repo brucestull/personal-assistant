@@ -20,19 +20,23 @@ class OrganizationalConcept(CreatedUpdatedBase):
         verbose_name="Name",
         help_text="The name of the organizational concept.",
         max_length=50,
-        unique=True,  # `unique=True` ensures that we can't create two organizational concepts with the same name.
+        # `unique=True` ensures that we can't create two organizational concepts with the same name.
+        unique=True,
     )
     description = models.TextField(
         verbose_name="Description",
         help_text="The description of the organizational concept.",
-        null=True,  # `null=True` allows us to create an organizational concept without a description.
-        blank=True,  # `blank=True` allows the create organizational concept form to be submitted without a description.
+        # `null=True` allows us to create an organizational concept without a description.
+        null=True,
+        # `blank=True` allows the create organizational concept form to be submitted without a description.
+        blank=True,
     )
     applications = models.ManyToManyField(
         "Application",
         verbose_name="Application(s)",
         help_text="The application(s) that the organizational concept is associated with.",
-        blank=True,  # `blank=True` allows the create organizational concept form to be submitted without associating it with an application.
+        # `blank=True` allows the create organizational concept form to be submitted without associating it with an application.
+        blank=True,
     )
 
     def __str__(self):
@@ -195,6 +199,11 @@ class Application(CreatedUpdatedBase):
     has_prod_deployment = models.BooleanField(
         verbose_name="Has Production Deployment",
         help_text="Whether or not the application has a production deployment.",
+        default=False,
+    )
+    has_cicd = models.BooleanField(
+        verbose_name="Has CI/CD",
+        help_text="Whether or not the application has CI/CD implemented.",
         default=False,
     )
     has_email_sending = models.BooleanField(

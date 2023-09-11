@@ -214,6 +214,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "language_framework_systems",
         "testing_level",
         "has_prod_deployment",
+        "has_cicd",
         "has_custom_user",
         "has_sticky_footer",
         "has_email_sending",
@@ -273,6 +274,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                         "has_custom_user",
                         "has_sticky_footer",
                         "has_prod_deployment",
+                        "has_cicd",
                         "has_email_sending",
                     ),
                     (
