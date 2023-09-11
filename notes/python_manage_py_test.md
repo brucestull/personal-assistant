@@ -5,3 +5,7 @@
 * `python manage.py test <app_name>.<test_name>` - Run a specific test
 * `python manage.py test <app_name>.<test_name>.<test_class_name>` - Run a specific test class
 * `python manage.py test <app_name>.<test_name>.<test_class_name>.<test_method_name>` - Run a specific test method
+
+## Examples
+
+* `python manage.py test vitals.tests.test_admin`
