@@ -14,7 +14,8 @@ from app_tracker.models import (
 @admin.register(OrganizationalConcept)
 class OrganizationalConceptAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `OrganizationalConcept` model.
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel
+    for the `OrganizationalConcept` model.
     """
 
     list_display = (
@@ -57,10 +58,12 @@ class OrganizationalConceptAdmin(admin.ModelAdmin):
 
     def applications_list(self, obj):
         """
-        Return a list of the `Application` objects associated with the `OrganizationalConcept` object.
+        Return a list of the `Application` objects associated with the
+        `OrganizationalConcept` object.
 
         :param obj: The `OrganizationalConcept` object.
-        :return: A queryset of the `Application` objects associated with the `OrganizationalConcept` object.
+        :return: A queryset of the `Application` objects associated with the
+        `OrganizationalConcept` object.
         """
         return list(obj.applications.all())
 
@@ -70,7 +73,8 @@ class OrganizationalConceptAdmin(admin.ModelAdmin):
 @admin.register(LanguageFrameworkSystem)
 class LanguageFrameworkSystemAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `LanguageFrameworkSystem` model.
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `LanguageFrameworkSystem` model.
     """
 
     list_display = (
@@ -104,7 +108,8 @@ class LanguageFrameworkSystemAdmin(admin.ModelAdmin):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `Project` model.
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `Project` model.
     """
 
     list_display = (
@@ -151,10 +156,12 @@ class ProjectAdmin(admin.ModelAdmin):
 
     def application_list(self, obj):
         """
-        Return a list of the `Application` objects associated with the `Project` object.
+        Return a list of the `Application` objects associated with the
+        `Project` object.
 
         :param obj: The `Project` object.
-        :return: A queryset of the `Application` objects associated with the `Project` object.
+        :return: A queryset of the `Application` objects associated with
+        the `Project` object.
         """
         return list(obj.applications.all())
 
@@ -165,10 +172,12 @@ class ProjectAdmin(admin.ModelAdmin):
 
     def owner_list(self, obj):
         """
-        Return a list of the `CustomUser` objects associated with the `Project` object.
+        Return a list of the `CustomUser` objects associated with the
+        `Project` object.
 
         :param obj: The `Project` object.
-        :return: A queryset of the `CustomUser` objects associated with the `Project` object.
+        :return: A queryset of the `CustomUser` objects associated with the
+        `Project` object.
         """
         return list(obj.owner.all())
 
@@ -308,21 +317,26 @@ class ApplicationAdmin(admin.ModelAdmin):
         with the `Application` object.
 
         :param obj: The `Application` object.
-        :return: A queryset of the `LanguageFrameworkSystem` objects associated
-        with the `Application` object.
+        :return: A queryset of the `LanguageFrameworkSystem` objects
+        associated with the `Application` object.
         """
         return list(obj.language_framework_systems.all())
 
-    # Set the `short_description` attribute of the `language_framework_systems_list` method
-    # to "Language Framework Systems" so that the `Language Framework Systems` column in the
-    # admin panel will display "Language Framework Systems" instead of "Language Framework Systems List".
-    language_framework_systems_list.short_description = "Languages-Frameworks-Systems"
+    # Set the `short_description` attribute of the
+    # `language_framework_systems_list` method to "Language Framework Systems"
+    # so that the `Language Framework Systems` column in the admin panel will
+    # display "Language Framework Systems" instead of
+    # "Language Framework Systems List".
+    language_framework_systems_list.short_description = (
+        "Languages-Frameworks-Systems"
+    )
 
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `Note` model.
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `Note` model.
     """
 
     list_display = (
@@ -367,7 +381,8 @@ class NoteAdmin(admin.ModelAdmin):
 @admin.register(DjangoModel)
 class DjangoModelAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for the `DjangoModel` model.
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `DjangoModel` model.
     """
 
     list_display = (
