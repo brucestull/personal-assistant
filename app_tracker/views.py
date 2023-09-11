@@ -22,7 +22,8 @@ def home(request):
 
         the_site_name (str): The name of the site.
 
-            - This is set in the `THE_SITE_NAME` variable in `config/settings/common.py`.
+            - This is set in the `THE_SITE_NAME` variable in
+            `config/settings/common.py`.
 
         page_title (str): The title of the page.
 
@@ -38,7 +39,11 @@ def home(request):
     )
 
 
-class OrganizationalConceptListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class OrganizationalConceptListView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    ListView,
+):
     """
     View function for the list of a user's `OrganizationalConcept`s.
     """
@@ -47,9 +52,11 @@ class OrganizationalConceptListView(LoginRequiredMixin, UserPassesTestMixin, Lis
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         """
-        Adds the `the_site_name` and `page_title` variables to the context dictionary.
+        Adds the `the_site_name` and `page_title` variables to the context
+        dictionary.
 
-        These variables are used in the base template to set the page title and the site name.
+        These variables are used in the base template to set the page title
+        and the site name.
         """
         context = super().get_context_data(**kwargs)
         context["the_site_name"] = THE_SITE_NAME
