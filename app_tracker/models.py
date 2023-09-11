@@ -52,8 +52,7 @@ class OrganizationalConcept(CreatedUpdatedBase):
         Returns the string representation of the organizational concept.
         """
         return (
-            f"{self.name}{' - ' if self.applications.all() else ''}"
-            f"{self.applications.all() if self.applications.all() else ''}"
+            f"{self.name} | Applications Count: {self.applications.count()}"
         )
 
     class Meta:
