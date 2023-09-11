@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.test import TestCase, RequestFactory
 
-from vitals.admin import VitalsAdmin, PulseAdmin
-from vitals.models import BloodPressure, Pulse
+from vitals.admin import VitalsAdmin, PulseAdmin, TemperatureAdmin
+from vitals.models import BloodPressure, Pulse, Temperature
 from accounts.models import CustomUser
 
 
@@ -118,6 +118,67 @@ class PulseAdminTest(TestCase):
                     None,
                     {
                         "fields": ("user", "bpm"),
+                    },
+                ),
+                (
+                    "Dates",
+                    {
+                        "fields": ("created", "updated"),
+                    },
+                ),
+            ),
+        )
+
+
+class TemperatureAdminTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            email="testuser@email.app",
+            password="testpassword",
+        )
+        self.temperature = Temperature.objects.create(
+            subject=self.user,
+            measurement=98.6,
+        )
+        self.admin = TemperatureAdmin(Temperature, admin.site)
+
+    def test_list_display(self):
+        self.assertEqual(
+            self.admin.list_display,
+            ("subject", "measurement", "created"),
+        )
+
+    def test_ordering(self):
+        self.assertEqual(self.admin.ordering, ("-created",))
+
+    def test_list_filter(self):
+        self.assertEqual(
+            self.admin.list_filter,
+            ("subject", "created"),
+        )
+
+    def test_search_fields(self):
+        self.assertEqual(
+            self.admin.search_fields,
+            ("subject__username", "measurement"),
+        )
+
+    def test_readonly_fields(self):
+        self.assertEqual(
+            self.admin.readonly_fields,
+            ("created", "updated"),
+        )
+
+    def test_fieldsets(self):
+        self.assertEqual(
+            self.admin.fieldsets,
+            (
+                (
+                    None,
+                    {
+                        "fields": ("subject", "measurement"),
                     },
                 ),
                 (

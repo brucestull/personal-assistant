@@ -2,8 +2,11 @@ from django.test import TestCase
 from django.db import models as d_db_models
 
 from accounts.models import CustomUser
-from vitals.models import BloodPressure
-from vitals.models import Pulse
+from vitals.models import (
+    BloodPressure,
+    Pulse,
+    Temperature,
+)
 
 
 BLANK = ""
@@ -56,6 +59,24 @@ PULSE_BPM_HELP_TEXT = "The pulse reading."
 
 PULSE_VERBOSE_NAME = "Pulse Measurement"
 PULSE_VERBOSE_NAME_PLURAL = "Pulse Measurements"
+
+TEMPERATURE_SUBJECT_VERBOSE_NAME = "Subject"
+TEMPERATURE_SUBJECT_RELATED_NAME = "temperatures"
+TEMPERATURE_SUBJECT_HELP_TEXT = (
+    "The subject that gets their temperature measured."
+)
+
+TEMPERATURE_MEASUREMENT_VERBOSE_NAME = "Temperature Measurement"
+TEMPERATURE_MEASUREMENT_MAX_DIGITS = 4
+TEMPERATURE_MEASUREMENT_DECIMAL_PLACES = 1
+TEMPERATURE_MEASUREMENT_HELP_TEXT = (
+    "The temperature measurement in degrees Fahrenheit."
+)
+
+TEMPERATURE_VERBOSE_NAME = "Temperature Measurement"
+TEMPERATURE_VERBOSE_NAME_PLURAL = "Temperature Measurements"
+
+TEMPERATURE_1 = 98.6
 
 
 class BloodPressureModelTest(TestCase):
@@ -118,7 +139,8 @@ class BloodPressureModelTest(TestCase):
         created_field_help_text = blood_pressure._meta.get_field(
             "created").help_text
         self.assertEqual(
-            created_field_help_text, "The date and time this object was created."
+            created_field_help_text,
+            "The date and time this object was created.",
         )
 
     def test_created_field_auto_now_add_true(self):
@@ -157,7 +179,8 @@ class BloodPressureModelTest(TestCase):
         updated_field_help_text = blood_pressure._meta.get_field(
             "updated").help_text
         self.assertEqual(
-            updated_field_help_text, "The date and time this object was last updated."
+            updated_field_help_text,
+            "The date and time this object was last updated.",
         )
 
     def test_updated_field_auto_now_true(self):
@@ -323,7 +346,8 @@ class BloodPressureModelTest(TestCase):
 
     def test_get_average_and_median_with_three_blood_pressures(self):
         """
-        `get_average_and_median` method should return the proper average and median values.
+        `get_average_and_median` method should return the proper average and
+        median values.
         """
         average_and_median = BloodPressure.get_average_and_median()
         self.assertEqual(
@@ -353,13 +377,19 @@ class BloodPressureModelTest(TestCase):
             BLOOD_PRESSURE_VERBOSE_NAME_PLURAL,
         )
 
-    def test_str_method(self):
+    def test_dunder_string_method(self):
         """
         Test the `__str__` method of the `BloodPressure` model.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
         self.assertEqual(
-            str(blood_pressure), f"{blood_pressure.user.username} | {blood_pressure.systolic} / {blood_pressure.diastolic} mmHg | {blood_pressure.pulse} bpm"
+            str(blood_pressure),
+            (
+                f"{blood_pressure.user.username} | "
+                f"{blood_pressure.systolic} / "
+                f"{blood_pressure.diastolic} mmHg | "
+                f"{blood_pressure.pulse} bpm"
+            )
         )
 
 
@@ -466,4 +496,163 @@ class PulseModelTest(TestCase):
         pulse = Pulse.objects.get(id=self.pulse.pk)
         self.assertEqual(
             str(pulse), f"{pulse.user.username} | {pulse.bpm} Beats Per Minute"
+        )
+
+
+class TemperatureModelTest(TestCase):
+    """
+    Test the `Temperature` model.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Sets up data for the whole TestCase.
+        """
+        cls.subject = CustomUser.objects.create_user(
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
+            first_name=TEST_FIRST_NAME,
+        )
+        cls.temperature = Temperature.objects.create(
+            subject=cls.subject,
+            measurement=TEMPERATURE_1,
+        )
+
+    def test_temperature_subject_uses_correct_user_model(self):
+        """
+        Test the `subject` field uses the correct user model.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        subject_field = temperature._meta.get_field("subject")
+        self.assertEqual(subject_field.related_model, CustomUser)
+
+    def test_temperature_subject_verbose_name(self):
+        """
+        Test the `subject` field verbose_name.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        subject_label = temperature._meta.get_field(
+            "subject"
+        ).verbose_name
+        self.assertEqual(subject_label, TEMPERATURE_SUBJECT_VERBOSE_NAME)
+
+    def test_temperature_subject_on_delete_cascade(self):
+        """
+        Test the `subject` field on_delete=cascade.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        subject_on_delete = temperature._meta.get_field(
+            "subject"
+        ).remote_field.on_delete
+        self.assertEqual(subject_on_delete, d_db_models.CASCADE)
+
+    def test_temperature_subject_related_name(self):
+        """
+        Test the `subject` field related name.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        subject_related_name = temperature._meta.get_field(
+            "subject"
+        ).remote_field.related_name
+        self.assertEqual(
+            subject_related_name,
+            TEMPERATURE_SUBJECT_RELATED_NAME,
+        )
+
+    def test_temperature_subject_help_text(self):
+        """
+        Test the `subject` field help text.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        subject_help_text = temperature._meta.get_field(
+            "subject"
+        ).help_text
+        self.assertEqual(subject_help_text, TEMPERATURE_SUBJECT_HELP_TEXT)
+
+    def test_temperature_measurement_field_name(self):
+        """
+        Test the `measurement` field name.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        measurement_field_name = temperature._meta.get_field(
+            "measurement").name
+        self.assertEqual(measurement_field_name, "measurement")
+
+    def test_temperature_measurement_field_verbose_name(self):
+        """
+        Test the `measurement` field verbose name.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        measurement_field_verbose_name = temperature._meta.get_field(
+            "measurement").verbose_name
+        self.assertEqual(
+            measurement_field_verbose_name,
+            TEMPERATURE_MEASUREMENT_VERBOSE_NAME,
+        )
+
+    def test_temperature_measurement_field_max_digits(self):
+        """
+        Test the `measurement` field max_digits.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        measurement_field_max_digits = temperature._meta.get_field(
+            "measurement").max_digits
+        self.assertEqual(
+            measurement_field_max_digits,
+            TEMPERATURE_MEASUREMENT_MAX_DIGITS,
+        )
+
+    def test_temperature_measurement_field_decimal_places(self):
+        """
+        Test the `measurement` field decimal_places.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        measurement_field_decimal_places = temperature._meta.get_field(
+            "measurement").decimal_places
+        self.assertEqual(
+            measurement_field_decimal_places,
+            TEMPERATURE_MEASUREMENT_DECIMAL_PLACES,
+        )
+
+    def test_temperature_measurement_field_help_text(self):
+        """
+        Test the `measurement` field help text.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        measurement_field_help_text = temperature._meta.get_field(
+            "measurement").help_text
+        self.assertEqual(
+            measurement_field_help_text,
+            TEMPERATURE_MEASUREMENT_HELP_TEXT,
+        )
+
+    def test_temperature_meta_verbose_name(self):
+        """
+        Test the verbose name of the `Temperature` model.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        self.assertEqual(
+            str(temperature._meta.verbose_name),
+            TEMPERATURE_VERBOSE_NAME,
+        )
+
+    def test_temperature_meta_verbose_name_plural(self):
+        """
+        Test the plural verbose name of the `Temperature` model.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        self.assertEqual(
+            str(temperature._meta.verbose_name_plural),
+            TEMPERATURE_VERBOSE_NAME_PLURAL,
+        )
+
+    def test_temperature_dunder_string_method(self):
+        """
+        Test the `__str__` method of the `Temperature` model.
+        """
+        temperature = Temperature.objects.get(id=self.temperature.pk)
+        self.assertEqual(
+            str(temperature),
+            f"{temperature.subject.username} | {temperature.measurement}°F",
         )
