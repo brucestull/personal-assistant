@@ -1,19 +1,14 @@
 from django.contrib import admin
 from django.test import TestCase, RequestFactory
-from django.urls import reverse
 
 from django.utils.translation import gettext_lazy as _
 
 from app_tracker.admin import OrganizationalConceptAdmin
 from app_tracker.admin import LanguageFrameworkSystemAdmin
 from app_tracker.admin import ApplicationAdmin
-from app_tracker.admin import NoteAdmin
-from app_tracker.admin import DjangoModelAdmin
 
 from app_tracker.models import LanguageFrameworkSystem
 from app_tracker.models import Application
-from app_tracker.models import Note
-from app_tracker.models import DjangoModel
 
 from accounts.models import CustomUser
 
@@ -96,10 +91,10 @@ class LanguageFrameworkSystemAdminTest(TestCase):
             email="testuser@email.app",
             password="testpass",
         )
-        self.language_framework_system_01 = LanguageFrameworkSystem.objects.create(
+        self.lfs_01 = LanguageFrameworkSystem.objects.create(
             name="Python",
         )
-        self.language_framework_system_02 = LanguageFrameworkSystem.objects.create(
+        self.lfs_02 = LanguageFrameworkSystem.objects.create(
             name="Django",
         )
         self.admin = LanguageFrameworkSystemAdmin(
