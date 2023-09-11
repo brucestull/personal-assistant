@@ -186,6 +186,11 @@ class Application(CreatedUpdatedBase):
         help_text="Whether or not the application is a favorite.",
         default=False,
     )
+    is_simple_example = models.BooleanField(
+        verbose_name="Is Simple Example",
+        help_text="Whether or not the application is a simple example.",
+        default=False,
+    )
     has_custom_user = models.BooleanField(
         verbose_name="Has Custom User",
         help_text="Whether or not the application has a custom user model.",
