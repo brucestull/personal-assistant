@@ -102,7 +102,8 @@ class LanguageFrameworkSystemAdminTest(TestCase):
         self.language_framework_system_02 = LanguageFrameworkSystem.objects.create(
             name="Django",
         )
-        self.admin = LanguageFrameworkSystemAdmin(LanguageFrameworkSystem, admin.site)
+        self.admin = LanguageFrameworkSystemAdmin(
+            LanguageFrameworkSystem, admin.site)
 
     def test_list_display(self):
         self.assertEqual(
