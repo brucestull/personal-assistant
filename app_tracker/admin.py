@@ -215,6 +215,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "testing_level",
         "has_prod_deployment",
         "has_cicd",
+        "is_simple_example",
         "has_custom_user",
         "has_sticky_footer",
         "has_email_sending",
@@ -274,8 +275,11 @@ class ApplicationAdmin(admin.ModelAdmin):
                         "has_custom_user",
                         "has_sticky_footer",
                         "has_prod_deployment",
-                        "has_cicd",
                         "has_email_sending",
+                    ),
+                    (
+                        "has_cicd",
+                        "is_simple_example",
                     ),
                     (
                         "repository_is_public",
