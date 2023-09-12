@@ -10,3 +10,4 @@
 
 * `python manage.py test vitals.tests.test_admin`
 * `python manage.py test app_tracker.tests.test_models.ApplicationModelTest`
+* `python manage.py test self_enquiry.tests.test_views.JournalConfirmDeleteViewTest.test_get_method`
