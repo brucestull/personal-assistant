@@ -2,7 +2,7 @@
 
 ## Command for This Project
 
-* `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --statistics`
+* `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics`
     * [`.circleci/config.yml`](../.circleci/config.yml)
 
 * Codes to Ignore
