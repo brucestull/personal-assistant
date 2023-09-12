@@ -2,12 +2,13 @@
 
 ## Command for This Project
 
-* `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics`
+* `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --ignore=F403,F405,E712 --statistics`
     * [`.circleci/config.yml`](../.circleci/config.yml)
 
 * Codes to Ignore
     * `F403` - 'from module import *' used; unable to detect undefined names
     * `F405` - name may be undefined, or defined from star imports: module
+    * `E712` - comparison to True should be 'if cond is True:' or 'if cond:'
 ## Examples
 
 * `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --statistics --ignore=F841`

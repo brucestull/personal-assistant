@@ -1,11 +1,8 @@
 from django.test import TestCase
-from django.urls import reverse, resolve
+from django.urls import reverse
 
 from self_enquiry.models import Journal
 from self_enquiry.views import (
-    JournalCreateView,
-    JournalListView,
-    JournalDetailView,
     JournalUpdateView,
     JournalDeleteView,
 )
@@ -83,6 +80,7 @@ class JournalCreateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
 
@@ -94,6 +92,7 @@ class JournalCreateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
 
@@ -105,6 +104,7 @@ class JournalCreateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(JOURNAL_CREATE_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, JOURNAL_CREATE_TEMPLATE)
@@ -117,10 +117,12 @@ class JournalCreateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
         self.assertTrue("page_title" in response.context)
-        self.assertEqual(response.context["page_title"], JOURNAL_CREATE_PAGE_TITLE)
+        self.assertEqual(
+            response.context["page_title"], JOURNAL_CREATE_PAGE_TITLE)
 
     def test_view_context_contains_the_site_name(self):
         """
@@ -130,6 +132,7 @@ class JournalCreateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
         self.assertTrue("the_site_name" in response.context)
@@ -143,6 +146,7 @@ class JournalCreateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
         self.assertTrue("title" in response.context["form"].fields)
@@ -156,6 +160,7 @@ class JournalCreateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.post(
             JOURNAL_CREATE_URL,
             {
@@ -174,6 +179,7 @@ class JournalCreateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         self.client.post(
             JOURNAL_CREATE_URL,
             {
@@ -181,16 +187,19 @@ class JournalCreateViewTest(TestCase):
                 "content": TEST_JOURNAL_CONTENT,
             },
         )
-        self.assertTrue(Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists())
+        self.assertTrue(Journal.objects.filter(
+            title=TEST_JOURNAL_TITLE).exists())
 
     def test_created_journal_is_owned_by_current_user(self):
         """
-        `JournalCreateView` view should create a journal owned by the current user.
+        `JournalCreateView` view should create a journal owned by the current
+        user.
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         self.client.post(
             JOURNAL_CREATE_URL,
             {
@@ -202,8 +211,8 @@ class JournalCreateViewTest(TestCase):
             Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists(),
         )
         self.assertTrue(
-            Journal.objects.filter(title=TEST_JOURNAL_TITLE).first().author
-            == self.user,
+            Journal.objects.filter(
+                title=TEST_JOURNAL_TITLE).first().author == self.user,
         )
 
 
@@ -247,6 +256,7 @@ class JournalListViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(JOURNAL_LIST_URL)
         self.assertEqual(response.status_code, 200)
 
@@ -258,6 +268,7 @@ class JournalListViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
 
@@ -269,6 +280,7 @@ class JournalListViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, JOURNAL_LIST_TEMPLATE)
@@ -281,10 +293,12 @@ class JournalListViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertContains(
-            response, f"<title>{THE_SITE_NAME} - {JOURNAL_LIST_PAGE_TITLE}</title>"
+            response,
+            f"<title>{THE_SITE_NAME} - {JOURNAL_LIST_PAGE_TITLE}</title>",
         )
 
     def test_view_pagination_is_ten(self):
@@ -295,6 +309,7 @@ class JournalListViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertTrue("is_paginated" in response.context)
@@ -309,12 +324,14 @@ class JournalListViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertTrue("is_paginated" in response.context)
         self.assertTrue(response.context["is_paginated"] == True)
         self.assertTrue(
-            len(response.context["journal_list"]) == NUMBER_OF_JOURNALS_PER_PAGE
+            len(response.context["journal_list"]
+                ) == NUMBER_OF_JOURNALS_PER_PAGE
         )
         for journal in response.context["journal_list"]:
             self.assertTrue(isinstance(journal, Journal))
@@ -327,6 +344,7 @@ class JournalListViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
         self.assertEqual(response.status_code, 200)
         self.assertTrue("is_paginated" in response.context)
@@ -341,15 +359,18 @@ class JournalListViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response_page_one = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response_page_one.status_code, 200)
         self.assertTrue("is_paginated" in response_page_one.context)
         self.assertTrue(response_page_one.context["is_paginated"] == True)
         self.assertTrue(
-            len(response_page_one.context["journal_list"])
-            == NUMBER_OF_JOURNALS_PER_PAGE
+            len(
+                response_page_one.context["journal_list"]
+            ) == NUMBER_OF_JOURNALS_PER_PAGE
         )
-        response_page_two = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
+        response_page_two = self.client.get(
+            reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
         self.assertEqual(response_page_two.status_code, 200)
         self.assertTrue("is_paginated" in response_page_two.context)
         self.assertTrue(response_page_two.context["is_paginated"] == True)
@@ -388,6 +409,7 @@ class JournalDetailViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(self.journal.get_absolute_url())
         self.assertEqual(response.status_code, 200)
 
@@ -399,6 +421,7 @@ class JournalDetailViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
         )
@@ -412,6 +435,7 @@ class JournalDetailViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id]),
         )
@@ -426,6 +450,7 @@ class JournalDetailViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
         )
@@ -437,12 +462,14 @@ class JournalDetailViewTest(TestCase):
 
     def test_view_accessible_by_user(self):
         """
-        `JournalDetailView` view should be accessible by the user who created the journal.
+        `JournalDetailView` view should be accessible by the user who created
+        the journal.
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
         )
@@ -456,6 +483,7 @@ class JournalDetailViewTest(TestCase):
             username=TEST_USERNAME_TWO,
             password=TEST_PASSWORD_TWO,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_DETAIL_VIEW_NAME, args=[self.journal.id])
         )
@@ -500,6 +528,7 @@ class JournalUpdateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
         )
@@ -514,6 +543,7 @@ class JournalUpdateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
         )
@@ -530,24 +560,29 @@ class JournalUpdateViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(response.context["page_title"], JOURNAL_UPDATE_PAGE_TITLE)
         self.assertEqual(
-            response.context["form_button_text"], JOURNAL_UPDATE_FORM_BUTTON_TEXT
+            response.context["page_title"], JOURNAL_UPDATE_PAGE_TITLE)
+        self.assertEqual(
+            response.context["form_button_text"],
+            JOURNAL_UPDATE_FORM_BUTTON_TEXT,
         )
 
     def test_form_valid_method(self):
         """
-        `form_valid` method should set the `author` field of the journal to the current user.
+        `form_valid` method should set the `author` field of the journal to
+        the current user.
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.post(
             reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id]),
             data={
@@ -562,12 +597,14 @@ class JournalUpdateViewTest(TestCase):
 
     def test_view_accessible_by_user(self):
         """
-        `JournalUpdateView` view should be accessible by the user who created the journal.
+        `JournalUpdateView` view should be accessible by the user who created
+        the journal.
         """
         login = self.client.login(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
         )
@@ -581,6 +618,7 @@ class JournalUpdateViewTest(TestCase):
             username=TEST_USERNAME_TWO,
             password=TEST_PASSWORD_TWO,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_UPDATE_VIEW_NAME, args=[self.journal_one.id])
         )
@@ -620,8 +658,10 @@ class JournalConfirmDeleteViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
-            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME, args=[self.journal_one.id])
+            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME,
+                    args=[self.journal_one.id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, JOURNAL_CONFIRM_DELETE_TEMPLATE)
@@ -634,15 +674,20 @@ class JournalConfirmDeleteViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
-            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME, args=[self.journal_one.id])
+            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME,
+                    args=[self.journal_one.id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["journal"], self.journal_one)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(response.context["page_title"], JOURNAL_CONFIRM_DELETE_PAGE_TITLE)
+        self.assertEqual(
+            response.context["page_title"], JOURNAL_CONFIRM_DELETE_PAGE_TITLE)
+        # TODO: Fix this test.
         # self.assertEqual(
-        #     response.context["form_button_text"], JOURNAL_CONFIRM_DELETE_FORM_BUTTON_TEXT
+        #     response.context["form_button_text"],
+        #     JOURNAL_CONFIRM_DELETE_FORM_BUTTON_TEXT,
         # )
 
 
@@ -685,6 +730,7 @@ class JournalDeleteViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.get(
             reverse(JOURNAL_DELETE_VIEW_NAME, args=[self.journal_one.id])
         )
@@ -699,6 +745,7 @@ class JournalDeleteViewTest(TestCase):
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
         )
+        self.assertTrue(login)
         response = self.client.post(
             reverse(JOURNAL_DELETE_VIEW_NAME, args=[self.journal_one.pk])
         )
