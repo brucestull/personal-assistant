@@ -10,7 +10,8 @@ class CognativeDistortion(CreatedUpdatedBase):
 
     This model will be available to all users. So, won't have a `user` field.
 
-    This model will be populated by the admin user. Additions, deletions, and updates may be done by the admin user.
+    This model will be populated by the admin user. Additions, deletions, and
+    updates may be done by the admin user.
 
     Attributes:
         name (str): The name of the cognative distortion.
@@ -32,12 +33,13 @@ class CognativeDistortion(CreatedUpdatedBase):
         String representation of a `CognativeDistortion` object.
         """
         return (
-            # f"{self.name[:50] + '...' if len(self.name) > 50 else self.name.ljust(50)} "
-            # f"{self.name.ljust(50)} "
             f"{self.name} "
             f"--- "
             # Truncate the description to 57 characters, if necessary.
-            f"{self.description[:57] + '...' if len(self.description) > 57 else self.description}"
+            + (
+                self.description[:57] + \
+                '...' if len(self.description) > 57 else self.description
+            )
         )
 
     class Meta:
@@ -55,7 +57,8 @@ class Thought(CreatedUpdatedBase):
     Attributes:
         name (str): The name of the thought.
         description (str): The description of the thought.
-        cognative_distortions (list): The list of cognative distortions associated with the thought.
+        cognative_distortions (list): The list of cognative distortions
+        associated with the thought.
     """
 
     user = models.ForeignKey(
