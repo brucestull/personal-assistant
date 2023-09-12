@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.urls import reverse
 from django.db import models as d_db_models
 
 ######################
@@ -216,7 +215,9 @@ class JournalModelTest(TestCase):
         """
         journal = Journal.objects.get(id=self.journal.id)
         self.assertEqual(
-            str(journal), f"{TEST_USERNAME} : {journal.id} - {JOURNAL_TITLE[:24]}"
+            str(
+                journal
+            ), f"{TEST_USERNAME} : {journal.id} - {JOURNAL_TITLE[:24]}"
         )
 
     def test_get_absolute_url_method(self):
@@ -225,7 +226,8 @@ class JournalModelTest(TestCase):
         something.
         """
         journal = Journal.objects.get(id=self.journal.id)
-        self.assertEqual(journal.get_absolute_url(), f"/journals/{journal.id}/detail/")
+        self.assertEqual(journal.get_absolute_url(),
+                         f"/journals/{journal.id}/detail/")
 
     def test_display_content_method_less_than_fifty_characters(self):
         """
@@ -245,7 +247,8 @@ class JournalModelTest(TestCase):
         journal = Journal.objects.get(id=self.journal.id)
         journal.content = JOURNAL_CONTENT_MORE_THAN_FIFTY
         self.assertEqual(
-            journal.display_content(), JOURNAL_CONTENT_MORE_THAN_FIFTY[:50] + "..."
+            journal.display_content(
+            ), JOURNAL_CONTENT_MORE_THAN_FIFTY[:50] + "..."
         )
 
 
@@ -270,9 +273,11 @@ class GrowthOpportunityModelTest(TestCase):
             author=cls.user,
             question=GROWTH_OPPORTUNITY_QUESTION_LESS_THAN_TWENTY_FOUR,
         )
-        cls.growth_opportunity_greater_than_24 = GrowthOpportunity.objects.create(
-            author=cls.user,
-            question=GROWTH_OPPORTUNITY_QUESTION_GREATER_THAN_TWENTY_FOUR,
+        cls.growth_opportunity_greater_than_24 = (
+            GrowthOpportunity.objects.create(
+                author=cls.user,
+                question=GROWTH_OPPORTUNITY_QUESTION_GREATER_THAN_TWENTY_FOUR,
+            )
         )
 
     def test_author_label(self):
@@ -298,7 +303,7 @@ class GrowthOpportunityModelTest(TestCase):
         """
         field = GrowthOpportunity._meta.get_field("author")
         self.assertEqual(field.remote_field.on_delete, d_db_models.CASCADE)
-    
+
     def test_author_related_name(self):
         """
         `GrowthOpportunity` model `author` field `related_name` should be
@@ -307,7 +312,9 @@ class GrowthOpportunityModelTest(TestCase):
         growth_opportunity_less_than_24 = GrowthOpportunity.objects.get(
             id=self.growth_opportunity_less_than_24.id
         )
-        related_name = growth_opportunity_less_than_24._meta.get_field("author").related_query_name()
+        related_name = growth_opportunity_less_than_24._meta.get_field(
+            "author"
+        ).related_query_name()
         self.assertEqual(related_name, GROWTH_OPPORTUNITY_AUTHOR_RELATED_NAME)
 
     def test_question_verbose_name(self):
@@ -316,7 +323,8 @@ class GrowthOpportunityModelTest(TestCase):
         `question`.
         """
         field = GrowthOpportunity._meta.get_field("question")
-        self.assertEqual(field.verbose_name, GROWTH_OPPORTUNITY_QUESTION_VERBOSE_NAME)
+        self.assertEqual(field.verbose_name,
+                         GROWTH_OPPORTUNITY_QUESTION_VERBOSE_NAME)
 
     def test_question_help_text(self):
         """
@@ -324,7 +332,8 @@ class GrowthOpportunityModelTest(TestCase):
         `The question for the growth opportunity.`.
         """
         field = GrowthOpportunity._meta.get_field("question")
-        self.assertEqual(field.help_text, GROWTH_OPPORTUNITY_QUESTION_HELP_TEXT)
+        self.assertEqual(
+            field.help_text, GROWTH_OPPORTUNITY_QUESTION_HELP_TEXT)
 
     def test_created_help_text(self):
         """
