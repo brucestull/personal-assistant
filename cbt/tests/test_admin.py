@@ -5,10 +5,8 @@ from django.test.client import RequestFactory
 from accounts.models import CustomUser
 
 from cbt.admin import CognativeDistortionAdmin
-from cbt.admin import ThoughtAdmin
 
 from cbt.models import CognativeDistortion
-from cbt.models import Thought
 
 
 class CognativeDistortionAdminTest(TestCase):
@@ -131,4 +129,5 @@ class CognativeDistortionAdminTest(TestCase):
             else self.cognative_distortion.description,
         )
 
-    # TODO: Test the `truncated_description()` method by using a hard-coded string to compare against the method's output
+    # TODO: Test the `truncated_description()` method by using a hard-coded
+    # string to compare against the method's output
