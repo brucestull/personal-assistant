@@ -48,8 +48,7 @@ SYSTOLIC_AVERAGE = (
             BLOOD_PRESSURE_SYSTOLIC_2,
             BLOOD_PRESSURE_SYSTOLIC_3,
         ]
-    )
-    / 3
+    ) / 3
 )
 DIASTOLIC_AVERAGE = (
     sum(
@@ -58,8 +57,7 @@ DIASTOLIC_AVERAGE = (
             BLOOD_PRESSURE_DIASTOLIC_2,
             BLOOD_PRESSURE_DIASTOLIC_3,
         ]
-    )
-    / 3
+    ) / 3
 )
 SYSTOLIC_MEDIAN = sorted(
     [

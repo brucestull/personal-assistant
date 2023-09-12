@@ -34,9 +34,8 @@ class CognativeDistortion(CreatedUpdatedBase):
         """
         return (
             f"{self.name} "
-            f"--- "
-            # Truncate the description to 57 characters, if necessary.
-            + (
+            f"--- " + (
+                # Truncate the description to 57 characters, if necessary.
                 self.description[:57] + \
                 '...' if len(self.description) > 57 else self.description
             )

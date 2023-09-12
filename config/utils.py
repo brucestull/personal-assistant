@@ -5,19 +5,19 @@ def get_database_config_variables(url):
     # Remove the `postgres://` from the beginning of the string
     url = url.split('://')[1]
     # Split the remaining string into a list on the `@` character, which
-	# separates the database credentials from the host info
+    # separates the database credentials from the host info
     credentials_and_host_info = url.split('@')
     # Get the database credentials (`DATABASE_USER` and `DATABASE_PASSWORD`)
-	# from the first item in the `credentials_and_host_info` list
+    # from the first item in the `credentials_and_host_info` list
     credentials = credentials_and_host_info[0].split(':')
     # Get the database `host_info` from the second item in the
-	# `credentials_and_host_info` list, which is the `DATABASE_HOST`,
-	# `DATABASE_PORT`, and `DATABASE_NAME`
+    # `credentials_and_host_info` list, which is the `DATABASE_HOST`,
+    # `DATABASE_PORT`, and `DATABASE_NAME`
     host_info = credentials_and_host_info[1].split(':')
     # Get the database host from the first item in the `host_info` list
     host = host_info[0]
     # Get the database port and name from the second item in the
-	# `host_info` list
+    # `host_info` list
     port_and_name = host_info[1].split('/')
     # Get the database port from the first item in the `port_and_name` list
     port = port_and_name[0]
