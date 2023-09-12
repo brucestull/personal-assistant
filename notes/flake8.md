@@ -7,6 +7,7 @@
 
 * Codes to Ignore
     * `F403` - 'from module import *' used; unable to detect undefined names
+    * `F405` - name may be undefined, or defined from star imports: module
 ## Examples
 
 * `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --statistics --ignore=F841`
