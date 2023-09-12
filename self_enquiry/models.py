@@ -35,10 +35,7 @@ class Journal(CreatedUpdatedBase):
 
     def __str__(self):
         return (
-            self.author.username
-            + " : "
-            + str(self.pk)
-            + (
+            self.author.username + " : " + str(self.pk) + (
                 # If title is not `None`, then add it to the string.
                 (" - " + self.title[:24])
                 if self.title
@@ -48,13 +45,17 @@ class Journal(CreatedUpdatedBase):
 
     def get_absolute_url(self):
         """
-        This function returns the absolute URL for a journal. It is used for the view which needs to be redirected to after a journal is created or updated.
+        This function returns the absolute URL for a journal. It is used for
+        the view which needs to be redirected to after a journal is created or
+        updated.
         """
         return reverse("self_enquiry:detail", args=[str(self.pk)])
 
     def display_content(self):
         """
-        This function returns a truncated version of the journal's content. This can be used in the admin panel and other places where the full content is not needed.
+        This function returns a truncated version of the journal's content.
+        This can be used in the admin panel and other places where the full
+        content is not needed.
         """
         return self.content[:50] + ("..." if len(self.content) > 50 else "")
 
@@ -67,8 +68,10 @@ class GrowthOpportunity(CreatedUpdatedBase):
     Attributes:
         author (ForeignKey): The user that owns the growth opportunity.
         question (TextField): The question or growth opportunity.
-        created (DateTimeField): The date and time the growth opportunity was created.
-        updated (DateTimeField): The date and time the growth opportunity was last updated.
+        created (DateTimeField): The date and time the growth opportunity was
+        created.
+        updated (DateTimeField): The date and time the growth opportunity was
+        last updated.
     """
 
     author = models.ForeignKey(
@@ -80,6 +83,7 @@ class GrowthOpportunity(CreatedUpdatedBase):
         verbose_name="Question",
         help_text="Required",
     )
+
     def __str__(self):
         return self.question[:24] + ("..." if len(self.question) > 24 else "")
 
