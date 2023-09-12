@@ -223,6 +223,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         "is_template_repository",
         "is_official_repository",
         "is_archive_repository",
+        "settings_in_environment",
+        "settings_in_dot_env_file",
+        "settings_in_dot_yml_file",
     )
     # The `search_fields` attribute will display a search bar in the admin
     # panel.

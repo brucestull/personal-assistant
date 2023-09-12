@@ -197,6 +197,9 @@ class ApplicationAdminTest(TestCase):
                 "is_template_repository",
                 "is_official_repository",
                 "is_archive_repository",
+                "settings_in_environment",
+                "settings_in_dot_env_file",
+                "settings_in_dot_yml_file",
             ),
         )
 
