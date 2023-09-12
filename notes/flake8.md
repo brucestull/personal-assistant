@@ -1,9 +1,18 @@
 # Flake8 Commands
 
-* `flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics --ignore=F841`
-* `flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics --ignore=F841,E501`
+## Command for This Project
 
-* `flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics` - Run flake8 on the entire project, excluding the virtual environment, migrations, settings.py, wsgi.py, and manage.py files, and show statistics
+* `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --statistics`
+    * [`.circleci/config.yml`](../.circleci/config.yml)
+
+* Codes to Ignore
+    * `F403` - 'from module import *' used; unable to detect undefined names
+## Examples
+
+* `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --statistics --ignore=F841`
+* `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --statistics --ignore=F841,E501`
+
+* `flake8 --exclude=venv*,migrations,common.py,wsgi.py,manage.py --statistics` - Run flake8 on the entire project, excluding the virtual environment, migrations, settings.py, wsgi.py, and manage.py files, and show statistics
 
 * `flake8` - Run flake8 on the entire project
 * `flake8 <app_name>` - Run flake8 on the app
