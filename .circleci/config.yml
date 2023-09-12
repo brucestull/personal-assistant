@@ -11,6 +11,9 @@ jobs:
     steps:
       # Step 1: obtain repo from GitHub
       - checkout
+      - run:
+          name: create test-results directory
+          command: mkdir -p test-results
       # Step 2: create virtual env and install dependencies
       - run:
           name: install dependencies
