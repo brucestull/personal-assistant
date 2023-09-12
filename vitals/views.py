@@ -5,7 +5,6 @@ from django.views.generic import ListView
 from config.settings.common import THE_SITE_NAME
 from vitals.models import (
     BloodPressure,
-    Pulse,
 )
 
 
@@ -36,10 +35,14 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
     `get_queryset` method is defined.
     model = BloodPressure
 
-    The template_name attribute `template_name = "vitals/bloodpressure_list.html"` is not needed since Django will use the default template name.
+    The template_name attribute `template_name =
+    "vitals/bloodpressure_list.html"` is not needed since Django will use
+    the default template name.
     template_name = "vitals/bloodpressure_list.html"
 
-    The context_object_name attribute `context_object_name = "bloodpressure_list"` is not needed since Django will use the default context object name.
+    The context_object_name attribute `context_object_name =
+    "bloodpressure_list"` is not needed since Django will use the default
+    context object name.
     context_object_name = "bloodpressure_list"
 
     This attribute `paginate_by = 10` will be implemented in the future.
@@ -52,11 +55,13 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         """
-        Override the `get_context_data` method to add `user_averages_and_medians`.
+        Override the `get_context_data` method to add
+        `user_averages_and_medians`.
         """
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        # Get the average and median of the current user's blood pressure measurements.
+        # Get the average and median of the current user's blood pressure
+        # measurements.
         user_blood_pressure_averages_and_medians = (
             user.get_average_and_median_blood_pressure()
         )
