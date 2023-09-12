@@ -26,4 +26,5 @@ jobs:
           command: |
             pipenv run coverage run --source='.' ./manage.py test
             pipenv run coverage report
-
+      - store_test_results:
+          path: test-results
