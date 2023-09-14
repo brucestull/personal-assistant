@@ -19,7 +19,7 @@ DATE_TIME_BASE_UPDATED_HELP_TEXT = (
     "The date and time this object was last updated."
 )
 
-ORGANIZATIONAL_CONCEPT_NAME_VERBOSE_NAME = "Name"
+ORGANIZATIONAL_CONCEPT_NAME_VERBOSE_NAME = "name"
 ORGANIZATIONAL_CONCEPT_NAME_HELP_TEXT = (
     "The name of the organizational concept."
 )

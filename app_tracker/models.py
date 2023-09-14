@@ -18,7 +18,7 @@ class OrganizationalConcept(CreatedUpdatedBase):
     """
 
     name = models.CharField(
-        verbose_name="Name",
+        verbose_name="name",
         help_text="The name of the organizational concept.",
         max_length=50,
         # `unique=True` ensures that we can't create two organizational
