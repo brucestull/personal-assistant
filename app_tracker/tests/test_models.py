@@ -5,6 +5,7 @@ from app_tracker.models import (
     OrganizationalConcept,
     LanguageFrameworkSystem,
     Application,
+    Label,
     Note,
     DjangoModel,
 )
@@ -940,6 +941,94 @@ class ApplicationModelTest(TestCase):
         application = Application.objects.get(id=self.application_01.pk)
         expected_object_name = application.name
         self.assertEquals(expected_object_name, str(application))
+
+
+class LabelModelTest(TestCase):
+    """
+    Tests for the `Label` model.
+    """
+
+    def test_name_field(self):
+        """
+        Name field should have the following properties:
+        - verbose_name: "Name"
+        - help_text: "The name of the label."
+        - max_length: 50
+        - unique: True
+        """
+        name_field = Label._meta.get_field("name")
+        self.assertEquals(name_field.verbose_name, "Name")
+        self.assertEquals(name_field.help_text, "The name of the label.")
+        self.assertEquals(name_field.max_length, 50)
+        self.assertEquals(name_field.unique, True)
+
+    def test_hue_field(self):
+        """
+        Hue field should have the following properties:
+        - verbose_name: "Hue"
+        - help_text: "The color of the label tag (e.g. '#2BDCC7', '#FF0000',
+        'ocre')."
+        - max_length: 25
+        - null: True
+        - blank: True
+        """
+        hue_field = Label._meta.get_field("hue")
+        self.assertEquals(hue_field.verbose_name, "Hue")
+        self.assertEquals(
+            hue_field.help_text,
+            "The color of the label tag (e.g. '#2BDCC7', '#FF0000', 'ocre').",
+        )
+        self.assertEquals(hue_field.max_length, 25)
+        self.assertTrue(hue_field.null)
+        self.assertTrue(hue_field.blank)
+
+    def test_description_field(self):
+        """
+        Description field should have the following properties:
+        - verbose_name: "Description"
+        - help_text: "The description of the label."
+        - null: True
+        - blank: True
+        """
+        description_field = Label._meta.get_field("description")
+        self.assertEquals(description_field.verbose_name, "Description")
+        self.assertEquals(
+            description_field.help_text, "The description of the label."
+        )
+        self.assertTrue(description_field.null)
+        self.assertTrue(description_field.blank)
+
+    def test_application_field(self):
+        """
+        Application field should have the following properties:
+        - verbose_name: "Application"
+        - help_text: "The application to which the label belongs."
+        - many_to_many: True
+        - blank: True
+        """
+        application_field = Label._meta.get_field("application")
+        self.assertEquals(
+            application_field.verbose_name,
+            "Application(s)",
+        )
+        self.assertEquals(
+            application_field.help_text, (
+                "The application(s) that the label is associated with."
+            )
+        )
+        self.assertEquals(application_field.many_to_many, True)
+        self.assertTrue(application_field.blank)
+
+    def test_dunder_string_method(self):
+        """
+        The dunder string method should return the label's name.
+        """
+        label = Label.objects.create(
+            name="Test Label",
+            hue="#2BDCC7",
+            description="This is a test label.",
+        )
+        self.assertEquals(str(label), "Test Label")
 
 
 class NoteModelTest(TestCase):

@@ -312,6 +312,47 @@ class Application(CreatedUpdatedBase):
         return self.name
 
 
+class Label(CreatedUpdatedBase):
+    """
+    This model represents a single label that is being tracked. The label
+    is used to tag applications in GitHub Issues and Pull Requests.
+    """
+
+    name = models.CharField(
+        verbose_name="Name",
+        help_text="The name of the label.",
+        max_length=50,
+        unique=True,
+    )
+    hue = models.CharField(
+        verbose_name="Hue",
+        help_text=(
+            "The color of the label tag (e.g. '#2BDCC7', '#FF0000', 'ocre')."
+        ),
+        max_length=25,
+        null=True,
+        blank=True,
+    )
+    description = models.TextField(
+        verbose_name="Description",
+        help_text="The description of the label.",
+        null=True,
+        blank=True,
+    )
+    application = models.ManyToManyField(
+        Application,
+        verbose_name="Application(s)",
+        help_text="The application(s) that the label is associated with.",
+        blank=True,
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the label.
+        """
+        return self.name
+
+
 class Note(CreatedUpdatedBase):
     """
     This model represents a single note that is being tracked.
