@@ -313,7 +313,7 @@ class JournalListViewTest(TestCase):
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertTrue("is_paginated" in response.context)
-        self.assertTrue(response.context["is_paginated"] == True)
+        self.assertTrue(response.context["is_paginated"])
         self.assertTrue(len(response.context["journal_list"]) == 10)
 
     def test_view_returns_journal_ojects(self):
@@ -328,7 +328,7 @@ class JournalListViewTest(TestCase):
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertTrue("is_paginated" in response.context)
-        self.assertTrue(response.context["is_paginated"] == True)
+        self.assertTrue(response.context["is_paginated"])
         self.assertTrue(
             len(response.context["journal_list"]
                 ) == NUMBER_OF_JOURNALS_PER_PAGE
@@ -348,7 +348,7 @@ class JournalListViewTest(TestCase):
         response = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
         self.assertEqual(response.status_code, 200)
         self.assertTrue("is_paginated" in response.context)
-        self.assertTrue(response.context["is_paginated"] == True)
+        self.assertTrue(response.context["is_paginated"])
         self.assertTrue(len(response.context["journal_list"]) == 3)
 
     def test_view_returns_all_journals(self):
@@ -363,7 +363,7 @@ class JournalListViewTest(TestCase):
         response_page_one = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME))
         self.assertEqual(response_page_one.status_code, 200)
         self.assertTrue("is_paginated" in response_page_one.context)
-        self.assertTrue(response_page_one.context["is_paginated"] == True)
+        self.assertTrue(response_page_one.context["is_paginated"])
         self.assertTrue(
             len(
                 response_page_one.context["journal_list"]
@@ -373,7 +373,7 @@ class JournalListViewTest(TestCase):
             reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
         self.assertEqual(response_page_two.status_code, 200)
         self.assertTrue("is_paginated" in response_page_two.context)
-        self.assertTrue(response_page_two.context["is_paginated"] == True)
+        self.assertTrue(response_page_two.context["is_paginated"])
         self.assertTrue(len(response_page_two.context["journal_list"]) == 3)
 
 
