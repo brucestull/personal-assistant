@@ -3,12 +3,17 @@ from django.test import TestCase, RequestFactory
 
 from django.utils.translation import gettext_lazy as _
 
-from app_tracker.admin import OrganizationalConceptAdmin
-from app_tracker.admin import LanguageFrameworkSystemAdmin
-from app_tracker.admin import ApplicationAdmin
+from app_tracker.admin import (
+    OrganizationalConceptAdmin,
+    LanguageFrameworkSystemAdmin,
+    ApplicationAdmin,
+    LabelAdmin,
+)
 
-from app_tracker.models import LanguageFrameworkSystem
-from app_tracker.models import Application
+from app_tracker.models import (
+    LanguageFrameworkSystem,
+    Application,
+)
 
 from accounts.models import CustomUser
 
@@ -291,6 +296,75 @@ class ApplicationAdminTest(TestCase):
                             "updated",
                         ),
                         "classes": ("wide", "extrapretty", "collapse"),
+                    },
+                ),
+            ),
+        )
+
+
+class LabelAdminTest(TestCase):
+    def test_list_display(self):
+        self.assertEqual(
+            LabelAdmin.list_display,
+            (
+                "name",
+                "hue",
+                "description",
+                "created",
+            ),
+        )
+
+    def test_ordering(self):
+        self.assertEqual(LabelAdmin.ordering, ("-created",))
+
+    def test_list_filter(self):
+        self.assertEqual(
+            LabelAdmin.list_filter,
+            (
+                "application",
+                "created",
+            ),
+        )
+
+    def test_search_fields(self):
+        self.assertEqual(
+            LabelAdmin.search_fields,
+            (
+                "label__name",
+            ),
+        )
+
+    def test_readonly_fields(self):
+        self.assertEqual(
+            LabelAdmin.readonly_fields,
+            (
+                "created",
+                "updated",
+            ),
+        )
+
+    def test_fieldsets(self):
+        self.assertEqual(
+            LabelAdmin.fieldsets,
+            (
+                (
+                    None,
+                    {
+                        "fields": (
+                            "name",
+                            "hue",
+                            "description",
+                            "application",
+                        ),
+                    },
+                ),
+                (
+                    "Dates",
+                    {
+                        "fields": (
+                            "created",
+                            "updated",
+                        )
                     },
                 ),
             ),

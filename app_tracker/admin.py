@@ -6,6 +6,7 @@ from app_tracker.models import (
     LanguageFrameworkSystem,
     Project,
     Application,
+    Label,
     Note,
     DjangoModel,
 )
@@ -338,6 +339,53 @@ class ApplicationAdmin(admin.ModelAdmin):
     # "Language Framework Systems List".
     language_framework_systems_list.short_description = (
         "Languages-Frameworks-Systems"
+    )
+
+
+@admin.register(Label)
+class LabelAdmin(admin.ModelAdmin):
+    """
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `Label` model.
+    """
+
+    list_display = (
+        "name",
+        "hue",
+        "description",
+        "created",
+    )
+    ordering = ("-created",)
+    list_filter = (
+        "application",
+        "created",
+    )
+    search_fields = ("label__name",)
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "name",
+                    "hue",
+                    "description",
+                    "application",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
     )
 
 
