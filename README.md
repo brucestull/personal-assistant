@@ -2,29 +2,6 @@
 
 ## Table of Contents
 
-
-## Run `flake8`
-
-### Locally
-
-```bash
-flake8 --exclude=migrations,settings.py,urls.py,wsgi.py,manage.py --statistics --count
-```
-
-```bash
-flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics
-```
-
-```bash
-flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics --ignore=E501
-```
-
-### In `.circleci/config.yml`
-
-```bash
-pipenv run flake8 --exclude=venv*,migrations,settings.py,wsgi.py,manage.py --statistics --ignore=E501
-```
-
 ## Development Links
 
 ## Production Links
