@@ -19,7 +19,9 @@ jobs:
       - run:
           name: display some stuff
           command: |
-            echo $DEBUG_SPECIAL_PURPOSE
+            echo 'export SPECIAL_PURPOSE=RuleTheWORLD' >> $BASH_ENV
+            source $BASH_ENV
+            echo $SPECIAL_PURPOSE
             echo $PATH
       # Step 3: run linter and tests
       - run:
