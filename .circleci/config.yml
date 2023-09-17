@@ -16,13 +16,21 @@ jobs:
           name: install dependencies
           command: |
             pipenv install
-      # Step 3: run linter and tests
+      # Step 3: run linter
       - run:
           name: run linter
           command: |
             pipenv run flake8 --exclude=migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics
+      # Step 4: run tests and coverage
       - run:
           name: run tests and coverage
           command: |
             pipenv run coverage run --source='.' ./manage.py test
             pipenv run coverage report
+      # Step 4: deploy to Heroku
+      - deploy:
+          name: deploy to Heroku
+          command: |
+            heroku login -i
+            heroku git:remote -a your-heroku-app-name
+            git push heroku main
