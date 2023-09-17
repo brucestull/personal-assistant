@@ -4,6 +4,7 @@ jobs:
   build:
     docker:
       - image: cimg/python:3.11.5
+      - image: heroku/cli
     parallelism: 3
 
     working_directory: ~/repo
