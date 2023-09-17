@@ -21,9 +21,12 @@ jobs:
       - run:
           name: Install Heroku CLI
           command: |
-            curl https://cli-assets.heroku.com/install.sh | sh
+            sudo apt-get update
+            sudo apt-get install -y snapd
+            sudo snap install heroku --classic
             which heroku || echo "Heroku CLI not installed"
             echo $PATH
+
 
       # Step 4: create virtual env and install dependencies
       - run:
