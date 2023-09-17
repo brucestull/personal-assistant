@@ -1,85 +1,29 @@
-version: 2.1
-
+# Python CircleCI 2.0 configuration file
+version: 2
 jobs:
   build:
     docker:
       - image: cimg/python:3.11.5
+    parallelism: 3
 
     working_directory: ~/repo
 
     steps:
-      # Step 1: log in to Docker Hub
-      - run:
-          name: log in to Docker Hub
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-
-      # Step 2: obtain repo from GitHub
+      # Step 1: obtain repo from GitHub
       - checkout
-
-      # Step 3: install Heroku CLI
-      - run:
-          name: Install Heroku CLI
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y snapd
-            sudo snap install heroku --classic
-            which heroku || echo "Heroku CLI not installed"
-            echo $PATH
-
-
-      # Step 4: create virtual env and install dependencies
+      # Step 2: create virtual env and install dependencies
       - run:
           name: install dependencies
           command: |
             pipenv install
-
-      # Step 5: run linter
+      # Step 3: run linter and tests
       - run:
           name: run linter
           command: |
             pipenv run flake8 --exclude=migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics
-
-      # Step 6: run tests and coverage
+      # Step 4: run tests and coverage
       - run:
           name: run tests and coverage
           command: |
             pipenv run coverage run --source='.' ./manage.py test
             pipenv run coverage report
-
-  deploy:
-    docker:
-      - image: cimg/python:3.11.5
-
-    working_directory: ~/repo
-
-    steps:
-      # Step 1: Authenticate with Heroku using API key
-      - run:
-          name: Authenticate with Heroku
-          command: |
-            echo "$HEROKU_API_KEY" | heroku auth:token
-
-      # Step 2: Set Heroku git remote
-      - run:
-          name: Set Heroku Remote
-          command: |
-            heroku git:remote -a flynnt-knapp
-
-      # Step 3: Deploy to Heroku
-      - run:
-          name: Deploy to Heroku
-          command: |
-            git push heroku main
-
-workflows:
-  version: 2
-  build_and_deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: main
