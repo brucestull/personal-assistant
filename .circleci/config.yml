@@ -15,8 +15,11 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            echo $SPECIAL_PURPOSE
             pipenv install
+      - run:
+          name: display some stuff
+          command: |
+            echo $SPECIAL_PURPOSE
             echo $PATH
       # Step 3: run linter and tests
       - run:
