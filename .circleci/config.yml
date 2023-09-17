@@ -49,12 +49,22 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      # Step 1: Deploy to Heroku
+      # Step 1: Authenticate with Heroku using API key
+      - run:
+          name: Authenticate with Heroku
+          command: |
+            echo "$HEROKU_API_KEY" | heroku auth:token
+
+      # Step 2: Set Heroku git remote
+      - run:
+          name: Set Heroku Remote
+          command: |
+            heroku git:remote -a flynnt-knapp
+
+      # Step 3: Deploy to Heroku
       - run:
           name: Deploy to Heroku
           command: |
-            echo "$HEROKU_API_KEY" | heroku login -i
-            heroku git:remote -a flynnt-knapp
             git push heroku main
 
 workflows:
