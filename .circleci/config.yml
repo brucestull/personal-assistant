@@ -22,6 +22,8 @@ jobs:
           name: Install Heroku CLI
           command: |
             curl https://cli-assets.heroku.com/install.sh | sh
+            which heroku || echo "Heroku CLI not installed"
+            echo $PATH
 
       # Step 4: create virtual env and install dependencies
       - run:
