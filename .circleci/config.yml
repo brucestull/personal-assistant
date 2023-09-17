@@ -4,8 +4,6 @@ jobs:
   build:
     docker:
       - image: cimg/python:3.11.5
-      - image: heroku/cli
-    parallelism: 3
 
     working_directory: ~/repo
 
@@ -15,28 +13,39 @@ jobs:
           name: log in to Docker Hub
           command: |
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
       # Step 2: obtain repo from GitHub
       - checkout
-      # Step 3: create virtual env and install dependencies
+
+      # Step 3: install Heroku CLI
+      - run:
+          name: Install Heroku CLI
+          command: |
+            curl https://cli-assets.heroku.com/install.sh | sh
+
+      # Step 4: create virtual env and install dependencies
       - run:
           name: install dependencies
           command: |
             pipenv install
-      # Step 4: run linter
+
+      # Step 5: run linter
       - run:
           name: run linter
           command: |
             pipenv run flake8 --exclude=migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics
-      # Step 5: run tests and coverage
+
+      # Step 6: run tests and coverage
       - run:
           name: run tests and coverage
           command: |
             pipenv run coverage run --source='.' ./manage.py test
             pipenv run coverage report
-      # Step 6: deploy to Heroku
+
+      # Step 7: deploy to Heroku
       - deploy:
           name: deploy to Heroku
           command: |
-            heroku login -i
+            echo "$HEROKU_API_KEY" | heroku login -i
             heroku git:remote -a flynnt-knapp
             git push heroku main
