@@ -1,6 +1,9 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    UserPassesTestMixin
+)
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 
 from config.settings.common import THE_SITE_NAME
 from vitals.models import (
@@ -94,3 +97,41 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
         return BloodPressure.objects.filter(
             user=self.request.user,
         ).order_by("-created")
+
+
+class BloodPressureCreateView(
+    LoginRequiredMixin, 
+    UserPassesTestMixin,
+    CreateView
+    ):
+    """
+    `CreateView` for a user to create a blood pressure measurement.
+    """
+
+    model = BloodPressure
+
+    fields = [
+        "systolic",
+        "diastolic",
+        "pulse",
+    ]
+
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Create Blood Pressure",
+    }
+
+    def test_func(self):
+        """
+        Override the `test_func` method to check if the current user has
+        `registration_accepted` `True`.
+        """
+        return self.request.user.registration_accepted
+
+    def form_valid(self, form):
+        """
+        Override the `form_valid` method to add the current user to the
+        `BloodPressure` object.
+        """
+        form.instance.user = self.request.user
+        return super().form_valid(form)
