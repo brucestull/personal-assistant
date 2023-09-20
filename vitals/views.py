@@ -1,17 +1,9 @@
-from django.contrib.auth.mixins import (
-    LoginRequiredMixin,
-    UserPassesTestMixin
-)
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView
 
 from config.settings.common import THE_SITE_NAME
-from vitals.models import (
-    BloodPressure,
-)
-
-
-BLOOD_PRESSURE_LIST_PAGE_TITLE = "Blood Pressures"
+from vitals.models import BloodPressure
 
 
 def home(request):
