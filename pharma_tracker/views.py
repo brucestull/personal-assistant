@@ -4,9 +4,6 @@ from django.contrib.auth.mixins import (
 )
 from django.views.generic import ListView
 
-# We import like this so that we don't have to rely on the package name
-# which contains the user model.
-from django.contrib.auth import get_user_model
 
 # We import like this so that we don't have to rely on the package name
 # which contains the pharmaceutical model. This makes it easier to add

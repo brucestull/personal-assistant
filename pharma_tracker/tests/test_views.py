@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-from pharma_tracker.views import PharmaceuticalListView
-
 
 class PharmaceuticalListViewTest(TestCase):
     """
@@ -64,7 +62,8 @@ class PharmaceuticalListViewTest(TestCase):
 
     def test_pharmaceutical_list_view_url_with_unauthenticated_user(self):
         """
-        Test that a request to "/pharma-tracker/" for a user who is not authenticated redirects to login.
+        Test that a request to "/pharma-tracker/" for a user who is not
+        authenticated redirects to login.
         """
         response = self.client.get("/pharma-tracker/")
         self.assertEqual(response.status_code, 302)
