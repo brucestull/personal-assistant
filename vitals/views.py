@@ -94,7 +94,7 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
 class BloodPressureCreateView(
     LoginRequiredMixin,
     UserPassesTestMixin,
-    CreateView
+    CreateView,
 ):
     """
     `CreateView` for a user to create a blood pressure measurement.
