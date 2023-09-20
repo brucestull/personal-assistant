@@ -5,5 +5,9 @@ from . import views
 
 app_name = "pharma_tracker"
 urlpatterns = [
-    path("", views.temp_index, name="temp-index")
+    path(
+        "",
+        views.PharmaceuticalListView.as_view(),
+        name="pharmaceutical-list",
+    ),
 ]
