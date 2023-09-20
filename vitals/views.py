@@ -100,15 +100,16 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
 
 
 class BloodPressureCreateView(
-    LoginRequiredMixin, 
+    LoginRequiredMixin,
     UserPassesTestMixin,
     CreateView
-    ):
+):
     """
     `CreateView` for a user to create a blood pressure measurement.
     """
 
     model = BloodPressure
+    success_url = "/vitals/bloodpressures/"
 
     fields = [
         "systolic",
