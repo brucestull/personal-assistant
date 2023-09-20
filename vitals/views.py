@@ -77,7 +77,7 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
 
     extra_context = {
         "the_site_name": THE_SITE_NAME,
-        "page_title": BLOOD_PRESSURE_LIST_PAGE_TITLE,
+        "page_title": "Blood Pressures",
         "average_and_median_all": average_and_median_all,
     }
 
