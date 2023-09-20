@@ -2,7 +2,9 @@
 
 ## Table of Contents
 
-## Development Links
+## Development Routes
+
+* [http://localhost:8000/pharma-tracker/](http://localhost:8000/pharma-tracker/)
 
 ## Production Links
 
@@ -142,6 +144,26 @@
     - Meta:
         - `verbose_name`
         - `verbose_name_plural`
+
+### `PharmaTracker` - `pharma_tracker` Application
+- `Pharmaceutical` Model
+    - Fields:
+        - `name`
+        - `description`
+        - `is_active`
+        - `prescription_required`
+    - Meta:
+        - `verbose_name_plural`
+
+    - Potential Models, Related Models, and Fields:
+        - DoseInstance
+        - Date and time of dose
+        - Medicine name
+        - Medicine dosage
+        - Recommended time of dose
+        - Actual time of dose
+        - Reminders for taking medicine
+        - Condition being treated
 
 ## Templates
 - [accounts/templates/403.html](https://github.com/brucestull/personal-assistant/blob/main/accounts/templates/403.html)
