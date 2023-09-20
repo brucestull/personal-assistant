@@ -5,6 +5,14 @@
 {% block content %}
     <h1>{{ page_title }}</h1>
 
+    <a href="{% url 'vitals:bloodpressure-create' %}">Add Blood Pressure</a>
+
+    {% if user.registration_accepted == False %}
+        <p>
+            Your registration has not been accepted yet.  Please check back later.
+        </p>
+    {% endif %}
+
     {% if user.registration_accepted %}
         <hr>
         <h2>{{ user.username }}'s Blood Pressures</h2>

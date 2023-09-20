@@ -1,6 +1,10 @@
 from django.urls import path
 
-from vitals.views import home, BloodPressureListView
+from vitals.views import (
+    home,
+    BloodPressureListView,
+    BloodPressureCreateView,
+)
 
 
 app_name = "vitals"
@@ -14,5 +18,9 @@ urlpatterns = [
         "bloodpressures/",
         BloodPressureListView.as_view(),
         name="bloodpressure-list",
-    )
+    ),
+    path(
+        "bloodpressures/create/",
+        BloodPressureCreateView.as_view(),
+        name="bloodpressure-create")
 ]
