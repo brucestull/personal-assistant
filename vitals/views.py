@@ -91,6 +91,10 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
         ).order_by("-created")
 
 
+# Check if user is logged in and then check if the user has
+# "registration_accepted" set to "True".
+# TODO: Check if the order of the mixins matters. Order does matter:
+# It's best practice to use mixins from more general to more specific.
 class BloodPressureCreateView(
     LoginRequiredMixin,
     UserPassesTestMixin,
@@ -101,7 +105,13 @@ class BloodPressureCreateView(
     """
 
     model = BloodPressure
+    # Redirect to the list of blood pressure measurements after a successful
+    # creation.
     success_url = "/vitals/bloodpressures/"
+    # TODO: Understand why this test doesn't work as expected.
+    # success_url = reverse("vitals:bloodpressures")
+    # Template name is not needed since we are using Django,s default template
+    # naming convention `bloodpressure_form.html`.
 
     fields = [
         "systolic",
