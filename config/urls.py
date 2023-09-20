@@ -37,4 +37,5 @@ urlpatterns = [
     path("vitals/", include("vitals.urls")),
     path("app-tracker/", include("app_tracker.urls")),
     path("cbt/", include("cbt.urls")),
+    path("pharma-tracker/", include("pharma_tracker.urls")),
 ]
