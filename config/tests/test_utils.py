@@ -22,7 +22,10 @@ class TestUtils(TestCase):
             "DATABASE_NAME": "mydatabase",
         }
 
-        self.assertEqual(get_database_config_variables(test_url), expected_output)
+        self.assertEqual(
+            get_database_config_variables(test_url),
+            expected_output,
+        )
 
     def test_get_database_config_variables_invalid_url(self):
         """
