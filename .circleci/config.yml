@@ -25,5 +25,5 @@ jobs:
       - run:
           name: run tests and coverage
           command: |
-            pipenv run coverage run --source='.' --omit="*/asgi.py,*/wsgi.py" ./manage.py test
+            pipenv run coverage run --source='.' --omit="*/asgi.py,*/wsgi.py,*/manage.py" ./manage.py test
             pipenv run coverage report
