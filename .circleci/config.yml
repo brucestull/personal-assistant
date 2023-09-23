@@ -53,9 +53,6 @@ jobs:
 
 workflows:
   version: 2
-  workflow01:
+  build_and_deploy:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: main
+      - build
