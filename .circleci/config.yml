@@ -40,13 +40,13 @@ jobs:
       # Step 6: Authenticate with Heroku
       - run:
           name: Authenticate with Heroku
-          command: echo $HEROKU_API_TOKEN | heroku auth:token
+          command: echo $HEROKU_API_KEY | heroku auth:token
 
       # Step 7: Deploy to Heroku
       - run:
           name: Deploy to Heroku
           command: |
-            git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/your-heroku-app-name.git $CIRCLE_SHA1:refs/heads/master
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/your-heroku-app-name.git $CIRCLE_SHA1:refs/heads/master
 
 workflows:
   version: 2
