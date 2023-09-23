@@ -1,9 +1,12 @@
 from django.test import TestCase
 from django.db import models as d_db_models
 
+from accounts.models import CustomUser
+
 from app_tracker.models import (
     OrganizationalConcept,
     LanguageFrameworkSystem,
+    Project,
     Application,
     Label,
     Note,
@@ -434,6 +437,72 @@ class LanguageFrameworkSystemModelTest(TestCase):
             LanguageFrameworkSystem._meta.verbose_name_plural,
             LANGUAGE_FRAMEWORK_SYSTEM_VERBOSE_NAME_PLURAL,
         )
+
+
+class ProjectModelTest(TestCase):
+    """
+    Tests for the `Project` model.
+    """
+
+    def test_name_verbose_name(self):
+        field_verbose_name = Project._meta.get_field("name").verbose_name
+        self.assertEquals(field_verbose_name, "Name")
+
+    def test_name_help_text(self):
+        field_help_text = Project._meta.get_field("name").help_text
+        self.assertEquals(field_help_text, "The name of the project.")
+
+    def test_name_max_length(self):
+        field_max_length = Project._meta.get_field("name").max_length
+        self.assertEquals(field_max_length, 255)
+
+    def test_name_unique_true(self):
+        field_unique = Project._meta.get_field("name").unique
+        self.assertTrue(field_unique)
+
+    def test_owner_uses_correct_model(self):
+        """
+        `owner` field should use the `User` model.
+        """
+        self.assertEquals(
+            Project._meta.get_field("owner").related_model,
+            CustomUser,
+        )
+
+    def test_owner_verbose_name(self):
+        field_verbose_name = Project._meta.get_field("owner").verbose_name
+        self.assertEquals(field_verbose_name, "Owner(s)")
+
+    def test_owner_help_text(self):
+        field_help_text = Project._meta.get_field("owner").help_text
+        self.assertEquals(field_help_text, "The owner(s) of the project.")
+
+    def test_owner_related_name(self):
+        field_related_name = Project._meta.get_field(
+            "owner").related_query_name()
+        self.assertEquals(field_related_name, "projects")
+
+    def test_description_verbose_name(self):
+        field_verbose_name = Project._meta.get_field(
+            "description").verbose_name
+        self.assertEquals(field_verbose_name, "Description")
+
+    def test_description_help_text(self):
+        field_help_text = Project._meta.get_field("description").help_text
+        self.assertEquals(field_help_text, "The description of the project.")
+
+    def test_description_null_true(self):
+        field_null = Project._meta.get_field("description").null
+        self.assertTrue(field_null)
+
+    def test_description_blank_true(self):
+        field_blank = Project._meta.get_field("description").blank
+        self.assertTrue(field_blank)
+
+    def test_dunder_string_method(self):
+        project = Project.objects.create(name="Project Name")
+        expected_dunder_string = f"{project.name}"
+        self.assertEquals(expected_dunder_string, str(project))
 
 
 class ApplicationModelTest(TestCase):
