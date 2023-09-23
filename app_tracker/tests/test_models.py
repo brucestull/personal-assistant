@@ -1,9 +1,12 @@
 from django.test import TestCase
 from django.db import models as d_db_models
 
+from accounts.models import CustomUser
+
 from app_tracker.models import (
     OrganizationalConcept,
     LanguageFrameworkSystem,
+    Project,
     Application,
     Label,
     Note,
@@ -15,14 +18,10 @@ DATE_TIME_BASE_CREATED_VERBOSE_NAME = "Created"
 DATE_TIME_BASE_CREATED_HELP_TEXT = "The date and time this object was created."
 
 DATE_TIME_BASE_UPDATED_VERBOSE_NAME = "Updated"
-DATE_TIME_BASE_UPDATED_HELP_TEXT = (
-    "The date and time this object was last updated."
-)
+DATE_TIME_BASE_UPDATED_HELP_TEXT = "The date and time this object was last updated."
 
 ORGANIZATIONAL_CONCEPT_NAME_VERBOSE_NAME = "Name"
-ORGANIZATIONAL_CONCEPT_NAME_HELP_TEXT = (
-    "The name of the organizational concept."
-)
+ORGANIZATIONAL_CONCEPT_NAME_HELP_TEXT = "The name of the organizational concept."
 ORGANIZATIONAL_CONCEPT_NAME_MAX_LENGTH = 50
 
 ORGANIZATIONAL_CONCEPT_DESCRIPTION_VERBOSE_NAME = "Description"
@@ -66,9 +65,7 @@ APPLICATION_PRODUCTION_URL_HELP_TEXT = (
 )
 
 APPLICATION_REPOSITORY_URL_VERBOSE_NAME = "Repository URL"
-APPLICATION_REPOSITORY_URL_HELP_TEXT = (
-    "The URL of the application's repository."
-)
+APPLICATION_REPOSITORY_URL_HELP_TEXT = "The URL of the application's repository."
 
 APPLICATION_REFERENCE_REPOSITORY_URL_VERBOSE_NAME = "Reference Repository URL"
 APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT = (
@@ -88,14 +85,10 @@ APPLICATION_IS_ARCHIVE_REPOSITORY_HELP_TEXT = (
 )
 
 APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME = "Project Board URL"
-APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = (
-    "The URL of the application's project board."
-)
+APPLICATION_PROJECT_BOARD_URL_HELP_TEXT = "The URL of the application's project board."
 
 APPLICATION_IS_FAVORITE_VERBOSE_NAME = "Is Favorite"
-APPLICATION_IS_FAVORITE_HELP_TEXT = (
-    "Whether or not the application is a favorite."
-)
+APPLICATION_IS_FAVORITE_HELP_TEXT = "Whether or not the application is a favorite."
 
 APPLICATION_IS_SIMPLE_EXAMPLE_VERBOSE_NAME = "Is Simple Example"
 APPLICATION_IS_SIMPLE_EXAMPLE_HELP_TEXT = (
@@ -118,9 +111,7 @@ APPLICATION_HAS_PROD_DEPLOYMENT_HELP_TEXT = (
 )
 
 APPLICATION_HAS_CICD_VERBOSE_NAME = "Has CI/CD"
-APPLICATION_HAS_CICD_HELP_TEXT = (
-    "Whether or not the application has CI/CD implemented."
-)
+APPLICATION_HAS_CICD_HELP_TEXT = "Whether or not the application has CI/CD implemented."
 
 APPLICATION_HAS_EMAIL_SENDING_VERBOSE_NAME = "Has Email Sending"
 APPLICATION_HAS_EMAIL_SENDING_HELP_TEXT = (
@@ -137,9 +128,7 @@ APPLICATION_SETTINGS_IN_ENVIRONMENT_HELP_TEXT = (
     "Whether or not the application's settings are in the environment."
 )
 
-APPLICATION_SETTINGS_IN_DOT_ENV_FILE_VERBOSE_NAME = (
-    "Settings in Environment File"
-)
+APPLICATION_SETTINGS_IN_DOT_ENV_FILE_VERBOSE_NAME = "Settings in Environment File"
 APPLICATION_SETTINGS_IN_DOT_ENV_FILE_HELP_TEXT = (
     "Whether or not the application's settings are in an environment file."
 )
@@ -166,9 +155,7 @@ APPLICATION_TESTING_LEVEL_CHOICES = [
     ("none", "None"),
 ]
 
-APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_VERBOSE_NAME = (
-    "Language/Framework/Systems"
-)
+APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_VERBOSE_NAME = "Language/Framework/Systems"
 APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT = (
     "The languages, frameworks, and systems used in the application."
 )
@@ -182,9 +169,7 @@ NOTE_CONTENT_VERBOSE_NAME = "content"
 NOTE_CONTENT_HELP_TEXT = "The content of the note."
 
 NOTE_APPLICATION_NAME = "application"
-NOTE_APPLICATION_HELP_TEXT = (
-    "The application that the note is associated with."
-)
+NOTE_APPLICATION_HELP_TEXT = "The application that the note is associated with."
 NOTE_APPLICATION_RELATED_NAME = "notes"
 
 DJANGO_MODEL_NAME_VERBOSE_NAME = "Name"
@@ -207,12 +192,8 @@ DJANGO_MODEL_APPLICATION_RELATED_NAME = "django_models"
 TEST_ORGANIZATIONAL_CONCEPT_NAME_01 = "Organizational Concept Name One"
 TEST_ORGANIZATIONAL_CONCEPT_NAME_02 = "Organizational Concept Name Two"
 
-TEST_ORGANIZATIONAL_CONCEPT_DESCRIPTION_01 = (
-    "Organizational Concept Description One"
-)
-TEST_ORGANIZATIONAL_CONCEPT_DESCRIPTION_02 = (
-    "Organizational Concept Description Two"
-)
+TEST_ORGANIZATIONAL_CONCEPT_DESCRIPTION_01 = "Organizational Concept Description One"
+TEST_ORGANIZATIONAL_CONCEPT_DESCRIPTION_02 = "Organizational Concept Description Two"
 
 TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_01 = "Python"
 TEST_LANGUAGE_FRAMEWORK_SYSTEM_NAME_02 = "Django"
@@ -255,10 +236,8 @@ class OrganizationalConceptModelTest(TestCase):
         organizational_concept = OrganizationalConcept.objects.get(
             id=self.organizational_concept_01.pk
         )
-        field_label = organizational_concept._meta.get_field(
-            "name").verbose_name
-        self.assertEquals(
-            field_label, ORGANIZATIONAL_CONCEPT_NAME_VERBOSE_NAME)
+        field_label = organizational_concept._meta.get_field("name").verbose_name
+        self.assertEquals(field_label, ORGANIZATIONAL_CONCEPT_NAME_VERBOSE_NAME)
 
     def test_name_help_text(self):
         organizational_concept = OrganizationalConcept.objects.get(
@@ -285,19 +264,15 @@ class OrganizationalConceptModelTest(TestCase):
         organizational_concept = OrganizationalConcept.objects.get(
             id=self.organizational_concept_01.pk
         )
-        field_label = organizational_concept._meta.get_field(
-            "description").verbose_name
-        self.assertEquals(
-            field_label, ORGANIZATIONAL_CONCEPT_DESCRIPTION_VERBOSE_NAME)
+        field_label = organizational_concept._meta.get_field("description").verbose_name
+        self.assertEquals(field_label, ORGANIZATIONAL_CONCEPT_DESCRIPTION_VERBOSE_NAME)
 
     def test_description_help_text(self):
         organizational_concept = OrganizationalConcept.objects.get(
             id=self.organizational_concept_01.pk
         )
-        help_text = organizational_concept._meta.get_field(
-            "description").help_text
-        self.assertEquals(
-            help_text, ORGANIZATIONAL_CONCEPT_DESCRIPTION_HELP_TEXT)
+        help_text = organizational_concept._meta.get_field("description").help_text
+        self.assertEquals(help_text, ORGANIZATIONAL_CONCEPT_DESCRIPTION_HELP_TEXT)
 
     def test_description_null_true(self):
         organizational_concept = OrganizationalConcept.objects.get(
@@ -321,8 +296,7 @@ class OrganizationalConceptModelTest(TestCase):
             id=self.organizational_concept_01.pk
         )
         self.assertEquals(
-            organizational_concept._meta.get_field(
-                "applications").related_model,
+            organizational_concept._meta.get_field("applications").related_model,
             Application,
         )
 
@@ -331,18 +305,16 @@ class OrganizationalConceptModelTest(TestCase):
             id=self.organizational_concept_01.pk
         )
         field_label = organizational_concept._meta.get_field(
-            "applications").verbose_name
-        self.assertEquals(
-            field_label, ORGANIZATIONAL_CONCEPT_APPLICATIONS_VERBOSE_NAME)
+            "applications"
+        ).verbose_name
+        self.assertEquals(field_label, ORGANIZATIONAL_CONCEPT_APPLICATIONS_VERBOSE_NAME)
 
     def test_applications_help_text(self):
         organizational_concept = OrganizationalConcept.objects.get(
             id=self.organizational_concept_01.pk
         )
-        help_text = organizational_concept._meta.get_field(
-            "applications").help_text
-        self.assertEquals(
-            help_text, ORGANIZATIONAL_CONCEPT_APPLICATIONS_HELP_TEXT)
+        help_text = organizational_concept._meta.get_field("applications").help_text
+        self.assertEquals(help_text, ORGANIZATIONAL_CONCEPT_APPLICATIONS_HELP_TEXT)
 
     def test_applications_blank_true(self):
         """
@@ -394,10 +366,8 @@ class LanguageFrameworkSystemModelTest(TestCase):
         language_framework_system = LanguageFrameworkSystem.objects.get(
             id=self.lfs_01.pk
         )
-        field_label = language_framework_system._meta.get_field(
-            "name").verbose_name
-        self.assertEquals(
-            field_label, LANGUAGE_FRAMEWORK_SYSTEM_NAME_VERBOSE_NAME)
+        field_label = language_framework_system._meta.get_field("name").verbose_name
+        self.assertEquals(field_label, LANGUAGE_FRAMEWORK_SYSTEM_NAME_VERBOSE_NAME)
 
     def test_name_help_text(self):
         language_framework_system = LanguageFrameworkSystem.objects.get(
@@ -410,8 +380,7 @@ class LanguageFrameworkSystemModelTest(TestCase):
         language_framework_system = LanguageFrameworkSystem.objects.get(
             id=self.lfs_01.pk
         )
-        max_length = language_framework_system._meta.get_field(
-            "name").max_length
+        max_length = language_framework_system._meta.get_field("name").max_length
         self.assertEquals(max_length, 30)
 
     def test_name_unique_true(self):
@@ -434,6 +403,70 @@ class LanguageFrameworkSystemModelTest(TestCase):
             LanguageFrameworkSystem._meta.verbose_name_plural,
             LANGUAGE_FRAMEWORK_SYSTEM_VERBOSE_NAME_PLURAL,
         )
+
+
+class ProjectModelTest(TestCase):
+    """
+    Tests for the `Project` model.
+    """
+
+    def test_name_verbose_name(self):
+        field_verbose_name = Project._meta.get_field("name").verbose_name
+        self.assertEquals(field_verbose_name, "Name")
+
+    def test_name_help_text(self):
+        field_help_text = Project._meta.get_field("name").help_text
+        self.assertEquals(field_help_text, "The name of the project.")
+
+    def test_name_max_length(self):
+        field_max_length = Project._meta.get_field("name").max_length
+        self.assertEquals(field_max_length, 255)
+
+    def test_name_unique_true(self):
+        field_unique = Project._meta.get_field("name").unique
+        self.assertTrue(field_unique)
+
+    def test_owner_uses_correct_model(self):
+        """
+        `owner` field should use the `User` model.
+        """
+        self.assertEquals(
+            Project._meta.get_field("owner").related_model,
+            CustomUser,
+        )
+
+    def test_owner_verbose_name(self):
+        field_verbose_name = Project._meta.get_field("owner").verbose_name
+        self.assertEquals(field_verbose_name, "Owner(s)")
+
+    def test_owner_help_text(self):
+        field_help_text = Project._meta.get_field("owner").help_text
+        self.assertEquals(field_help_text, "The owner(s) of the project.")
+
+    def test_owner_related_name(self):
+        field_related_name = Project._meta.get_field("owner").related_query_name()
+        self.assertEquals(field_related_name, "projects")
+
+    def test_description_verbose_name(self):
+        field_verbose_name = Project._meta.get_field("description").verbose_name
+        self.assertEquals(field_verbose_name, "Description")
+
+    def test_description_help_text(self):
+        field_help_text = Project._meta.get_field("description").help_text
+        self.assertEquals(field_help_text, "The description of the project.")
+
+    def test_description_null_true(self):
+        field_null = Project._meta.get_field("description").null
+        self.assertTrue(field_null)
+
+    def test_description_blank_true(self):
+        field_blank = Project._meta.get_field("description").blank
+        self.assertTrue(field_blank)
+
+    def test_dunder_string_method(self):
+        project = Project.objects.create(name="Project Name")
+        expected_dunder_string = f"{project.name}"
+        self.assertEquals(expected_dunder_string, str(project))
 
 
 class ApplicationModelTest(TestCase):
@@ -481,8 +514,7 @@ class ApplicationModelTest(TestCase):
 
     def test_project_related_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        related_query_name = application._meta.get_field(
-            "project").related_query_name()
+        related_query_name = application._meta.get_field("project").related_query_name()
         self.assertEquals(related_query_name, APPLICATION_PROJECT_RELATED_NAME)
 
     def test_project_blank_true(self):
@@ -532,8 +564,7 @@ class ApplicationModelTest(TestCase):
 
     def test_production_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "production_url").verbose_name
+        field_label = application._meta.get_field("production_url").verbose_name
         self.assertEquals(field_label, APPLICATION_PRODUCTION_URL_VERBOSE_NAME)
 
     def test_production_url_help_text(self):
@@ -553,8 +584,7 @@ class ApplicationModelTest(TestCase):
 
     def test_repository_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "repository_url").verbose_name
+        field_label = application._meta.get_field("repository_url").verbose_name
         self.assertEquals(field_label, APPLICATION_REPOSITORY_URL_VERBOSE_NAME)
 
     def test_repository_url_help_text(self):
@@ -583,24 +613,18 @@ class ApplicationModelTest(TestCase):
 
     def test_reference_repository_url_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "reference_repository_url").help_text
-        self.assertEquals(
-            help_text, APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT)
+        help_text = application._meta.get_field("reference_repository_url").help_text
+        self.assertEquals(help_text, APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT)
 
     def test_is_official_repository_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "is_official_repository").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_IS_OFFICIAL_REPOSITORY_VERBOSE_NAME)
+        field_label = application._meta.get_field("is_official_repository").verbose_name
+        self.assertEquals(field_label, APPLICATION_IS_OFFICIAL_REPOSITORY_VERBOSE_NAME)
 
     def test_is_official_repository_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "is_official_repository").help_text
-        self.assertEquals(
-            help_text, APPLICATION_IS_OFFICIAL_REPOSITORY_HELP_TEXT)
+        help_text = application._meta.get_field("is_official_repository").help_text
+        self.assertEquals(help_text, APPLICATION_IS_OFFICIAL_REPOSITORY_HELP_TEXT)
 
     def test_is_official_repository_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -609,17 +633,13 @@ class ApplicationModelTest(TestCase):
 
     def test_is_archive_repository_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "is_archive_repository").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_IS_ARCHIVE_REPOSITORY_VERBOSE_NAME)
+        field_label = application._meta.get_field("is_archive_repository").verbose_name
+        self.assertEquals(field_label, APPLICATION_IS_ARCHIVE_REPOSITORY_VERBOSE_NAME)
 
     def test_is_archive_repository_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "is_archive_repository").help_text
-        self.assertEquals(
-            help_text, APPLICATION_IS_ARCHIVE_REPOSITORY_HELP_TEXT)
+        help_text = application._meta.get_field("is_archive_repository").help_text
+        self.assertEquals(help_text, APPLICATION_IS_ARCHIVE_REPOSITORY_HELP_TEXT)
 
     def test_is_archive_repository_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -628,10 +648,8 @@ class ApplicationModelTest(TestCase):
 
     def test_project_board_url_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "project_board_url").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME)
+        field_label = application._meta.get_field("project_board_url").verbose_name
+        self.assertEquals(field_label, APPLICATION_PROJECT_BOARD_URL_VERBOSE_NAME)
 
     def test_project_board_url_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -668,16 +686,13 @@ class ApplicationModelTest(TestCase):
 
     def test_is_simple_example_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "is_simple_example").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_IS_SIMPLE_EXAMPLE_VERBOSE_NAME)
+        field_label = application._meta.get_field("is_simple_example").verbose_name
+        self.assertEquals(field_label, APPLICATION_IS_SIMPLE_EXAMPLE_VERBOSE_NAME)
 
     def test_is_simple_example_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
         help_text = application._meta.get_field("is_simple_example").help_text
-        self.assertEquals(
-            help_text, APPLICATION_IS_SIMPLE_EXAMPLE_HELP_TEXT)
+        self.assertEquals(help_text, APPLICATION_IS_SIMPLE_EXAMPLE_HELP_TEXT)
 
     def test_is_simple_example_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -686,10 +701,8 @@ class ApplicationModelTest(TestCase):
 
     def test_has_custom_user_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "has_custom_user").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_HAS_CUSTOM_USER_VERBOSE_NAME)
+        field_label = application._meta.get_field("has_custom_user").verbose_name
+        self.assertEquals(field_label, APPLICATION_HAS_CUSTOM_USER_VERBOSE_NAME)
 
     def test_has_custom_user_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -705,10 +718,8 @@ class ApplicationModelTest(TestCase):
 
     def test_has_sticky_footer_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "has_sticky_footer").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_HAS_STICKY_FOOTER_VERBOSE_NAME)
+        field_label = application._meta.get_field("has_sticky_footer").verbose_name
+        self.assertEquals(field_label, APPLICATION_HAS_STICKY_FOOTER_VERBOSE_NAME)
 
     def test_has_sticky_footer_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -722,15 +733,12 @@ class ApplicationModelTest(TestCase):
 
     def test_has_prod_deployment_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "has_prod_deployment").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_HAS_PROD_DEPLOYMENT_VERBOSE_NAME)
+        field_label = application._meta.get_field("has_prod_deployment").verbose_name
+        self.assertEquals(field_label, APPLICATION_HAS_PROD_DEPLOYMENT_VERBOSE_NAME)
 
     def test_has_prod_deployment_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "has_prod_deployment").help_text
+        help_text = application._meta.get_field("has_prod_deployment").help_text
         self.assertEquals(help_text, APPLICATION_HAS_PROD_DEPLOYMENT_HELP_TEXT)
 
     def test_has_prod_deployment_default_false(self):
@@ -755,10 +763,8 @@ class ApplicationModelTest(TestCase):
 
     def test_has_email_sending_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "has_email_sending").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_HAS_EMAIL_SENDING_VERBOSE_NAME)
+        field_label = application._meta.get_field("has_email_sending").verbose_name
+        self.assertEquals(field_label, APPLICATION_HAS_EMAIL_SENDING_VERBOSE_NAME)
 
     def test_has_email_sending_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -772,17 +778,13 @@ class ApplicationModelTest(TestCase):
 
     def test_repository_is_public_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "repository_is_public").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_REPOSITORY_IS_PUBLIC_VERBOSE_NAME)
+        field_label = application._meta.get_field("repository_is_public").verbose_name
+        self.assertEquals(field_label, APPLICATION_REPOSITORY_IS_PUBLIC_VERBOSE_NAME)
 
     def test_repository_is_public_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "repository_is_public").help_text
-        self.assertEquals(
-            help_text, APPLICATION_REPOSITORY_IS_PUBLIC_HELP_TEXT)
+        help_text = application._meta.get_field("repository_is_public").help_text
+        self.assertEquals(help_text, APPLICATION_REPOSITORY_IS_PUBLIC_HELP_TEXT)
 
     def test_repository_is_public_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -794,20 +796,16 @@ class ApplicationModelTest(TestCase):
         field_label = application._meta.get_field(
             "settings_in_environment"
         ).verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_SETTINGS_IN_ENVIRONMENT_VERBOSE_NAME)
+        self.assertEquals(field_label, APPLICATION_SETTINGS_IN_ENVIRONMENT_VERBOSE_NAME)
 
     def test_settings_in_environment_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "settings_in_environment").help_text
-        self.assertEquals(
-            help_text, APPLICATION_SETTINGS_IN_ENVIRONMENT_HELP_TEXT)
+        help_text = application._meta.get_field("settings_in_environment").help_text
+        self.assertEquals(help_text, APPLICATION_SETTINGS_IN_ENVIRONMENT_HELP_TEXT)
 
     def test_settings_in_environment_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
-        default = application._meta.get_field(
-            "settings_in_environment").default
+        default = application._meta.get_field("settings_in_environment").default
         self.assertFalse(default)
 
     def test_settings_in_dot_env_file_verbose_name(self):
@@ -821,15 +819,12 @@ class ApplicationModelTest(TestCase):
 
     def test_settings_in_dot_env_file_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "settings_in_dot_env_file").help_text
-        self.assertEquals(
-            help_text, APPLICATION_SETTINGS_IN_DOT_ENV_FILE_HELP_TEXT)
+        help_text = application._meta.get_field("settings_in_dot_env_file").help_text
+        self.assertEquals(help_text, APPLICATION_SETTINGS_IN_DOT_ENV_FILE_HELP_TEXT)
 
     def test_settings_in_dot_env_file_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
-        default = application._meta.get_field(
-            "settings_in_dot_env_file").default
+        default = application._meta.get_field("settings_in_dot_env_file").default
         self.assertFalse(default)
 
     def test_settings_in_dot_yml_file_verbose_name(self):
@@ -837,35 +832,27 @@ class ApplicationModelTest(TestCase):
         field_label = application._meta.get_field(
             "settings_in_dot_yml_file"
         ).verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_SETTINGS_IN_YML_FILE_VERBOSE_NAME)
+        self.assertEquals(field_label, APPLICATION_SETTINGS_IN_YML_FILE_VERBOSE_NAME)
 
     def test_settings_in_dot_yml_file_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "settings_in_dot_yml_file").help_text
-        self.assertEquals(
-            help_text, APPLICATION_SETTINGS_IN_YML_FILE_HELP_TEXT)
+        help_text = application._meta.get_field("settings_in_dot_yml_file").help_text
+        self.assertEquals(help_text, APPLICATION_SETTINGS_IN_YML_FILE_HELP_TEXT)
 
     def test_settings_in_dot_yml_file_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
-        default = application._meta.get_field(
-            "settings_in_dot_yml_file").default
+        default = application._meta.get_field("settings_in_dot_yml_file").default
         self.assertFalse(default)
 
     def test_is_template_repository_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
-        field_label = application._meta.get_field(
-            "is_template_repository").verbose_name
-        self.assertEquals(
-            field_label, APPLICATION_IS_TEMPLATE_REPOSITORY_VERBOSE_NAME)
+        field_label = application._meta.get_field("is_template_repository").verbose_name
+        self.assertEquals(field_label, APPLICATION_IS_TEMPLATE_REPOSITORY_VERBOSE_NAME)
 
     def test_is_template_repository_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "is_template_repository").help_text
-        self.assertEquals(
-            help_text, APPLICATION_IS_TEMPLATE_REPOSITORY_HELP_TEXT)
+        help_text = application._meta.get_field("is_template_repository").help_text
+        self.assertEquals(help_text, APPLICATION_IS_TEMPLATE_REPOSITORY_HELP_TEXT)
 
     def test_is_template_repository_default_false(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -923,10 +910,8 @@ class ApplicationModelTest(TestCase):
 
     def test_language_framework_systems_help_text(self):
         application = Application.objects.get(id=self.application_01.pk)
-        help_text = application._meta.get_field(
-            "language_framework_systems").help_text
-        self.assertEquals(
-            help_text, APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT)
+        help_text = application._meta.get_field("language_framework_systems").help_text
+        self.assertEquals(help_text, APPLICATION_LANGUAGE_FRAMEWORK_SYSTEMS_HELP_TEXT)
 
     def test_language_framework_systems_related_name(self):
         application = Application.objects.get(id=self.application_01.pk)
@@ -992,9 +977,7 @@ class LabelModelTest(TestCase):
         """
         description_field = Label._meta.get_field("description")
         self.assertEquals(description_field.verbose_name, "Description")
-        self.assertEquals(
-            description_field.help_text, "The description of the label."
-        )
+        self.assertEquals(description_field.help_text, "The description of the label.")
         self.assertTrue(description_field.null)
         self.assertTrue(description_field.blank)
 
@@ -1012,9 +995,8 @@ class LabelModelTest(TestCase):
             "Application(s)",
         )
         self.assertEquals(
-            application_field.help_text, (
-                "The application(s) that the label is associated with."
-            )
+            application_field.help_text,
+            ("The application(s) that the label is associated with."),
         )
         self.assertEquals(application_field.many_to_many, True)
         self.assertTrue(application_field.blank)
@@ -1153,8 +1135,7 @@ class DjangoModelModelTest(TestCase):
 
     def test_is_current_model_verbose_name(self):
         django_model = DjangoModel.objects.get(id=self.django_model_01.pk)
-        field_label = django_model._meta.get_field(
-            "is_current_model").verbose_name
+        field_label = django_model._meta.get_field("is_current_model").verbose_name
         self.assertEquals(
             field_label,
             DJANGO_MODEL_IS_CURRENT_MODEL_VERBOSE_NAME,
