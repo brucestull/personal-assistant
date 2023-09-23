@@ -14,19 +14,19 @@ jobs:
 
       # Step 2: create virtual env and install dependencies
       - run:
-          name: install dependencies
+          name: Install Dependencies
           command: |
             pipenv install
 
       # Step 3: run linter
       - run:
-          name: run linter
+          name: Run Linter
           command: |
             pipenv run flake8 --exclude=migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics
 
       # Step 4: run tests and coverage
       - run:
-          name: run tests and coverage
+          name: Run Tests and Coverage
           command: |
             pipenv run coverage run --source='.' --omit="*/asgi.py,*/wsgi.py,*/manage.py" ./manage.py test
             pipenv run coverage report
@@ -36,22 +36,22 @@ jobs:
       - image: cimg/python:3.11.5
     parallelism: 3
     steps:
-      # Step 1: obtain repo from GitHub
+      # Step 5: obtain repo from GitHub
       - checkout
-      # Step 5: Install Heroku CLI
+      # Step 6: Install Heroku CLI
       - run:
           name: Install Heroku CLI
           command: |
             curl https://cli-assets.heroku.com/install.sh | sh
           when: on_success
 
-      # Step 6: Authenticate with Heroku
+      # Step 7: Authenticate with Heroku
       - run:
           name: Authenticate with Heroku
           command: echo $HEROKU_API_KEY | heroku auth:token
           when: on_success
 
-      # Step 7: Deploy to Heroku
+      # Step 8: Deploy to Heroku
       - run:
           name: Deploy to Heroku
           command: |
