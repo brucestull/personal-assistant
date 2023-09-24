@@ -435,6 +435,7 @@ class ApplicationAdminTest(TestCase):
         self.assertEqual(
             self.admin.list_filter,
             (
+                "is_favorite",
                 "language_framework_systems",
                 "testing_level",
                 "has_prod_deployment",
