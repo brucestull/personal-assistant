@@ -212,6 +212,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     ordering = ("-created",)
     # The `list_filter` attribute will display filters in the admin panel.
     list_filter = (
+        "is_favorite",
         "language_framework_systems",
         "testing_level",
         "has_prod_deployment",
