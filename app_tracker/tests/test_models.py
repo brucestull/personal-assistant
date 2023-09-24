@@ -976,6 +976,27 @@ class ApplicationModelTest(TestCase):
         blank = application._meta.get_field("testing_level").blank
         self.assertTrue(blank)
 
+    def test_all_tests_passing_verbose_name(self):
+        all_tests_passing_field = Application._meta.get_field(
+            "all_tests_passing")
+        self.assertEquals(
+            all_tests_passing_field.verbose_name,
+            "All Tests Passing",
+        )
+
+    def test_all_tests_passing_help_text(self):
+        all_tests_passing_field = Application._meta.get_field(
+            "all_tests_passing")
+        self.assertEquals(
+            all_tests_passing_field.help_text,
+            "Whether or not all tests are passing.",
+        )
+
+    def test_all_tests_passing_default_false(self):
+        all_tests_passing_field = Application._meta.get_field(
+            "all_tests_passing")
+        self.assertFalse(all_tests_passing_field.default)
+
     def test_language_framework_systems_uses_proper_model(self):
         application = Application.objects.get(id=self.application_01.pk)
         field = application._meta.get_field("language_framework_systems")
