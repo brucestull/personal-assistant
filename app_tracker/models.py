@@ -173,6 +173,12 @@ class Application(CreatedUpdatedBase):
         null=True,
         blank=True,
     )
+    reference_url = models.URLField(
+        verbose_name="Reference URL",
+        help_text="The URL of the application's reference.",
+        null=True,
+        blank=True,
+    )
     is_official_repository = models.BooleanField(
         verbose_name="Is Official Repository",
         help_text=(
