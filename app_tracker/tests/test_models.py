@@ -676,6 +676,20 @@ class ApplicationModelTest(TestCase):
         default = application._meta.get_field("is_official_repository").default
         self.assertFalse(default)
 
+    def test_is_adapted_repository(self):
+        is_adapted_repository_field = Application._meta.get_field(
+            "is_adapted_repository")
+        self.assertEquals(
+            is_adapted_repository_field.verbose_name,
+            "Is Adapted Repository",
+        )
+        self.assertEquals(
+            is_adapted_repository_field.help_text,
+            "Whether or not the application is a repository adapted from some "
+            "other source."
+        )
+        self.assertFalse(is_adapted_repository_field.default)
+
     def test_is_archive_repository_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field(
