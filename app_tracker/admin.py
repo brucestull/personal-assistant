@@ -203,6 +203,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         # below, to display the `LanguageFrameworkSystem` objects associated
         # with the `Application` object.
         "language_framework_systems_list",
+        "all_tests_passing",
         "testing_level",
         "has_prod_deployment",
     )
@@ -274,7 +275,10 @@ class ApplicationAdmin(admin.ModelAdmin):
             _("Miscellaneous"),
             {
                 "fields": (
-                    "testing_level",
+                    (
+                        "testing_level",
+                        "all_tests_passing",
+                    ),
                     (
                         "has_custom_user",
                         "has_sticky_footer",
