@@ -657,6 +657,27 @@ class ApplicationModelTest(TestCase):
         self.assertEquals(
             help_text, APPLICATION_REFERENCE_REPOSITORY_URL_HELP_TEXT)
 
+    def test_reference_url_field(self):
+        """
+        `reference_url` should have the following attributes and values:
+        - `verbose_name` should be "Reference URL"
+        - `help_text` should be "The URL of the application's reference."
+        - `null` should be `True`
+        - `blank` should be `True`
+        """
+        reference_url_field = Application._meta.get_field(
+            "reference_url")
+        self.assertEquals(
+            reference_url_field.verbose_name,
+            "Reference URL",
+        )
+        self.assertEquals(
+            reference_url_field.help_text,
+            "The URL of the application's reference.",
+        )
+        self.assertTrue(reference_url_field.null)
+        self.assertTrue(reference_url_field.blank)
+
     def test_is_official_repository_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field(
