@@ -199,7 +199,6 @@ class ApplicationAdmin(admin.ModelAdmin):
     # in the admin panel.
     list_display = (
         "name",
-        "repository_is_public",
         # We can use the `language_framework_systems_list` method, defined
         # below, to display the `LanguageFrameworkSystem` objects associated
         # with the `Application` object.

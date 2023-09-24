@@ -421,7 +421,6 @@ class ApplicationAdminTest(TestCase):
             self.admin.list_display,
             (
                 "name",
-                "repository_is_public",
                 "language_framework_systems_list",
                 "testing_level",
                 "has_prod_deployment",
