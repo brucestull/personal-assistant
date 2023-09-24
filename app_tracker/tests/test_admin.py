@@ -421,8 +421,8 @@ class ApplicationAdminTest(TestCase):
             self.admin.list_display,
             (
                 "name",
-                "repository_is_public",
                 "language_framework_systems_list",
+                "all_tests_passing",
                 "testing_level",
                 "has_prod_deployment",
             ),
@@ -500,7 +500,10 @@ class ApplicationAdminTest(TestCase):
                     _("Miscellaneous"),
                     {
                         "fields": (
-                            "testing_level",
+                            (
+                                "testing_level",
+                                "all_tests_passing",
+                            ),
                             (
                                 "has_custom_user",
                                 "has_sticky_footer",

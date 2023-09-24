@@ -290,6 +290,11 @@ class Application(CreatedUpdatedBase):
         null=True,
         blank=True,
     )
+    all_tests_passing = models.BooleanField(
+        verbose_name="All Tests Passing",
+        help_text="Whether or not all tests are passing.",
+        default=False,
+    )
     # `language_framework_systems` is a many-to-many relationship with the
     # `LanguageFrameworkSystem` model.
     language_framework_systems = models.ManyToManyField(
