@@ -181,6 +181,14 @@ class Application(CreatedUpdatedBase):
         ),
         default=False,
     )
+    is_adapted_repository = models.BooleanField(
+        verbose_name="Is Adapted Repository",
+        help_text=(
+            "Whether or not the application is a repository adapted from some "
+            "other source."
+        ),
+        default=False,
+    )
     is_archive_repository = models.BooleanField(
         verbose_name="Is Archive Repository",
         help_text=(

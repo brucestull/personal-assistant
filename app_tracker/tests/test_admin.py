@@ -520,6 +520,7 @@ class ApplicationAdminTest(TestCase):
                             ),
                             (
                                 "is_official_repository",
+                                "is_adapted_repository",
                                 "is_archive_repository",
                             ),
                         ),
