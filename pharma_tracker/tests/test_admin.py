@@ -39,7 +39,5 @@ class PharmaceuticalAdminTest(TestCase):
         expected = (
             "user",
             "name",
-            "is_active",
-            "prescription_required",
         )
         self.assertEqual(PharmaceuticalAdmin.search_fields, expected)

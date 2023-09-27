@@ -22,6 +22,4 @@ class PharmaceuticalAdmin(admin.ModelAdmin):
     search_fields = (
         "user",
         "name",
-        "is_active",
-        "prescription_required",
     )
