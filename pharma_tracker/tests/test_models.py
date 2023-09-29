@@ -164,16 +164,17 @@ class PharmaceuticalModelTests(TestCase):
         """
         `__str__` method should return 'name' field.
         """
-        self.custom_user = CustomUser.objects.create_user(
+        self.test_user = CustomUser.objects.create_user(
             username="DezziKitten",
             email="DezziKitten@purr.scratch",
             password="MeowMeow42",
         )
-        self.pharmaceutical = Pharmaceutical.objects.create(
-            user=self.custom_user,
+        self.test_pharmaceutical = Pharmaceutical.objects.create(
+            user=self.test_user,
             name="Test Pharmaceutical",
         )
-        self.assertEqual(str(self.pharmaceutical), "Test Pharmaceutical")
+        self.assertEqual(str(self.test_pharmaceutical),
+                         "Test Big Pharma Pharmaceutical, from the Big Pharma Pharmaceutical Company")
 
     def test_meta_verbose_name(self):
         """
