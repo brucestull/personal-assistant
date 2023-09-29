@@ -174,8 +174,7 @@ class PharmaceuticalModelTests(TestCase):
             name="Test Pharmaceutical",
         )
         self.assertEqual(str(self.test_pharmaceutical),
-                         "Test Big Pharma Pharmaceutical, from the Big"
-                         "Pharma Pharmaceutical Company")
+                         "Test Pharmaceutical")
 
     def test_meta_verbose_name(self):
         """
