@@ -1,5 +1,35 @@
 # Flake8 Commands
 
+## Move `flake8` Configuration to `.flake8` File
+
+- Before migration:
+    - `config.yml`:
+        ```yml
+        # Step 3: run linter
+        - run:
+            name: Run Linter
+            command: |
+                pipenv run flake8 --exclude=migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics
+        ```
+
+- After migration:
+    - `.flake8`:
+        ```yml
+        [flake8]
+        exclude = migrations,common.py,wsgi.py,manage.py
+        extend-ignore = F403,F405
+        statistics = True
+        ```
+
+    - `config.yml`:
+        ```yml
+        # Step 3: run linter
+        - run:
+            name: Run Linter
+            command: |
+                pipenv run flake8
+        ```
+
 ## Command for This Project
 
 * `flake8 --exclude=migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics`
