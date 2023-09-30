@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Run Linter
           command: |
-            pipenv run flake8 --exclude=migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics
+            pipenv run flake8
 
       # Step 4: run tests and coverage
       - run:
