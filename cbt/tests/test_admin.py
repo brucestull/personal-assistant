@@ -4,9 +4,9 @@ from django.test.client import RequestFactory
 
 from accounts.models import CustomUser
 
-from cbt.admin import CognativeDistortionAdmin
+from cbt.admin import CognativeDistortionAdmin, ThoughtAdmin
 
-from cbt.models import CognativeDistortion
+from cbt.models import CognativeDistortion, Thought
 
 
 class CognativeDistortionAdminTest(TestCase):
@@ -131,3 +131,135 @@ class CognativeDistortionAdminTest(TestCase):
 
     # TODO: Test the `truncated_description()` method by using a hard-coded
     # string to compare against the method's output
+
+
+class ThoughtAdminTest(TestCase):
+    """
+    Tests for the ThoughtAdmin class
+    """
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = CustomUser.objects.create_user(
+            username="DezziKitten",
+            email="DezziKitten@purr.scratch",
+            password="MeowMeow42",
+        )
+        self.thought = Thought.objects.create(
+            user=self.user,
+            name="Test Thought Name",
+            description="Test Thought Description",
+        )
+        self.thought_admin = ThoughtAdmin(Thought, admin.site)
+
+    def test_list_display(self):
+        """
+        Test that the list display is correct
+        """
+        self.assertEqual(
+            ThoughtAdmin.list_display,
+            [
+                "user",
+                "name",
+                "truncated_description",
+            ],
+        )
+
+    def test_list_filter(self):
+        """
+        Test that the list filter is correct
+        """
+        self.assertEqual(
+            ThoughtAdmin.list_filter,
+            [
+                "user",
+                "name",
+            ],
+        )
+
+    def test_search_fields(self):
+        """
+        Test that the search fields are correct
+        """
+        self.assertEqual(
+            ThoughtAdmin.search_fields,
+            [
+                "user",
+                "name",
+                "description",
+            ],
+        )
+
+    def test_readonly_fields(self):
+        """
+        Test that the readonly fields are correct
+        """
+        self.assertEqual(
+            ThoughtAdmin.readonly_fields,
+            [
+                "created",
+                "updated",
+            ],
+        )
+
+    def test_fieldsets(self):
+        """
+        Test that the fieldsets are correct
+        """
+        self.assertEqual(
+            ThoughtAdmin.fieldsets,
+            (
+                (
+                    "Thought",
+                    {
+                        "fields": (
+                            "user",
+                            "name",
+                            "cognative_distortion",
+                            "description",
+                        )
+                    },
+                ),
+                (
+                    "Dates/Metadata",
+                    {
+                        "fields": (
+                            "created",
+                            "updated",
+                        )
+                    },
+                ),
+            ),
+        )
+
+    def test_ordering(self):
+        """
+        Test that the ordering is correct
+        """
+        self.assertEqual(
+            ThoughtAdmin.ordering,
+            [
+                "name",
+                "description",
+            ],
+        )
+
+    def test_truncated_description_method(self):
+        """
+        Test that the truncated description is correct
+        """
+        self.assertEqual(
+            self.thought_admin.truncated_description(self.thought),
+            self.thought.description[:57] + "..."
+            if len(self.thought.description) > 57
+            else self.thought.description,
+        )
+
+    def test_truncated_description_short_description(self):
+        """
+        Test that the truncated description short description is correct
+        """
+        self.assertEqual(
+            ThoughtAdmin.truncated_description.short_description,
+            "Description",
+        )
