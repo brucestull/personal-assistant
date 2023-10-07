@@ -46,7 +46,7 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
 
     # TODO: Remove this?
     # Get the average and median of all the blood pressure measurements.
-    average_and_median_all = BloodPressure.get_average_and_median()
+    # average_and_median_all = BloodPressure.get_average_and_median()
 
     def get_context_data(self, **kwargs):
         """
@@ -78,7 +78,7 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
     extra_context = {
         "the_site_name": THE_SITE_NAME,
         "page_title": "Blood Pressures",
-        "average_and_median_all": average_and_median_all,
+        # "average_and_median_all": average_and_median_all,
     }
 
     def get_queryset(self):
