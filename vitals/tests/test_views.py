@@ -1,11 +1,8 @@
-from django.test import TestCase
-from django.test import RequestFactory
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 
-from vitals.models import BloodPressure
-
 from accounts.models import CustomUser
-
+from vitals.models import BloodPressure
 
 USERNAME_REGISTRATION_ACCEPTED_TRUE = "RegisteredUser"
 USERNAME_REGISTRATION_ACCEPTED_FALSE = "UnregisteredUser"

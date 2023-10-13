@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView
+from django.views.generic import CreateView, ListView
 
 from config.settings.common import THE_SITE_NAME
 from vitals.models import BloodPressure

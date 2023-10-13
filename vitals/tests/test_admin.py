@@ -1,9 +1,9 @@
 from django.contrib import admin
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory, TestCase
 
-from vitals.admin import VitalsAdmin, PulseAdmin, TemperatureAdmin
-from vitals.models import BloodPressure, Pulse, Temperature
 from accounts.models import CustomUser
+from vitals.admin import PulseAdmin, TemperatureAdmin, VitalsAdmin
+from vitals.models import BloodPressure, Pulse, Temperature
 
 
 class VitalsAdminTest(TestCase):
