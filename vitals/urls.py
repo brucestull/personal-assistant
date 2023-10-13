@@ -1,11 +1,6 @@
 from django.urls import path
 
-from vitals.views import (
-    home,
-    BloodPressureListView,
-    BloodPressureCreateView,
-)
-
+from vitals.views import BloodPressureCreateView, BloodPressureListView, home
 
 app_name = "vitals"
 urlpatterns = [

@@ -1,13 +1,8 @@
-from django.test import TestCase
 from django.db import models as d_db_models
+from django.test import TestCase
 
 from accounts.models import CustomUser
-from vitals.models import (
-    BloodPressure,
-    Pulse,
-    Temperature,
-)
-
+from vitals.models import BloodPressure, Pulse, Temperature
 
 BLANK = ""
 
