@@ -265,7 +265,7 @@ class Application(CreatedUpdatedBase):
     is_template_repository = models.BooleanField(
         verbose_name="Is Template Repository",
         help_text=(
-            "Whether or not the application's repository is a templaterepository."
+            "Whether or not the application's repository is a template repository."
         ),
         default=False,
     )
