@@ -1,5 +1,3 @@
-import os
-
 from config.settings.common import *  # noqa: F401
 
 
@@ -21,14 +19,3 @@ from config.settings.common import *  # noqa: F401
 # If user has a `SECRET_KEY` set in their environment variable, it will be
 # used.
 # Otherwise, the default one provided here will be used.
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l",
-)
-
-# To create a new `SECRET_KEY`:
-"""
-    python manage.py shell
-    from django.core.management.utils import get_random_secret_key
-    print(get_random_secret_key())
-"""
