@@ -15,6 +15,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from config.utils import get_database_config_variables
+
 # Loads variables from .env
 load_dotenv()
 # Loads (and possibly overwrites) variables from .env.email
@@ -150,3 +152,25 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 THE_SITE_NAME = "Personal Assistant"
+
+if ENVIRONMENT == 'production':
+    database_config_variables = get_database_config_variables(
+        os.environ.get('DATABASE_URL')
+    )
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': database_config_variables['DATABASE_NAME'],
+            'HOST': database_config_variables['DATABASE_HOST'],
+            'PORT': database_config_variables['DATABASE_PORT'],
+            'USER': database_config_variables['DATABASE_USER'],
+            'PASSWORD': database_config_variables['DATABASE_PASSWORD'],
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }

@@ -1,7 +1,6 @@
 import os
 
 from config.settings.common import *
-from config.utils import get_database_config_variables
 
 ALLOWED_HOSTS = ['flynnt-knapp-8e0b83ab9b88.herokuapp.com']
 
@@ -9,20 +8,6 @@ MIDDLEWARE = MIDDLEWARE + ['whitenoise.middleware.WhiteNoiseMiddleware']
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-database_config_variables = get_database_config_variables(
-    os.environ.get('DATABASE_URL')
-)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': database_config_variables['DATABASE_NAME'],
-        'HOST': database_config_variables['DATABASE_HOST'],
-        'PORT': database_config_variables['DATABASE_PORT'],
-        'USER': database_config_variables['DATABASE_USER'],
-        'PASSWORD': database_config_variables['DATABASE_PASSWORD'],
-    }
-}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
