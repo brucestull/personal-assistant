@@ -19,7 +19,7 @@ from django.views.generic.edit import (
 from django.urls import reverse
 from django.urls.base import reverse_lazy
 
-from config.settings.common import THE_SITE_NAME
+from config.settings import THE_SITE_NAME
 from .models import Journal
 
 

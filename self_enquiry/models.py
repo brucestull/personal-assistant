@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from config.settings.common import AUTH_USER_MODEL
+from config.settings import AUTH_USER_MODEL
 from base.models import CreatedUpdatedBase
 
 
@@ -35,7 +35,10 @@ class Journal(CreatedUpdatedBase):
 
     def __str__(self):
         return (
-            self.author.username + " : " + str(self.pk) + (
+            self.author.username
+            + " : "
+            + str(self.pk)
+            + (
                 # If title is not `None`, then add it to the string.
                 (" - " + self.title[:24])
                 if self.title

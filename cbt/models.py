@@ -1,7 +1,7 @@
 from django.db import models
 
 from base.models import CreatedUpdatedBase
-from config.settings.common import AUTH_USER_MODEL
+from config.settings import AUTH_USER_MODEL
 
 
 class CognativeDistortion(CreatedUpdatedBase):
@@ -32,13 +32,11 @@ class CognativeDistortion(CreatedUpdatedBase):
         """
         String representation of a `CognativeDistortion` object.
         """
-        return (
-            f"{self.name} "
-            f"--- " + (
-                # Truncate the description to 57 characters, if necessary.
-                self.description[:57] + \
-                '...' if len(self.description) > 57 else self.description
-            )
+        return f"{self.name} " f"--- " + (
+            # Truncate the description to 57 characters, if necessary.
+            self.description[:57] + "..."
+            if len(self.description) > 57
+            else self.description
         )
 
     class Meta:
@@ -69,7 +67,7 @@ class Thought(CreatedUpdatedBase):
     cognative_distortion = models.ManyToManyField(
         CognativeDistortion,
         related_name="thoughts",
-        help_text="The cognative distortion of the thought."
+        help_text="The cognative distortion of the thought.",
     )
     name = models.CharField(
         verbose_name="Summary",

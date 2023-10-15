@@ -1,6 +1,6 @@
 from django.db import models
 
-from config.settings.common import AUTH_USER_MODEL
+from config.settings import AUTH_USER_MODEL
 from base.models import CreatedUpdatedBase
 
 
@@ -39,8 +39,7 @@ class OrganizationalConcept(CreatedUpdatedBase):
         "Application",
         verbose_name="Application(s)",
         help_text=(
-            "The application(s) that the organizational concept is "
-            "associated with."
+            "The application(s) that the organizational concept is associated with."
         ),
         # `blank=True` allows the create organizational concept form to be
         # submitted without associating it with an application.
@@ -51,9 +50,7 @@ class OrganizationalConcept(CreatedUpdatedBase):
         """
         Returns the string representation of the organizational concept.
         """
-        return (
-            f"{self.name} | Applications Count: {self.applications.count()}"
-        )
+        return f"{self.name} | Applications Count: {self.applications.count()}"
 
     class Meta:
         verbose_name = "Organizational Concept"
@@ -71,8 +68,7 @@ class LanguageFrameworkSystem(CreatedUpdatedBase):
     name = models.CharField(
         verbose_name="Name",
         help_text=(
-            "The name of the language, framework, or system used in the "
-            "application."
+            "The name of the language, framework, or system used in the application."
         ),
         max_length=30,
         unique=True,
@@ -231,9 +227,7 @@ class Application(CreatedUpdatedBase):
     )
     has_prod_deployment = models.BooleanField(
         verbose_name="Has Production Deployment",
-        help_text=(
-            "Whether or not the application has a production deployment."
-        ),
+        help_text=("Whether or not the application has a production deployment."),
         default=False,
     )
     has_cicd = models.BooleanField(
@@ -243,9 +237,7 @@ class Application(CreatedUpdatedBase):
     )
     has_email_sending = models.BooleanField(
         verbose_name="Has Email Sending",
-        help_text=(
-            "Whether or not the application has email sending capabilities."
-        ),
+        help_text=("Whether or not the application has email sending capabilities."),
         default=False,
     )
     repository_is_public = models.BooleanField(
@@ -255,32 +247,25 @@ class Application(CreatedUpdatedBase):
     )
     settings_in_environment = models.BooleanField(
         verbose_name="Settings in Environment",
-        help_text=(
-            "Whether or not the application's settings are in the "
-            "environment."
-        ),
+        help_text=("Whether or not the application's settings are in the environment."),
         default=False,
     )
     settings_in_dot_env_file = models.BooleanField(
         verbose_name="Settings in Environment File",
         help_text=(
-            "Whether or not the application's settings are in an environment "
-            "file."
+            "Whether or not the application's settings are in an environment file."
         ),
         default=False,
     )
     settings_in_dot_yml_file = models.BooleanField(
         verbose_name="Settings in YAML File",
-        help_text=(
-            "Whether or not the application's settings are in a YAML file."
-        ),
+        help_text=("Whether or not the application's settings are in a YAML file."),
         default=False,
     )
     is_template_repository = models.BooleanField(
         verbose_name="Is Template Repository",
         help_text=(
-            "Whether or not the application's repository is a template "
-            "repository."
+            "Whether or not the application's repository is a template repository."
         ),
         default=False,
     )
@@ -296,9 +281,7 @@ class Application(CreatedUpdatedBase):
     # application.
     testing_level = models.CharField(
         verbose_name="Testing Level",
-        help_text=(
-            "The relative amount of testing coverage for the application."
-        ),
+        help_text=("The relative amount of testing coverage for the application."),
         max_length=6,
         choices=TESTING_LEVEL_CHOICES,
         null=True,
@@ -314,9 +297,7 @@ class Application(CreatedUpdatedBase):
     language_framework_systems = models.ManyToManyField(
         LanguageFrameworkSystem,
         verbose_name="Language/Framework/Systems",
-        help_text=(
-            "The languages, frameworks, and systems used in the application."
-        ),
+        help_text=("The languages, frameworks, and systems used in the application."),
         # The related name for the `language_framework_systems` field is
         # `applications`. This allows us to access the applications for a
         # language, framework, or system by using
@@ -345,9 +326,7 @@ class Label(CreatedUpdatedBase):
     )
     hue = models.CharField(
         verbose_name="Hue",
-        help_text=(
-            "The color of the label tag (e.g. '#2BDCC7', '#FF0000', 'ocre')."
-        ),
+        help_text=("The color of the label tag (e.g. '#2BDCC7', '#FF0000', 'ocre')."),
         max_length=25,
         null=True,
         blank=True,

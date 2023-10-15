@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import (
 from django.shortcuts import render
 from django.views.generic import ListView
 
-from config.settings.common import THE_SITE_NAME
+from config.settings import THE_SITE_NAME
 from app_tracker.models import OrganizationalConcept
 
 
