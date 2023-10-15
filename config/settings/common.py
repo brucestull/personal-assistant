@@ -10,7 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+# Loads variables from .env
+load_dotenv()
+# Loads (and possibly overwrites) variables from .env.email
+load_dotenv(".env.email")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -75,6 +83,15 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+
+
+# Email
+# https://docs.djangoproject.com/en/4.0/topics/email/
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
 
 
 # Password validation
