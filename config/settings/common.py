@@ -170,6 +170,7 @@ if ENVIRONMENT == "production":
     }
     ALLOWED_HOSTS = ["flynnt-knapp-8e0b83ab9b88.herokuapp.com"]
     SECRET_KEY = os.environ.get("SECRET_KEY")
+    STATIC_ROOT = BASE_DIR / "staticfiles"
 else:
     DATABASES = {
         "default": {
