@@ -39,7 +39,7 @@ class OrganizationalConcept(CreatedUpdatedBase):
         "Application",
         verbose_name="Application(s)",
         help_text=(
-            "The application(s) that the organizational concept is " "associated with."
+            "The application(s) that the organizational concept is associated with."
         ),
         # `blank=True` allows the create organizational concept form to be
         # submitted without associating it with an application.
@@ -68,7 +68,7 @@ class LanguageFrameworkSystem(CreatedUpdatedBase):
     name = models.CharField(
         verbose_name="Name",
         help_text=(
-            "The name of the language, framework, or system used in the " "application."
+            "The name of the language, framework, or system used in the application."
         ),
         max_length=30,
         unique=True,
@@ -247,15 +247,13 @@ class Application(CreatedUpdatedBase):
     )
     settings_in_environment = models.BooleanField(
         verbose_name="Settings in Environment",
-        help_text=(
-            "Whether or not the application's settings are in the " "environment."
-        ),
+        help_text=("Whether or not the application's settings are in the environment."),
         default=False,
     )
     settings_in_dot_env_file = models.BooleanField(
         verbose_name="Settings in Environment File",
         help_text=(
-            "Whether or not the application's settings are in an environment " "file."
+            "Whether or not the application's settings are in an environment file."
         ),
         default=False,
     )
@@ -267,7 +265,7 @@ class Application(CreatedUpdatedBase):
     is_template_repository = models.BooleanField(
         verbose_name="Is Template Repository",
         help_text=(
-            "Whether or not the application's repository is a template " "repository."
+            "Whether or not the application's repository is a templaterepository."
         ),
         default=False,
     )
