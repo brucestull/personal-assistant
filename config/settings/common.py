@@ -10,8 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
+# from dotenv import load_dotenv
+
+from config.utils import get_database_config_variables
+
+# load_dotenv()
+
+ENVIRONMENT = os.getenv("ENVIRONMENT", default="development")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -76,6 +84,14 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# Email
+# https://docs.djangoproject.com/en/4.0/topics/email/
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -126,3 +142,43 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 THE_SITE_NAME = "Personal Assistant"
+
+if ENVIRONMENT == "production":
+    DEBUG = False
+    ALLOWED_HOSTS = ["flynnt-knapp-8e0b83ab9b88.herokuapp.com"]
+    MIDDLEWARE = MIDDLEWARE + ["whitenoise.middleware.WhiteNoiseMiddleware"]
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    database_config_variables = get_database_config_variables(
+        os.environ.get('DATABASE_URL')
+    )
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": database_config_variables["DATABASE_NAME"],
+            "HOST": database_config_variables["DATABASE_HOST"],
+            "PORT": database_config_variables["DATABASE_PORT"],
+            "USER": database_config_variables["DATABASE_USER"],
+            "PASSWORD": database_config_variables["DATABASE_PASSWORD"],
+        }
+    }
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ["localhost"]
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+    SECRET_KEY = os.environ.get(
+        'SECRET_KEY',
+        "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l",
+    )
+
+# To create a new `SECRET_KEY`:
+"""
+    python manage.py shell
+    from django.core.management.utils import get_random_secret_key
+    print(get_random_secret_key())
+"""
