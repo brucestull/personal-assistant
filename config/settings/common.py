@@ -168,6 +168,7 @@ if ENVIRONMENT == "production":
         }
     }
     ALLOWED_HOSTS = ["flynnt-knapp-8e0b83ab9b88.herokuapp.com"]
+    SECRET_KEY = os.environ.get("SECRET_KEY")
 else:
     DATABASES = {
         "default": {
@@ -176,3 +177,11 @@ else:
         }
     }
     ALLOWED_HOSTS = ["localhost"]
+    SECRET_KEY = "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l"
+
+# To create a new `SECRET_KEY`:
+"""
+    python manage.py shell
+    from django.core.management.utils import get_random_secret_key
+    print(get_random_secret_key())
+"""
