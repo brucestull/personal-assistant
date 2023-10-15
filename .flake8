@@ -1,5 +1,5 @@
 [flake8]
 extend-ignore = F403,F405
-exclude = migrations,common.py,wsgi.py,manage.py
+exclude = migrations,wsgi.py,manage.py
 statistics = True
 max-line-length = 88
