@@ -3,9 +3,6 @@ import os
 from config.settings.common import *
 
 
-DEBUG = True
-
-
 ALLOWED_HOSTS = ['localhost']
 
 

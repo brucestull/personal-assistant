@@ -3,8 +3,6 @@ import os
 from config.settings.common import *
 from config.utils import get_database_config_variables
 
-DEBUG = False
-
 ALLOWED_HOSTS = ['flynnt-knapp-8e0b83ab9b88.herokuapp.com']
 
 MIDDLEWARE = MIDDLEWARE + ['whitenoise.middleware.WhiteNoiseMiddleware']
