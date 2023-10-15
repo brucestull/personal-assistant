@@ -1,13 +1,14 @@
 from django.db import models
 from base.models import CreatedUpdatedBase
 
-from config.settings.common import AUTH_USER_MODEL
+from config.settings import AUTH_USER_MODEL
 
 
 class Pharmaceutical(CreatedUpdatedBase):
     """
     Model for a user's pharmaceutical.
     """
+
     user = models.ForeignKey(
         AUTH_USER_MODEL,
         verbose_name="User",

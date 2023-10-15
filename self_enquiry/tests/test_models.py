@@ -3,7 +3,7 @@ from django.db import models as d_db_models
 
 ######################
 # Can use either of these:
-# from config.settings.common import AUTH_USER_MODEL
+# from config.settings import AUTH_USER_MODEL
 from accounts.models import CustomUser
 
 ######################
@@ -45,13 +45,9 @@ GROWTH_OPPORTUNITY_AUTHOR_RELATED_NAME = "growth_opportunities"
 GROWTH_OPPORTUNITY_QUESTION_VERBOSE_NAME = "Question"
 GROWTH_OPPORTUNITY_QUESTION_HELP_TEXT = "Required"
 
-GROWTH_OPPORTUNITY_CREATED_HELP_TEXT = (
-    "The date and time this object was created."
-)
+GROWTH_OPPORTUNITY_CREATED_HELP_TEXT = "The date and time this object was created."
 
-GROWTH_OPPORTUNITY_UPDATED_HELP_TEXT = (
-    "The date and time this object was last updated."
-)
+GROWTH_OPPORTUNITY_UPDATED_HELP_TEXT = "The date and time this object was last updated."
 
 GROWTH_OPPORTUNITY_QUESTION_LESS_THAN_TWENTY_FOUR = "Growth Opportunity"
 GROWTH_OPPORTUNITY_QUESTION_GREATER_THAN_TWENTY_FOUR = (
@@ -215,9 +211,7 @@ class JournalModelTest(TestCase):
         """
         journal = Journal.objects.get(id=self.journal.id)
         self.assertEqual(
-            str(
-                journal
-            ), f"{TEST_USERNAME} : {journal.id} - {JOURNAL_TITLE[:24]}"
+            str(journal), f"{TEST_USERNAME} : {journal.id} - {JOURNAL_TITLE[:24]}"
         )
 
     def test_get_absolute_url_method(self):
@@ -226,8 +220,7 @@ class JournalModelTest(TestCase):
         something.
         """
         journal = Journal.objects.get(id=self.journal.id)
-        self.assertEqual(journal.get_absolute_url(),
-                         f"/journals/{journal.id}/detail/")
+        self.assertEqual(journal.get_absolute_url(), f"/journals/{journal.id}/detail/")
 
     def test_display_content_method_less_than_fifty_characters(self):
         """
@@ -247,8 +240,7 @@ class JournalModelTest(TestCase):
         journal = Journal.objects.get(id=self.journal.id)
         journal.content = JOURNAL_CONTENT_MORE_THAN_FIFTY
         self.assertEqual(
-            journal.display_content(
-            ), JOURNAL_CONTENT_MORE_THAN_FIFTY[:50] + "..."
+            journal.display_content(), JOURNAL_CONTENT_MORE_THAN_FIFTY[:50] + "..."
         )
 
 
@@ -273,11 +265,9 @@ class GrowthOpportunityModelTest(TestCase):
             author=cls.user,
             question=GROWTH_OPPORTUNITY_QUESTION_LESS_THAN_TWENTY_FOUR,
         )
-        cls.growth_opportunity_greater_than_24 = (
-            GrowthOpportunity.objects.create(
-                author=cls.user,
-                question=GROWTH_OPPORTUNITY_QUESTION_GREATER_THAN_TWENTY_FOUR,
-            )
+        cls.growth_opportunity_greater_than_24 = GrowthOpportunity.objects.create(
+            author=cls.user,
+            question=GROWTH_OPPORTUNITY_QUESTION_GREATER_THAN_TWENTY_FOUR,
         )
 
     def test_author_label(self):
@@ -323,8 +313,7 @@ class GrowthOpportunityModelTest(TestCase):
         `question`.
         """
         field = GrowthOpportunity._meta.get_field("question")
-        self.assertEqual(field.verbose_name,
-                         GROWTH_OPPORTUNITY_QUESTION_VERBOSE_NAME)
+        self.assertEqual(field.verbose_name, GROWTH_OPPORTUNITY_QUESTION_VERBOSE_NAME)
 
     def test_question_help_text(self):
         """
@@ -332,8 +321,7 @@ class GrowthOpportunityModelTest(TestCase):
         `The question for the growth opportunity.`.
         """
         field = GrowthOpportunity._meta.get_field("question")
-        self.assertEqual(
-            field.help_text, GROWTH_OPPORTUNITY_QUESTION_HELP_TEXT)
+        self.assertEqual(field.help_text, GROWTH_OPPORTUNITY_QUESTION_HELP_TEXT)
 
     def test_created_help_text(self):
         """

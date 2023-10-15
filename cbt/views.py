@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from config.settings.common import THE_SITE_NAME
+from config.settings import THE_SITE_NAME
 
 HOME_PAGE_TITLE = "Cognative Behavioral Therapy"
 

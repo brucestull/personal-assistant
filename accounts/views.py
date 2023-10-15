@@ -13,7 +13,7 @@ from accounts.forms import (
     CustomUserChangeForm,
 )
 from accounts.models import CustomUser
-from config.settings.common import THE_SITE_NAME
+from config.settings import THE_SITE_NAME
 
 
 class ForbiddenView(TemplateView):
@@ -127,7 +127,5 @@ class CustomUserDetailView(
         """
         context = super().get_context_data(**kwargs)
         context["the_site_name"] = THE_SITE_NAME
-        context["page_title"] = (
-            f"{self.object.username}'s User Information",
-        )
+        context["page_title"] = (f"{self.object.username}'s User Information",)
         return context
