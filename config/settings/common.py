@@ -154,6 +154,7 @@ LOGOUT_REDIRECT_URL = "home"
 THE_SITE_NAME = "Personal Assistant"
 
 if ENVIRONMENT == "production":
+    MIDDLEWARE = MIDDLEWARE + ["whitenoise.middleware.WhiteNoiseMiddleware"]
     database_config_variables = get_database_config_variables(
         os.environ.get("DATABASE_URL")
     )
