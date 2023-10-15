@@ -96,10 +96,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Email
 # https://docs.djangoproject.com/en/4.0/topics/email/
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 
 
@@ -153,24 +153,26 @@ LOGOUT_REDIRECT_URL = "home"
 
 THE_SITE_NAME = "Personal Assistant"
 
-if ENVIRONMENT == 'production':
+if ENVIRONMENT == "production":
     database_config_variables = get_database_config_variables(
-        os.environ.get('DATABASE_URL')
+        os.environ.get("DATABASE_URL")
     )
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': database_config_variables['DATABASE_NAME'],
-            'HOST': database_config_variables['DATABASE_HOST'],
-            'PORT': database_config_variables['DATABASE_PORT'],
-            'USER': database_config_variables['DATABASE_USER'],
-            'PASSWORD': database_config_variables['DATABASE_PASSWORD'],
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": database_config_variables["DATABASE_NAME"],
+            "HOST": database_config_variables["DATABASE_HOST"],
+            "PORT": database_config_variables["DATABASE_PORT"],
+            "USER": database_config_variables["DATABASE_USER"],
+            "PASSWORD": database_config_variables["DATABASE_PASSWORD"],
         }
     }
+    ALLOWED_HOSTS = ["flynnt-knapp-8e0b83ab9b88.herokuapp.com"]
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+    ALLOWED_HOSTS = ["localhost"]

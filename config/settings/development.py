@@ -3,9 +3,6 @@ import os
 from config.settings.common import *  # noqa: F401
 
 
-ALLOWED_HOSTS = ['localhost']
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -25,7 +22,7 @@ ALLOWED_HOSTS = ['localhost']
 # used.
 # Otherwise, the default one provided here will be used.
 SECRET_KEY = os.environ.get(
-    'SECRET_KEY',
+    "SECRET_KEY",
     "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l",
 )
 
