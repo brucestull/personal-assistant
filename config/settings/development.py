@@ -1,6 +1,6 @@
 import os
 
-from config.settings.common import *
+from config.settings.common import *  # noqa: F401
 
 
 ALLOWED_HOSTS = ['localhost']
