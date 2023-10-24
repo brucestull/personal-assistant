@@ -2,7 +2,7 @@ from django.db import models as d_db_models
 from django.test import TestCase
 
 from accounts.models import CustomUser
-from vitals.models import BloodPressure, Pulse, Temperature
+from vitals.models import BloodPressure, Pulse, Temperature, BodyWeight
 
 BLANK = ""
 
@@ -57,16 +57,12 @@ PULSE_VERBOSE_NAME_PLURAL = "Pulse Measurements"
 
 TEMPERATURE_SUBJECT_VERBOSE_NAME = "Subject"
 TEMPERATURE_SUBJECT_RELATED_NAME = "temperatures"
-TEMPERATURE_SUBJECT_HELP_TEXT = (
-    "The subject that gets their temperature measured."
-)
+TEMPERATURE_SUBJECT_HELP_TEXT = "The subject that gets their temperature measured."
 
 TEMPERATURE_MEASUREMENT_VERBOSE_NAME = "Temperature Measurement"
 TEMPERATURE_MEASUREMENT_MAX_DIGITS = 4
 TEMPERATURE_MEASUREMENT_DECIMAL_PLACES = 1
-TEMPERATURE_MEASUREMENT_HELP_TEXT = (
-    "The temperature measurement in degrees Fahrenheit."
-)
+TEMPERATURE_MEASUREMENT_HELP_TEXT = "The temperature measurement in degrees Fahrenheit."
 
 TEMPERATURE_VERBOSE_NAME = "Temperature Measurement"
 TEMPERATURE_VERBOSE_NAME_PLURAL = "Temperature Measurements"
@@ -131,8 +127,7 @@ class BloodPressureModelTest(TestCase):
         Test the `created` field help text.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        created_field_help_text = blood_pressure._meta.get_field(
-            "created").help_text
+        created_field_help_text = blood_pressure._meta.get_field("created").help_text
         self.assertEqual(
             created_field_help_text,
             "The date and time this object was created.",
@@ -171,8 +166,7 @@ class BloodPressureModelTest(TestCase):
         Test the `updated` field help text.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        updated_field_help_text = blood_pressure._meta.get_field(
-            "updated").help_text
+        updated_field_help_text = blood_pressure._meta.get_field("updated").help_text
         self.assertEqual(
             updated_field_help_text,
             "The date and time this object was last updated.",
@@ -183,8 +177,7 @@ class BloodPressureModelTest(TestCase):
         Test the `updated` field auto_now=True.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        updated_field_auto_now = blood_pressure._meta.get_field(
-            "updated").auto_now
+        updated_field_auto_now = blood_pressure._meta.get_field("updated").auto_now
         self.assertTrue(updated_field_auto_now)
 
     def test_uses_correct_user_model(self):
@@ -251,16 +244,14 @@ class BloodPressureModelTest(TestCase):
         systolic_field_verbose_name = blood_pressure._meta.get_field(
             "systolic"
         ).verbose_name
-        self.assertEqual(systolic_field_verbose_name,
-                         "Systolic Blood Pressure")
+        self.assertEqual(systolic_field_verbose_name, "Systolic Blood Pressure")
 
     def test_systolic_field_help_text(self):
         """
         Test the `systolic` field help text.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        systolic_field_help_text = blood_pressure._meta.get_field(
-            "systolic").help_text
+        systolic_field_help_text = blood_pressure._meta.get_field("systolic").help_text
         self.assertEqual(
             systolic_field_help_text, "The systolic blood pressure reading."
         )
@@ -281,8 +272,7 @@ class BloodPressureModelTest(TestCase):
         diastolic_field_verbose_name = blood_pressure._meta.get_field(
             "diastolic"
         ).verbose_name
-        self.assertEqual(diastolic_field_verbose_name,
-                         BLOOD_PRESSURE_DIASTOLIC_LABEL)
+        self.assertEqual(diastolic_field_verbose_name, BLOOD_PRESSURE_DIASTOLIC_LABEL)
 
     def test_diastolic_field_help_text(self):
         """
@@ -301,8 +291,7 @@ class BloodPressureModelTest(TestCase):
         Test the verbose name of the `Pulse` model.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        pulse_field_verbose_name = blood_pressure._meta.get_field(
-            "pulse").verbose_name
+        pulse_field_verbose_name = blood_pressure._meta.get_field("pulse").verbose_name
         self.assertEqual(pulse_field_verbose_name, BLOOD_PRESSURE_PULSE_LABEL)
 
     def test_pulse_field_help_text(self):
@@ -310,8 +299,7 @@ class BloodPressureModelTest(TestCase):
         Test the `pulse` field help text.
         """
         blood_pressure = BloodPressure.objects.get(id=self.blood_pressure_1.pk)
-        pulse_field_help_text = blood_pressure._meta.get_field(
-            "pulse").help_text
+        pulse_field_help_text = blood_pressure._meta.get_field("pulse").help_text
         self.assertEqual(pulse_field_help_text, BLOOD_PRESSURE_PULSE_HELP_TEXT)
 
     def test_verbose_name_plural(self):
@@ -336,7 +324,7 @@ class BloodPressureModelTest(TestCase):
                 f"{blood_pressure.systolic} / "
                 f"{blood_pressure.diastolic} mmHg | "
                 f"{blood_pressure.pulse} bpm"
-            )
+            ),
         )
 
 
@@ -373,8 +361,7 @@ class PulseModelTest(TestCase):
         Test the `user` field on_delete=cascade.
         """
         pulse = Pulse.objects.get(id=self.pulse.pk)
-        user_on_delete = pulse._meta.get_field(
-            PULSE_USER_LABEL).remote_field.on_delete
+        user_on_delete = pulse._meta.get_field(PULSE_USER_LABEL).remote_field.on_delete
         self.assertEqual(user_on_delete, d_db_models.CASCADE)
 
     def test_pulse_user_related_name(self):
@@ -417,8 +404,7 @@ class PulseModelTest(TestCase):
         """
         pulse = Pulse.objects.get(id=self.pulse.pk)
         bpm_field_help_text = pulse._meta.get_field("bpm").help_text
-        self.assertEqual(bpm_field_help_text,
-                         "The pulse rate in beats per minute.")
+        self.assertEqual(bpm_field_help_text, "The pulse rate in beats per minute.")
 
     def test_pulse_verbose_name(self):
         """
@@ -479,9 +465,7 @@ class TemperatureModelTest(TestCase):
         Test the `subject` field verbose_name.
         """
         temperature = Temperature.objects.get(id=self.temperature.pk)
-        subject_label = temperature._meta.get_field(
-            "subject"
-        ).verbose_name
+        subject_label = temperature._meta.get_field("subject").verbose_name
         self.assertEqual(subject_label, TEMPERATURE_SUBJECT_VERBOSE_NAME)
 
     def test_temperature_subject_on_delete_cascade(self):
@@ -512,9 +496,7 @@ class TemperatureModelTest(TestCase):
         Test the `subject` field help text.
         """
         temperature = Temperature.objects.get(id=self.temperature.pk)
-        subject_help_text = temperature._meta.get_field(
-            "subject"
-        ).help_text
+        subject_help_text = temperature._meta.get_field("subject").help_text
         self.assertEqual(subject_help_text, TEMPERATURE_SUBJECT_HELP_TEXT)
 
     def test_temperature_measurement_field_name(self):
@@ -522,8 +504,7 @@ class TemperatureModelTest(TestCase):
         Test the `measurement` field name.
         """
         temperature = Temperature.objects.get(id=self.temperature.pk)
-        measurement_field_name = temperature._meta.get_field(
-            "measurement").name
+        measurement_field_name = temperature._meta.get_field("measurement").name
         self.assertEqual(measurement_field_name, "measurement")
 
     def test_temperature_measurement_field_verbose_name(self):
@@ -532,7 +513,8 @@ class TemperatureModelTest(TestCase):
         """
         temperature = Temperature.objects.get(id=self.temperature.pk)
         measurement_field_verbose_name = temperature._meta.get_field(
-            "measurement").verbose_name
+            "measurement"
+        ).verbose_name
         self.assertEqual(
             measurement_field_verbose_name,
             TEMPERATURE_MEASUREMENT_VERBOSE_NAME,
@@ -544,7 +526,8 @@ class TemperatureModelTest(TestCase):
         """
         temperature = Temperature.objects.get(id=self.temperature.pk)
         measurement_field_max_digits = temperature._meta.get_field(
-            "measurement").max_digits
+            "measurement"
+        ).max_digits
         self.assertEqual(
             measurement_field_max_digits,
             TEMPERATURE_MEASUREMENT_MAX_DIGITS,
@@ -556,7 +539,8 @@ class TemperatureModelTest(TestCase):
         """
         temperature = Temperature.objects.get(id=self.temperature.pk)
         measurement_field_decimal_places = temperature._meta.get_field(
-            "measurement").decimal_places
+            "measurement"
+        ).decimal_places
         self.assertEqual(
             measurement_field_decimal_places,
             TEMPERATURE_MEASUREMENT_DECIMAL_PLACES,
@@ -568,7 +552,8 @@ class TemperatureModelTest(TestCase):
         """
         temperature = Temperature.objects.get(id=self.temperature.pk)
         measurement_field_help_text = temperature._meta.get_field(
-            "measurement").help_text
+            "measurement"
+        ).help_text
         self.assertEqual(
             measurement_field_help_text,
             TEMPERATURE_MEASUREMENT_HELP_TEXT,
@@ -602,4 +587,162 @@ class TemperatureModelTest(TestCase):
         self.assertEqual(
             str(temperature),
             f"{temperature.subject.username} | {temperature.measurement}°F",
+        )
+
+
+class BodyWeightModelTest(TestCase):
+    """
+    Test the `BodyWeight` model.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Sets up data for the whole TestCase.
+        """
+        cls.subject = CustomUser.objects.create_user(
+            username="DezziKitten",
+            password="MeowMeow42",
+            email="DezziKitten@purr.scratch",
+        )
+        cls.body_weight = BodyWeight.objects.create(
+            subject=cls.subject,
+            measurement=6.1,
+        )
+
+    def test_body_weight_subject_uses_correct_user_model(self):
+        """
+        Test the `subject` field uses the correct user model.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        subject_field = body_weight._meta.get_field("subject")
+        self.assertEqual(subject_field.related_model, CustomUser)
+
+    def test_body_weight_subject_verbose_name(self):
+        """
+        Test the `subject` field verbose_name.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        subject_label = body_weight._meta.get_field("subject").verbose_name
+        self.assertEqual(subject_label, "Subject")
+
+    def test_body_weight_subject_on_delete_cascade(self):
+        """
+        Test the `subject` field on_delete=cascade.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        subject_on_delete = body_weight._meta.get_field(
+            "subject"
+        ).remote_field.on_delete
+        self.assertEqual(subject_on_delete, d_db_models.CASCADE)
+
+    def test_body_weight_subject_related_name(self):
+        """
+        Test the `subject` field related name.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        subject_related_name = body_weight._meta.get_field(
+            "subject"
+        ).remote_field.related_name
+        self.assertEqual(subject_related_name, "body_weights")
+
+    def test_body_weight_subject_help_text(self):
+        """
+        Test the `subject` field help text.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        subject_help_text = body_weight._meta.get_field("subject").help_text
+        self.assertEqual(
+            subject_help_text,
+            "The subject that gets their body weight measured.",
+        )
+
+    def test_body_weight_measurement_field_name(self):
+        """
+        Test the `measurement` field name.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        measurement_field_name = body_weight._meta.get_field("measurement").name
+        self.assertEqual(measurement_field_name, "measurement")
+
+    def test_body_weight_measurement_field_verbose_name(self):
+        """
+        Test the `measurement` field verbose name.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        measurement_field_verbose_name = body_weight._meta.get_field(
+            "measurement"
+        ).verbose_name
+        self.assertEqual(
+            measurement_field_verbose_name,
+            "Body Weight Measurement",
+        )
+
+    def test_body_weight_measurement_field_max_digits(self):
+        """
+        Test the `measurement` field max_digits.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        measurement_field_max_digits = body_weight._meta.get_field(
+            "measurement"
+        ).max_digits
+        self.assertEqual(
+            measurement_field_max_digits,
+            5,
+        )
+
+    def test_body_weight_measurement_field_decimal_places(self):
+        """
+        Test the `measurement` field decimal_places.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        measurement_field_decimal_places = body_weight._meta.get_field(
+            "measurement"
+        ).decimal_places
+        self.assertEqual(
+            measurement_field_decimal_places,
+            2,
+        )
+
+    def test_body_weight_measurement_field_help_text(self):
+        """
+        Test the `measurement` field help text.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        measurement_field_help_text = body_weight._meta.get_field(
+            "measurement"
+        ).help_text
+        self.assertEqual(
+            measurement_field_help_text,
+            "The body weight measurement in pounds.",
+        )
+
+    def test_body_weight_meta_verbose_name(self):
+        """
+        Test the verbose name of the `BodyWeight` model.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        self.assertEqual(
+            str(body_weight._meta.verbose_name),
+            "Body Weight Measurement",
+        )
+
+    def test_body_weight_meta_verbose_name_plural(self):
+        """
+        Test the plural verbose name of the `BodyWeight` model.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        self.assertEqual(
+            str(body_weight._meta.verbose_name_plural),
+            "Body Weight Measurements",
+        )
+
+    def test_body_weight_dunder_string_method(self):
+        """
+        Test the `__str__` method of the `BodyWeight` model.
+        """
+        body_weight = BodyWeight.objects.get(id=self.body_weight.pk)
+        self.assertEqual(
+            str(body_weight),
+            f"{body_weight.subject.username} | {body_weight.measurement} lbs",
         )
