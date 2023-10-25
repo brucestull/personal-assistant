@@ -27,6 +27,8 @@ load_dotenv(".env.email")
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
 
 # Set DEBUG based on the ENVIRONMENT value
+# If ENVIRONMENT is "production", DEBUG is False
+# If ENVIRONMENT is anything else, DEBUG is True
 DEBUG = ENVIRONMENT != "production"
 
 
@@ -90,10 +92,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-
 # Email
 # https://docs.djangoproject.com/en/4.0/topics/email/
 EMAIL_HOST = os.getenv("EMAIL_HOST")
@@ -152,6 +150,10 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 THE_SITE_NAME = "Personal Assistant"
+
+# Database
+# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+
 
 if ENVIRONMENT == "production":
     MIDDLEWARE = MIDDLEWARE + ["whitenoise.middleware.WhiteNoiseMiddleware"]
