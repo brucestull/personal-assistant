@@ -194,18 +194,16 @@ class TemperatureAdminTest(TestCase):
 class BodyWeightAdminTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.user = CustomUser.objects.create_user(
-            username="DezziKitten",
-            password="MeowMeow42",
-            email="DezziKitten@purr.scratch",
-        )
-        self.weight = BodyWeight.objects.create(
-            subject=self.user,
-            measurement=12.34,
-        )
         self.admin = BodyWeightAdmin(BodyWeight, admin.site)
 
     def test_list_display(self):
+        """
+        `list_display` should contains the following fields:
+
+        - subject
+        - measurement
+        - created
+        """
         self.assertEqual(
             self.admin.list_display,
             ("subject", "measurement", "created"),
@@ -215,18 +213,36 @@ class BodyWeightAdminTest(TestCase):
         self.assertEqual(self.admin.ordering, ("-created",))
 
     def test_list_filter(self):
+        """
+        `list_filter` should contains the following fields:
+
+        - subject
+        - created
+        """
         self.assertEqual(
             self.admin.list_filter,
             ("subject", "created"),
         )
 
     def test_search_fields(self):
+        """
+        `search_fields` should contains the following fields:
+
+        - subject__username
+        - measurement
+        """
         self.assertEqual(
             self.admin.search_fields,
             ("subject__username", "measurement"),
         )
 
     def test_readonly_fields(self):
+        """
+        `readonly_fields` should contains the following fields:
+
+        - created
+        - updated
+        """
         self.assertEqual(
             self.admin.readonly_fields,
             ("created", "updated"),
