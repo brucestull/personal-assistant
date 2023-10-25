@@ -87,3 +87,30 @@ class Temperature(CreatedUpdatedBase):
 
     def __str__(self):
         return f"{self.subject.username} | {self.measurement}°F"
+
+
+class BodyWeight(CreatedUpdatedBase):
+    """
+    Model for `subject` body weight `measurement`.
+    """
+
+    subject = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="Subject",
+        on_delete=models.CASCADE,
+        related_name="body_weights",
+        help_text="The subject that gets their body weight measured.",
+    )
+    measurement = models.DecimalField(
+        verbose_name="Body Weight Measurement",
+        max_digits=5,
+        decimal_places=2,
+        help_text="The body weight measurement in pounds.",
+    )
+
+    class Meta:
+        verbose_name = "Body Weight Measurement"
+        verbose_name_plural = "Body Weight Measurements"
+
+    def __str__(self):
+        return f"{self.subject.username} | {self.measurement} lbs"

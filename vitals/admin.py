@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from vitals.models import BloodPressure, Pulse, Temperature
+from vitals.models import BloodPressure, Pulse, Temperature, BodyWeight
 
 
 @admin.register(BloodPressure)
@@ -108,6 +108,53 @@ class TemperatureAdmin(admin.ModelAdmin):
     """
     Inherit from `admin.ModelAdmin` so we can customize the admin panel for
     the `Temperature` model.
+    """
+
+    list_display = (
+        "subject",
+        "measurement",
+        "created",
+    )
+    ordering = ("-created",)
+    list_filter = (
+        "subject",
+        "created",
+    )
+    search_fields = (
+        "subject__username",
+        "measurement",
+    )
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "subject",
+                    "measurement",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
+
+
+@admin.register(BodyWeight)
+class BodyWeightAdmin(admin.ModelAdmin):
+    """
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
+    the `BodyWeight` model.
     """
 
     list_display = (
