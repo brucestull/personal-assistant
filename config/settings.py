@@ -180,7 +180,7 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-    ALLOWED_HOSTS = ["localhost"]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
     SECRET_KEY = "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l"  # noqa E501
 
 # To create a new `SECRET_KEY`:
