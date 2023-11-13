@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ the_site_name }}
+    -
+    {{ page_title }}
+{% endblock title %}
+
+{% block content %}
+    <h1>Bullet Points</h1>
+    <ul>
+        {% for bulletpoint in bulletpoint_list %}
+            <li>{{ bulletpoint }}</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from django.views.generic.base import TemplateView
 
 from config.settings import THE_SITE_NAME
@@ -38,4 +38,5 @@ urlpatterns = [
     path("app-tracker/", include("app_tracker.urls")),
     path("cbt/", include("cbt.urls")),
     path("pharma-tracker/", include("pharma_tracker.urls")),
+    path("career-organizerator/", include("career_organizerator.urls")),
 ]
