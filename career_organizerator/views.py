@@ -1,9 +1,27 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render
 from django.views.generic import ListView
 
 from config.settings import THE_SITE_NAME
 
 from .models import BulletPoint
+
+
+def home(request):
+    """
+    View function for the home page of the `career_organizerator` app.
+    """
+    return render(
+        # Pass the `request` argument to the `render` function.
+        request,
+        # Specify the template to use.
+        "career_organizerator/home.html",
+        {
+            # Specify some context variables to pass to the template.
+            "the_site_name": THE_SITE_NAME,
+            "page_title": "Career Organizerator Home",
+        },
+    )
 
 
 class BulletPointListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
