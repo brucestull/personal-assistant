@@ -10,7 +10,7 @@
     <h1>Bullet Points</h1>
     <ul>
         {% for bulletpoint in bulletpoint_list %}
-            <li>{{ bulletpoint }}</li>
+            <li>{{ bulletpoint.text }}</li>
         {% endfor %}
     </ul>
 {% endblock content %}
