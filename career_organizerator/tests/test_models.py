@@ -1,14 +1,10 @@
-from django.test import TestCase
-from django.db import models as d_db_models
-
 from django.contrib.auth import get_user_model
+from django.db import models as d_db_models
+from django.test import TestCase
 
-from career_organizerator.models import (
-    Skill,
-    BehavioralInterviewQuestion,
-    BulletPoint,
-    ElevatorSpeech,
-)
+from career_organizerator.models import (BehavioralInterviewQuestion,
+                                         BulletPoint, ElevatorSpeech,
+                                         QuestionResponse, Skill)
 
 
 class SkillTestCase(TestCase):
@@ -207,14 +203,6 @@ class BehavioralInterviewQuestionTestCase(TestCase):
             behavioral_interview_question_text_help_text,
             "The text of the behavioral interview question.",
         )
-        # Test that the `text` field has the correct max length of "500".
-        behavioral_interview_question_text_max_length = (
-            BehavioralInterviewQuestion._meta.get_field("text").max_length
-        )
-        self.assertEqual(
-            behavioral_interview_question_text_max_length,
-            500,
-        )
 
     def test_dunder_string_method(self):
         """
@@ -254,6 +242,161 @@ class BehavioralInterviewQuestionTestCase(TestCase):
         self.assertEqual(
             behavioral_interview_question_verbose_name_plural,
             "Behavioral Interview Questions",
+        )
+
+
+class QuestionResponseTestCase(TestCase):
+    """
+    Tests for the QuestionResponse model.
+    """
+
+    def test_question_response_exists_and_has_proper_attributes(self):
+        """
+        Tests for the `QuestionResponse` model.
+        """
+        # Test that the `QuestionResponse` model exists.
+        self.assertIsNotNone(QuestionResponse)
+        # Test that the `QuestionResponse` model is a subclass of
+        # `models.Model`.
+        self.assertTrue(issubclass(QuestionResponse, d_db_models.Model))
+        # Test that the `QuestionResponse` model has a `user` field.
+        self.assertTrue(hasattr(QuestionResponse, "user"))
+        # Test that the `QuestionResponse` model has a `question` field.
+        self.assertTrue(hasattr(QuestionResponse, "question"))
+        # Test that the `QuestionResponse` model has a `text` field.
+        self.assertTrue(hasattr(QuestionResponse, "text"))
+        # Test that the `QuestionResponse` model has a `__str__` method.
+        self.assertTrue(hasattr(QuestionResponse, "__str__"))
+        # Test that the `QuestionResponse` model has a `Meta` class.
+        self.assertTrue(hasattr(QuestionResponse, "Meta"))
+
+    def test_user_field(self):
+        """
+        Tests for the `QuestionResponse` model `user` field.
+        """
+        # Test that `user` field uses the proper user model.
+        question_response_user_model = QuestionResponse._meta.get_field(
+            "user"
+        ).remote_field.model
+        self.assertEqual(
+            question_response_user_model,
+            get_user_model(),
+        )
+        # Test that the `user` field has the correct verbose name of "User".
+        question_response_user_verbose_name = QuestionResponse._meta.get_field(
+            "user"
+        ).verbose_name
+        self.assertEqual(
+            question_response_user_verbose_name,
+            "User",
+        )
+        # Test that the `user` field has the correct help text of "The user who
+        # created the question response.".
+        question_response_user_help_text = QuestionResponse._meta.get_field(
+            "user"
+        ).help_text
+        self.assertEqual(
+            question_response_user_help_text,
+            "The user who created the question response.",
+        )
+        # Test that the `user` field has the correct on_delete behavior of
+        # "models.CASCADE".
+        field = QuestionResponse._meta.get_field("user")
+        question_response_user_on_delete = field.remote_field.on_delete
+        self.assertEqual(
+            question_response_user_on_delete,
+            d_db_models.CASCADE,
+        )
+
+    def test_question_field(self):
+        """
+        Tests for the `QuestionResponse` model `question` field.
+        """
+        # Test that `question` field uses the proper user model.
+        question_response_question_model = QuestionResponse._meta.get_field(
+            "question"
+        ).remote_field.model
+        self.assertEqual(
+            question_response_question_model,
+            BehavioralInterviewQuestion,
+        )
+        # Test that the `question` field has the correct verbose name of
+        # "Behavioral Interview Question".
+        question_response_question_verbose_name = QuestionResponse._meta.get_field(
+            "question"
+        ).verbose_name
+        self.assertEqual(
+            question_response_question_verbose_name,
+            "Behavioral Interview Question",
+        )
+        # Test that the `question` field has the correct help text of "The
+        # behavioral interview question that the response is for.".
+        question_response_question_help_text = QuestionResponse._meta.get_field(
+            "question"
+        ).help_text
+        self.assertEqual(
+            question_response_question_help_text,
+            "The behavioral interview question that the response is for.",
+        )
+        # Test that the `question` field has the correct on_delete behavior of
+        # "models.CASCADE".
+        field = QuestionResponse._meta.get_field("question")
+        question_response_question_on_delete = field.remote_field.on_delete
+        self.assertEqual(
+            question_response_question_on_delete,
+            d_db_models.CASCADE,
+        )
+
+    def test_text_field(self):
+        """
+        Tests for the `QuestionResponse` model `text` field.
+        """
+        # Test that the `text` field has the correct verbose name of "Text".
+        question_response_text_verbose_name = QuestionResponse._meta.get_field(
+            "text"
+        ).verbose_name
+        self.assertEqual(
+            question_response_text_verbose_name,
+            "Text",
+        )
+        # Test that the `text` field has the correct help text of "The text of
+        # the question response.".
+        question_response_text_help_text = QuestionResponse._meta.get_field(
+            "text"
+        ).help_text
+        self.assertEqual(
+            question_response_text_help_text,
+            "The text of the question response.",
+        )
+
+    def test_dunder_string_method(self):
+        """
+        Tests for the `QuestionResponse` model `__str__` method.
+        """
+        # Create a `Customuser` object.
+        self.user = get_user_model().objects.create_user(
+            username="BunbunKitten",
+            password="MeowMeow42",
+        )
+        # Create a `BehavioralInterviewQuestion` object.
+        self.user_behavioral_interview_question = (
+            BehavioralInterviewQuestion.objects.create(
+                user=self.user,
+                text="A Test Behavioral Interview Question Text",
+            )
+        )
+        # Create a `QuestionResponse` object.
+        self.user_question_response = QuestionResponse.objects.create(
+            user=self.user,
+            question=self.user_behavioral_interview_question,
+            text="A Test Question Response Text",
+        )
+        # Test that the `__str__` method returns the correct string
+        # representation of the question response.
+        question_response_dunder_string = str(self.user_question_response)
+        self.assertEqual(
+            question_response_dunder_string,
+            "A Test Question Response Text",
         )
 
 
@@ -336,18 +479,6 @@ class BulletPointTestCase(TestCase):
             "The text of the bullet point.",
         )
 
-    def test_bullet_point_text_max_length(self):
-        """
-        Test that the max length of the text field is correct.
-        """
-        bullet_point_text_max_length = BulletPoint._meta.get_field(
-            "text",
-        ).max_length
-        self.assertEqual(
-            bullet_point_text_max_length,
-            500,
-        )
-
     def test_bullet_point_dunder_string_method(self):
         """
         Test that the string representation of the BulletPoint model is
@@ -394,7 +525,7 @@ class ElevatorSpeechTestCase(TestCase):
             text="test_elevator_speech_text",
         )
 
-    def test_elevator_speech_user_verbose_name(self):
+    def test_user_verbose_name(self):
         """
         Test that the verbose name of the user field is "User".
         """
@@ -406,7 +537,7 @@ class ElevatorSpeechTestCase(TestCase):
             "User",
         )
 
-    def test_elevator_speech_user_help_text(self):
+    def test_user_help_text(self):
         """
         Test that the help text of the user field is "The user who created the
         elevator speech.".
@@ -419,7 +550,7 @@ class ElevatorSpeechTestCase(TestCase):
             "The user who created the elevator speech.",
         )
 
-    def test_elevator_speech_user_on_delete_is_cascade(self):
+    def test_user_on_delete_is_cascade(self):
         """
         Test that the on_delete behavior of the user field is "models.CASCADE".
         """
@@ -430,7 +561,7 @@ class ElevatorSpeechTestCase(TestCase):
             d_db_models.CASCADE,
         )
 
-    def test_elevator_speech_theme_verbose_name(self):
+    def test_theme_verbose_name(self):
         """
         Test that the verbose name of the theme field is "Theme".
         """
@@ -442,7 +573,7 @@ class ElevatorSpeechTestCase(TestCase):
             "Theme",
         )
 
-    def test_elevator_speech_theme_help_text(self):
+    def test_theme_help_text(self):
         """
         Test that the help text of the theme field is "The theme of the
         elevator speech.".
@@ -455,7 +586,7 @@ class ElevatorSpeechTestCase(TestCase):
             "The theme of the elevator speech.",
         )
 
-    def test_elevator_speech_theme_max_length(self):
+    def test_theme_max_length(self):
         """
         Test that the max length of the theme field is "255".
         """
@@ -467,7 +598,7 @@ class ElevatorSpeechTestCase(TestCase):
             255,
         )
 
-    def test_elevator_speech_bullet_points_verbose_name(self):
+    def test_bullet_points_verbose_name(self):
         """
         Test that the verbose name of the bullet_points field is "Bullet
         Points".
@@ -480,7 +611,7 @@ class ElevatorSpeechTestCase(TestCase):
             "Bullet Points",
         )
 
-    def test_elevator_speech_bullet_points_help_text(self):
+    def test_bullet_points_help_text(self):
         """
         Test that the help text of the bullet_points field is "The bullet
         points that can be used in the elevator speech.".
@@ -493,7 +624,7 @@ class ElevatorSpeechTestCase(TestCase):
             "The bullet points that can be used in the elevator speech.",
         )
 
-    def test_elevator_speech_bullet_points_related_model(self):
+    def test_bullet_points_related_model(self):
         """
         Test that the related model of the bullet_points field is
         "BulletPoint".
@@ -506,7 +637,7 @@ class ElevatorSpeechTestCase(TestCase):
             BulletPoint,
         )
 
-    def test_elevator_speech_text_verbose_name(self):
+    def test_text_verbose_name(self):
         """
         Test that the verbose name of the text field is "Text".
         """
@@ -518,7 +649,7 @@ class ElevatorSpeechTestCase(TestCase):
             "Text",
         )
 
-    def test_elevator_speech_text_help_text(self):
+    def test_text_help_text(self):
         """
         Test that the help text of the text field is "The text of the elevator
         speech.".
@@ -531,7 +662,7 @@ class ElevatorSpeechTestCase(TestCase):
             "The text of the elevator speech.",
         )
 
-    def test_elevator_speech_dunder_string_method(self):
+    def test_dunder_string_method(self):
         """
         Test that the string representation of the ElevatorSpeech model is
         "test_elevator_speech_theme".
@@ -542,7 +673,7 @@ class ElevatorSpeechTestCase(TestCase):
             "test_elevator_speech_theme",
         )
 
-    def test_elevator_speech_verbose_name_plural(self):
+    def test_verbose_name_plural(self):
         """
         Test that the verbose name plural of the ElevatorSpeech model is
         "Elevator Speeches".

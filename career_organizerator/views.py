@@ -6,8 +6,10 @@ from django.views.generic.edit import FormMixin
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
-from .forms import BehavioralInterviewQuestionForm, BulletPointForm, SkillForm
-from .models import BehavioralInterviewQuestion, BulletPoint, Skill
+from .forms import (BehavioralInterviewQuestionForm, BulletPointForm,
+                    QuestionResponseForm, SkillForm)
+from .models import (BehavioralInterviewQuestion, BulletPoint,
+                     QuestionResponse, Skill)
 
 
 def home(request):
@@ -116,6 +118,48 @@ class BehavioralInterviewQuestionListView(
         return BehavioralInterviewQuestion.objects.filter(
             user=self.request.user
         ).order_by("-created")
+
+
+class QuestionResponseListView(FormMixin, RegistrationAcceptedMixin, ListView):
+    """
+    `ListView` for the `QuestionResponse` model.
+    """
+
+    model = QuestionResponse
+    form_class = QuestionResponseForm
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Question Responses",
+    }
+    success_url = reverse_lazy("career_organizerator:question-response-list")
+
+    def post(self, request, *args, **kwargs):
+        """
+        Override the `post` method to add the current user to the form's
+        `user` field.
+        """
+        form = self.get_form()
+        form.instance.user = self.request.user
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        """
+        This method is here to override the `form_valid` method of the
+        """
+        form.save()
+        return super().form_valid(form)
+
+    def get_queryset(self):
+        """
+        Override the `get_queryset` method to return only the current user's
+        `QuestionResponse` objects.
+        """
+        return QuestionResponse.objects.filter(user=self.request.user).order_by(
+            "-created"
+        )
 
 
 class BulletPointListView(FormMixin, RegistrationAcceptedMixin, ListView):

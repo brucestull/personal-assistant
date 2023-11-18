@@ -15,8 +15,12 @@
     <button type="submit">Add Skill</button>
 </form>
 
-{% for skill in skill_list %}
-    <p>{{ skill.name }}</p>
-{% endfor %}
+<ul>
+    {% for skill in skill_list %}
+        <li>
+            <p>{{ skill.name }}</p>
+        </li>
+    {% endfor %}
+</ul>
 
 {% endblock content %}

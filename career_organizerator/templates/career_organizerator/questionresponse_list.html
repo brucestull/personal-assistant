@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ the_site_name }}
+    -
+    {{ page_title }}
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ page_title }}</h1>
+
+    <form method="post" action={% url 'career_organizerator:question-response-list' %}>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Question Response</button>
+    </form>
+
+    {% for response in questionresponse_list %}
+        <h2>{{ response.question }}</h2>
+        <p>{{ response.text }}</p>
+    {% endfor %}
+{% endblock content %}

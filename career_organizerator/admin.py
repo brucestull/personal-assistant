@@ -1,11 +1,8 @@
 from django.contrib import admin
 
-from career_organizerator.models import (
-    BehavioralInterviewQuestion,
-    BulletPoint,
-    ElevatorSpeech,
-    Skill,
-)
+from career_organizerator.models import (BehavioralInterviewQuestion,
+                                         BulletPoint, ElevatorSpeech,
+                                         QuestionResponse, Skill)
 
 
 @admin.register(Skill)
@@ -80,6 +77,57 @@ class BehavioralInterviewQuestionAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "user",
+                    "text",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
+
+    def truncated_text(self, obj):
+        """
+        Truncate `text` to 30 characters.
+        """
+        return obj.text[:30]
+
+
+@admin.register(QuestionResponse)
+class QuestionResponseAdmin(admin.ModelAdmin):
+    """
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel
+    for the `QuestionResponse` model.
+    """
+
+    list_display = (
+        "truncated_text",
+        "created",
+        "user",
+    )
+    ordering = ("-created",)
+    list_filter = ("created",)
+    search_fields = (
+        "text",
+        "user__username",
+    )
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "user",
+                    "question",
                     "text",
                 )
             },

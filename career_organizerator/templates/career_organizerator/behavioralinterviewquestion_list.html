@@ -15,8 +15,12 @@
     <button type="submit">Add Behavioral Interview Question</button>
 </form>
 
-{% for question in behavioralinterviewquestion_list %}
-    <p>{{ question.text }}</p>
-{% endfor %}
+<ul>
+    {% for question in behavioralinterviewquestion_list %}
+        <li>
+            <p>{{ question.text }}</p>
+        </li>
+    {% endfor %}
+</ul>
 
 {% endblock content %}
