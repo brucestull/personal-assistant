@@ -9,5 +9,7 @@
 {% block content %}
 <h1>{{ page_title }}</h1>
 <h2>Application Links</h2>
+<a href={% url 'career_organizerator:skill-list' %}>Skills</a>
+|
 <a href={% url 'career_organizerator:bulletpoint-list' %}>Bullet Points</a>
 {% endblock content %}
