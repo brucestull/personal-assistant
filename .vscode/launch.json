@@ -26,5 +26,17 @@
             "django": true,
             "justMyCode": true
         },
+        {
+            "name": "Python: Django test_models",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "career_organizerator.tests.test_models",
+            ],
+            "django": true,
+            "justMyCode": true
+        },
     ]
 }
