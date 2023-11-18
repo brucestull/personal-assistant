@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Skill
+from .models import BehavioralInterviewQuestion, Skill
 
 
 class SkillForm(forms.ModelForm):
@@ -13,4 +13,17 @@ class SkillForm(forms.ModelForm):
         fields = [
             # "user",
             "name",
+        ]
+
+
+class BehavioralInterviewQuestionForm(forms.ModelForm):
+    """
+    Form for the `BehavioralInterviewQuestion` model.
+    """
+
+    class Meta:
+        model = BehavioralInterviewQuestion
+        fields = [
+            # "user",
+            "text",
         ]
