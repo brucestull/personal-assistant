@@ -38,6 +38,36 @@ class Skill(CreatedUpdatedBase):
         verbose_name_plural = "Skills"
 
 
+class BehavioralInterviewQuestion(CreatedUpdatedBase):
+    """
+    This model represents a single behavioral interview question.
+    """
+
+    # `user` is the user who created the behavioral interview question.
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="User",
+        help_text="The user who created the behavioral interview question.",
+        on_delete=models.CASCADE,
+    )
+
+    # `text` is the text of the behavioral interview question.
+    text = models.TextField(
+        verbose_name="Text",
+        help_text="The text of the behavioral interview question.",
+        max_length=500,
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the behavioral interview question.
+        """
+        return self.text
+
+    class Meta:
+        verbose_name_plural = "Behavioral Interview Questions"
+
+
 class BulletPoint(CreatedUpdatedBase):
     """
     This model represents a single bullet point.
