@@ -3,7 +3,12 @@ from django.db import models as d_db_models
 
 from django.contrib.auth import get_user_model
 
-from career_organizerator.models import Skill, BulletPoint, ElevatorSpeech
+from career_organizerator.models import (
+    Skill,
+    BehavioralInterviewQuestion,
+    BulletPoint,
+    ElevatorSpeech,
+)
 
 
 class SkillTestCase(TestCase):
@@ -11,7 +16,7 @@ class SkillTestCase(TestCase):
     Tests for the Skill model.
     """
 
-    def test_skill_model_exists_and_has_proper_attributes(self):
+    def test_model_exists_and_has_proper_attributes(self):
         """
         Tests for the `Skill` model.
         """
@@ -28,55 +33,7 @@ class SkillTestCase(TestCase):
         # Test that the `Skill` model has a `Meta` class.
         self.assertTrue(hasattr(Skill, "Meta"))
 
-    ########################################################
-    # TODO: Remove these tests once the tests for the `Skill` model are
-    # complete and in field-based test methods.
-    ########################################################
-    def test_skill_user_uses_proper_model(self):
-        """
-        Test that the user field uses the proper model.
-        """
-        skill_user_model = Skill._meta.get_field("user").remote_field.model
-        self.assertEqual(
-            skill_user_model,
-            get_user_model(),
-        )
-
-    def test_skill_user_verbose_name(self):
-        """
-        Test that the verbose name of the user field is "User".
-        """
-        skill_user_verbose_name = Skill._meta.get_field("user").verbose_name
-        self.assertEqual(
-            skill_user_verbose_name,
-            "User",
-        )
-
-    def test_skill_user_help_text(self):
-        """
-        Test that the help text of the user field is "The user who created the
-        skill.".
-        """
-        skill_user_help_text = Skill._meta.get_field("user").help_text
-        self.assertEqual(
-            skill_user_help_text,
-            "The user who created the skill.",
-        )
-
-    def test_skill_user_on_delete_is_cascade(self):
-        """
-        Test that the on_delete behavior of the user field is "models.CASCADE".
-        """
-        field = Skill._meta.get_field("user")
-        skill_user_on_delete = field.remote_field.on_delete
-        self.assertEqual(
-            skill_user_on_delete,
-            d_db_models.CASCADE,
-        )
-
-    ########################################################
-
-    def test_skill_model_user_field(self):
+    def test_user_field(self):
         """
         Tests for the `Skill` model `user` field.
         """
@@ -108,7 +65,7 @@ class SkillTestCase(TestCase):
             d_db_models.CASCADE,
         )
 
-    def test_skill_model_name_field(self):
+    def test_name_field(self):
         """
         Tests for the `Skill` model `name` field.
         """
@@ -132,7 +89,7 @@ class SkillTestCase(TestCase):
             255,
         )
 
-    def test_skill_model_dunder_string_method(self):
+    def test_dunder_string_method(self):
         """
         Tests for the `Skill` model `__str__` method.
         """
@@ -154,7 +111,7 @@ class SkillTestCase(TestCase):
             "A Test Skill Name",
         )
 
-    def test_skill_model_meta_class(self):
+    def test_meta_class(self):
         """
         Tests for the `Skill` model `Meta` class.
         """
@@ -164,6 +121,139 @@ class SkillTestCase(TestCase):
         self.assertEqual(
             skill_verbose_name_plural,
             "Skills",
+        )
+
+
+class BehavioralInterviewQuestionTestCase(TestCase):
+    """
+    Tests for the BehavioralInterviewQuestion model.
+    """
+
+    def test_behavioral_interview_question_exists_and_has_proper_attributes(self):
+        """
+        Tests for the `BehavioralInterviewQuestion` model.
+        """
+        # Test that the `BehavioralInterviewQuestion` model exists.
+        self.assertIsNotNone(BehavioralInterviewQuestion)
+        # Test that the `BehavioralInterviewQuestion` model is a subclass of
+        # `models.Model`.
+        self.assertTrue(issubclass(BehavioralInterviewQuestion, d_db_models.Model))
+        # Test that the `BehavioralInterviewQuestion` model has a `user` field.
+        self.assertTrue(hasattr(BehavioralInterviewQuestion, "user"))
+        # Test that the `BehavioralInterviewQuestion` model has a `text` field.
+        self.assertTrue(hasattr(BehavioralInterviewQuestion, "text"))
+        # Test that the `BehavioralInterviewQuestion` model has a `__str__`
+        # method.
+        self.assertTrue(hasattr(BehavioralInterviewQuestion, "__str__"))
+        # Test that the `BehavioralInterviewQuestion` model has a `Meta` class.
+        self.assertTrue(hasattr(BehavioralInterviewQuestion, "Meta"))
+
+    def test_user_field(self):
+        """
+        Tests for the `BehavioralInterviewQuestion` model `user` field.
+        """
+        # Test that `user` field uses the proper user model.
+        behavioral_interview_question_user_model = (
+            BehavioralInterviewQuestion._meta.get_field("user").remote_field.model
+        )
+        self.assertEqual(
+            behavioral_interview_question_user_model,
+            get_user_model(),
+        )
+        # Test that the `user` field has the correct verbose name of "User".
+        behavioral_interview_question_user_verbose_name = (
+            BehavioralInterviewQuestion._meta.get_field("user").verbose_name
+        )
+        self.assertEqual(
+            behavioral_interview_question_user_verbose_name,
+            "User",
+        )
+        # Test that the `user` field has the correct help text of "The user who
+        # created the behavioral interview question.".
+        behavioral_interview_question_user_help_text = (
+            BehavioralInterviewQuestion._meta.get_field("user").help_text
+        )
+        self.assertEqual(
+            behavioral_interview_question_user_help_text,
+            "The user who created the behavioral interview question.",
+        )
+        # Test that the `user` field has the correct on_delete behavior of
+        # "models.CASCADE".
+        field = BehavioralInterviewQuestion._meta.get_field("user")
+        behavioral_interview_question_user_on_delete = field.remote_field.on_delete
+        self.assertEqual(
+            behavioral_interview_question_user_on_delete,
+            d_db_models.CASCADE,
+        )
+
+    def test_text_field(self):
+        """
+        Tests for the `BehavioralInterviewQuestion` model `text` field.
+        """
+        # Test that the `text` field has the correct verbose name of "Text".
+        behavioral_interview_question_text_verbose_name = (
+            BehavioralInterviewQuestion._meta.get_field("text").verbose_name
+        )
+        self.assertEqual(
+            behavioral_interview_question_text_verbose_name,
+            "Text",
+        )
+        # Test that the `text` field has the correct help text of "The text of
+        # the behavioral interview question.".
+        behavioral_interview_question_text_help_text = (
+            BehavioralInterviewQuestion._meta.get_field("text").help_text
+        )
+        self.assertEqual(
+            behavioral_interview_question_text_help_text,
+            "The text of the behavioral interview question.",
+        )
+        # Test that the `text` field has the correct max length of "500".
+        behavioral_interview_question_text_max_length = (
+            BehavioralInterviewQuestion._meta.get_field("text").max_length
+        )
+        self.assertEqual(
+            behavioral_interview_question_text_max_length,
+            500,
+        )
+
+    def test_dunder_string_method(self):
+        """
+        Tests for the `BehavioralInterviewQuestion` model `__str__` method.
+        """
+        # Create a `Customuser` object.
+        self.user = get_user_model().objects.create_user(
+            username="BunbunKitten",
+            password="MeowMeow42",
+        )
+        # Create a `BehavioralInterviewQuestion` object.
+        self.user_behavioral_interview_question = (
+            BehavioralInterviewQuestion.objects.create(
+                user=self.user,
+                text="A Test Behavioral Interview Question Text",
+            )
+        )
+        # Test that the `__str__` method returns the correct string
+        # representation of the behavioral interview question.
+        behavioral_interview_question_dunder_string = str(
+            self.user_behavioral_interview_question
+        )
+        self.assertEqual(
+            behavioral_interview_question_dunder_string,
+            "A Test Behavioral Interview Question Text",
+        )
+
+    def test_meta_class(self):
+        """
+        Tests for the `BehavioralInterviewQuestion` model `Meta` class.
+        """
+        # Test that the `Meta` class has the correct verbose name plural of
+        # "Behavioral Interview Questions".
+        behavioral_interview_question_verbose_name_plural = (
+            BehavioralInterviewQuestion._meta.verbose_name_plural
+        )
+        self.assertEqual(
+            behavioral_interview_question_verbose_name_plural,
+            "Behavioral Interview Questions",
         )
 
 

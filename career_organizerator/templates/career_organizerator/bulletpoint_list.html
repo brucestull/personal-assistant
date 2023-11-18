@@ -7,10 +7,15 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Bullet Points</h1>
-    <ul>
-        {% for bulletpoint in bulletpoint_list %}
-            <li>{{ bulletpoint }}</li>
-        {% endfor %}
-    </ul>
+    <h1>{{ page_title }}</h1>
+
+    <form method="post" action="/career-organizerator/bulletpoints/">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Bullet Point</button>
+    </form>
+
+    {% for bulletpoint in bulletpoint_list %}
+        <p>{{ bulletpoint.text }}</p>
+    {% endfor %}
 {% endblock content %}
