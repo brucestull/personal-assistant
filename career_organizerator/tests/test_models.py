@@ -3,10 +3,168 @@ from django.db import models as d_db_models
 
 from django.contrib.auth import get_user_model
 
-from career_organizerator.models import (
-    BulletPoint,
-    ElevatorSpeech,
-)
+from career_organizerator.models import Skill, BulletPoint, ElevatorSpeech
+
+
+class SkillTestCase(TestCase):
+    """
+    Tests for the Skill model.
+    """
+
+    def test_skill_model_exists_and_has_proper_attributes(self):
+        """
+        Tests for the `Skill` model.
+        """
+        # Test that the `Skill` model exists.
+        self.assertIsNotNone(Skill)
+        # Test that the `Skill` model is a subclass of `models.Model`.
+        self.assertTrue(issubclass(Skill, d_db_models.Model))
+        # Test that the `Skill` model has a `user` field.
+        self.assertTrue(hasattr(Skill, "user"))
+        # Test that the `Skill` model has a `name` field.
+        self.assertTrue(hasattr(Skill, "name"))
+        # Test that the `Skill` model has a `__str__` method.
+        self.assertTrue(hasattr(Skill, "__str__"))
+        # Test that the `Skill` model has a `Meta` class.
+        self.assertTrue(hasattr(Skill, "Meta"))
+
+    ########################################################
+    # TODO: Remove these tests once the tests for the `Skill` model are
+    # complete and in field-based test methods.
+    ########################################################
+    def test_skill_user_uses_proper_model(self):
+        """
+        Test that the user field uses the proper model.
+        """
+        skill_user_model = Skill._meta.get_field("user").remote_field.model
+        self.assertEqual(
+            skill_user_model,
+            get_user_model(),
+        )
+
+    def test_skill_user_verbose_name(self):
+        """
+        Test that the verbose name of the user field is "User".
+        """
+        skill_user_verbose_name = Skill._meta.get_field("user").verbose_name
+        self.assertEqual(
+            skill_user_verbose_name,
+            "User",
+        )
+
+    def test_skill_user_help_text(self):
+        """
+        Test that the help text of the user field is "The user who created the
+        skill.".
+        """
+        skill_user_help_text = Skill._meta.get_field("user").help_text
+        self.assertEqual(
+            skill_user_help_text,
+            "The user who created the skill.",
+        )
+
+    def test_skill_user_on_delete_is_cascade(self):
+        """
+        Test that the on_delete behavior of the user field is "models.CASCADE".
+        """
+        field = Skill._meta.get_field("user")
+        skill_user_on_delete = field.remote_field.on_delete
+        self.assertEqual(
+            skill_user_on_delete,
+            d_db_models.CASCADE,
+        )
+
+    ########################################################
+
+    def test_skill_model_user_field(self):
+        """
+        Tests for the `Skill` model `user` field.
+        """
+        # Test that `user` field uses the proper user model.
+        skill_user_model = Skill._meta.get_field("user").remote_field.model
+        self.assertEqual(
+            skill_user_model,
+            get_user_model(),
+        )
+        # Test that the `user` field has the correct verbose name of "User".
+        skill_user_verbose_name = Skill._meta.get_field("user").verbose_name
+        self.assertEqual(
+            skill_user_verbose_name,
+            "User",
+        )
+        # Test that the `user` field has the correct help text of "The user who
+        # created the skill.".
+        skill_user_help_text = Skill._meta.get_field("user").help_text
+        self.assertEqual(
+            skill_user_help_text,
+            "The user who created the skill.",
+        )
+        # Test that the `user` field has the correct on_delete behavior of
+        # "models.CASCADE".
+        field = Skill._meta.get_field("user")
+        skill_user_on_delete = field.remote_field.on_delete
+        self.assertEqual(
+            skill_user_on_delete,
+            d_db_models.CASCADE,
+        )
+
+    def test_skill_model_name_field(self):
+        """
+        Tests for the `Skill` model `name` field.
+        """
+        # Test that the `name` field has the correct verbose name of "Name".
+        skill_name_verbose_name = Skill._meta.get_field("name").verbose_name
+        self.assertEqual(
+            skill_name_verbose_name,
+            "Name",
+        )
+        # Test that the `name` field has the correct help text of "The name of
+        # the skill.".
+        skill_name_help_text = Skill._meta.get_field("name").help_text
+        self.assertEqual(
+            skill_name_help_text,
+            "The name of the skill.",
+        )
+        # Test that the `name` field has the correct max length of "255".
+        skill_name_max_length = Skill._meta.get_field("name").max_length
+        self.assertEqual(
+            skill_name_max_length,
+            255,
+        )
+
+    def test_skill_model_dunder_string_method(self):
+        """
+        Tests for the `Skill` model `__str__` method.
+        """
+        # Create a `Customuser` object.
+        self.user = get_user_model().objects.create_user(
+            username="BunbunKitten",
+            password="MeowMeow42",
+        )
+        # Create a `Skill` object.
+        self.user_skill = Skill.objects.create(
+            user=self.user,
+            name="A Test Skill Name",
+        )
+        # Test that the `__str__` method returns the correct string
+        # representation of the skill.
+        skill_dunder_string = str(self.user_skill)
+        self.assertEqual(
+            skill_dunder_string,
+            "A Test Skill Name",
+        )
+
+    def test_skill_model_meta_class(self):
+        """
+        Tests for the `Skill` model `Meta` class.
+        """
+        # Test that the `Meta` class has the correct verbose name plural of
+        # "Skills".
+        skill_verbose_name_plural = Skill._meta.verbose_name_plural
+        self.assertEqual(
+            skill_verbose_name_plural,
+            "Skills",
+        )
 
 
 class BulletPointTestCase(TestCase):
@@ -224,11 +382,9 @@ class ElevatorSpeechTestCase(TestCase):
         Test that the verbose name of the bullet_points field is "Bullet
         Points".
         """
-        elevator_speech_bullet_points_verbose_name = (
-            ElevatorSpeech._meta.get_field(
-                "bullet_points"
-            ).verbose_name
-        )
+        elevator_speech_bullet_points_verbose_name = ElevatorSpeech._meta.get_field(
+            "bullet_points"
+        ).verbose_name
         self.assertEqual(
             elevator_speech_bullet_points_verbose_name,
             "Bullet Points",
@@ -239,11 +395,9 @@ class ElevatorSpeechTestCase(TestCase):
         Test that the help text of the bullet_points field is "The bullet
         points that can be used in the elevator speech.".
         """
-        elevator_speech_bullet_points_help_text = (
-            ElevatorSpeech._meta.get_field(
-                "bullet_points",
-            ).help_text
-        )
+        elevator_speech_bullet_points_help_text = ElevatorSpeech._meta.get_field(
+            "bullet_points",
+        ).help_text
         self.assertEqual(
             elevator_speech_bullet_points_help_text,
             "The bullet points that can be used in the elevator speech.",
@@ -254,11 +408,9 @@ class ElevatorSpeechTestCase(TestCase):
         Test that the related model of the bullet_points field is
         "BulletPoint".
         """
-        elevator_speech_bullet_points_related_model = (
-            ElevatorSpeech._meta.get_field(
-                "bullet_points",
-            ).remote_field.model
-        )
+        elevator_speech_bullet_points_related_model = ElevatorSpeech._meta.get_field(
+            "bullet_points",
+        ).remote_field.model
         self.assertEqual(
             elevator_speech_bullet_points_related_model,
             BulletPoint,
@@ -305,9 +457,7 @@ class ElevatorSpeechTestCase(TestCase):
         Test that the verbose name plural of the ElevatorSpeech model is
         "Elevator Speeches".
         """
-        elevator_speech_verbose_name_plural = (
-            ElevatorSpeech._meta.verbose_name_plural
-        )
+        elevator_speech_verbose_name_plural = ElevatorSpeech._meta.verbose_name_plural
         self.assertEqual(
             elevator_speech_verbose_name_plural,
             "Elevator Speeches",

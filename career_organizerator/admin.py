@@ -1,9 +1,50 @@
 from django.contrib import admin
 
-from career_organizerator.models import (
-    BulletPoint,
-    ElevatorSpeech,
-)
+from career_organizerator.models import BulletPoint, ElevatorSpeech, Skill
+
+
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    """
+    Inherit from `admin.ModelAdmin` so we can customize the admin panel
+    for the `Skill` model.
+    """
+
+    list_display = (
+        "name",
+        "created",
+        "user",
+    )
+    ordering = ("-created",)
+    list_filter = ("created",)
+    search_fields = (
+        "name",
+        "user__username",
+    )
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "user",
+                    "name",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                )
+            },
+        ),
+    )
 
 
 @admin.register(BulletPoint)
@@ -31,10 +72,12 @@ class BulletPointAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             None,
-            {"fields": (
-                "user",
-                "text",
-            )},
+            {
+                "fields": (
+                    "user",
+                    "text",
+                )
+            },
         ),
         (
             "Dates",

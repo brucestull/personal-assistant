@@ -4,6 +4,40 @@ from config.settings import AUTH_USER_MODEL
 from base.models import CreatedUpdatedBase
 
 
+class Skill(CreatedUpdatedBase):
+    """
+    This model represents a single skill.
+
+    Attributes:
+        user (ForeignKey): The user who created the skill.
+        name (CharField): The name of the skill.
+    """
+
+    # `user` is the user who created the skill.
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="User",
+        help_text="The user who created the skill.",
+        on_delete=models.CASCADE,
+    )
+
+    # `name` is the name of the skill.
+    name = models.CharField(
+        verbose_name="Name",
+        help_text="The name of the skill.",
+        max_length=255,
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the skill.
+        """
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Skills"
+
+
 class BulletPoint(CreatedUpdatedBase):
     """
     This model represents a single bullet point.
