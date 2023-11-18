@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (BehavioralInterviewQuestionListView, BulletPointListView,
-                    SkillListView, home)
+                    QuestionResponseListView, SkillListView, home)
 
 app_name = "career_organizerator"
 urlpatterns = [
@@ -11,6 +11,11 @@ urlpatterns = [
         "behavioral-interview-questions/",
         BehavioralInterviewQuestionListView.as_view(),
         name="behavioral-interview-question-list",
+    ),
+    path(
+        "question-responses/",
+        QuestionResponseListView.as_view(),
+        name="question-response-list",
     ),
     path("bulletpoints/", BulletPointListView.as_view(), name="bulletpoint-list"),
 ]

@@ -1,7 +1,7 @@
 from django.db import models
 
-from config.settings import AUTH_USER_MODEL
 from base.models import CreatedUpdatedBase
+from config.settings import AUTH_USER_MODEL
 
 
 class Skill(CreatedUpdatedBase):
@@ -55,7 +55,6 @@ class BehavioralInterviewQuestion(CreatedUpdatedBase):
     text = models.TextField(
         verbose_name="Text",
         help_text="The text of the behavioral interview question.",
-        max_length=500,
     )
 
     def __str__(self):
@@ -66,6 +65,43 @@ class BehavioralInterviewQuestion(CreatedUpdatedBase):
 
     class Meta:
         verbose_name_plural = "Behavioral Interview Questions"
+
+
+class QuestionResponse(CreatedUpdatedBase):
+    """
+    This model represents a single question response.
+    """
+
+    # `user` is the user who created the question response.
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="User",
+        help_text="The user who created the question response.",
+        on_delete=models.CASCADE,
+    )
+
+    # `question` is the behavioral interview question that the response is for.
+    question = models.ForeignKey(
+        BehavioralInterviewQuestion,
+        verbose_name="Behavioral Interview Question",
+        help_text="The behavioral interview question that the response is for.",
+        on_delete=models.CASCADE,
+    )
+
+    # `text` is the text of the question response.
+    text = models.TextField(
+        verbose_name="Text",
+        help_text="The text of the question response.",
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the question response.
+        """
+        return self.text
+
+    class Meta:
+        verbose_name_plural = "Question Responses"
 
 
 class BulletPoint(CreatedUpdatedBase):
@@ -85,7 +121,6 @@ class BulletPoint(CreatedUpdatedBase):
     text = models.TextField(
         verbose_name="Text",
         help_text="The text of the bullet point.",
-        max_length=500,
     )
 
     def __str__(self):

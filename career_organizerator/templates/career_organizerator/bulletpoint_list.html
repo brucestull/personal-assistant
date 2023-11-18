@@ -15,7 +15,11 @@
         <button type="submit">Add Bullet Point</button>
     </form>
 
-    {% for bulletpoint in bulletpoint_list %}
-        <p>{{ bulletpoint.text }}</p>
-    {% endfor %}
+    <ul>
+        {% for bulletpoint in bulletpoint_list %}
+            <li>
+                <p>{{ bulletpoint.text }}</p>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock content %}
