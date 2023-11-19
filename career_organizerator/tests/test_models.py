@@ -2,9 +2,13 @@ from django.contrib.auth import get_user_model
 from django.db import models as d_db_models
 from django.test import TestCase
 
-from career_organizerator.models import (BehavioralInterviewQuestion,
-                                         BulletPoint, ElevatorSpeech,
-                                         QuestionResponse, Skill)
+from career_organizerator.models import (
+    BehavioralInterviewQuestion,
+    BulletPoint,
+    ElevatorSpeech,
+    QuestionResponse,
+    Skill,
+)
 
 
 class SkillTestCase(TestCase):
@@ -227,7 +231,7 @@ class BehavioralInterviewQuestionTestCase(TestCase):
         )
         self.assertEqual(
             behavioral_interview_question_dunder_string,
-            "A Test Behavioral Interview Question Text",
+            "A Test Behavioral Interview Question Text?",
         )
 
     def test_meta_class(self):
