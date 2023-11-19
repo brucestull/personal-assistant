@@ -61,7 +61,7 @@ class BehavioralInterviewQuestion(CreatedUpdatedBase):
         """
         Returns the string representation of the behavioral interview question.
         """
-        return self.text
+        return f"{self.text}?"
 
     class Meta:
         verbose_name_plural = "Behavioral Interview Questions"
