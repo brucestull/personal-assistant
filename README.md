@@ -4,14 +4,6 @@
 
 ## Table of Contents
 
-## Development Routes
-
-* [http://localhost:8000/pharma-tracker/](http://localhost:8000/pharma-tracker/)
-
-## Production Links
-
-* [Personal Assistant](https://flynnt-knapp-8e0b83ab9b88.herokuapp.com/)
-
 ## Applications and Models
 
 ### `Accounts` - `accounts` Application
