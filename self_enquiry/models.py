@@ -35,15 +35,8 @@ class Journal(CreatedUpdatedBase):
 
     def __str__(self):
         return (
-            self.author.username
-            + " : "
-            + str(self.pk)
-            + (
-                # If title is not `None`, then add it to the string.
-                (" - " + self.title[:24])
-                if self.title
-                else ""
-            )
+            f"{self.author.username} : {self.pk}"
+            f"{' - ' + self.title[:24] if self.title else ''}"
         )
 
     def get_absolute_url(self):
