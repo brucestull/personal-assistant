@@ -4,6 +4,41 @@ from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
 
 
+class Purpose(CreatedUpdatedBase):
+    """
+    Model representing a `Purpose`. It encapsulates the rationale behind a user's
+    interest in the other models within this application.
+
+    Attributes:
+        user (ForeignKey): The user who created the purpose.
+        name (CharField): The name of the purpose.
+    """
+
+    # `user`: The user who created the purpose.
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="User",
+        help_text="The user who created the purpose.",
+        on_delete=models.CASCADE,
+    )
+
+    # `text`: The detailed explanation or description of the purpose.
+    text = models.CharField(
+        verbose_name="Text",
+        help_text="The text of the purpose.",
+        max_length=500,
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the purpose.
+        """
+        return self.text
+
+    class Meta:
+        verbose_name_plural = "Purposes"
+
+
 class Skill(CreatedUpdatedBase):
     """
     This model represents a single skill.

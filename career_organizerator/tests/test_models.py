@@ -6,9 +6,123 @@ from career_organizerator.models import (
     BehavioralInterviewQuestion,
     BulletPoint,
     ElevatorSpeech,
+    Purpose,
     QuestionResponse,
     Skill,
 )
+
+
+class PurposeTestCase(TestCase):
+    """
+    Tests for the Purpose model.
+    """
+
+    def test_model_exists_and_has_proper_attributes(self):
+        """
+        Tests for the `Purpose` model.
+        """
+        # Test that the `Purpose` model exists.
+        self.assertIsNotNone(Purpose)
+        # Test that the `Purpose` model is a subclass of `models.Model`.
+        self.assertTrue(issubclass(Purpose, d_db_models.Model))
+        # Test that the `Purpose` model has a `user` field.
+        self.assertTrue(hasattr(Purpose, "user"))
+        # Test that the `Purpose` model has a `text` field.
+        self.assertTrue(hasattr(Purpose, "text"))
+        # Test that the `Purpose` model has a `__str__` method.
+        self.assertTrue(hasattr(Purpose, "__str__"))
+        # Test that the `Purpose` model has a `Meta` class.
+        self.assertTrue(hasattr(Purpose, "Meta"))
+
+    def test_user_field(self):
+        """
+        Tests for the `Purpose` model `user` field.
+        """
+        # Test that `user` field uses the proper user model.
+        purpose_user_model = Purpose._meta.get_field("user").remote_field.model
+        self.assertEqual(
+            purpose_user_model,
+            get_user_model(),
+        )
+        # Test that the `user` field has the correct verbose name of "User".
+        purpose_user_verbose_name = Purpose._meta.get_field("user").verbose_name
+        self.assertEqual(
+            purpose_user_verbose_name,
+            "User",
+        )
+        # Test that the `user` field has the correct help text of "The user who
+        # created the purpose.".
+        purpose_user_help_text = Purpose._meta.get_field("user").help_text
+        self.assertEqual(
+            purpose_user_help_text,
+            "The user who created the purpose.",
+        )
+        # Test that the `user` field has the correct on_delete behavior of
+        # "models.CASCADE".
+        field = Purpose._meta.get_field("user")
+        purpose_user_on_delete = field.remote_field.on_delete
+        self.assertEqual(
+            purpose_user_on_delete,
+            d_db_models.CASCADE,
+        )
+
+    def test_text_field(self):
+        """
+        Tests for the `Purpose` model `text` field.
+        """
+        # Test that the `text` field has the correct verbose name of "Text".
+        purpose_text_verbose_name = Purpose._meta.get_field("text").verbose_name
+        self.assertEqual(
+            purpose_text_verbose_name,
+            "Text",
+        )
+        # Test that the `text` field has the correct help text of "The text of
+        # the purpose.".
+        purpose_text_help_text = Purpose._meta.get_field("text").help_text
+        self.assertEqual(
+            purpose_text_help_text,
+            "The text of the purpose.",
+        )
+        # Test that the `text` field has the correct max length of "500".
+        purpose_text_max_length = Purpose._meta.get_field("text").max_length
+        self.assertEqual(
+            purpose_text_max_length,
+            500,
+        )
+
+    def test_dunder_string_method(self):
+        """
+        Tests for the `Purpose` model `__str__` method.
+        """
+        # Create a `Customuser` object.
+        self.user = get_user_model().objects.create_user(
+            username="BunbunKitten",
+            password="MeowMeow42",
+        )
+        # Create a `Purpose` object.
+        self.user_purpose = Purpose.objects.create(
+            user=self.user,
+            text="A Test Purpose Text",
+        )
+        # Test that the `__str__` method returns the correct string
+        # representation of the purpose.
+        purpose_dunder_string = str(self.user_purpose)
+        self.assertEqual(
+            purpose_dunder_string,
+            "A Test Purpose Text",
+        )
+
+    def test_meta_class(self):
+        """
+        Tests for the `Purpose` model `Meta` class.
+        """
+        # Test that the `Meta` class has the correct verbose name plural of
+        # "Purposes".
+        purpose_verbose_name_plural = Purpose._meta.verbose_name_plural
+        self.assertEqual(
+            purpose_verbose_name_plural,
+            "Purposes",
+        )
 
 
 class SkillTestCase(TestCase):
