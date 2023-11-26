@@ -7,5 +7,6 @@
 {% endblock title %}
 
 {% block content %}
-<h1>{{ page_title }}</h1>
+    <h1>{{ page_title }}</h1>
+    <a href={% url 'cbt:cognitive-distortion-list' %}>Cognitive Distortions List</a>
 {% endblock content %}
