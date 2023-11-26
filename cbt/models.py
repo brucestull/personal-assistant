@@ -4,7 +4,7 @@ from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
 
 
-class CognativeDistortion(CreatedUpdatedBase):
+class CognitiveDistortion(CreatedUpdatedBase):
     """
     Model class for a user's cognative distortion.
 
@@ -30,7 +30,7 @@ class CognativeDistortion(CreatedUpdatedBase):
 
     def __str__(self):
         """
-        String representation of a `CognativeDistortion` object.
+        String representation of a `CognitiveDistortion` object.
         """
         return f"{self.name} " f"--- " + (
             # Truncate the description to 57 characters, if necessary.
@@ -65,7 +65,7 @@ class Thought(CreatedUpdatedBase):
         help_text="The user that has the thought.",
     )
     cognative_distortion = models.ManyToManyField(
-        CognativeDistortion,
+        CognitiveDistortion,
         related_name="thoughts",
         help_text="The cognative distortion of the thought.",
     )

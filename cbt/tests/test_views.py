@@ -7,7 +7,7 @@ THE_SITE_NAME = "Personal Assistant"
 HOME_URL = "/cbt/"
 HOME_VIEW_NAME = "cbt:home"
 HOME_TEMPLATE = "cbt/home.html"
-HOME_PAGE_TITLE = "Cognative Behavioral Therapy"
+HOME_PAGE_TITLE = "Cognitive Behavioral Therapy"
 
 
 class HomeViewTest(TestCase):

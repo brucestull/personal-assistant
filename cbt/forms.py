@@ -1,15 +1,15 @@
 from django import forms
 
-from .models import CognativeDistortion
+from .models import CognitiveDistortion
 
 
-class CognativeDistortionForm(forms.ModelForm):
+class CognitiveDistortionForm(forms.ModelForm):
     """
-    Form for the `CognativeDistortion` model.
+    Form for the `CognitiveDistortion` model.
     """
 
     class Meta:
-        model = CognativeDistortion
+        model = CognitiveDistortion
         fields = [
             # "user",
             "name",

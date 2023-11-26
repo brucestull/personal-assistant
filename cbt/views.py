@@ -1,13 +1,10 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.edit import FormMixin
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
-from .forms import CognativeDistortionForm
-from .models import CognativeDistortion
+from .models import CognitiveDistortion
 
 
 def home(request):
@@ -23,17 +20,17 @@ def home(request):
         # Pass in the necessary context data.
         {
             "the_site_name": THE_SITE_NAME,
-            "page_title": "Cognative Behavioral Therapy",
+            "page_title": "Cognitive Behavioral Therapy",
         },
     )
 
 
 class CognitiveDistortionListView(RegistrationAcceptedMixin, ListView):
     """
-    `ListView` for the `CognativeDistortion` model.
+    `ListView` for the `CognitiveDistortion` model.
     """
 
-    model = CognativeDistortion
+    model = CognitiveDistortion
     extra_context = {
         "the_site_name": THE_SITE_NAME,
         "page_title": "Cognitive Distortions",

@@ -1,6 +1,4 @@
 [flake8]
-; TODO: Fix F401 warnings
-ignore = F401
 exclude = migrations
 statistics = True
 max-line-length = 88

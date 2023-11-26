@@ -3,21 +3,10 @@ from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 
 from career_organizerator.models import (
-    BehavioralInterviewQuestion,
-    BulletPoint,
     Purpose,
-    QuestionResponse,
-    Skill,
 )
 from career_organizerator.forms import (
-    BehavioralInterviewQuestionForm,
-    BulletPointForm,
     PurposeForm,
-    QuestionResponseForm,
-    SkillForm,
-)
-from career_organizerator.views import (
-    home,
 )
 
 

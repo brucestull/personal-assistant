@@ -6,7 +6,7 @@ from accounts.models import CustomUser
 
 from cbt.admin import CognativeDistortionAdmin, ThoughtAdmin
 
-from cbt.models import CognativeDistortion, Thought
+from cbt.models import CognitiveDistortion, Thought
 
 
 class CognativeDistortionAdminTest(TestCase):
@@ -21,12 +21,12 @@ class CognativeDistortionAdminTest(TestCase):
             email="test.email@app.com",
             password="testpassword",
         )
-        self.cognative_distortion = CognativeDistortion.objects.create(
+        self.cognative_distortion = CognitiveDistortion.objects.create(
             name="Test Cognative Distortion Name",
             description="Test Cognative Distortion Description",
         )
         self.cognative_distortion_admin = CognativeDistortionAdmin(
-            CognativeDistortion, admin.site
+            CognitiveDistortion, admin.site
         )
 
     def test_list_display(self):

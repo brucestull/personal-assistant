@@ -1,16 +1,16 @@
 from django.contrib import admin
 
 from cbt.models import (
-    CognativeDistortion,
+    CognitiveDistortion,
     Thought,
 )
 
 
-@admin.register(CognativeDistortion)
+@admin.register(CognitiveDistortion)
 class CognativeDistortionAdmin(admin.ModelAdmin):
 
     """
-    Admin class for the `CognativeDistortion` model.
+    Admin class for the `CognitiveDistortion` model.
     """
 
     list_display = ["name", "truncated_description"]
