@@ -34,7 +34,6 @@ jobs:
   deploy:
     docker:
       - image: cimg/python:3.11.5
-    parallelism: 3
     steps:
       # Step 5: obtain repo from GitHub
       - checkout
