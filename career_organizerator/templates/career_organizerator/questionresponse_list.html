@@ -20,6 +20,7 @@
         {% for response in question.questionresponse_set.all %}
             {% if forloop.first %} <hr> {% endif %}
             <p>{{ response.text|linebreaksbr }}</p>
+            <a href={% url 'career_organizerator:question-response-update' response.id %}>Update</a>
             {% if not forloop.last %} <hr> {% endif %}
         {% endfor %}
         <hr><hr>

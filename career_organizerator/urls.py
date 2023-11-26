@@ -5,6 +5,7 @@ from .views import (
     BulletPointListView,
     PurposeListView,
     QuestionResponseListView,
+    QuestionResponseUpdateView,
     SkillListView,
     home,
 )
@@ -23,6 +24,11 @@ urlpatterns = [
         "question-responses/",
         QuestionResponseListView.as_view(),
         name="question-response-list",
+    ),
+    path(
+        "question-responses/<int:pk>/update/",
+        QuestionResponseUpdateView.as_view(),
+        name="question-response-update",
     ),
     path("bulletpoints/", BulletPointListView.as_view(), name="bulletpoint-list"),
 ]
