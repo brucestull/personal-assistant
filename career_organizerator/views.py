@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
@@ -17,6 +17,7 @@ from .models import (
     BehavioralInterviewQuestion,
     BulletPoint,
     Purpose,
+    QuestionResponse,
     Skill,
 )
 
@@ -209,6 +210,20 @@ class QuestionResponseListView(FormMixin, RegistrationAcceptedMixin, ListView):
         return BehavioralInterviewQuestion.objects.filter(
             user=self.request.user
         ).order_by("-created")
+
+
+class QuestionResponseUpdateView(RegistrationAcceptedMixin, UpdateView):
+    """
+    `UpdateView` for the `QuestionResponse` model.
+    """
+
+    model = QuestionResponse
+    form_class = QuestionResponseForm
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Update Question Response",
+    }
+    success_url = reverse_lazy("career_organizerator:question-response-list")
 
 
 class BulletPointListView(FormMixin, RegistrationAcceptedMixin, ListView):
