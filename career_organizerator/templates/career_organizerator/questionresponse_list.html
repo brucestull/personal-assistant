@@ -15,8 +15,10 @@
         <button type="submit">Add Question Response</button>
     </form>
 
-    {% for response in questionresponse_list %}
-        <h2>{{ response.question }}</h2>
-        <p>{{ response.text }}</p>
+    {% for question in object_list %}
+        <h2>{{ question.text }}</h2>
+        {% for response in question.questionresponse_set.all %}
+            <p>{{ response.text }}</p>
+        {% endfor %}
     {% endfor %}
 {% endblock content %}
