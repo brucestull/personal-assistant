@@ -4,6 +4,7 @@ from .views import (
     BehavioralInterviewQuestionListView,
     BulletPointListView,
     PurposeListView,
+    QuestionResponseCreateView,
     QuestionResponseListView,
     QuestionResponseUpdateView,
     SkillListView,
@@ -24,6 +25,11 @@ urlpatterns = [
         "question-responses/",
         QuestionResponseListView.as_view(),
         name="question-response-list",
+    ),
+    path(
+        "question-responses/create/<int:question_id>/",
+        QuestionResponseCreateView.as_view(),
+        name="question-response-create",
     ),
     path(
         "question-responses/<int:pk>/update/",

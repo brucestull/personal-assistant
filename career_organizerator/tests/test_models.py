@@ -345,7 +345,7 @@ class BehavioralInterviewQuestionTestCase(TestCase):
         )
         self.assertEqual(
             behavioral_interview_question_dunder_string,
-            "A Test Behavioral Interview Question Text?",
+            "A Test Behavioral Interview Question Text",
         )
 
     def test_meta_class(self):
