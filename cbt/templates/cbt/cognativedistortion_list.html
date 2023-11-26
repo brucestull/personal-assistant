@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ the_site_name }}
+    -
+    {{ page_title }}
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ page_title }}</h1>
+    {% for object in object_list %}
+        <h2>{{ object.name }}</h2>
+        <p>{{ object.description }}</p>
+    {% endfor %}
+{% endblock content %}
