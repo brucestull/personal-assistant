@@ -19,7 +19,7 @@ from config.utils import get_database_config_variables
 
 # Loads variables from .env
 load_dotenv()
-# Loads (and possibly overwrites) variables from .env.email
+# Loads variables from .env.email, and possibly overwrites variables from .env
 load_dotenv(".env.email")
 
 # Get the value of the ENVIRONMENT environment variable, or use a default

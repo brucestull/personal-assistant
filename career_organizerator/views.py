@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.edit import FormMixin, UpdateView
+from django.views.generic.edit import FormMixin, UpdateView, CreateView
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
@@ -210,6 +210,38 @@ class QuestionResponseListView(FormMixin, RegistrationAcceptedMixin, ListView):
         return BehavioralInterviewQuestion.objects.filter(
             user=self.request.user
         ).order_by("-created")
+
+
+class QuestionResponseCreateView(RegistrationAcceptedMixin, CreateView):
+    """
+    `CreateView` for the `QuestionResponse` model.
+    """
+
+    model = QuestionResponse
+    form_class = QuestionResponseForm
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Create Question Response",
+    }
+    success_url = reverse_lazy("career_organizerator:question-response-list")
+
+    def get(self, request, *args, **kwargs):
+        """
+        Override the `get` method to add the `question` field to the form's
+        `initial` data.
+        """
+        self.initial["question"] = BehavioralInterviewQuestion.objects.get(
+            pk=kwargs["question_id"]
+        )
+        return super().get(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        """
+        Override the `form_valid` method to add the current user to the form's
+        `user` field.
+        """
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class QuestionResponseUpdateView(RegistrationAcceptedMixin, UpdateView):
