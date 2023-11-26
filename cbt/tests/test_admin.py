@@ -21,11 +21,11 @@ class CognativeDistortionAdminTest(TestCase):
             email="test.email@app.com",
             password="testpassword",
         )
-        self.cognative_distortion = CognitiveDistortion.objects.create(
+        self.cognitive_distortion = CognitiveDistortion.objects.create(
             name="Test Cognative Distortion Name",
             description="Test Cognative Distortion Description",
         )
-        self.cognative_distortion_admin = CognativeDistortionAdmin(
+        self.cognitive_distortion_admin = CognativeDistortionAdmin(
             CognitiveDistortion, admin.site
         )
 
@@ -34,7 +34,7 @@ class CognativeDistortionAdminTest(TestCase):
         Test that the list display is correct
         """
         self.assertEqual(
-            self.cognative_distortion_admin.list_display,
+            self.cognitive_distortion_admin.list_display,
             [
                 "name",
                 "truncated_description",
@@ -46,7 +46,7 @@ class CognativeDistortionAdminTest(TestCase):
         Test that the list filter is correct
         """
         self.assertEqual(
-            self.cognative_distortion_admin.list_filter,
+            self.cognitive_distortion_admin.list_filter,
             [
                 "name",
             ],
@@ -57,7 +57,7 @@ class CognativeDistortionAdminTest(TestCase):
         Test that the search fields are correct
         """
         self.assertEqual(
-            self.cognative_distortion_admin.search_fields,
+            self.cognitive_distortion_admin.search_fields,
             [
                 "name",
                 "description",
@@ -69,7 +69,7 @@ class CognativeDistortionAdminTest(TestCase):
         Test that the readonly fields are correct
         """
         self.assertEqual(
-            self.cognative_distortion_admin.readonly_fields,
+            self.cognitive_distortion_admin.readonly_fields,
             [
                 "created",
                 "updated",
@@ -81,7 +81,7 @@ class CognativeDistortionAdminTest(TestCase):
         Test that the fieldsets are correct
         """
         self.assertEqual(
-            self.cognative_distortion_admin.fieldsets,
+            self.cognitive_distortion_admin.fieldsets,
             (
                 (
                     "Cognative Distortion",
@@ -109,7 +109,7 @@ class CognativeDistortionAdminTest(TestCase):
         Test that the ordering is correct
         """
         self.assertEqual(
-            self.cognative_distortion_admin.ordering,
+            self.cognitive_distortion_admin.ordering,
             [
                 "name",
                 "description",
@@ -121,12 +121,12 @@ class CognativeDistortionAdminTest(TestCase):
         Test that the truncated description is correct
         """
         self.assertEqual(
-            self.cognative_distortion_admin.truncated_description(
-                self.cognative_distortion
+            self.cognitive_distortion_admin.truncated_description(
+                self.cognitive_distortion
             ),
-            self.cognative_distortion.description[:57] + "..."
-            if len(self.cognative_distortion.description) > 57
-            else self.cognative_distortion.description,
+            self.cognitive_distortion.description[:57] + "..."
+            if len(self.cognitive_distortion.description) > 57
+            else self.cognitive_distortion.description,
         )
 
     # TODO: Test the `truncated_description()` method by using a hard-coded
@@ -215,7 +215,7 @@ class ThoughtAdminTest(TestCase):
                         "fields": (
                             "user",
                             "name",
-                            "cognative_distortion",
+                            "cognitive_distortion",
                             "description",
                         )
                     },

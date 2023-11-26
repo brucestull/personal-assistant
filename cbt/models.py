@@ -6,7 +6,7 @@ from config.settings import AUTH_USER_MODEL
 
 class CognitiveDistortion(CreatedUpdatedBase):
     """
-    Model class for a user's cognative distortion.
+    Model class for a user's cognitive distortion.
 
     This model will be available to all users. So, won't have a `user` field.
 
@@ -14,18 +14,18 @@ class CognitiveDistortion(CreatedUpdatedBase):
     updates may be done by the admin user.
 
     Attributes:
-        name (str): The name of the cognative distortion.
-        description (str): The description of the cognative distortion.
+        name (str): The name of the cognitive distortion.
+        description (str): The description of the cognitive distortion.
     """
 
     name = models.CharField(
         verbose_name="Cognative Distortion",
         max_length=150,
-        help_text="The name of the cognative distortion.",
+        help_text="The name of the cognitive distortion.",
     )
     description = models.TextField(
         verbose_name="Description",
-        help_text="The description of the cognative distortion.",
+        help_text="The description of the cognitive distortion.",
     )
 
     def __str__(self):
@@ -54,7 +54,7 @@ class Thought(CreatedUpdatedBase):
     Attributes:
         name (str): The name of the thought.
         description (str): The description of the thought.
-        cognative_distortions (list): The list of cognative distortions
+        cognitive_distortions (list): The list of cognitive distortions
         associated with the thought.
     """
 
@@ -64,10 +64,10 @@ class Thought(CreatedUpdatedBase):
         related_name="thoughts",
         help_text="The user that has the thought.",
     )
-    cognative_distortion = models.ManyToManyField(
+    cognitive_distortion = models.ManyToManyField(
         CognitiveDistortion,
         related_name="thoughts",
-        help_text="The cognative distortion of the thought.",
+        help_text="The cognitive distortion of the thought.",
     )
     name = models.CharField(
         verbose_name="Summary",

@@ -11,8 +11,8 @@ urlpatterns = [
         name="home",
     ),
     path(
-        "cognative-distortions/",
+        "cognitive-distortions/",
         CognitiveDistortionListView.as_view(),
-        name="cognative-distortion-list",
+        name="cognitive-distortion-list",
     ),
 ]

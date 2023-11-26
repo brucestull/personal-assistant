@@ -89,7 +89,7 @@ class ThoughtAdmin(admin.ModelAdmin):
                 "fields": (
                     "user",
                     "name",
-                    "cognative_distortion",
+                    "cognitive_distortion",
                     "description",
                 )
             },

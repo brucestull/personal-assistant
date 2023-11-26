@@ -13,4 +13,4 @@
 - [/career-organizerator/question-responses/](http://localhost:8000/career-organizerator/question-responses/)
 - [/career-organizerator/bulletpoints/](http://localhost:8000/career-organizerator/bulletpoints/)
 
-- [/cbt/cognative-distortions/](http://localhost:8000/cbt/cognative-distortions/)
+- [/cbt/cognitive-distortions/](http://localhost:8000/cbt/cognitive-distortions/)
