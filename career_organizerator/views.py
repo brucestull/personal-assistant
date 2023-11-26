@@ -17,7 +17,6 @@ from .models import (
     BehavioralInterviewQuestion,
     BulletPoint,
     Purpose,
-    QuestionResponse,
     Skill,
 )
 
@@ -175,7 +174,7 @@ class QuestionResponseListView(FormMixin, RegistrationAcceptedMixin, ListView):
     `ListView` for the `QuestionResponse` model.
     """
 
-    model = QuestionResponse
+    template_name = "career_organizerator/questionresponse_list.html"
     form_class = QuestionResponseForm
     extra_context = {
         "the_site_name": THE_SITE_NAME,
@@ -207,9 +206,9 @@ class QuestionResponseListView(FormMixin, RegistrationAcceptedMixin, ListView):
         Override the `get_queryset` method to return only the current user's
         `QuestionResponse` objects.
         """
-        return QuestionResponse.objects.filter(user=self.request.user).order_by(
-            "-created"
-        )
+        return BehavioralInterviewQuestion.objects.filter(
+            user=self.request.user
+        ).order_by("-created")
 
 
 class BulletPointListView(FormMixin, RegistrationAcceptedMixin, ListView):
