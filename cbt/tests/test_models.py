@@ -5,8 +5,8 @@ from cbt.models import CognitiveDistortion
 from cbt.models import Thought
 
 
-COGNATIVE_DISTORTION_NAME = "cognitive distortion name"
-COGNATIVE_DISTORTION_DESCRIPTION = "cognitive distortion description"
+COGNITIVE_DISTORTION_NAME = "cognitive distortion name"
+COGNITIVE_DISTORTION_DESCRIPTION = "cognitive distortion description"
 
 THOUGHT_NAME = "thought name"
 THOUGHT_DESCRIPTION = "thought description"
@@ -15,31 +15,31 @@ TEST_USERNAME = "test_username"
 TEST_PASSWORD = "test_password"
 TEST_EMAIL = "test.username@email.app"
 
-COGNATIVE_DISTORTION_NAME_LABEL = "Cognative Distortion"
-COGNATIVE_DISTORTION_NAME_MAX_LENGTH = 150
-COGNATIVE_DISTORTION_NAME_HELP_TEXT = "The name of the cognitive distortion."
+COGNITIVE_DISTORTION_NAME_LABEL = "Cognative Distortion"
+COGNITIVE_DISTORTION_NAME_MAX_LENGTH = 150
+COGNITIVE_DISTORTION_NAME_HELP_TEXT = "The name of the cognitive distortion."
 
-COGNATIVE_DISTORTION_DESCRIPTION_LABEL = "Description"
-COGNATIVE_DISTORTION_DESCRIPTION_HELP_TEXT = (
+COGNITIVE_DISTORTION_DESCRIPTION_LABEL = "Description"
+COGNITIVE_DISTORTION_DESCRIPTION_HELP_TEXT = (
     "The description of the cognitive distortion."
 )
 
-COGNATIVE_DISTORTION_META_VERBOSE_NAME = "Cognative Distortion"
-COGNATIVE_DISTORTION_META_VERBOSE_NAME_PLURAL = "Cognative Distortions"
+COGNITIVE_DISTORTION_META_VERBOSE_NAME = "Cognative Distortion"
+COGNITIVE_DISTORTION_META_VERBOSE_NAME_PLURAL = "Cognative Distortions"
 
 THOUGHT_USER_LABEL = "user"
 THOUGHT_USER_RELATED_NAME = "thoughts"
 THOUGHT_USER_HELP_TEXT = "The user that has the thought."
 
-THOUGHT_COGNATIVE_DISTORTION_RELATED_NAME = "thoughts"
+THOUGHT_COGNITIVE_DISTORTION_RELATED_NAME = "thoughts"
 
 THOUGHT_NAME_LABEL = "Summary"
 THOUGHT_NAME_MAX_LENGTH = 250
 THOUGHT_NAME_HELP_TEXT = "A summary of the thought."
 
-THOUGHT_COGNATIVE_DISTORTION_LABEL = "cognitive distortion"
-THOUGHT_COGNATIVE_DISTORTION_RELATED_NAME = "thoughts"
-THOUGHT_COGNATIVE_DISTORTION_HELP_TEXT = "The cognitive distortion of the thought."
+THOUGHT_COGNITIVE_DISTORTION_LABEL = "cognitive distortion"
+THOUGHT_COGNITIVE_DISTORTION_RELATED_NAME = "thoughts"
+THOUGHT_COGNITIVE_DISTORTION_HELP_TEXT = "The cognitive distortion of the thought."
 
 THOUGHT_DESCRIPTION_LABEL = "Description"
 THOUGHT_DESCRIPTION_HELP_TEXT = "The description of the thought."
@@ -64,8 +64,8 @@ class CognativeDistortionModelTest(TestCase):
             email=TEST_EMAIL,
         )
         cls.cognitive_distortion = CognitiveDistortion.objects.create(
-            name=COGNATIVE_DISTORTION_NAME,
-            description=COGNATIVE_DISTORTION_DESCRIPTION,
+            name=COGNITIVE_DISTORTION_NAME,
+            description=COGNITIVE_DISTORTION_DESCRIPTION,
         )
 
     def test_name_label(self):
@@ -73,21 +73,21 @@ class CognativeDistortionModelTest(TestCase):
         Test that the name label is correct.
         """
         name_label = self.cognitive_distortion._meta.get_field("name").verbose_name
-        self.assertEqual(name_label, COGNATIVE_DISTORTION_NAME_LABEL)
+        self.assertEqual(name_label, COGNITIVE_DISTORTION_NAME_LABEL)
 
     def test_name_max_length(self):
         """
         Test that the name max length is correct.
         """
         name_max_length = self.cognitive_distortion._meta.get_field("name").max_length
-        self.assertEqual(name_max_length, COGNATIVE_DISTORTION_NAME_MAX_LENGTH)
+        self.assertEqual(name_max_length, COGNITIVE_DISTORTION_NAME_MAX_LENGTH)
 
     def test_name_help_text(self):
         """
         Test that the name help text is correct.
         """
         name_help_text = self.cognitive_distortion._meta.get_field("name").help_text
-        self.assertEqual(name_help_text, COGNATIVE_DISTORTION_NAME_HELP_TEXT)
+        self.assertEqual(name_help_text, COGNITIVE_DISTORTION_NAME_HELP_TEXT)
 
     def test_description_label(self):
         """
@@ -96,7 +96,7 @@ class CognativeDistortionModelTest(TestCase):
         description_label = self.cognitive_distortion._meta.get_field(
             "description"
         ).verbose_name
-        self.assertEqual(description_label, COGNATIVE_DISTORTION_DESCRIPTION_LABEL)
+        self.assertEqual(description_label, COGNITIVE_DISTORTION_DESCRIPTION_LABEL)
 
     def test_description_help_text(self):
         """
@@ -106,7 +106,7 @@ class CognativeDistortionModelTest(TestCase):
             "description"
         ).help_text
         self.assertEqual(
-            description_help_text, COGNATIVE_DISTORTION_DESCRIPTION_HELP_TEXT
+            description_help_text, COGNITIVE_DISTORTION_DESCRIPTION_HELP_TEXT
         )
 
     # TODO: Create a functioning test here.
@@ -128,7 +128,7 @@ class CognativeDistortionModelTest(TestCase):
         """
         self.assertEqual(
             self.cognitive_distortion._meta.verbose_name_plural,
-            COGNATIVE_DISTORTION_META_VERBOSE_NAME_PLURAL,
+            COGNITIVE_DISTORTION_META_VERBOSE_NAME_PLURAL,
         )
 
     def test_meta_verbose_name(self):
@@ -137,7 +137,7 @@ class CognativeDistortionModelTest(TestCase):
         """
         self.assertEqual(
             self.cognitive_distortion._meta.verbose_name,
-            COGNATIVE_DISTORTION_META_VERBOSE_NAME,
+            COGNITIVE_DISTORTION_META_VERBOSE_NAME,
         )
 
 
@@ -157,8 +157,8 @@ class ThoughtModelTest(TestCase):
             email=TEST_EMAIL,
         )
         cls.cognitive_distortion = CognitiveDistortion.objects.create(
-            name=COGNATIVE_DISTORTION_NAME,
-            description=COGNATIVE_DISTORTION_DESCRIPTION,
+            name=COGNITIVE_DISTORTION_NAME,
+            description=COGNITIVE_DISTORTION_DESCRIPTION,
         )
         cls.thought = Thought.objects.create(
             user=cls.user,
@@ -202,7 +202,7 @@ class ThoughtModelTest(TestCase):
         cognitive_distortion_label = self.thought._meta.get_field(
             "cognitive_distortion"
         ).verbose_name
-        self.assertEqual(cognitive_distortion_label, THOUGHT_COGNATIVE_DISTORTION_LABEL)
+        self.assertEqual(cognitive_distortion_label, THOUGHT_COGNITIVE_DISTORTION_LABEL)
 
     def test_cognitive_distortion_help_text(self):
         """
@@ -213,7 +213,7 @@ class ThoughtModelTest(TestCase):
         ).help_text
         self.assertEqual(
             cognitive_distortion_help_text,
-            THOUGHT_COGNATIVE_DISTORTION_HELP_TEXT,
+            THOUGHT_COGNITIVE_DISTORTION_HELP_TEXT,
         )
 
     def test_name_label(self):
