@@ -18,8 +18,10 @@
     {% for question in object_list %}
         <h2>{{ question.text }}</h2>
         {% for response in question.questionresponse_set.all %}
+            {% if forloop.first %} <hr> {% endif %}
             <p>{{ response.text|linebreaksbr }}</p>
             {% if not forloop.last %} <hr> {% endif %}
         {% endfor %}
+        <hr><hr>
     {% endfor %}
 {% endblock content %}
