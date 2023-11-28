@@ -2,8 +2,6 @@
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Y1ZCzLfk7VvFxn1NaACyjS/FZvaTruzWGoti9qPSq8dwz/tree/main.svg?style=shield&circle-token=32275bd7053ab434c1bc1e8db9c3774469e0837c)](https://dl.circleci.com/status-badge/redirect/circleci/Y1ZCzLfk7VvFxn1NaACyjS/FZvaTruzWGoti9qPSq8dwz/tree/main)
 
-# Project Title
-
 ## Introduction
 A brief description of what the application does and the problem it solves. Include a couple of key features or benefits.
 
