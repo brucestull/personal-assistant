@@ -1,6 +1,6 @@
 from django.urls import path
 
-from cbt.views import home, CognitiveDistortionListView
+from cbt.views import home, CognitiveDistortionListView, ThoughtListView
 
 
 app_name = "cbt"
@@ -14,5 +14,10 @@ urlpatterns = [
         "cognitive-distortions/",
         CognitiveDistortionListView.as_view(),
         name="cognitive-distortion-list",
+    ),
+    path(
+        "thoughts/",
+        ThoughtListView.as_view(),
+        name="thought-list",
     ),
 ]

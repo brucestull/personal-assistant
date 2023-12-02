@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ the_site_name }}
+    -
+    {{ page_title }}
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ user.username }}'s {{ page_title }}</h1>
+    {% if object_list %}
+        {% for thought in object_list %}
+            <h2>{{ thought.name }}</h2>
+            <p>{{ thought.user }}</p>
+            <p>{{ thought.description }}</p>
+            <p>{{ thought.created }}</p>
+        {% endfor %}
+    {% else %}
+        No objects :(
+    {% endif %}
+{% endblock content %}
