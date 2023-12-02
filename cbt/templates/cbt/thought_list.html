@@ -11,9 +11,8 @@
     {% if object_list %}
         {% for thought in object_list %}
             <h2>{{ thought.name }}</h2>
-            <p>{{ thought.user }}</p>
-            <p>{{ thought.description }}</p>
             <p>{{ thought.created }}</p>
+            <p>{{ thought.description }}</p>
         {% endfor %}
     {% else %}
         No objects :(
