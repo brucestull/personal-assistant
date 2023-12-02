@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
@@ -78,6 +79,12 @@ class Thought(CreatedUpdatedBase):
         verbose_name="Description",
         help_text="The description of the thought.",
     )
+
+    def get_absolute_url(self):
+        """
+        Returns the absolute URL for a `Thought` object.
+        """
+        return reverse("cbt:thought-detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         """

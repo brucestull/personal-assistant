@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from cbt.models import Thought
+
 
 class HomeViewTest(TestCase):
     """
@@ -199,3 +201,130 @@ class ThoughtListViewTest(TestCase):
         self.assertEqual(response.context["page_title"], "Thoughts")
         self.assertIn("thought_list", response.context)
         self.assertIn("object_list", response.context)
+
+
+class ThoughtDetailViewTest(TestCase):
+    """
+    Tests for `ThoughtDetailView` view.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up data for the whole TestCase.
+        """
+        # Create a registration_accepted True user.
+        cls.registered_user_dezzi = get_user_model().objects.create_user(
+            username="RegisteredDezzi",
+            password="MeowMeow42",
+            email="RegisteredDezzi@purr.scratch",
+            registration_accepted=True,
+        )
+        cls.registered_user_dezzi_thought = Thought.objects.create(
+            user=cls.registered_user_dezzi,
+            name="Dezzi's Thought",
+            description="Dezzi's description",
+        )
+        # Create a registration_accepted False user.
+        cls.unregistered_user_bunbun = get_user_model().objects.create_user(
+            username="UnRegisteredBunBun",
+            password="MeowMeow42",
+            email="UnRegisteredBunBun@purr.scratch",
+            registration_accepted=False,
+        )
+
+    def test_view_class_uses_thought_model(self):
+        """
+        Test that thought detail view uses correct thought model.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(
+            reverse(
+                "cbt:thought-detail",
+                kwargs={"pk": self.registered_user_dezzi_thought.id},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["thought"].__class__, Thought)
+
+    def test_unauthenticated_user_routed_to_login(self):
+        """
+        Test that thought detail view redirects unregistered users.
+        """
+        response = self.client.get("/cbt/thoughts/1/")
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/cbt/thoughts/1/",
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
+        )
+
+    def test_unregistered_user_gets_403(self):
+        """
+        Test that unregistered user gets 403 response.
+        """
+        self.client.login(username="UnRegisteredBunBun", password="MeowMeow42")
+        response = self.client.get("/cbt/thoughts/1/")
+        self.assertEqual(response.status_code, 403)
+        # 403 should use the `403.html` template.
+        self.assertTemplateUsed(response, "403.html")
+
+    def test_url_exists_for_registered_user(self):
+        """
+        Test that thought detail view exists for registered users.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(
+            f"/cbt/thoughts/{self.registered_user_dezzi_thought.id}/"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_accessible_by_name(self):
+        """
+        Test that thought detail view is accessible by name.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(
+            reverse(
+                "cbt:thought-detail",
+                kwargs={"pk": self.registered_user_dezzi_thought.id},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """
+        Test that thought detail view uses correct template.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(
+            reverse(
+                "cbt:thought-detail",
+                kwargs={"pk": self.registered_user_dezzi_thought.id},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "cbt/thought_detail.html")
+
+    def test_view_has_correct_context(self):
+        """
+        Test that thought detail view has correct context.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(
+            reverse(
+                "cbt:thought-detail",
+                kwargs={"pk": self.registered_user_dezzi_thought.id},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["the_site_name"], "Personal Assistant")
+        self.assertEqual(response.context["page_title"], "Thought")
+        self.assertIn("thought", response.context)
+        self.assertIn("object", response.context)
+        self.assertEqual(
+            response.context["thought"], self.registered_user_dezzi_thought
+        )
+        self.assertEqual(response.context["object"], self.registered_user_dezzi_thought)

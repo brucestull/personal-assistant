@@ -1,7 +1,11 @@
 from django.urls import path
 
-from cbt.views import home, CognitiveDistortionListView, ThoughtListView
-
+from cbt.views import (
+    CognitiveDistortionListView,
+    ThoughtDetailView,
+    ThoughtListView,
+    home,
+)
 
 app_name = "cbt"
 urlpatterns = [
@@ -19,5 +23,10 @@ urlpatterns = [
         "thoughts/",
         ThoughtListView.as_view(),
         name="thought-list",
+    ),
+    path(
+        "thoughts/<int:pk>/",
+        ThoughtDetailView.as_view(),
+        name="thought-detail",
     ),
 ]

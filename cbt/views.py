@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
@@ -57,3 +58,25 @@ class ThoughtListView(RegistrationAcceptedMixin, ListView):
         queryset = Thought.objects.filter(user=self.request.user)
         # Return the `queryset`.
         return queryset
+
+
+class ThoughtDetailView(RegistrationAcceptedMixin, UserPassesTestMixin, DetailView):
+    """
+    `DetailView` for the `Thought` model.
+    """
+
+    model = Thought
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Thought",
+    }
+
+    def test_func(self):
+        """
+        Override the `test_func` method to ensure that the user is the owner of
+        the `Thought` object.
+        """
+        # Get the `Thought` object.
+        thought = self.get_object()
+        # Return whether the user is the owner of the `Thought` object.
+        return self.request.user == thought.user
