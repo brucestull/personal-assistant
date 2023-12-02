@@ -9,4 +9,8 @@
 {% block content %}
     <h1>{{ object.name }}</h1>
     <p>{{ object.description }}</p>
+    {% for distortion in object.cognitive_distortion.all %}
+        {{ distortion.name }}
+        {% if not forloop.last %} | {% endif %}
+    {% endfor %}
 {% endblock content %}

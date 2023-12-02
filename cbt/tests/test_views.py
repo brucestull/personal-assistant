@@ -2,8 +2,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from cbt.forms import ThoughtForm
 
-from cbt.models import Thought
+from cbt.models import CognitiveDistortion, Thought
 
 
 class HomeViewTest(TestCase):
@@ -201,6 +202,148 @@ class ThoughtListViewTest(TestCase):
         self.assertEqual(response.context["page_title"], "Thoughts")
         self.assertIn("thought_list", response.context)
         self.assertIn("object_list", response.context)
+
+
+class ThoughtCreateViewTest(TestCase):
+    """
+    Tests for `ThoughtCreateView` view.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up data for the whole TestCase.
+        """
+        # Create a registration_accepted True user.
+        cls.registered_user_dezzi = get_user_model().objects.create_user(
+            username="RegisteredDezzi",
+            password="MeowMeow42",
+            email="RegisteredDezzi@purr.scratch",
+            registration_accepted=True,
+        )
+        # Create a registration_accepted False user.
+        cls.unregistered_user_bunbun = get_user_model().objects.create_user(
+            username="UnRegisteredBunBun",
+            password="MeowMeow42",
+            email="UnRegisteredBunBun@purr.scratch",
+            registration_accepted=False,
+        )
+        cls.cognitive_distortion = CognitiveDistortion.objects.create(
+            name="All-or-Nothing Thinking",
+            description=(
+                "All-or-nothing thinking is also known as black-or-white "
+                "thinking or dichotomous thinking. It is a cognitive distortion "
+                "where a person believes that things are either one way or another, "
+                "without a middle ground."
+            ),
+        )
+
+    def test_unauthenticated_user_routed_to_login(self):
+        """
+        Test that thought create view redirects unregistered users.
+        """
+        response = self.client.get("/cbt/thoughts/create/")
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/cbt/thoughts/create/",
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
+        )
+
+    def test_url_exists_for_registered_user(self):
+        """
+        Test that thought create view exists for registered users.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get("/cbt/thoughts/create/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_unregistered_user_gets_403(self):
+        """
+        Test that unregistered user gets 403 response.
+        """
+        self.client.login(username="UnRegisteredBunBun", password="MeowMeow42")
+        response = self.client.get("/cbt/thoughts/create/")
+        self.assertEqual(response.status_code, 403)
+        # 403 should use the `403.html` template.
+        self.assertTemplateUsed(response, "403.html")
+
+    def test_view_accessible_by_name(self):
+        """
+        Test that thought create view is accessible by name.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(reverse("cbt:thought-create"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """
+        Test that thought create view uses correct template.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(reverse("cbt:thought-create"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "cbt/thought_form.html")
+
+    def test_view_has_correct_context(self):
+        """
+        Test that thought create view has correct context.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(reverse("cbt:thought-create"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["the_site_name"], "Personal Assistant")
+        self.assertEqual(response.context["page_title"], "Create a Thought")
+        self.assertIn("form", response.context)
+
+    def test_view_uses_correct_form(self):
+        """
+        Test that thought create view uses correct form.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.get(reverse("cbt:thought-create"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context["form"], ThoughtForm)
+
+    def test_view_redirects_on_success(self):
+        """
+        Test that thought create view redirects on success.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        response = self.client.post(
+            reverse("cbt:thought-create"),
+            data={
+                "name": "Dezzi's Thought",
+                "description": "Dezzi's description",
+                "cognitive_distortion": [self.cognitive_distortion.id],
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            "/cbt/thoughts/",
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
+        )
+
+    def test_object_created_has_correct_user(self):
+        """
+        Test that object created by thought create view has correct user.
+        """
+        self.client.login(username="RegisteredDezzi", password="MeowMeow42")
+        self.client.post(
+            reverse("cbt:thought-create"),
+            data={
+                "name": "Dezzi's Thought",
+                "description": "Dezzi's description",
+                "cognitive_distortion": [self.cognitive_distortion.id],
+            },
+        )
+        thought = Thought.objects.get(name="Dezzi's Thought")
+        self.assertEqual(thought.user, self.registered_user_dezzi)
 
 
 class ThoughtDetailViewTest(TestCase):

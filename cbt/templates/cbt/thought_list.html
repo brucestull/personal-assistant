@@ -8,6 +8,11 @@
 
 {% block content %}
     <h1>{{ user.username }}'s {{ page_title }}</h1>
+    <form method="post" action={% url 'cbt:thought-create' %}>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create / Update a Thought</button>
+    </form>
     {% if object_list %}
         {% for thought in object_list %}
             <a href="{% url 'cbt:thought-detail' thought.id %}">
@@ -15,6 +20,12 @@
             </a>
             <p>{{ thought.created }}</p>
             <p>{{ thought.description }}</p>
+            <p>
+                {% for distortion in thought.cognitive_distortion.all %}
+                    {{ distortion.name }}
+                    {% if not forloop.last %} | {% endif %}
+                {% endfor %}
+            </p>
         {% endfor %}
     {% else %}
         No objects :(

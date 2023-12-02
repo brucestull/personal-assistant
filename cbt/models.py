@@ -69,6 +69,7 @@ class Thought(CreatedUpdatedBase):
         CognitiveDistortion,
         related_name="thoughts",
         help_text="The cognitive distortion of the thought.",
+        blank=True,
     )
     name = models.CharField(
         verbose_name="Summary",
