@@ -14,3 +14,5 @@
 - [/career-organizerator/bulletpoints/](http://localhost:8000/career-organizerator/bulletpoints/)
 
 - [/cbt/cognitive-distortions/](http://localhost:8000/cbt/cognitive-distortions/)
+
+- [/thought-tracker/](http://localhost:8000/thought-tracker/)
