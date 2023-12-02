@@ -10,6 +10,7 @@
     <h1>{{ page_title }}</h1>
     {% for object in object_list %}
         <h2>{{ object.name }}</h2>
+        <a href={% url "cbt:thought-create" object.id %}>Add Thought</a>
         <p>{{ object.description }}</p>
     {% endfor %}
 {% endblock content %}

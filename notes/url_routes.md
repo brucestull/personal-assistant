@@ -15,5 +15,6 @@
 
 - [/cbt/cognitive-distortions/](http://localhost:8000/cbt/cognitive-distortions/)
 - [/cbt/thoughts/](http://localhost:8000/cbt/thoughts/)
+- [/cbt/thoughts/create/](http://localhost:8000/cbt/thoughts/create/)
 
 - [/thought-tracker/](http://localhost:8000/thought-tracker/)
