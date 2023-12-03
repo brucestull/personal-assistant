@@ -19,7 +19,7 @@
                 <h2>{{ thought.name }}</h2>
             </a>
             <p>{{ thought.created }}</p>
-            <p>{{ thought.description }}</p>
+            <p>{{ thought.description|linebreaksbr }}</p>
             <p>
                 {% for distortion in thought.cognitive_distortion.all %}
                     {{ distortion.name }}
