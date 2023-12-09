@@ -18,14 +18,14 @@
             <a href="{% url 'cbt:thought-detail' thought.id %}">
                 <h2>{{ thought.name }}</h2>
             </a>
-            <p>{{ thought.created }}</p>
-            <p>{{ thought.description|linebreaksbr }}</p>
             <p>
                 {% for distortion in thought.cognitive_distortion.all %}
                     {{ distortion.name }}
                     {% if not forloop.last %} | {% endif %}
                 {% endfor %}
             </p>
+            <p>{{ thought.created }}</p>
+            <p>{{ thought.description|linebreaksbr }}</p>
         {% endfor %}
     {% else %}
         No objects :(
