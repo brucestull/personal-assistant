@@ -57,6 +57,7 @@ class QuestionResponseForm(forms.ModelForm):
         model = QuestionResponse
         fields = [
             # "user",
+            "summary",
             "question",
             "text",
         ]

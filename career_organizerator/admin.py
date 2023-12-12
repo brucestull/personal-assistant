@@ -162,6 +162,7 @@ class QuestionResponseAdmin(admin.ModelAdmin):
     """
 
     list_display = (
+        "summary",
         "truncated_text",
         "created",
         "user",
@@ -182,6 +183,7 @@ class QuestionResponseAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "user",
+                    "summary",
                     "question",
                     "text",
                 )

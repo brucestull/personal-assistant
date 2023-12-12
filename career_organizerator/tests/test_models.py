@@ -426,6 +426,37 @@ class QuestionResponseTestCase(TestCase):
             d_db_models.CASCADE,
         )
 
+    def test_summary_field(self):
+        """
+        Tests for the `QuestionResponse` model `summary` field.
+        """
+        # Test that the `summary` field has the correct verbose name of
+        # "Summary".
+        question_response_summary_verbose_name = QuestionResponse._meta.get_field(
+            "summary"
+        ).verbose_name
+        self.assertEqual(
+            question_response_summary_verbose_name,
+            "Summary",
+        )
+        # Test that the `summary` field has the correct help text of "The
+        # summary of the question response.".
+        question_response_summary_help_text = QuestionResponse._meta.get_field(
+            "summary"
+        ).help_text
+        self.assertEqual(
+            question_response_summary_help_text,
+            "The summary of the question response.",
+        )
+        # Test that the `summary` field has the correct max length of "500".
+        question_response_summary_max_length = QuestionResponse._meta.get_field(
+            "summary"
+        ).max_length
+        self.assertEqual(
+            question_response_summary_max_length,
+            500,
+        )
+
     def test_question_field(self):
         """
         Tests for the `QuestionResponse` model `question` field.

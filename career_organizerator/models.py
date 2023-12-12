@@ -115,7 +115,14 @@ class QuestionResponse(CreatedUpdatedBase):
         on_delete=models.CASCADE,
     )
 
-    # `question` is the behavioral interview question that the response is for.
+    # `summary` is the summary of the question response.
+    summary = models.CharField(
+        verbose_name="Summary",
+        help_text="The summary of the question response.",
+        max_length=500,
+    )
+
+    # `question` is the behavioral interview question that the response is related to.
     question = models.ForeignKey(
         BehavioralInterviewQuestion,
         verbose_name="Behavioral Interview Question",
