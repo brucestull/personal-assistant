@@ -2,7 +2,13 @@
 <h3>Applications</h3>
 <ul>
     <li><a href="{% url 'home' %}">Personal Assistant</a></li>
-    <li><a href={% url "app_tracker:home" %}>App Tracker</a></li>
+    <li>
+        <a href={% url "app_tracker:home" %}>App Tracker</a>
+        |
+        <a href="{% url 'app_tracker:organizational-concepts' %}">
+            Organizational Concepts
+        </a>
+    </li>
     <li>
         <a href={% url "career_organizerator:home" %}>Career Organizerator</a>
         |
