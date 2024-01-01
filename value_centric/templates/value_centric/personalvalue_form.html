@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>Create a Personal Value</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add/Save Personal Value</button>
+        <a href={% url 'value_centric:personal-value-list' %}>Cancel</a>
+    </form>
+{% endblock content %}

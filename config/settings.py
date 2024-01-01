@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "cbt.apps.CbtConfig",
     "career_organizerator.apps.CareerOrganizeratorConfig",
     "pharma_tracker.apps.PharmaTrackerConfig",
+    "value_centric.apps.ValueCentricConfig",
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>
+        {{ personalvalue.name }}
+    </h1>
+    <p>
+        {{ personalvalue.description }}
+        <a href={% url "value_centric:personal-value-update" personalvalue.id %}>Edit</a>
+        <a href={% url "value_centric:personal-value-delete" personalvalue.id %}>Delete</a>
+    </p>
+{% endblock content %}
