@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.views.generic.edit import DeleteView
@@ -13,7 +12,7 @@ class PersonalValueCreateView(CreateView):
     fields = ["name", "description"]
 
     def form_valid(self, form):
-        """Set form instance user to the current user so form data is associated with current user."""
+        """Set form instance user to current user."""
         form.instance.user = self.request.user
         return super().form_valid(form)
 
