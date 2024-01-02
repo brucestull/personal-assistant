@@ -7,7 +7,7 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Personal Values</h1>
+    <h1>{{ page_title }}</h1>
 
     <a href={% url "value_centric:personal-value-create" %}>Create New Personal Value</a>
 
@@ -16,6 +16,7 @@
         <p>
             {{ personalvalue.description }}
             <a href={% url "value_centric:personal-value-update" personalvalue.id %}>Edit</a>
+            |
             <a href={% url "value_centric:personal-value-detail" personalvalue.id %}>Detail</a>
         </p>
 
