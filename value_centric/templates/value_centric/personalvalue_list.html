@@ -13,12 +13,10 @@
 
     {% for personalvalue in personalvalue_list %}
         <h2>{{ personalvalue.name }}</h2>
-        <p>
-            {{ personalvalue.description }}
-            <a href={% url "value_centric:personal-value-update" personalvalue.id %}>Edit</a>
-            |
-            <a href={% url "value_centric:personal-value-detail" personalvalue.id %}>Detail</a>
-        </p>
+        <a href={% url "value_centric:personal-value-update" personalvalue.id %}>Edit</a>
+        |
+        <a href={% url "value_centric:personal-value-detail" personalvalue.id %}>Detail</a>
+        {{ personalvalue.description|linebreaks }}
 
     {% endfor %}
 {% endblock content %}
