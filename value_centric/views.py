@@ -2,10 +2,12 @@ from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.views.generic.edit import DeleteView
 
+from base.mixins import RegistrationAcceptedMixin
+
 from .models import PersonalValue
 
 
-class PersonalValueCreateView(CreateView):
+class PersonalValueCreateView(RegistrationAcceptedMixin, CreateView):
     """Create view for PersonalValue model."""
 
     model = PersonalValue
@@ -21,20 +23,20 @@ class PersonalValueCreateView(CreateView):
         return reverse("value_centric:personal-value-list")
 
 
-class PersonalValueDetailView(DetailView):
+class PersonalValueDetailView(RegistrationAcceptedMixin, DetailView):
     """Detail view for PersonalValue model."""
 
     model = PersonalValue
 
 
-class PersonalValueUpdateView(UpdateView):
+class PersonalValueUpdateView(RegistrationAcceptedMixin, UpdateView):
     """Update view for PersonalValue model."""
 
     model = PersonalValue
     fields = ["name", "description"]
 
 
-class PersonalValueDeleteView(DeleteView):
+class PersonalValueDeleteView(RegistrationAcceptedMixin, DeleteView):
     """Delete view for PersonalValue model."""
 
     model = PersonalValue
@@ -44,7 +46,11 @@ class PersonalValueDeleteView(DeleteView):
         return reverse("value_centric:personal-value-list")
 
 
-class PersonalValueListView(ListView):
+class PersonalValueListView(RegistrationAcceptedMixin, ListView):
     """List view for PersonalValue model."""
 
     model = PersonalValue
+
+    def get_queryset(self):
+        """Return queryset of PersonalValue objects for current user."""
+        return PersonalValue.objects.filter(user=self.request.user)
