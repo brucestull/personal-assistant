@@ -7,11 +7,21 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Create a Personal Value</h1>
+    <h1>{{ page_title }}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Add/Save Personal Value</button>
-        <a href={% url 'value_centric:personal-value-list' %}>Cancel</a>
+        {% if personalvalue %}
+            <a href={% url 'value_centric:personal-value-detail' personalvalue.id %}>
+                Cancel
+            </a>
+            |
+            <a href={% url 'value_centric:personal-value-delete' personalvalue.id %}>
+                Delete
+            </a>
+        {% else %}
+            <a href={% url 'value_centric:personal-value-list' %}>Cancel</a>
+        {% endif %}
     </form>
 {% endblock content %}

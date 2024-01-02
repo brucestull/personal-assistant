@@ -3,6 +3,7 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.views.generic.edit import DeleteView
 
 from base.mixins import RegistrationAcceptedMixin
+from config.settings import THE_SITE_NAME
 
 from .models import PersonalValue
 
@@ -22,11 +23,25 @@ class PersonalValueCreateView(RegistrationAcceptedMixin, CreateView):
         """Return URL to redirect to after processing form."""
         return reverse("value_centric:personal-value-list")
 
+    def get_context_data(self, **kwargs):
+        """Add site name to context."""
+        context = super().get_context_data(**kwargs)
+        context["the_site_name"] = THE_SITE_NAME
+        context["page_title"] = "Create Personal Value"
+        return context
+
 
 class PersonalValueDetailView(RegistrationAcceptedMixin, DetailView):
     """Detail view for PersonalValue model."""
 
     model = PersonalValue
+
+    def get_context_data(self, **kwargs):
+        """Add site name to context."""
+        context = super().get_context_data(**kwargs)
+        context["the_site_name"] = THE_SITE_NAME
+        context["page_title"] = "Personal Value Detail"
+        return context
 
 
 class PersonalValueUpdateView(RegistrationAcceptedMixin, UpdateView):
@@ -34,6 +49,13 @@ class PersonalValueUpdateView(RegistrationAcceptedMixin, UpdateView):
 
     model = PersonalValue
     fields = ["name", "description"]
+
+    def get_context_data(self, **kwargs):
+        """Add site name to context."""
+        context = super().get_context_data(**kwargs)
+        context["the_site_name"] = THE_SITE_NAME
+        context["page_title"] = "Update Personal Value"
+        return context
 
 
 class PersonalValueDeleteView(RegistrationAcceptedMixin, DeleteView):
@@ -45,6 +67,13 @@ class PersonalValueDeleteView(RegistrationAcceptedMixin, DeleteView):
         """Return URL to redirect to after processing form."""
         return reverse("value_centric:personal-value-list")
 
+    def get_context_data(self, **kwargs):
+        """Add site name to context."""
+        context = super().get_context_data(**kwargs)
+        context["the_site_name"] = THE_SITE_NAME
+        context["page_title"] = "Delete Personal Value"
+        return context
+
 
 class PersonalValueListView(RegistrationAcceptedMixin, ListView):
     """List view for PersonalValue model."""
@@ -54,3 +83,10 @@ class PersonalValueListView(RegistrationAcceptedMixin, ListView):
     def get_queryset(self):
         """Return queryset of PersonalValue objects for current user."""
         return PersonalValue.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """Add site name to context."""
+        context = super().get_context_data(**kwargs)
+        context["the_site_name"] = THE_SITE_NAME
+        context["page_title"] = "Personal Values"
+        return context
