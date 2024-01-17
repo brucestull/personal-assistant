@@ -53,23 +53,8 @@ Your contact information or that of the project maintainer for users to reach ou
 ## New Knowledge
 
 ## PyPI Packages
-- Currently Installed Packages:
-    - <https://pypi.org/project/pipenv/>
-    - <https://pypi.org/project/asgiref/>
-    - <https://pypi.org/project/coverage/>
-    - <https://pypi.org/project/Django/>
-    - <https://pypi.org/project/docutils/>
-    - <https://pypi.org/project/gunicorn/>
-    - <https://pypi.org/project/Pillow/>
-    - <https://pypi.org/project/pip/>
-    - <https://pypi.org/project/psycopg2/>
-    - <https://pypi.org/project/python-dotenv/>
-    - <https://pypi.org/project/setuptools/>
-    - <https://pypi.org/project/sqlparse/>
-    - <https://pypi.org/project/tzdata/>
-    - <https://pypi.org/project/wheel/>
-    - <https://pypi.org/project/whitenoise/>
-- Packages for Expansion:
+
+6- Packages for Expansion:
     - <https://pypi.org/project/django-debug-toolbar/>
 
 ## Resources
