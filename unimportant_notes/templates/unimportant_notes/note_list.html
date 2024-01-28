@@ -1,18 +1,26 @@
-<title>{{ user.username }}'s Notes</title>
+{% extends "base.html" %}
 
-<h1>Notes</h1>
-{% for object in object_list %}
-    <h2>{{ object.title }}</h2>
-    {{ object.content|linebreaks }}
-    - {{ object.author }} on {{ object.updated }}
-    {% if not forloop.last %}
-        <br>
-    {% endif %}
-{% endfor %}
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
 
-<h2>Add a Note</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Add">
-</form>
+{% block content %}
+
+    <h1>Notes</h1>
+    <form method="post" action={% url 'unimportant_notes:note_create' %}>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create the Note</button>
+    </form>
+    {% for object in object_list %}
+        <h2>{{ object.title }}</h2>
+        {{ object.content|linebreaks }}
+        - {{ object.author }} on {{ object.updated }}
+        {% if not forloop.last %}
+            <br>
+        {% endif %}
+    {% endfor %}
+
+{% endblock content %}
