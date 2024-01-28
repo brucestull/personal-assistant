@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "career_organizerator.apps.CareerOrganizeratorConfig",
     "pharma_tracker.apps.PharmaTrackerConfig",
     "value_centric.apps.ValueCentricConfig",
+    "unimportant_notes.apps.UnimportantNotesConfig",
 ]
 
 MIDDLEWARE = [
