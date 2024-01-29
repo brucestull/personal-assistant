@@ -8,16 +8,16 @@
 
 {% block content %}
 
-    <h1>Notes</h1>
+    <h1>Unimportant Notes</h1>
     <form method="post" action={% url 'unimportant_notes:note_create' %}>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Create the Note</button>
     </form>
-    {% for object in object_list %}
-        <h2>{{ object.title }}</h2>
-        {{ object.content|linebreaks }}
-        - {{ object.author }} on {{ object.updated }}
+    {% for unimportant_note in object_list %}
+        <h2>{{ unimportant_note.title }}</h2>
+        {{ unimportant_note.content|linebreaks }}
+        - {{ unimportant_note.author }} on {{ unimportant_note.updated }}
         {% if not forloop.last %}
             <br>
         {% endif %}

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Note
+from .models import UnimportantNote
 
 
 class NoteForm(forms.ModelForm):
@@ -9,7 +9,7 @@ class NoteForm(forms.ModelForm):
     """
 
     class Meta:
-        model = Note
+        model = UnimportantNote
         fields = ("title", "content")
         labels = {
             "title": "Title",
