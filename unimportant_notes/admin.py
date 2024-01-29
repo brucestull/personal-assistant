@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Note
+
+from .models import UnimportantNote
 
 
-@admin.register(Note)
+@admin.register(UnimportantNote)
 class NoteAdmin(admin.ModelAdmin):
     """
     Admin for Note.
@@ -13,7 +14,7 @@ class NoteAdmin(admin.ModelAdmin):
     readonly_fields = ("created", "updated")
     fieldsets = (
         (
-            "Put your stuff here, maybe?",
+            "Unimportant Note",
             {
                 "fields": (
                     "author",
