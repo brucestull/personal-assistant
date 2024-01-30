@@ -42,6 +42,7 @@ class Note(CreatedUpdatedBase):
     content = models.TextField(
         "Content",
         help_text="The content of this note.",
+        blank=True,
     )
 
     def display_content(self):
