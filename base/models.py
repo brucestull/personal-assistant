@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from config.settings import AUTH_USER_MODEL
 
