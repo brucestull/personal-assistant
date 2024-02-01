@@ -16,6 +16,7 @@
     </form>
     {% for unimportant_note in object_list %}
         <h2>{{ unimportant_note.title }}</h2>
+        <a href={% url "unimportant_notes:note_update" unimportant_note.id %}>Edit</a>
         {{ unimportant_note.content|linebreaks }}
         {% if unimportant_note.url %}
         <a href={{ unimportant_note.url }} target="_blank" rel="noopener" >{{ unimportant_note.url }}</a>

@@ -8,17 +8,18 @@ from django.views.generic.edit import CreateView, FormMixin
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
-from .forms import NoteForm
+from .forms import UnimportantNoteForm
 from .models import UnimportantNote
+from django.views.generic.edit import UpdateView
 
 
-class NoteCreateView(RegistrationAcceptedMixin, CreateView):
+class UnimportantNoteCreateView(RegistrationAcceptedMixin, CreateView):
     """
     A view that displays a form for creating a note.
     """
 
     model = UnimportantNote
-    form_class = NoteForm
+    form_class = UnimportantNoteForm
     extra_context = {
         "the_site_name": THE_SITE_NAME,
         "page_title": "Create Note",
@@ -30,13 +31,23 @@ class NoteCreateView(RegistrationAcceptedMixin, CreateView):
         return super().form_valid(form)
 
 
-class NoteListView(RegistrationAcceptedMixin, FormMixin, ListView):
+class UnimportantNoteUpdateView(UpdateView):
+    """
+    View for updating the `UnimportantNote`.
+    """
+
+    model = UnimportantNote
+    form_class = UnimportantNoteForm
+    success_url = reverse_lazy("unimportant_notes:note_list")
+
+
+class UnimportantNoteListView(RegistrationAcceptedMixin, FormMixin, ListView):
     """
     A view that displays a list of notes.
     """
 
     model = UnimportantNote
-    form_class = NoteForm
+    form_class = UnimportantNoteForm
     extra_context = {
         "the_site_name": THE_SITE_NAME,
         "page_title": "Notes",
