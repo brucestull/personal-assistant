@@ -13,7 +13,7 @@ from .models import UnimportantNote
 from django.views.generic.edit import UpdateView
 
 
-class NoteCreateView(RegistrationAcceptedMixin, CreateView):
+class UnimportantNoteCreateView(RegistrationAcceptedMixin, CreateView):
     """
     A view that displays a form for creating a note.
     """
@@ -31,7 +31,7 @@ class NoteCreateView(RegistrationAcceptedMixin, CreateView):
         return super().form_valid(form)
 
 
-class NoteUpdateView(UpdateView):
+class UnimportantNoteUpdateView(UpdateView):
     """
     View for updating the `UnimportantNote`.
     """
@@ -41,7 +41,7 @@ class NoteUpdateView(UpdateView):
     success_url = reverse_lazy("unimportant_notes:note_list")
 
 
-class NoteListView(RegistrationAcceptedMixin, FormMixin, ListView):
+class UnimportantNoteListView(RegistrationAcceptedMixin, FormMixin, ListView):
     """
     A view that displays a list of notes.
     """
