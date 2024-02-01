@@ -9,7 +9,7 @@ from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
 from .forms import NoteForm
-from .models import Note
+from .models import UnimportantNote
 
 
 class NoteCreateView(RegistrationAcceptedMixin, CreateView):
@@ -17,7 +17,7 @@ class NoteCreateView(RegistrationAcceptedMixin, CreateView):
     A view that displays a form for creating a note.
     """
 
-    model = Note
+    model = UnimportantNote
     form_class = NoteForm
     extra_context = {
         "the_site_name": THE_SITE_NAME,
@@ -35,7 +35,7 @@ class NoteListView(RegistrationAcceptedMixin, FormMixin, ListView):
     A view that displays a list of notes.
     """
 
-    model = Note
+    model = UnimportantNote
     form_class = NoteForm
     extra_context = {
         "the_site_name": THE_SITE_NAME,
