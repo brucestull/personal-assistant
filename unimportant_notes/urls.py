@@ -6,4 +6,5 @@ app_name = "unimportant_notes"
 urlpatterns = [
     path("", views.NoteListView.as_view(), name="note_list"),
     path("create/", views.NoteCreateView.as_view(), name="note_create"),
+    path("<int:pk>/update/", views.NoteUpdateView.as_view(), name="note_update"),
 ]

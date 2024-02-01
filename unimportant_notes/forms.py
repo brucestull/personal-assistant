@@ -3,7 +3,7 @@ from django import forms
 from .models import UnimportantNote
 
 
-class NoteForm(forms.ModelForm):
+class UnimportantNoteForm(forms.ModelForm):
     """
     A form for creating a note.
     """
