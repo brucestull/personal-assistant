@@ -10,15 +10,17 @@ class NoteForm(forms.ModelForm):
 
     class Meta:
         model = UnimportantNote
-        fields = ("title", "content")
-        labels = {
-            "title": "Title",
-            "content": "Content",
-        }
-        help_texts = {
-            "title": "The title of this note.",
-            "content": "The content of this note.",
-        }
+        fields = ("title", "content", "url")
+        # Is the `labals` attribute necessary?
+        # labels = {
+        #     "title": "Title",
+        #     "content": "Content",
+        # }
+        # Is the `help_texts` attribute necessary?
+        # help_texts = {
+        #     "title": "The title of this note.",
+        #     "content": "The content of this note.",
+        # }
         error_messages = {
             "title": {
                 "max_length": "This title is too long.",

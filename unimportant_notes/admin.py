@@ -20,6 +20,7 @@ class NoteAdmin(admin.ModelAdmin):
                     "author",
                     "title",
                     "content",
+                    "url",
                 )
             },
         ),

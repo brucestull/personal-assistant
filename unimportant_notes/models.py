@@ -7,7 +7,7 @@ class UnimportantNote(Note):
     """
 
     class Meta:
-        # Other `Meta` options are inherited from `Note`.
+        # These `Meta` options are used to configure the behavior of this child model.
         verbose_name = "Unimportant Note"
         verbose_name_plural = "Unimportant Notes"
         ordering = ("-created",)
