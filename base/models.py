@@ -44,6 +44,11 @@ class Note(CreatedUpdatedBase):
         help_text="The content of this note.",
         blank=True,
     )
+    url = models.URLField(
+        "URL",
+        help_text="A reference URL for this note.",
+        blank=True,
+    )
 
     def display_content(self):
         """
@@ -60,6 +65,8 @@ class Note(CreatedUpdatedBase):
         )
 
     class Meta:
+        # Use `abstract = True` to make this model an abstract base class which doesn't
+        # have a model table created in the database.
         abstract = True
         # `verbose_name` and `verbose_name_plural` and `ordering` are declared in the
         # child class.

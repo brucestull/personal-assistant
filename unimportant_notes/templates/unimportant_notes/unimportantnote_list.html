@@ -17,7 +17,10 @@
     {% for unimportant_note in object_list %}
         <h2>{{ unimportant_note.title }}</h2>
         {{ unimportant_note.content|linebreaks }}
-        - {{ unimportant_note.author }} on {{ unimportant_note.updated }}
+        {% if unimportant_note.url %}
+        <a href={{ unimportant_note.url }} target="_blank" rel="noopener" >{{ unimportant_note.url }}</a>
+        {% endif %}
+        <p>- {{ unimportant_note.author }} on {{ unimportant_note.updated }}</p>
         {% if not forloop.last %}
             <br>
         {% endif %}
