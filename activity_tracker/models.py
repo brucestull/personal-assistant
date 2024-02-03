@@ -9,12 +9,17 @@ class ActivityType(models.Model):
     """
 
     name = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="activity_types",
+    )
+
+    def __str__(self):
+        return f"{self.name} - {self.user}"
 
     class Meta:
         verbose_name_plural = "Activity Types"
-
-    def __str__(self):
-        return self.name
 
 
 class Activity(models.Model):
@@ -33,13 +38,16 @@ class Activity(models.Model):
         on_delete=models.CASCADE,
         related_name="activities",
     )
-    notes = models.TextField()
+    notes = models.TextField(
+        blank=True,
+        help_text="Any notes for the activity.",
+    )
+
+    def __str__(self):
+        return f"{self.name} - {self.activity_type}"
 
     class Meta:
         verbose_name_plural = "Activities"
-
-    def __str__(self):
-        return f"{self.activity_type} on {self.date}"
 
 
 class ActivityCompleted(models.Model):
@@ -52,10 +60,18 @@ class ActivityCompleted(models.Model):
         on_delete=models.CASCADE,
         related_name="activity_completed",
     )
-    date = models.DateField()
-
-    class Meta:
-        verbose_name_plural = "Activities Completed"
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="activities_completed",
+    )
+    date = models.DateTimeField(
+        auto_now_add=True,
+        help_text="The date and time the activity was completed.",
+    )
 
     def __str__(self):
         return f"{self.activity} on {self.date}"
+
+    class Meta:
+        verbose_name_plural = "Activities Completed"
