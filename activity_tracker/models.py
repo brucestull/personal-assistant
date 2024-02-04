@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from config.settings import AUTH_USER_MODEL
 
@@ -16,7 +17,10 @@ class ActivityType(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} - {self.user}"
+        return (
+            f"{self.name}"
+            # f"- {self.user}"
+            )
 
     class Meta:
         verbose_name_plural = "Activity Types"
@@ -45,6 +49,10 @@ class Activity(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.activity_type}"
+
+    def get_absolute_url(self):
+        return reverse("model_detail", kwargs={"pk": self.pk})
+    
 
     class Meta:
         verbose_name_plural = "Activities"
