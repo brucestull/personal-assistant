@@ -2,9 +2,13 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView
+# from django.views.generic.edit import CreateView
 
-from .models import Activity, ActivityCompleted, ActivityType
+from .models import (
+    Activity,
+    ActivityCompleted,
+    # ActivityType,
+    )
 
 
 def json_response(request):
@@ -50,7 +54,7 @@ def complete_an_activity_view(request, pk):
         # `post` method is used to complete the activity
         activity = Activity.objects.get(pk=pk)
         user = request.user
-        activity_completed = ActivityCompleted.objects.create(activity=activity, user=user)
+        activity_completed = ActivityCompleted.objects.create(activity=activity, user=user) # noqa F481
         return redirect(reverse_lazy("activity_tracker:activity-list"))
     else:
         return redirect(reverse_lazy("activity_tracker:activity-list"))

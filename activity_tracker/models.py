@@ -52,7 +52,6 @@ class Activity(models.Model):
 
     def get_absolute_url(self):
         return reverse("model_detail", kwargs={"pk": self.pk})
-    
 
     class Meta:
         verbose_name_plural = "Activities"
