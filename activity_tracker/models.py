@@ -65,7 +65,7 @@ class ActivityCompleted(models.Model):
     activity = models.ForeignKey(
         "Activity",
         on_delete=models.CASCADE,
-        related_name="activity_completed",
+        related_name="completed_activity",
     )
     user = models.ForeignKey(
         AUTH_USER_MODEL,

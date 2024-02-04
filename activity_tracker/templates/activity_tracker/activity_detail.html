@@ -11,9 +11,9 @@
 
 <p>{{ activity.notes }}</p>
 
-<h2>Activities Completed - {{ activity.activity_completed.count }}</h2>
+<h2>Activities Completed - {{ activity.completed_activity.count }}</h2>
 <ul>
-    {% for completed_activity in activity.activity_completed.all %}
+    {% for completed_activity in activity.completed_activity.all %}
         <li>{{ completed_activity.date }} - {{ completed_activity.activity }}</li>
     {% endfor %}
 </ul>
