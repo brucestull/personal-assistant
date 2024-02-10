@@ -9,7 +9,7 @@ class NoteAdmin(admin.ModelAdmin):
     Admin for Note.
     """
 
-    list_display = ("title", "author", "display_content", "updated")
+    list_display = ("title", "author", "display_content", "main_image", "updated")
     search_fields = ("title", "content")
     readonly_fields = ("created", "updated")
     fieldsets = (
@@ -21,6 +21,7 @@ class NoteAdmin(admin.ModelAdmin):
                     "title",
                     "content",
                     "url",
+                    "main_image",
                 )
             },
         ),
