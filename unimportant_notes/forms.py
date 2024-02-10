@@ -10,7 +10,7 @@ class UnimportantNoteForm(forms.ModelForm):
 
     class Meta:
         model = UnimportantNote
-        fields = ("title", "content", "url")
+        fields = ("title", "content", "url", "main_image")
         # Is the `labals` attribute necessary?
         # labels = {
         #     "title": "Title",

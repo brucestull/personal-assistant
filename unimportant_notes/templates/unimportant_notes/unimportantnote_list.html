@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
     {{ page_title }}
@@ -16,6 +17,13 @@
     </form>
     {% for unimportant_note in object_list %}
         <h2>{{ unimportant_note.title }}</h2>
+        {% if unimportant_note.main_image %}
+            <img
+                style="width: 400px; height: auto;"
+                src="{{ unimportant_note.main_image.url }}"
+                >
+            <br>
+        {% endif %}
         <a href={% url "unimportant_notes:note_update" unimportant_note.id %}>Edit</a>
         {{ unimportant_note.content|linebreaks }}
         {% if unimportant_note.url %}
