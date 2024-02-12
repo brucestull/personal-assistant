@@ -54,7 +54,7 @@ class Note(CreatedUpdatedBase):
         help_text="Add an image for the note.",
         # `upload_to` is a required argument for `ImageField`.
         # It specifies the path to which the uploaded file will be saved.
-        upload_to="unimportant_notes/",
+        upload_to="test_uploads/",
         blank=True,
         null=True,
     )
