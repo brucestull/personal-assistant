@@ -1,13 +1,11 @@
 from typing import Any
-from django.contrib.auth.mixins import (
-    LoginRequiredMixin,
-    UserPassesTestMixin,
-)
+
 from django.shortcuts import render
 from django.views.generic import ListView
 
-from config.settings import THE_SITE_NAME
 from app_tracker.models import OrganizationalConcept
+from base.mixins import RegistrationAcceptedMixin
+from config.settings import THE_SITE_NAME
 
 
 def home(request):
@@ -40,8 +38,7 @@ def home(request):
 
 
 class OrganizationalConceptListView(
-    LoginRequiredMixin,
-    UserPassesTestMixin,
+    RegistrationAcceptedMixin,
     ListView,
 ):
     """
@@ -58,13 +55,8 @@ class OrganizationalConceptListView(
         These variables are used in the base template to set the page title
         and the site name.
         """
+        # Get the context data from the parent class:
         context = super().get_context_data(**kwargs)
         context["the_site_name"] = THE_SITE_NAME
         context["page_title"] = "Organizational Concepts"
         return context
-
-    def test_func(self) -> bool:
-        """
-        Test whether user has `registration_accepted` set to True.
-        """
-        return self.request.user.registration_accepted
