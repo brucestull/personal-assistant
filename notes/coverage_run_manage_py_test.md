@@ -1,5 +1,7 @@
 # `coverage run manage.py test` Commands
 
+- `coverage run manage.py test`
+
 * `coverage run manage.py test` - Run all tests in the project
 * `coverage run manage.py test <app_name>` - Run all tests in the app
 * `coverage run manage.py test <app_name>.<test_name>` - Run a specific test module
