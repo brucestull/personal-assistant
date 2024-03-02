@@ -74,12 +74,84 @@
                                     {% if user.is_authenticated and user.registration_accepted %}
                                         <li>
                                             <a class="dropdown-item"
+                                            href={% url 'home' %}>Home</a>
+                                        <li>
+                                            <a class="dropdown-item"
                                             href={% url 'unimportant_notes:note_list' %}>Unimportant Notes</a>
+                                        </li>
+                                            <a class="dropdown-item"
+                                            href={% url 'vitals:bloodpressure-list' %}>Blood Pressure</a>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'activity_tracker:activity-list' %}>Activity Tracker</a>
                                         </li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-    
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'career_organizerator:home' %}>Career Organizerator</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'career_organizerator:purpose-list' %}>Purposes</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'career_organizerator:skill-list' %}>Skills</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'career_organizerator:behavioral-interview-question-list' %}>Behavioral Interview Questions</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'career_organizerator:question-response-list' %}>Question Responses</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'career_organizerator:bulletpoint-list' %}>Bullet Points</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'cbt:cognitive-distortion-list' %}>Cognitive Distortions</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'cbt:thought-list' %}>Thoughts</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'cbt:thought-create' %}>Though Create</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'self_enquiry:list' %}>Self Enquiries</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'self_enquiry:create' %}>Self Enquiry Create</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'value_centric:personal-value-list' %}>Personal Values</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'value_centric:personal-value-create' %}>Personal Value Create</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
                                         <li>
                                             <a class="dropdown-item"
                                             href="/">Edit Profile</a>
@@ -113,9 +185,9 @@
                                     {% endif %}
                                     <li>
                                         <a class="dropdown-item"
-                                           href="https://github.com/brucestull/inspirational-statements"
+                                           href="https://github.com/brucestull/personal-assistant"
                                            target="_blank">
-                                            Inspirationals Repository
+                                            Personal Assistant Repository
                                         </a>
                                     </li>
                                 </ul>
