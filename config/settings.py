@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "pharma_tracker.apps.PharmaTrackerConfig",
     "value_centric.apps.ValueCentricConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
+    "activity_tracker.apps.ActivityTrackerConfig",
     "storages",
 ]
 
