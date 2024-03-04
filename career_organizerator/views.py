@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
+from django.db import transaction
 
 from .forms import (
     BehavioralInterviewQuestionForm,
@@ -140,14 +141,16 @@ def skill_move_up(request, skill_id):
     """
     View function to move a `Skill` object up in the list.
     """
-    skill = get_object_or_404(Skill, id=skill_id)
-    previous_skill = Skill.objects.filter(order__lt=skill.order).last()
+    with transaction.atomic():
+        skill = get_object_or_404(Skill, id=skill_id)
+        previous_skill = (
+            Skill.objects.filter(order__lt=skill.order).order_by("-order").first()
+        )
 
-    if previous_skill:
-        skill.order, previous_skill.order = previous_skill.order, skill.order
-        skill.save()
-        previous_skill.save()
-        Skill.reorder_all()
+        if previous_skill:
+            skill.order, previous_skill.order = previous_skill.order, skill.order
+            skill.save()
+            previous_skill.save()
 
     return redirect("career_organizerator:skill-list")
 
