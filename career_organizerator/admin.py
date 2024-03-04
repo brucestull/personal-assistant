@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db import models
 
 from career_organizerator.models import (
     BehavioralInterviewQuestion,
@@ -70,6 +71,7 @@ class SkillAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "created",
+        "order",
         "user",
     )
     ordering = ("-created",)
@@ -89,6 +91,7 @@ class SkillAdmin(admin.ModelAdmin):
                 "fields": (
                     "user",
                     "name",
+                    "order",
                 )
             },
         ),
@@ -102,6 +105,20 @@ class SkillAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    def get_changeform_initial_data(self, request):
+        """
+        Override the default initial data to set the order to the highest
+        order number + 1
+        """
+        # Get the initial data from the default method
+        initial_data = super().get_changeform_initial_data(request)
+        # Get the highest order number
+        highest_order = Skill.objects.all().aggregate(models.Max("order"))["order__max"]
+        # Set the order to the highest order number + 1
+        initial_data["order"] = (highest_order if highest_order is not None else -1) + 1
+        # Return the initial data
+        return initial_data
 
 
 @admin.register(BehavioralInterviewQuestion)

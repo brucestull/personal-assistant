@@ -32,6 +32,7 @@ class SkillForm(forms.ModelForm):
         fields = [
             # "user",
             "name",
+            "order",
         ]
 
 

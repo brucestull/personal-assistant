@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.edit import FormMixin, UpdateView, CreateView
+from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
@@ -116,7 +116,50 @@ class SkillListView(FormMixin, RegistrationAcceptedMixin, ListView):
         Override the `get_queryset` method to return only the current user's
         `Skill` objects.
         """
-        return Skill.objects.filter(user=self.request.user).order_by("-created")
+        return Skill.objects.filter(user=self.request.user).order_by("order")
+
+
+# TODO: Implement the `move_up` view function for any model.
+# def move_up(request, model, model_id):
+#     """
+#     View function to move a `model` object up in the list.
+#     """
+#     model = get_object_or_404(model, id=model_id)
+#     previous_model = model.objects.filter(order__lt=model.order).last()
+
+#     if previous_model:
+#         model.order, previous_model.order = previous_model.order, model.order
+#         model.save()
+#         previous_model.save()
+#         model.reorder_all()
+
+#     return redirect(f"{model.__name__.lower()}-list")
+
+
+def skill_move_up(request, skill_id):
+    """
+    View function to move a `Skill` object up in the list.
+    """
+    skill = get_object_or_404(Skill, id=skill_id)
+    previous_skill = Skill.objects.filter(order__lt=skill.order).last()
+
+    if previous_skill:
+        skill.order, previous_skill.order = previous_skill.order, skill.order
+        skill.save()
+        previous_skill.save()
+        Skill.reorder_all()
+
+    return redirect("career_organizerator:skill-list")
+
+
+def skill_delete(request, skill_id):
+    """
+    View function to delete a `Skill` object.
+    """
+    skill = get_object_or_404(Skill, id=skill_id)
+    skill.delete()
+    Skill.reorder_all()
+    return redirect("career_organizerator:skill-list")
 
 
 class BehavioralInterviewQuestionListView(

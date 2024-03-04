@@ -63,6 +63,30 @@ class Skill(CreatedUpdatedBase):
         max_length=255,
     )
 
+    order = models.PositiveIntegerField()
+
+    def save(self, *args, **kwargs):
+        # If the object is new and doesn't have an order yet
+        if not self.pk and not hasattr(self, "order"):
+            # Get the highest order number
+            highest_order = Skill.objects.all().aggregate(models.Max("order"))[
+                "order__max"
+            ]
+            # Add one to that number and make it this object's order
+            self.order = (highest_order if highest_order is not None else -1) + 1
+        # Call the "real" save() method. In other words, call the super class'
+        # save() method.
+        super(Skill, self).save(*args, **kwargs)
+
+    @classmethod
+    def reorder_all(cls):
+        # Enumerate through all the objects and get an index number
+        for index, skill in enumerate(cls.objects.all()):
+            # Set the order to the index number
+            skill.order = index
+            # Save the object with the assigned order
+            skill.save()
+
     def __str__(self):
         """
         Returns the string representation of the skill.
