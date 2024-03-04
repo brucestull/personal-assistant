@@ -1,6 +1,7 @@
 from django.db import models
 
 from base.models import CreatedUpdatedBase
+from base.mixins import OrderableMixin
 from config.settings import AUTH_USER_MODEL
 
 
@@ -39,7 +40,7 @@ class Purpose(CreatedUpdatedBase):
         verbose_name_plural = "Purposes"
 
 
-class Skill(CreatedUpdatedBase):
+class Skill(OrderableMixin, CreatedUpdatedBase):
     """
     This model represents a single skill.
 
@@ -77,15 +78,6 @@ class Skill(CreatedUpdatedBase):
         # Call the "real" save() method. In other words, call the super class'
         # save() method.
         super(Skill, self).save(*args, **kwargs)
-
-    @classmethod
-    def reorder_all(cls):
-        # Enumerate through all the objects and get an index number
-        for index, skill in enumerate(cls.objects.all()):
-            # Set the order to the index number
-            skill.order = index
-            # Save the object with the assigned order
-            skill.save()
 
     def __str__(self):
         """
