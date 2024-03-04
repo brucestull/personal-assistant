@@ -14,3 +14,15 @@ class RegistrationAcceptedMixin(AccessMixin):
         if not request.user.registration_accepted:
             raise PermissionDenied("Your registration has not been accepted yet.")
         return super().dispatch(request, *args, **kwargs)
+
+
+class OrderableMixin:
+    """
+    Mixin to add `reorder_all` class method to models with an 'order' field.
+    """
+
+    @classmethod
+    def reorder_all(cls):
+        for index, item in enumerate(cls.objects.all().order_by("order")):
+            item.order = index
+            item.save()
