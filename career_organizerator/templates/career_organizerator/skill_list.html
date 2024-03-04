@@ -17,9 +17,16 @@
 
 <ul>
     {% for skill in skill_list %}
-        <li>
-            <p>{{ skill.name }}</p>
-        </li>
+    <form method="post" action="{% url 'career_organizerator:move_skill_up' skill.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Move Up</button>
+    </form>
+    <form method="post" action="{% url 'career_organizerator:delete_skill' skill.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+    ({{ skill.order }}) {{ skill.name }}:{{ skill.id }}
+    <br>
     {% endfor %}
 </ul>
 

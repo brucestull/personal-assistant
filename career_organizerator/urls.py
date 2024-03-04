@@ -8,6 +8,7 @@ from .views import (
     QuestionResponseListView,
     QuestionResponseUpdateView,
     SkillListView,
+    skill_move_up,
     home,
 )
 
@@ -16,6 +17,8 @@ urlpatterns = [
     path("", home, name="home"),
     path("purposes/", PurposeListView.as_view(), name="purpose-list"),
     path("skills/", SkillListView.as_view(), name="skill-list"),
+    path("<int:skill_id>/move-up/", skill_move_up, name="move_skill_up"),
+    path("<int:skill_id>/delete/", skill_move_up, name="delete_skill"),
     path(
         "behavioral-interview-questions/",
         BehavioralInterviewQuestionListView.as_view(),

@@ -216,6 +216,7 @@ class SkillTestCase(TestCase):
         self.user_skill = Skill.objects.create(
             user=self.user,
             name="A Test Skill Name",
+            order=1,
         )
         # Test that the `__str__` method returns the correct string
         # representation of the skill.
