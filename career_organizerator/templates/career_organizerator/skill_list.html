@@ -25,7 +25,7 @@
         {% csrf_token %}
         <button type="submit">Delete</button>
     </form>
-    ({{ skill.order }}) {{ skill.name }}:{{ skill.id }}
+    ({{ skill.order }}) {{ skill.name }} - ID:{{ skill.id }}
     <br>
     {% endfor %}
 </ul>

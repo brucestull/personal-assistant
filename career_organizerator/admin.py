@@ -74,7 +74,8 @@ class SkillAdmin(admin.ModelAdmin):
         "order",
         "user",
     )
-    ordering = ("-created",)
+    list_editable = ("order",)
+    ordering = ("order",)
     list_filter = ("created",)
     search_fields = (
         "name",
