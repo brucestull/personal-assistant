@@ -9,6 +9,7 @@ from .views import (
     QuestionResponseUpdateView,
     SkillListView,
     skill_move_up,
+    skill_move_down,
     skill_delete,
     home,
 )
@@ -18,7 +19,8 @@ urlpatterns = [
     path("", home, name="home"),
     path("purposes/", PurposeListView.as_view(), name="purpose-list"),
     path("skills/", SkillListView.as_view(), name="skill-list"),
-    path("skills/<int:skill_id>/move-up/", skill_move_up, name="move_skill_up"),
+    path("skills/<int:skill_id>/move-up/", skill_move_up, name="skill_move_up"),
+    path("skills/<int:skill_id>/move-down/", skill_move_down, name="skill_move_down"),
     path("skills/<int:skill_id>/delete/", skill_delete, name="delete_skill"),
     path(
         "behavioral-interview-questions/",

@@ -155,6 +155,27 @@ def skill_move_up(request, skill_id):
     return redirect("career_organizerator:skill-list")
 
 
+def skill_move_down(request, skill_id):
+    """
+    View function to move a `Skill` object down in the list.
+    """
+    with transaction.atomic():
+        skill = get_object_or_404(Skill, id=skill_id)
+        # Find the next skill in the list (i.e., with the next higher order value)
+        next_skill = (
+            Skill.objects.filter(order__gt=skill.order).order_by("order").first()
+        )
+
+        if next_skill:
+            # Swap the order values of the current skill and the next skill
+            skill.order, next_skill.order = next_skill.order, skill.order
+            skill.save()
+            next_skill.save()
+
+    # Redirect to the skill list page, adjust the URL name as necessary
+    return redirect("career_organizerator:skill-list")
+
+
 def skill_delete(request, skill_id):
     """
     View function to delete a `Skill` object.
