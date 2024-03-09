@@ -25,7 +25,7 @@
             <br>
         {% endif %}
         <a href={% url "unimportant_notes:note_update" unimportant_note.id %}>Edit</a>
-        {{ unimportant_note.content|linebreaks }}
+        {{ unimportant_note.content|linebreaks|truncatechars:300 }}
         {% if unimportant_note.url %}
         <a href={{ unimportant_note.url }} target="_blank" rel="noopener" >{{ unimportant_note.url }}</a>
         {% endif %}

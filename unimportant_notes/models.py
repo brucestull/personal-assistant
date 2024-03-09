@@ -17,6 +17,9 @@ class UnimportantNote(Note):
         null=True,
     )
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         # These `Meta` options are used to configure the behavior of this child model.
         verbose_name = "Unimportant Note"
