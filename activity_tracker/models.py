@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from config.settings import AUTH_USER_MODEL
+from django.utils import timezone
 
 
 class ActivityType(models.Model):
@@ -20,7 +21,7 @@ class ActivityType(models.Model):
         return (
             f"{self.name}"
             # f"- {self.user}"
-            )
+        )
 
     class Meta:
         verbose_name_plural = "Activity Types"
@@ -73,8 +74,8 @@ class ActivityCompleted(models.Model):
         related_name="activities_completed",
     )
     date = models.DateTimeField(
-        auto_now_add=True,
         help_text="The date and time the activity was completed.",
+        default=timezone.now,
     )
 
     def __str__(self):
