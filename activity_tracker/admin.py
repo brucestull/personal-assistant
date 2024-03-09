@@ -43,3 +43,4 @@ class ActivityCompletedAdmin(admin.ModelAdmin):
     #     "activity",
     #     # "user"
     # )
+    fields = ("activity", "user", "date")
