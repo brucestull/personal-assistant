@@ -33,5 +33,6 @@ def check_project_for_mixin(root_dir):
 
 
 if __name__ == "__main__":
-    # Replace '/path/to/your/django/project' with the actual path to your Django project directory
+    # Replace '/path/to/your/django/project' with the actual path to your Django
+    # project directory
     check_project_for_mixin(FILE_PATH)

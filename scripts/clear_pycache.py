@@ -1,5 +1,4 @@
 import os
-import shutil
 
 
 def delete_pycache_contents(root_directory):
