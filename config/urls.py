@@ -42,4 +42,5 @@ urlpatterns = [
     path("value-centric/", include("value_centric.urls")),
     path("unimportant-notes/", include("unimportant_notes.urls")),
     path("activity-tracker/", include("activity_tracker.urls")),
+    path("opportunity-search/", include("opportunity_search.urls")),
 ]

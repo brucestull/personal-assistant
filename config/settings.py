@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "value_centric.apps.ValueCentricConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
     "activity_tracker.apps.ActivityTrackerConfig",
+    "opportunity_search.apps.OpportunitySearchConfig",
     "storages",
 ]
 
