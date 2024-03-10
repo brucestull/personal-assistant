@@ -11,7 +11,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.stdout.write("Creating Work Search Activities...")
 
-        with open("dicts\work_search_activities.json") as f:
+        with open("dicts/work_search_activities.json") as f:
             data = json.load(f)
 
             descriptions = data["descriptions"]
