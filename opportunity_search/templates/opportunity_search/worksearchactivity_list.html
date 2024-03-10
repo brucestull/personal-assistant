@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>Work Search Activities</h1>
+    <ul>
+        {% for object in object_list %}
+            <li>{{ object.description }}</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
