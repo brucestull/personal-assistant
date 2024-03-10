@@ -31,13 +31,12 @@
                 {{ activity.activity_type.name }}
             </a>
         </h2>
-        <p>{{ activity.notes }}</p>
-        <p>Completed: {{ activity.completed_activity.count }}</p>
         <a href={% url 'activity_tracker:complete-the-activity' activity.id %}>Complete</a>
         <form method="post" action="{% url 'activity_tracker:complete-the-activity' activity.id %}">
             {% csrf_token %}
             <button type="submit">Complete</button>
         </form>
-        
+        <p>Completed: {{ activity.completed_activity.count }}</p>
+        <p>{{ activity.notes }}</p>
     {% endfor %}
 {% endblock content %}
