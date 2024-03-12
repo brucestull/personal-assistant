@@ -1,6 +1,51 @@
 from django.contrib import admin
 
-from .models import UnimportantNote
+from .models import UnimportantNote, NoteTag
+
+
+@admin.register(NoteTag)
+class NoteTagAdmin(admin.ModelAdmin):
+    """
+    Admin for NoteTag.
+    """
+
+    list_display = ("name",)
+    search_fields = ("name",)
+    fieldsets = (
+        (
+            "Note Tag",
+            {"fields": ("name",)},
+        ),
+    )
+    # Some GitHub Copilot suggestions for other attributes to set:
+    ####################################################################
+    # list_filter = ()
+    # date_hierarchy = None
+    # save_on_top = False
+    # save_as = False
+    # list_per_page = 100
+    # list_max_show_all = 200
+    # actions_on_top = False
+    # actions_on_bottom = False
+    # actions_selection_counter = False
+    # show_full_result_count = False
+    # ordering = ()
+    # list_select_related = False
+    # raw_id_fields = ()
+    # inlines = ()
+    # exclude = ()
+    # formfield_overrides = {}
+    # radio_fields = {}
+    # prepopulated_fields = {}
+    # autocomplete_fields = {}
+    # readonly_fields = ()
+    # filter_horizontal = ()
+    # filter_vertical = ()
+    # verbose_name = "Note Tag"
+    # verbose_name_plural = "Note Tags"
+    # db_table = "unimportant_notes_notetag"
+    # managed = True
+    ####################################################################
 
 
 @admin.register(UnimportantNote)
@@ -9,8 +54,15 @@ class NoteAdmin(admin.ModelAdmin):
     Admin for Note.
     """
 
-    list_display = ("title", "author", "display_content", "main_image", "updated")
-    search_fields = ("title", "content")
+    list_display = (
+        "title",
+        "author",
+        "display_tags",
+        "display_content",
+        "main_image",
+        "updated",
+    )
+    search_fields = ("title", "content", "tag")
     readonly_fields = ("created", "updated")
     fieldsets = (
         (
@@ -19,6 +71,7 @@ class NoteAdmin(admin.ModelAdmin):
                 "fields": (
                     "author",
                     "title",
+                    "tag",
                     "content",
                     "url",
                     "main_image",

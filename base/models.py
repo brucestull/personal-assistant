@@ -65,7 +65,7 @@ class Note(CreatedUpdatedBase):
         This can be used in the admin panel and other places where the full
         content is not needed.
         """
-        return self.content[:50] + ("..." if len(self.content) > 50 else "")
+        return self.content[:30] + ("..." if len(self.content) > 30 else "")
 
     def __str__(self):
         return (
