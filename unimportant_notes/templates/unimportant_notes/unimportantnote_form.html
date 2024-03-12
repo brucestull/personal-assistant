@@ -8,15 +8,14 @@
 
 {% block content %}
     <h1>{{ page_title }}</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Add/Save Unimportant Note</button>
-        {% if unimportantnote %}
-            <a href={% url 'unimportant_notes:note_list' %}>
-                Cancel
-            </a>
-        {% endif %}
     </form>
-
+    {% if unimportantnote %}
+        <a href={% url 'unimportant_notes:note_list' %}>
+            Cancel
+        </a>
+    {% endif %}
 {% endblock content %}

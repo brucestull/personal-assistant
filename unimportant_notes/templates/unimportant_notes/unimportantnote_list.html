@@ -10,7 +10,7 @@
 {% block content %}
 
     <h1>Unimportant Notes</h1>
-    <form method="post" action={% url 'unimportant_notes:note_create' %}>
+    <form method="post" action={% url 'unimportant_notes:note_create' %} enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Create the Note</button>
