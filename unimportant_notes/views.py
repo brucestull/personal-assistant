@@ -13,12 +13,17 @@ from .forms import UnimportantNoteForm
 from .models import UnimportantNote
 
 
+# from django.shortcuts import redirect, render
+# from django.contrib.auth.decorators import login_required
+
+
 # @login_required
 # def unimportant_notes(request):
 #     if request.method == "POST":
 #         form = UnimportantNoteForm(request.POST, request.FILES)
 #         if form.is_valid():
-#             # Save the form with `commit=False` to add the `author` to the `UnimportantNote` instance.
+#             # Save the form with `commit=False` to add the `author` to the
+#             # `UnimportantNote` instance.
 #             unimportant_note = form.save(commit=False)
 #             # Set the `author` of the `UnimportantNote` instance.
 #             unimportant_note.author = request.user
