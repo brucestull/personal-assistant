@@ -17,6 +17,7 @@
     </form>
     {% for unimportant_note in object_list %}
         <h2>{{ unimportant_note.title }}</h2>
+        <p>{{ unimportant_note.tag.all|join:", " }}</p>
         {% if unimportant_note.main_image %}
             <img
                 style="width: 400px; height: auto;"
@@ -25,7 +26,6 @@
             <br>
         {% endif %}
         <a href={% url "unimportant_notes:note_update" unimportant_note.id %}>Edit</a>
-        <p>{{ unimportant_note.tag.all|join:", " }}</p>
         <p>{{ unimportant_note.content|linebreaks|truncatechars:300 }}</p>
         {% if unimportant_note.url %}
         <a href={{ unimportant_note.url }} target="_blank" rel="noopener" >{{ unimportant_note.url }}</a>
