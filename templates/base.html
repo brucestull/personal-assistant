@@ -40,19 +40,19 @@
                                 </li>
                             {% endif %}
     
-                            {% comment %} {% if not user.is_authenticated and not hide_login_link %} {% endcomment %}
+                            {% if not user.is_authenticated %}
                                 <li class="nav-item">
                                     <a class="nav-link"
                                     href="{% url 'login' %}">Login</a>
                                 </li>
-                            {% comment %} {% endif %} {% endcomment %}
+                            {% endif %}
     
-                            {% comment %} {% if not user.is_authenticated and not hide_signup_link %} {% endcomment %}
+                            {% if not user.is_authenticated %}
                                 <li class="nav-item">
                                     <a class="nav-link"
                                     href="{% url 'signup' %}">Signup</a>
                                 </li>
-                            {% comment %} {% endif %} {% endcomment %}
+                            {% endif %}
     
                             {% if user.is_authenticated %}
                                 <li class="nav-item">
