@@ -10,8 +10,16 @@
     <h1>
         {{ personalvalue.name }}
     </h1>
-    <a href={% url "value_centric:personal-value-update" personalvalue.id %}>Edit</a>
+    <a href={% url "value_centric:personal-value-update" personalvalue.id %}>
+        Edit
+    </a>
     |
-    <a href={% url "value_centric:personal-value-delete" personalvalue.id %}>Delete</a>
+    <a href={% url "value_centric:personal-value-delete" personalvalue.id %}>
+        Delete
+    </a>
+    |
+    <a href={% url "value_centric:personal-value-list" %}>
+        Back to Personal Values
+    </a>
     {{ personalvalue.description|linebreaks }}
 {% endblock content %}
