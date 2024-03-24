@@ -9,7 +9,7 @@
 {% block content %}
 <h1>{{ activity.name }} - {{ activity.activity_type.name }}</h1>
 
-<p>{{ activity.notes }}</p>
+<p>{{ activity.notes|linebreaks }}</p>
 
 <h2>Activities Completed - {{ activity.completed_activity.count }}</h2>
 <ul>

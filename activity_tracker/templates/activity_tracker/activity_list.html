@@ -37,6 +37,6 @@
             <button type="submit">Complete</button>
         </form>
         <p>Completed: {{ activity.completed_activity.count }}</p>
-        <p>{{ activity.notes }}</p>
+        <p>{{ activity.notes|linebreaks }}</p>
     {% endfor %}
 {% endblock content %}
