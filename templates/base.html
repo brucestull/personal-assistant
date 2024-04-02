@@ -75,6 +75,25 @@
                                         <li>
                                             <a class="dropdown-item"
                                             href={% url 'home' %}>Home</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'cbt:cognitive-distortion-list' %}>Cognitive Distortions</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'cbt:thought-list' %}>Thoughts</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'cbt:thought-create' %}>Though Create</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
                                         <li>
                                             <a class="dropdown-item"
                                             href={% url 'unimportant_notes:note_list' %}>Unimportant Notes</a>
@@ -117,21 +136,6 @@
                                         </li>
                                             <a class="dropdown-item"
                                             href={% url 'opportunity_search:work_search_activity_list' %}>Work Search Activities</a>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                            href={% url 'cbt:cognitive-distortion-list' %}>Cognitive Distortions</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                            href={% url 'cbt:thought-list' %}>Thoughts</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                            href={% url 'cbt:thought-create' %}>Though Create</a>
-                                        </li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
