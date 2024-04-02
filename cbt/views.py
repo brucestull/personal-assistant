@@ -29,12 +29,13 @@ def home(request):
     )
 
 
-class CognitiveDistortionListView(RegistrationAcceptedMixin, ListView):
+class CognitiveDistortionListView(RegistrationAcceptedMixin, FormMixin, ListView):
     """
     `ListView` for the `CognitiveDistortion` model.
     """
 
     model = CognitiveDistortion
+    form_class = ThoughtForm
     extra_context = {
         "the_site_name": THE_SITE_NAME,
         "page_title": "Cognitive Distortions",

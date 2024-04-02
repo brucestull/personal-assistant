@@ -11,7 +11,7 @@
     <form method="post" action={% url 'cbt:thought-create' %}>
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Create / Update a Thought</button>
+        <button type="submit">Add the Thought</button>
     </form>
     {% if object_list %}
         {% for thought in object_list %}
