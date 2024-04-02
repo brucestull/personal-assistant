@@ -8,6 +8,11 @@
 
 {% block content %}
     <h1>{{ page_title }}</h1>
+    <form method="post" action={% url 'cbt:thought-create' %}>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add the Thought</button>
+    </form>
     {% for object in object_list %}
         <h2>{{ object.name }}</h2>
         <a href={% url "cbt:thought-create" object.id %}>Add Thought</a>
