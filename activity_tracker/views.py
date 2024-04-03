@@ -1,6 +1,9 @@
 # from django.views.generic.edit import CreateView
+from typing import Any
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -29,8 +32,11 @@ class ActivityListView(RegistrationAcceptedMixin, ListView):
     """
 
     model = Activity
+
     # template_name = "activity_tracker/activity_list.html"
     # context_object_name = "activities"
+    def get_queryset(self) -> QuerySet[Any]:
+        return Activity.objects.filter(user=self.request.user)
 
 
 class ActivityDetailView(RegistrationAcceptedMixin, DetailView):
@@ -39,8 +45,12 @@ class ActivityDetailView(RegistrationAcceptedMixin, DetailView):
     """
 
     model = Activity
+
     # template_name = "activity_tracker/activity_detail.html"
     # context_object_name = "activity"
+    # Override the `get_object` method to filter by the user
+    def get_object(self, queryset=None) -> Model:
+        return Activity.objects.get(pk=self.kwargs.get("pk"), user=self.request.user)
 
 
 @login_required
