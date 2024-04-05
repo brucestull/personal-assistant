@@ -16,6 +16,18 @@ class RegistrationAcceptedMixin(AccessMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
+class UserIsAuthorMixin(AccessMixin):
+    """
+    Mixin to check if the user is the author of the object.
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if the user is the author of the object
+        if not request.user == self.get_object().author:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+
 class OrderableMixin:
     """
     Mixin to add `reorder_all` class method to models with an 'order' field.
