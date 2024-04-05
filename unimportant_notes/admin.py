@@ -9,12 +9,12 @@ class NoteTagAdmin(admin.ModelAdmin):
     Admin for NoteTag.
     """
 
-    list_display = ("name",)
-    search_fields = ("name",)
+    list_display = ("name", "author")
+    search_fields = ("name", "author")
     fieldsets = (
         (
             "Note Tag",
-            {"fields": ("name",)},
+            {"fields": ("name", "author")},
         ),
     )
     # Some GitHub Copilot suggestions for other attributes to set:
