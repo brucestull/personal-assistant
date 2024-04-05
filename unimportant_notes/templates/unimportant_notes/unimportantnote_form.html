@@ -14,6 +14,10 @@
         <button type="submit">Add/Save Unimportant Note</button>
     </form>
     {% if unimportantnote %}
+        <a href={% url 'unimportant_notes:note_detail' unimportantnote.id %}>
+            Cancel
+        </a>
+    {% else %}
         <a href={% url 'unimportant_notes:note_list' %}>
             Cancel
         </a>

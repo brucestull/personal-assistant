@@ -7,8 +7,18 @@ urlpatterns = [
     path("", views.UnimportantNoteListView.as_view(), name="note_list"),
     path("create/", views.UnimportantNoteCreateView.as_view(), name="note_create"),
     path(
+        "<int:pk>/",
+        views.UnimportantNoteDetailView.as_view(),
+        name="note_detail",
+    ),
+    path(
         "<int:pk>/update/",
         views.UnimportantNoteUpdateView.as_view(),
         name="note_update",
+    ),
+    path(
+        "tag/<int:pk>/",
+        views.NoteTagDetailView.as_view(),
+        name="tag_detail",
     ),
 ]
