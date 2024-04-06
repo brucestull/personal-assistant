@@ -17,7 +17,14 @@
             {% if not forloop.last %} | {% endif %}
         {% endfor %}
     </p>
-    {{ unimportantnote.content}}
+    <p>
+        {{ unimportantnote.content}}
+    </p>
+    <p>
+        {% if unimportantnote.url %}
+            <a href={{ unimportant_note.url }} target="_blank" rel="noopener" >{{ unimportantnote.url }}</a>
+        {% endif %}
+    </p>
     <p>
         <a href={% url "unimportant_notes:note_update" unimportantnote.id %}>Edit Note</a>
         |
