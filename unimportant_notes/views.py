@@ -81,7 +81,7 @@ class UnimportantNoteCreateView(RegistrationAcceptedMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> dict[str, Any]:
         """
         Return the keyword arguments for instantiating the form.
         """
@@ -145,7 +145,7 @@ class UnimportantNoteListView(RegistrationAcceptedMixin, FormMixin, ListView):
     def get_queryset(self) -> QuerySet[Any]:
         return super().get_queryset().filter(author=self.request.user)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> dict[str, Any]:
         """
         Return the keyword arguments for instantiating the form.
         """

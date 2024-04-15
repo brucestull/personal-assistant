@@ -11,7 +11,7 @@ class NoteTagAdmin(admin.ModelAdmin):
 
     list_display = ("name", "author")
     list_editable = ("author",)
-    search_fields = ("name", "author")
+    search_fields = ("name",)
     fieldsets = (
         (
             "Note Tag",
