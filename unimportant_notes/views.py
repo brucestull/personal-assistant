@@ -32,6 +32,21 @@ class NoteTagDetailView(RegistrationAcceptedMixin, UserPassesTestMixin, DetailVi
         return self.request.user == note_tag.author
 
 
+class NoteTagListView(RegistrationAcceptedMixin, ListView):
+    """
+    A view that displays a list of note tags.
+    """
+
+    model = NoteTag
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Note Tags",
+    }
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return super().get_queryset().filter(author=self.request.user)
+
+
 # from django.shortcuts import redirect, render
 # from django.contrib.auth.decorators import login_required
 

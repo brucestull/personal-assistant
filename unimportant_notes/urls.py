@@ -17,6 +17,11 @@ urlpatterns = [
         name="note_update",
     ),
     path(
+        "tags/",
+        views.NoteTagListView.as_view(),
+        name="tag_list",
+    ),
+    path(
         "tag/<int:pk>/",
         views.NoteTagDetailView.as_view(),
         name="tag_detail",
