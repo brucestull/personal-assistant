@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from unimportant_notes.models import UnimportantNote, NoteTag
+from unimportant_notes.models import NoteTag
 from accounts.models import CustomUser
 
 
@@ -53,7 +53,8 @@ class NoteTagDetailViewTest(TestCase):
 
     def test_note_tag_detail_view_uses_correct_template(self):
         """
-        Test that the `NoteTagDetailView` uses the correct template "unimportant_notes/notetag_detail.html".
+        Test that the `NoteTagDetailView` uses the correct template
+        "unimportant_notes/notetag_detail.html".
         """
         # Log in the user.
         login = self.client.login(username="DezziKitten", password="PurrMachine1234")
@@ -84,7 +85,8 @@ class NoteTagDetailViewTest(TestCase):
 
     def test_note_tag_detail_view_redirects_for_unauthenticated_user(self):
         """
-        Test that the `NoteTagDetailView` redirects an unauthenticated user to the login page.
+        Test that the `NoteTagDetailView` redirects an unauthenticated user to the
+        login page.
         """
         response = self.client.get(
             reverse("unimportant_notes:tag_detail", kwargs={"pk": 1})
