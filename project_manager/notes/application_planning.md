@@ -1,0 +1,34 @@
+# Application Planning for Project Manager
+
+- `Project`
+  - `name`
+  - `description`
+  - `owner` (User)
+  - `start_date`
+  - `end_date`
+- `Resource`
+  - `People` (User)
+  - `Equipment`
+  - `Hardware`
+    - `Computer`
+    - `Server`
+    - `Network`
+    - `Storage`
+    - `Peripheral`
+  - `Software`
+- `Milestone`
+  - `project` (Project)
+- `Priority`
+  - `related_project` (Project)
+  - `name`:
+    - `Critical`
+    - `High`
+    - `Medium`
+    - `Low`
+  - `description`
+- `Task`
+  - `milestone` (Milestone)
+  - `priority` (Priority)
+- `Subtask`
+  - `task` (Task)
+  - `priority` (Priority)
