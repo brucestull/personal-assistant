@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import temporary_http_response
 
+from .views import temporary_http_response
 
 app_name = "project_manager"
 urlpatterns = [
