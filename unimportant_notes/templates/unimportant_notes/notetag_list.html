@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ page_title }}</h1>
+    <ul>
+        {% for notetag in notetag_list %}
+            <li>
+                <a href="{% url 'unimportant_notes:tag_detail' notetag.id %}">
+                    {{ notetag.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
