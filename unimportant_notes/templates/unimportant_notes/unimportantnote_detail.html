@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ unimportantnote.title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ unimportantnote.title }}</h1>
+    <p class="card-text">
+        {% for tag in unimportantnote.tag.all %}
+            <a href={% url "unimportant_notes:tag_detail" tag.id %}>
+                {{ tag.name }}
+                <i class="fas fa-info-circle"></i>
+            </a>
+            {% if not forloop.last %} | {% endif %}
+        {% endfor %}
+    </p>
+    <p>
+        {{ unimportantnote.content | linebreaks }}
+    </p>
+    <p>
+        {% if unimportantnote.url %}
+            <a href={{ unimportantnote.url }} target="_blank" rel="noopener" >{{ unimportantnote.url }}</a>
+        {% endif %}
+    </p>
+    <p>
+        <a href={% url "unimportant_notes:note_update" unimportantnote.id %}>Edit Note</a>
+        |
+        <a href={% url "unimportant_notes:note_list" %}>Unimportant Notes</a>
+    </p>
+{% endblock content %}

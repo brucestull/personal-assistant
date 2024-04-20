@@ -1,5 +1,6 @@
 from base.models import Note
 from django.db import models
+from config.settings import AUTH_USER_MODEL
 
 
 class NoteTag(models.Model):
@@ -11,6 +12,12 @@ class NoteTag(models.Model):
         "Name",
         max_length=255,
         help_text="The name of this tag.",
+    )
+    author = models.ForeignKey(
+        AUTH_USER_MODEL,
+        verbose_name="Author",
+        help_text="The author of this tag.",
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):

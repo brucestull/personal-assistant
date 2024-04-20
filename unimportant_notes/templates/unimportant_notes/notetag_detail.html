@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ notetag.name }} Notes
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ notetag.name }} Notes</h1>
+    {% for note in notetag.unimportant_notes.all %}
+        <h2>{{ note.title }}</h2>
+        <a href={% url "unimportant_notes:note_detail" note.id %}>View Note Details</a>
+        <p>{{ note.content | linebreaks }}</p>
+        <p>
+            {% if note.url %}
+                <a href={{ note.url }} target="_blank" rel="noopener" >{{ note.url }}</a>
+            {% endif %}
+        </p>
+    {% endfor %}
+{% endblock content %}

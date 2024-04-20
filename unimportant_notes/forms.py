@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import UnimportantNote
+from .models import UnimportantNote, NoteTag
 
 
 class UnimportantNoteForm(forms.ModelForm):
@@ -26,3 +26,14 @@ class UnimportantNoteForm(forms.ModelForm):
                 "max_length": "This title is too long.",
             },
         }
+
+    def __init__(self, *args, **kwargs):
+        # Pop the 'user' argument from the kwargs dictionary.
+        # The 'user' needs to be passed when instantiating this form in the view.
+        user = kwargs.pop("user", None)
+        super(UnimportantNoteForm, self).__init__(*args, **kwargs)
+
+        if user is not None:
+            # Filter the queryset for the 'tag' field to only include NoteTags
+            # where the current user is the author.
+            self.fields["tag"].queryset = NoteTag.objects.filter(author=user)

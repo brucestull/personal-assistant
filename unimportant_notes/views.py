@@ -3,14 +3,33 @@ from typing import Any
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
 from .forms import UnimportantNoteForm
-from .models import UnimportantNote
+from .models import UnimportantNote, NoteTag
+
+
+class NoteTagDetailView(RegistrationAcceptedMixin, UserPassesTestMixin, DetailView):
+    """
+    A view that displays a detail of a note tag.
+    """
+
+    model = NoteTag
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Note Tag",
+    }
+
+    def test_func(self) -> bool:
+        """
+        Only the author of the note can view it.
+        """
+        note_tag = self.get_object()
+        return self.request.user == note_tag.author
 
 
 # from django.shortcuts import redirect, render
@@ -62,6 +81,35 @@ class UnimportantNoteCreateView(RegistrationAcceptedMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def get_form_kwargs(self) -> dict[str, Any]:
+        """
+        Return the keyword arguments for instantiating the form.
+        """
+        kwargs = super(UnimportantNoteCreateView, self).get_form_kwargs()
+        kwargs["user"] = self.request.user  # Add the user to the form kwargs.
+        return kwargs
+
+
+class UnimportantNoteDetailView(
+    RegistrationAcceptedMixin, UserPassesTestMixin, DetailView
+):
+    """
+    A view that displays a detail of a note.
+    """
+
+    model = UnimportantNote
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Note",
+    }
+
+    def test_func(self) -> bool:
+        """
+        Only the author of the note can view it.
+        """
+        note = self.get_object()
+        return self.request.user == note.author
+
 
 class UnimportantNoteUpdateView(
     RegistrationAcceptedMixin, UserPassesTestMixin, UpdateView
@@ -96,3 +144,11 @@ class UnimportantNoteListView(RegistrationAcceptedMixin, FormMixin, ListView):
 
     def get_queryset(self) -> QuerySet[Any]:
         return super().get_queryset().filter(author=self.request.user)
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        """
+        Return the keyword arguments for instantiating the form.
+        """
+        kwargs = super(UnimportantNoteListView, self).get_form_kwargs()
+        kwargs["user"] = self.request.user  # Add the user to the form kwargs.
+        return kwargs
