@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "unimportant_notes.apps.UnimportantNotesConfig",
     "activity_tracker.apps.ActivityTrackerConfig",
     "opportunity_search.apps.OpportunitySearchConfig",
+    "project_manager.apps.ProjectManagerConfig",
     "storages",
 ]
 
