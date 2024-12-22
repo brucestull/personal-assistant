@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "activity_tracker.apps.ActivityTrackerConfig",
     "opportunity_search.apps.OpportunitySearchConfig",
     "project_manager.apps.ProjectManagerConfig",
+    "goals.apps.GoalsConfig",
     "storages",
 ]
 
