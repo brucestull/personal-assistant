@@ -38,6 +38,8 @@ class GoalRelationship(models.Model):
 
     def __str__(self):
         return (
-            f"{self.parent_goal.name} -> {self.child_goal.name} "
+            f"{self.child_goal.name} "
+            f" -> "
+            f"{self.parent_goal.name}"
             f"({self.relationship_type})"
         )
