@@ -32,8 +32,8 @@ class GoalRelationshipAdmin(admin.ModelAdmin):
     """
 
     list_display = (
-        "parent_goal",
         "child_goal",
+        "parent_goal",
         "relationship_type",
     )
     search_fields = ("parent_goal__name", "child_goal__name")

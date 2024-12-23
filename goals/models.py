@@ -24,8 +24,10 @@ class GoalRelationship(models.Model):
     relationship_type = models.CharField(
         max_length=50,
         choices=[
-            ("subgoal", "Subgoal"),
-            ("supergoal", "Supergoal"),
+            # ("subgoal", "Subgoal"),
+            # ("supergoal", "Supergoal"),
+            ("goal_hierarchy", "Goal Hierarchy"),
+            ("task_hierarchy", "Task Hierarchy"),
         ],
     )
 
@@ -35,4 +37,7 @@ class GoalRelationship(models.Model):
         verbose_name_plural = "Goal Relationships"
 
     def __str__(self):
-        return f"{self.parent_goal.name} -> {self.child_goal.name} ({self.relationship_type})"
+        return (
+            f"{self.parent_goal.name} -> {self.child_goal.name} "
+            f"({self.relationship_type})"
+        )
