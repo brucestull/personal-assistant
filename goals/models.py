@@ -7,7 +7,10 @@ class Goal(models.Model):
     due_date = models.DateField(blank=True, null=True)
     completed = models.BooleanField(default=False)
     related_goals = models.ManyToManyField(
-        "self", through="GoalRelationship", symmetrical=False, related_name="related_to" # noqa E501
+        "self",
+        through="GoalRelationship",
+        symmetrical=False,
+        related_name="related_to",  # noqa E501
     )
 
     def __str__(self):
@@ -42,6 +45,8 @@ class GoalRelationship(models.Model):
 
     def __str__(self):
         return (
-            f"{self.parent_goal.name} -> {self.child_goal.name} "
+            f"{self.child_goal.name} "
+            f"-> "
+            f"{self.parent_goal.name} "
             f"({self.relationship_type})"
         )
