@@ -7,11 +7,15 @@ class Goal(models.Model):
     due_date = models.DateField(blank=True, null=True)
     completed = models.BooleanField(default=False)
     related_goals = models.ManyToManyField(
-        "self", through="GoalRelationship", symmetrical=False, related_name="related_to"
+        "self", through="GoalRelationship", symmetrical=False, related_name="related_to" # noqa E501
     )
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Goal"
+        verbose_name_plural = "Goals"
 
 
 class GoalRelationship(models.Model):
