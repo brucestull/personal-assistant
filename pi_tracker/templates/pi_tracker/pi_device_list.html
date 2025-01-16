@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pi Devices</title>
+</head>
+<body>
+    <h1>Pi Devices</h1>
+    <a href="{% url 'pi_device_create' %}">Add New Device</a>
+    <ul>
+        {% for device in devices %}
+        <li>
+            <a href="{{ device.id }}/">{{ device.name }} - {{ device.form_factor }}</a>
+            (<a href="{{ device.id }}/update/">Edit</a>)
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

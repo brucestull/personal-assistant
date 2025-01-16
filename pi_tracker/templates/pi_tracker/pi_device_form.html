@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ view.object.pk|default:"Create PiDevice" }}</title>
+</head>
+<body>
+    <h1>{{ view.object.pk|default:"Create PiDevice" }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'pi_device_list' %}">Back to list</a>
+</body>
+</html>
