@@ -44,4 +44,5 @@ urlpatterns = [
     path("activity-tracker/", include("activity_tracker.urls")),
     path("opportunity-search/", include("opportunity_search.urls")),
     path("project-manager/", include("project_manager.urls")),
+    path("goals/", include("goals.urls")),
 ]
