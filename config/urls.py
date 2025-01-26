@@ -45,4 +45,5 @@ urlpatterns = [
     path("opportunity-search/", include("opportunity_search.urls")),
     path("project-manager/", include("project_manager.urls")),
     path("pi-tracker/", include("pi_tracker.urls")),
+    path("goals/", include("goals.urls")),
 ]
