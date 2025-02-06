@@ -1,25 +1,15 @@
-from django.contrib import admin
 from unittest.mock import Mock, PropertyMock
-from django.test import TestCase, RequestFactory
 
+from django.contrib import admin
+from django.test import RequestFactory, TestCase
 from django.utils.translation import gettext_lazy as _
 
-from app_tracker.admin import (
-    OrganizationalConceptAdmin,
-    LanguageFrameworkSystemAdmin,
-    ProjectAdmin,
-    ApplicationAdmin,
-    LabelAdmin,
-)
-
-from app_tracker.models import (
-    OrganizationalConcept,
-    LanguageFrameworkSystem,
-    Project,
-    Application,
-)
-
 from accounts.models import CustomUser
+from app_tracker.admin import (ApplicationAdmin, LabelAdmin,
+                               LanguageFrameworkSystemAdmin,
+                               OrganizationalConceptAdmin, ProjectAdmin)
+from app_tracker.models import (Application, LanguageFrameworkSystem,
+                                OrganizationalConcept, Project)
 
 
 class OrganizationalConceptAdminTest(TestCase):

@@ -1,5 +1,6 @@
-from base.models import Note
 from django.db import models
+
+from base.models import Note
 from config.settings import AUTH_USER_MODEL
 
 

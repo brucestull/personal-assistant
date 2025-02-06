@@ -1,5 +1,6 @@
-from base.models import CreatedUpdatedBase
 from django.db import models
+
+from base.models import CreatedUpdatedBase
 
 
 class WorkSearchActivity(CreatedUpdatedBase):

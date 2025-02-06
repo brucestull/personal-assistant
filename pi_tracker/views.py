@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 
-from base.mixins import RegistrationAcceptedMixin
 from base.decorators import registration_accepted_required
+from base.mixins import RegistrationAcceptedMixin
 
 from .forms import PiDeviceForm
 from .models import PiDevice

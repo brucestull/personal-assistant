@@ -1,27 +1,13 @@
-from django.contrib.auth.mixins import (
-    LoginRequiredMixin,
-    UserPassesTestMixin,
-)
-from django.shortcuts import (
-    render,
-    get_object_or_404,
-)
-from django.views.generic import (
-    ListView,
-    DetailView,
-    View,
-)
-from django.views.generic.edit import (
-    CreateView,
-    UpdateView,
-    DeleteView,
-)
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.urls.base import reverse_lazy
+from django.views.generic import DetailView, ListView, View
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from config.settings import THE_SITE_NAME
-from .models import Journal
 
+from .models import Journal
 
 JOURNAL_LIST_PAGE_TITLE = "Journals"
 

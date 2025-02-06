@@ -1,12 +1,7 @@
 from django.urls import path
 
-from cbt.views import (
-    CognitiveDistortionListView,
-    ThoughtDetailView,
-    ThoughtListView,
-    ThoughtCreateView,
-    home,
-)
+from cbt.views import (CognitiveDistortionListView, ThoughtCreateView,
+                       ThoughtDetailView, ThoughtListView, home)
 
 app_name = "cbt"
 urlpatterns = [

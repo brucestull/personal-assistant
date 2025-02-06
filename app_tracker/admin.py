@@ -1,15 +1,9 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from app_tracker.models import (
-    OrganizationalConcept,
-    LanguageFrameworkSystem,
-    Project,
-    Application,
-    Label,
-    Note,
-    DjangoModel,
-)
+from app_tracker.models import (Application, DjangoModel, Label,
+                                LanguageFrameworkSystem, Note,
+                                OrganizationalConcept, Project)
 
 
 @admin.register(OrganizationalConcept)

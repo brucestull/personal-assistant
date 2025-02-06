@@ -1,12 +1,7 @@
 from django import forms
 
-from .models import (
-    BehavioralInterviewQuestion,
-    BulletPoint,
-    Purpose,
-    QuestionResponse,
-    Skill,
-)
+from .models import (BehavioralInterviewQuestion, BulletPoint, Purpose,
+                     QuestionResponse, Skill)
 
 
 class PurposeForm(forms.ModelForm):

@@ -1,14 +1,9 @@
 from django.contrib import admin
 from django.db import models
 
-from career_organizerator.models import (
-    BehavioralInterviewQuestion,
-    BulletPoint,
-    ElevatorSpeech,
-    Purpose,
-    QuestionResponse,
-    Skill,
-)
+from career_organizerator.models import (BehavioralInterviewQuestion,
+                                         BulletPoint, ElevatorSpeech, Purpose,
+                                         QuestionResponse, Skill)
 
 
 @admin.register(Purpose)

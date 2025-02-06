@@ -2,8 +2,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from cbt.forms import ThoughtForm
 
+from cbt.forms import ThoughtForm
 from cbt.models import CognitiveDistortion, Thought
 
 

@@ -1,5 +1,6 @@
 # from django.views.generic.edit import CreateView
 from typing import Any
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models.base import Model as Model
@@ -8,9 +9,9 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
-from config.settings import THE_SITE_NAME
 
 from base.mixins import RegistrationAcceptedMixin
+from config.settings import THE_SITE_NAME
 
 from .models import Activity, ActivityCompleted  # ActivityType,
 

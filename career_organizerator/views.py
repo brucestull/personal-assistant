@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -5,22 +6,11 @@ from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
-from django.db import transaction
 
-from .forms import (
-    BehavioralInterviewQuestionForm,
-    BulletPointForm,
-    PurposeForm,
-    QuestionResponseForm,
-    SkillForm,
-)
-from .models import (
-    BehavioralInterviewQuestion,
-    BulletPoint,
-    Purpose,
-    QuestionResponse,
-    Skill,
-)
+from .forms import (BehavioralInterviewQuestionForm, BulletPointForm,
+                    PurposeForm, QuestionResponseForm, SkillForm)
+from .models import (BehavioralInterviewQuestion, BulletPoint, Purpose,
+                     QuestionResponse, Skill)
 
 
 def home(request):

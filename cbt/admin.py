@@ -1,9 +1,6 @@
 from django.contrib import admin
 
-from cbt.models import (
-    CognitiveDistortion,
-    Thought,
-)
+from cbt.models import CognitiveDistortion, Thought
 
 
 @admin.register(CognitiveDistortion)

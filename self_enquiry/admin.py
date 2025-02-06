@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from self_enquiry.models import Journal, GrowthOpportunity
+from self_enquiry.models import GrowthOpportunity, Journal
 
 
 @admin.register(Journal)

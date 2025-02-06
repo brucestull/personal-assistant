@@ -1,9 +1,8 @@
 from django.urls import path
 
-from self_enquiry.views import JournalListView, JournalDetailView
-from self_enquiry.views import JournalCreateView, JournalUpdateView
-from self_enquiry.views import JournalDeleteView, JournalConfirmDeleteView
-
+from self_enquiry.views import (JournalConfirmDeleteView, JournalCreateView,
+                                JournalDeleteView, JournalDetailView,
+                                JournalListView, JournalUpdateView)
 
 app_name = "self_enquiry"
 urlpatterns = [

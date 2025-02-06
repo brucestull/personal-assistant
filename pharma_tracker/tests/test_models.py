@@ -1,10 +1,8 @@
-from django.test import TestCase
 from django.db import models as d_db_models
+from django.test import TestCase
 
-from pharma_tracker.models import (
-    Pharmaceutical,
-)
 from accounts.models import CustomUser
+from pharma_tracker.models import Pharmaceutical
 
 
 class PharmaceuticalModelTests(TestCase):

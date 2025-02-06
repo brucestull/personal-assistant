@@ -1,8 +1,8 @@
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from config.settings import AUTH_USER_MODEL
-from django.utils import timezone
 
 
 class ActivityType(models.Model):

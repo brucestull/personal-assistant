@@ -1,18 +1,10 @@
 from django.urls import path
 
-from .views import (
-    BehavioralInterviewQuestionListView,
-    BulletPointListView,
-    PurposeListView,
-    QuestionResponseCreateView,
-    QuestionResponseListView,
-    QuestionResponseUpdateView,
-    SkillListView,
-    skill_move_up,
-    skill_move_down,
-    skill_delete,
-    home,
-)
+from .views import (BehavioralInterviewQuestionListView, BulletPointListView,
+                    PurposeListView, QuestionResponseCreateView,
+                    QuestionResponseListView, QuestionResponseUpdateView,
+                    SkillListView, home, skill_delete, skill_move_down,
+                    skill_move_up)
 
 app_name = "career_organizerator"
 urlpatterns = [

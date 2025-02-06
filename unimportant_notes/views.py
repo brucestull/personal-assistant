@@ -3,14 +3,14 @@ from typing import Any
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
 from .forms import UnimportantNoteForm
-from .models import UnimportantNote, NoteTag
+from .models import NoteTag, UnimportantNote
 
 
 class NoteTagDetailView(RegistrationAcceptedMixin, UserPassesTestMixin, DetailView):

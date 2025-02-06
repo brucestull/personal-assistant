@@ -1,6 +1,6 @@
 from django.db import models
-from base.models import CreatedUpdatedBase
 
+from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
 
 

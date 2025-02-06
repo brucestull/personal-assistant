@@ -1,7 +1,7 @@
 from django.db import models
 
-from base.models import CreatedUpdatedBase
 from base.mixins import OrderableMixin
+from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
 
 

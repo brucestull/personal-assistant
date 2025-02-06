@@ -2,14 +2,9 @@ from django.contrib.auth import get_user_model
 from django.db import models as d_db_models
 from django.test import TestCase
 
-from career_organizerator.models import (
-    BehavioralInterviewQuestion,
-    BulletPoint,
-    ElevatorSpeech,
-    Purpose,
-    QuestionResponse,
-    Skill,
-)
+from career_organizerator.models import (BehavioralInterviewQuestion,
+                                         BulletPoint, ElevatorSpeech, Purpose,
+                                         QuestionResponse, Skill)
 
 
 class PurposeTestCase(TestCase):

@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from unimportant_notes.models import NoteTag
 from accounts.models import CustomUser
+from unimportant_notes.models import NoteTag
 
 
 class NoteTagDetailViewTest(TestCase):

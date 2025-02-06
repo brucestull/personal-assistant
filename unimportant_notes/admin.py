@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UnimportantNote, NoteTag
+from .models import NoteTag, UnimportantNote
 
 
 @admin.register(NoteTag)
