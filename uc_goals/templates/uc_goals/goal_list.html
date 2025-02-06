@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ page_title }}
+  -
+  {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+<h1>{{ page_title }}</h1>
+<ul>
+  {% for goal in goals %}
+    <li>
+      {{ goal.name }}
+      {% if goal.sub_goals.exists %}
+        {% include "uc_goals/goal_sub.html" with sub_goals=goal.sub_goals.all %}
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock content %}
