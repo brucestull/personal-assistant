@@ -1,7 +1,6 @@
 from django.views.generic import ListView
 
 from base.mixins import RegistrationAcceptedMixin
-
 from config.settings import THE_SITE_NAME
 
 from .models import Goal

@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "self_enquiry.apps.SelfEnquiryConfig",
     "vitals.apps.VitalsConfig",
     "value_centric.apps.ValueCentricConfig",
+    "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
 ]
 

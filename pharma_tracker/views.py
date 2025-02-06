@@ -1,9 +1,5 @@
-from django.contrib.auth.mixins import (
-    UserPassesTestMixin,
-    LoginRequiredMixin,
-)
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView
-
 
 # We import like this so that we don't have to rely on the package name
 # which contains the pharmaceutical model. This makes it easier to add

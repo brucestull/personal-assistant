@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from accounts.models import CustomUser
 from accounts.forms import CustomUserCreationForm
+from accounts.models import CustomUser
 
 A_TEST_USERNAME = "ACustomUser"
 A_TEST_PASSWORD = "a_test_password"

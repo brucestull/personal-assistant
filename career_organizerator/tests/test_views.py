@@ -1,13 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse_lazy
-from django.contrib.auth import get_user_model
 
-from career_organizerator.models import (
-    Purpose,
-)
-from career_organizerator.forms import (
-    PurposeForm,
-)
+from career_organizerator.forms import PurposeForm
+from career_organizerator.models import Purpose
 
 
 class HomeViewTests(TestCase):

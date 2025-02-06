@@ -1,13 +1,9 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from self_enquiry.models import Journal
-from self_enquiry.views import (
-    JournalUpdateView,
-    JournalDeleteView,
-)
 from accounts.models import CustomUser
-
+from self_enquiry.models import Journal
+from self_enquiry.views import JournalDeleteView, JournalUpdateView
 
 THE_SITE_NAME = "Personal Assistant"
 

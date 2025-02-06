@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from vitals.models import BloodPressure, Pulse, Temperature, BodyWeight
+from vitals.models import BloodPressure, BodyWeight, Pulse, Temperature
 
 
 @admin.register(BloodPressure)

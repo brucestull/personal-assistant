@@ -1,8 +1,8 @@
 from django.urls import path
 
-from accounts.views import ForbiddenView
-from accounts.views import CustomUserSignUpView, CustomLoginView
-from accounts.views import CustomUserUpdateView, CustomUserDetailView
+from accounts.views import (CustomLoginView, CustomUserDetailView,
+                            CustomUserSignUpView, CustomUserUpdateView,
+                            ForbiddenView)
 
 urlpatterns = [
     # Try to override 'login' view.

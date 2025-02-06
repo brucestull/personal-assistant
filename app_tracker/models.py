@@ -1,7 +1,7 @@
 from django.db import models
 
-from config.settings import AUTH_USER_MODEL
 from base.models import CreatedUpdatedBase
+from config.settings import AUTH_USER_MODEL
 
 
 class OrganizationalConcept(CreatedUpdatedBase):

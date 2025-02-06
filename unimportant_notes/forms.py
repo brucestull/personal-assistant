@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import UnimportantNote, NoteTag
+from .models import NoteTag, UnimportantNote
 
 
 class UnimportantNoteForm(forms.ModelForm):

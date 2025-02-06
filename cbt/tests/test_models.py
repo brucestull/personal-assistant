@@ -1,9 +1,7 @@
 from django.test import TestCase
 
 from accounts.models import CustomUser
-from cbt.models import CognitiveDistortion
-from cbt.models import Thought
-
+from cbt.models import CognitiveDistortion, Thought
 
 COGNITIVE_DISTORTION_NAME = "cognitive distortion name"
 COGNITIVE_DISTORTION_DESCRIPTION = "cognitive distortion description"

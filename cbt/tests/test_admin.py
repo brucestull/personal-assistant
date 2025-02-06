@@ -3,9 +3,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 
 from accounts.models import CustomUser
-
 from cbt.admin import CognativeDistortionAdmin, ThoughtAdmin
-
 from cbt.models import CognitiveDistortion, Thought
 
 

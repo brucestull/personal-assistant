@@ -1,15 +1,12 @@
-from django.test import TestCase
 from django.db import models as d_db_models
+from django.test import TestCase
 
 ######################
 # Can use either of these:
 # from config.settings import AUTH_USER_MODEL
 from accounts.models import CustomUser
-
 ######################
-from self_enquiry.models import Journal
-from self_enquiry.models import GrowthOpportunity
-
+from self_enquiry.models import GrowthOpportunity, Journal
 
 TEST_USERNAME = "test_username"
 TEST_PASSWORD = "test_password"

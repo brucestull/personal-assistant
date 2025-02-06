@@ -1,8 +1,6 @@
 from django.contrib import admin
 
-from pharma_tracker.models import (
-    Pharmaceutical,
-)
+from pharma_tracker.models import Pharmaceutical
 
 
 @admin.register(Pharmaceutical)

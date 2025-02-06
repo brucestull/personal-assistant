@@ -2,7 +2,7 @@ from django.db import models as d_db_models
 from django.test import TestCase
 
 from accounts.models import CustomUser
-from vitals.models import BloodPressure, Pulse, Temperature, BodyWeight
+from vitals.models import BloodPressure, BodyWeight, Pulse, Temperature
 
 BLANK = ""
 

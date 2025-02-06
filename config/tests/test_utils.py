@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from config.utils import get_database_config_variables
 
 
