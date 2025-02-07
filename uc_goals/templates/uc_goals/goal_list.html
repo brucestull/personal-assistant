@@ -8,10 +8,11 @@
 
 {% block content %}
 <h1>{{ page_title }}</h1>
+{% include "uc_goals/uc_links.html" %}
 <ul>
   {% for goal in goals %}
     <li>
-      {{ goal.name }}
+      <a href="{% url 'uc_goals:goal_detail' goal.id %}">{{ goal.name }}</a>
       {% if goal.sub_goals.exists %}
         {% include "uc_goals/goal_sub.html" with sub_goals=goal.sub_goals.all %}
       {% endif %}

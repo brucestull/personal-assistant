@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from config.settings import AUTH_USER_MODEL
 
@@ -22,6 +23,13 @@ class Goal(models.Model):
         on_delete=models.CASCADE,
         related_name="sub_goals",
     )
+
+    def get_absolute_url(self):
+        """
+        Provides the URL to access a detail record for this goal. This is used in
+        CreateView and UpdateView.
+        """
+        return reverse("uc_goals:goal_detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.name

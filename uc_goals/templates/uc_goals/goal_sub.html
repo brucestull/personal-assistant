@@ -1,7 +1,7 @@
 <ul>
     {% for sub_goal in sub_goals %}
       <li>
-        {{ sub_goal.name }}
+        <a href="{% url 'uc_goals:goal_detail' sub_goal.id %}">{{ sub_goal.name }}</a>
         {% if sub_goal.sub_goals.exists %}
           {% include "uc_goals/goal_sub.html" with sub_goals=sub_goal.sub_goals.all %}
         {% endif %}
