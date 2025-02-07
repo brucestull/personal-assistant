@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ goal.name }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>
+        {{ goal.name }}
+        {% if goal.is_ultimate_concern %}(Ultimate Concern){% endif %}
+        {% if not goal.parent and not goal.is_ultimate_concern %}(Orphan Goal){% endif %}
+    </h1>
+    {% include "uc_goals/uc_links.html" %}
+    {% if goal.parent %}
+        <p>Parent: {{ goal.parent }}</p>
+    {% endif %}
+    <p>{{ goal.description }}</p>
+    <a href="{% url 'uc_goals:goal_update' goal.id %}">Edit</a>
+{% endblock content %}
