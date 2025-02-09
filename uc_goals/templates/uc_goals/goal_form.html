@@ -16,5 +16,9 @@
     {{ form.as_p }}
     <button type="submit">Save Goal</button>
 </form>
-<a href="{% url 'uc_goals:uc_list' %}">Cancel</a>
+    {% if mode == "update" %}
+    <a href="{% url 'uc_goals:goal_detail' pk=object.pk %}">Cancel Goal Update</a>
+    {% elif mode == "create" %}
+    <a href="{% url 'uc_goals:uc_list' %}">Cancel</a>
+    {% endif %}
 {% endblock content %}
