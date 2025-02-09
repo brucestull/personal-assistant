@@ -13,7 +13,11 @@
   {% for goal in goals %}
     <li>
       <a href="{% url 'uc_goals:goal_detail' goal.id %}">
+        {% if goal.completed %}
+        <s>{{ goal.name }}</s>
+        {% else %}
         {{ goal.name }}
+        {% endif %}
       </a>
       {% if goal.sub_goals.exists %}
         {% include "uc_goals/goal_sub.html" with sub_goals=goal.sub_goals.all %}
