@@ -23,6 +23,7 @@ class Goal(models.Model):
         on_delete=models.CASCADE,
         related_name="sub_goals",
     )
+    is_archived = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         """
