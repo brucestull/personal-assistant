@@ -29,6 +29,7 @@ class GoalCreateView(RegistrationAcceptedMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["page_title"] = "Create a Goal"
         context["the_site_name"] = THE_SITE_NAME
+        context["mode"] = "create"
         return context
 
 
@@ -39,6 +40,7 @@ class GoalDetailView(RegistrationAcceptedMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["page_title"] = get_object_or_404(Goal, pk=self.kwargs["pk"]).name
         context["the_site_name"] = THE_SITE_NAME
         return context
 
@@ -60,8 +62,11 @@ class GoalUpdateView(RegistrationAcceptedMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_title"] = get_object_or_404(Goal, pk=self.kwargs["pk"]).name
+        context["page_title"] = (
+            f"Edit: {get_object_or_404(Goal, pk=self.kwargs['pk']).name}"
+        )
         context["the_site_name"] = THE_SITE_NAME
+        context["mode"] = "update"
         return context
 
 
