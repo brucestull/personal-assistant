@@ -11,12 +11,13 @@ from uc_goals.models import Goal
 class GoalCreateView(RegistrationAcceptedMixin, CreateView):
     model = Goal
     fields = [
+        "parent",
         "name",
         "is_ultimate_concern",
         "description",
         "due_date",
         "completed",
-        "parent",
+        "is_archived",
     ]
     # template_name = "uc_goals/goal_form.html"
     # success_url = reverse_lazy("uc_goals:uc_list")
@@ -48,12 +49,13 @@ class GoalDetailView(RegistrationAcceptedMixin, DetailView):
 class GoalUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = Goal
     fields = [
+        "parent",
         "name",
         "is_ultimate_concern",
         "description",
         "due_date",
         "completed",
-        "parent",
+        "is_archived",
     ]
     # template_name = "uc_goals/goal_form.html"
     # How to route back to the goal detail page after updating?
