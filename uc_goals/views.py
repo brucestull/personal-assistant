@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
@@ -39,9 +39,20 @@ class GoalDetailView(RegistrationAcceptedMixin, DetailView):
     # template_name = "uc_goals/goal_detail.html"
     # context_object_name = "goal"
 
+    def get_queryset(self):
+        """
+        Return only the goals owned by the authenticated user. This queryset will be
+        refined by the DetailView class.
+        """
+        queryset = Goal.objects.filter(user=self.request.user)
+        # print(queryset.query)
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_title"] = get_object_or_404(Goal, pk=self.kwargs["pk"]).name
+        # `DetailView` provides the object as `self.object`. This can be used to get
+        # the object name.
+        context["page_title"] = self.object.name
         context["the_site_name"] = THE_SITE_NAME
         return context
 
@@ -62,10 +73,21 @@ class GoalUpdateView(RegistrationAcceptedMixin, UpdateView):
 
     # success_url = reverse_lazy("uc_goals:goal_detail")
 
+    def get_queryset(self):
+        """
+        Return only the goals owned by the authenticated user. This queryset will be
+        refined by the UpdateView class.
+        """
+        queryset = Goal.objects.filter(user=self.request.user)
+        # print(queryset.query)
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # `UpdateView` provides the object as `self.object`. This can be used to get
+        # the object name.
         context["page_title"] = (
-            f"Edit: {get_object_or_404(Goal, pk=self.kwargs['pk']).name}"
+            f"Edit: {self.object.name}"
         )
         context["the_site_name"] = THE_SITE_NAME
         context["mode"] = "update"
