@@ -1,15 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ view.object.pk|default:"Create PiDevice" }}</title>
-</head>
-<body>
-    <h1>{{ view.object.pk|default:"Create PiDevice" }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-    <a href="{% url 'pi_device_list' %}">Back to list</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+    {{ view.object.name|default:"Create Pi Device" }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    {% comment %}
+        Keep this code snippet here for future reference on using 'default' tag.
+        {{ view.object.name|default:"Create Pi Device" }}
+    {% endcomment %}
+    <h1>{{ view.object.name|default:"Create Pi Device" }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+    <a href="{% url 'pi_tracker:pi_device_list' %}">Back to list</a>
+{% endblock content %}
+
