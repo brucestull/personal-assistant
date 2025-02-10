@@ -36,6 +36,7 @@ class GoalCreateView(RegistrationAcceptedMixin, CreateView):
 
 class GoalDetailView(RegistrationAcceptedMixin, DetailView):
     model = Goal
+    # These attributes are optional. If not provided, the view will use the default.
     # template_name = "uc_goals/goal_detail.html"
     # context_object_name = "goal"
 
@@ -45,8 +46,24 @@ class GoalDetailView(RegistrationAcceptedMixin, DetailView):
         refined by the DetailView class.
         """
         queryset = Goal.objects.filter(user=self.request.user)
-        # print(queryset.query)
+        # Remember to study this queryset.query to understand how Django ORM works.
+        # print("print(queryset.query): ", queryset.query)
+        # print("print(queryset): ", queryset)
         return queryset
+
+    # def get_object(self, queryset=None):
+    #     """
+    #     Returns the object the view is displaying. The queryset is passed as an
+    #     argument and the super-class method returns the single object from that
+    #     queryset.
+
+    #     We are not adding any functionality here. We are just printing the object.
+
+    #     Uncomment this method to see that this view returns only a single object.
+    #     """
+    #     obj = super().get_object(queryset)
+    #     print("print(obj): ", obj)
+    #     return obj
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

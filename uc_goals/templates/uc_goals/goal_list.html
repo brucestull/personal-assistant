@@ -14,9 +14,9 @@
     <li>
       <a href="{% url 'uc_goals:goal_detail' goal.id %}">
         {% if goal.completed %}
-        <s>{{ goal.name }}</s>
+          <s>{{ goal.name }}</s>
         {% else %}
-        {{ goal.name }}
+          {{ goal.name }}
         {% endif %}
       </a>
       {% if goal.sub_goals.exists %}
