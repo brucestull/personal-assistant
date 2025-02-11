@@ -16,6 +16,6 @@
     {% if goal.parent %}
         <p>Parent: {{ goal.parent }}</p>
     {% endif %}
-    <p>{{ goal.description }}</p>
+    <p>{{ goal.description | linebreaks }}</p>
     <a href="{% url 'uc_goals:goal_update' goal.id %}">Edit</a>
 {% endblock content %}
