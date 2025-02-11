@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from base.models import Note
 from config.settings import AUTH_USER_MODEL
@@ -57,6 +58,9 @@ class UnimportantNote(Note):
         Display the tags for this note.
         """
         return ", ".join([tag.name for tag in self.tag.all()])
+
+    def get_absolute_url(self):
+        return reverse("unimportant_notes:note_detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.title

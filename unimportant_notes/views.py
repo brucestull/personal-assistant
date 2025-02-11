@@ -138,10 +138,8 @@ class UnimportantNoteUpdateView(
     form_class = UnimportantNoteForm
     extra_context = {
         "the_site_name": THE_SITE_NAME,
-        "page_title": "Update Note",
         "mode": "update",
     }
-    success_url = reverse_lazy("unimportant_notes:note_list")
 
     def get_context_data(self, **kwargs):
         """
