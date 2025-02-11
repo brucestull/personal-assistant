@@ -4,6 +4,16 @@ from .models import Goal
 
 
 class GoalForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        """
+        Override the __init__ method to filter the queryset for the parent field. This
+        prevents a goal from being its own parent.
+        """
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:  # If updating an existing instance
+            self.fields["parent"].queryset = Goal.objects.exclude(pk=self.instance.pk)
+
     class Meta:
         model = Goal
         fields = [
