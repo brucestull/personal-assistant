@@ -103,9 +103,7 @@ class GoalUpdateView(RegistrationAcceptedMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         # `UpdateView` provides the object as `self.object`. This can be used to get
         # the object name.
-        context["page_title"] = (
-            f"Edit: {self.object.name}"
-        )
+        context["page_title"] = f"Edit: {self.object.name}"
         context["the_site_name"] = THE_SITE_NAME
         context["mode"] = "update"
         return context
@@ -114,7 +112,7 @@ class GoalUpdateView(RegistrationAcceptedMixin, UpdateView):
 @registration_accepted_required
 def ultimate_concerns(request):
     """
-    Goals which are ultimate concerns and owned by the user.
+    Goals which are ultimate concerns (top level goals) and owned by the user.
     """
     goals = Goal.objects.filter(is_ultimate_concern=True, user=request.user)
     return render(
@@ -123,7 +121,7 @@ def ultimate_concerns(request):
         {
             "goals": goals,
             "the_site_name": THE_SITE_NAME,
-            "page_title": "Ultimate Concerns",
+            "page_title": "Top-Level Goals, BOI!",
         },
     )
 

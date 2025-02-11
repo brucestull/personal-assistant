@@ -4,3 +4,4 @@
 
 - [http://localhost:8000/uc-goals/ucs/](http://localhost:8000/uc-goals/ucs/)
 - [http://localhost:8000/uc-goals/orphans/](http://localhost:8000/uc-goals/orphans/)
+- [http://localhost:8000/uc-goals/create/](http://localhost:8000/uc-goals/create/)
