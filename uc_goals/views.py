@@ -79,15 +79,16 @@ class GoalDetailView(RegistrationAcceptedMixin, DetailView):
 
 class GoalUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = Goal
-    fields = [
-        "parent",
-        "name",
-        "is_ultimate_concern",
-        "description",
-        "due_date",
-        "completed",
-        "is_archived",
-    ]
+    form_class = GoalForm
+    # fields = [
+    #     "parent",
+    #     "name",
+    #     "is_ultimate_concern",
+    #     "description",
+    #     "due_date",
+    #     "completed",
+    #     "is_archived",
+    # ]
     # template_name = "uc_goals/goal_form.html"
     # How to route back to the goal detail page after updating?
 
