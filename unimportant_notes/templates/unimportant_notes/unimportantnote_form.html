@@ -11,14 +11,20 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Add/Save Unimportant Note</button>
+        <button type="submit">
+            {% if mode == "create" %}
+                Create New Unimportant Note
+            {% elif mode == "update" %}
+                Save Changes to Unimportant Note
+            {% endif %}
+        </button>
     </form>
     {% if unimportantnote %}
-        <a href={% url 'unimportant_notes:note_detail' unimportantnote.id %}>
+        <a href="{% url 'unimportant_notes:note_detail' unimportantnote.id %}">
             Cancel
         </a>
     {% else %}
-        <a href={% url 'unimportant_notes:note_list' %}>
+        <a href="{% url 'unimportant_notes:note_list' %}">
             Cancel
         </a>
     {% endif %}

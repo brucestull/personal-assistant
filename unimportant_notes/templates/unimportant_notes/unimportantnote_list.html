@@ -10,20 +10,20 @@
 {% block content %}
 
     <h1>Unimportant Notes</h1>
-    <form method="post" action={% url 'unimportant_notes:note_create' %} enctype="multipart/form-data">
+    <form method="post" action="{% url 'unimportant_notes:note_create' %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Create the Note</button>
+        <button type="submit">Create New Unimportant Note</button>
     </form>
     {% for unimportant_note in object_list %}
         <h2>{{ unimportant_note.title }}</h2>
-        <a href={% url "unimportant_notes:note_detail" unimportant_note.id %}>View Note Details</a>
+        <a href="{% url 'unimportant_notes:note_detail' unimportant_note.id %}">View Note Details</a>
         |
-        <a href={% url "unimportant_notes:note_update" unimportant_note.id %}>Edit Note</a>
+        <a href="{% url 'unimportant_notes:note_update' unimportant_note.id %}">Edit Note</a>
         <br>
         <p class="card-text">
             {% for tag in unimportant_note.tag.all %}
-                <a href={% url "unimportant_notes:tag_detail" tag.id %}>
+                <a href="{% url 'unimportant_notes:tag_detail' tag.id %}">
                     {{ tag.name }}
                     <i class="fas fa-info-circle"></i>
                 </a>
@@ -39,7 +39,7 @@
         {% endif %}
         <p>{{ unimportant_note.content|linebreaks|truncatechars:300 }}</p>
         {% if unimportant_note.url %}
-            <a href={{ unimportant_note.url }} target="_blank" rel="noopener" >{{ unimportant_note.url }}</a>
+            <a href="{{ unimportant_note.url }}" target="_blank" rel="noopener" >{{ unimportant_note.url }}</a>
         {% endif %}
         <p>- {{ unimportant_note.author }} on {{ unimportant_note.updated }}</p>
         {% if not forloop.last %}

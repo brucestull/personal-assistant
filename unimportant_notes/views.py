@@ -89,6 +89,7 @@ class UnimportantNoteCreateView(RegistrationAcceptedMixin, CreateView):
     extra_context = {
         "the_site_name": THE_SITE_NAME,
         "page_title": "Create Note",
+        "mode": "create",
     }
     success_url = reverse_lazy("unimportant_notes:note_list")
 
@@ -135,7 +136,21 @@ class UnimportantNoteUpdateView(
 
     model = UnimportantNote
     form_class = UnimportantNoteForm
+    extra_context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "Update Note",
+        "mode": "update",
+    }
     success_url = reverse_lazy("unimportant_notes:note_list")
+
+    def get_context_data(self, **kwargs):
+        """
+        Override the `get_context_data` method to add the `page_title`, the object
+        title, to the context.
+        """
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = f"Editing: {self.object.title}"
+        return context
 
     def test_func(self) -> bool:
         """
@@ -154,7 +169,7 @@ class UnimportantNoteListView(RegistrationAcceptedMixin, FormMixin, ListView):
     form_class = UnimportantNoteForm
     extra_context = {
         "the_site_name": THE_SITE_NAME,
-        "page_title": "Notes",
+        "page_title": "Unimportant Notes",
     }
 
     def get_queryset(self) -> QuerySet[Any]:
