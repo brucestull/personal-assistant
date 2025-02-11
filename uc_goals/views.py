@@ -7,18 +7,21 @@ from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 from uc_goals.models import Goal
 
+from .forms import GoalForm
+
 
 class GoalCreateView(RegistrationAcceptedMixin, CreateView):
     model = Goal
-    fields = [
-        "parent",
-        "name",
-        "is_ultimate_concern",
-        "description",
-        "due_date",
-        "completed",
-        "is_archived",
-    ]
+    form_class = GoalForm
+    # fields = [
+    #     "parent",
+    #     "name",
+    #     "is_ultimate_concern",
+    #     "description",
+    #     "due_date",
+    #     "completed",
+    #     "is_archived",
+    # ]
     # template_name = "uc_goals/goal_form.html"
     # success_url = reverse_lazy("uc_goals:uc_list")
 
