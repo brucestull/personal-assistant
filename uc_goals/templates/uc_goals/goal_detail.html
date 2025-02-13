@@ -18,4 +18,6 @@
     {% endif %}
     <p>{{ goal.description | linebreaks }}</p>
     <a href="{% url 'uc_goals:goal_update' goal.id %}">Edit</a>
+    |
+    <a href="{% url 'uc_goals:goal_delete' goal.id %}">Delete</a>
 {% endblock content %}

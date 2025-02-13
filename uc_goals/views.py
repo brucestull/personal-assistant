@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, DeleteView
 from django.views.generic.edit import CreateView, UpdateView
 
 from base.decorators import registration_accepted_required
@@ -111,6 +112,12 @@ class GoalUpdateView(RegistrationAcceptedMixin, UpdateView):
         context["the_site_name"] = THE_SITE_NAME
         context["mode"] = "update"
         return context
+
+
+class GoalDeleteView(RegistrationAcceptedMixin, DeleteView):
+    model = Goal
+    # template_name = "uc_goals/goal_confirm_delete.html"
+    success_url = reverse_lazy("uc_goals:uc_list")
 
 
 @registration_accepted_required
