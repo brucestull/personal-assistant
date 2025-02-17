@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>My Journal</title>
+        <link rel="stylesheet" href="{% static 'css/journal.css' %}">
+    </head>
+
+    <body>
+        <h1><a href="{% url "journal:entry_list" %}">Dear, Journal …</a></h1>
+
+        {% block content %}{% endblock content %}
+
+    </body>
+
+</html>

@@ -47,4 +47,5 @@ urlpatterns = [
     path("goals/", include("goals.urls")),
     path("pi-tracker/", include("pi_tracker.urls")),
     path("uc-goals/", include("uc_goals.urls")),
+    path("journal/", include("journal.urls")),
 ]
