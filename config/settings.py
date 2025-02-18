@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "value_centric.apps.ValueCentricConfig",
     "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
+    "journal.apps.JournalConfig",
 ]
 
 MIDDLEWARE = [
@@ -209,6 +210,9 @@ else:
     }
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
     SECRET_KEY = "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l"  # noqa E501
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
 
 # To create a new `SECRET_KEY`:
 """
