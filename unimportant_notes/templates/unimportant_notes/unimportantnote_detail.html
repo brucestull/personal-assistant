@@ -20,6 +20,14 @@
     <p>
         {{ unimportantnote.content | linebreaks }}
     </p>
+    {% if unimportantnote.main_image %}
+        <img
+            style="width: 1000px; height: auto;"
+            {% comment %} style="width: auto; height: auto;" {% endcomment %}
+            src="{{ unimportantnote.main_image.url }}"
+            >
+        <br>
+    {% endif %}
     <p>
         {% if unimportantnote.url %}
             <a href={{ unimportantnote.url }} target="_blank" rel="noopener" >{{ unimportantnote.url }}</a>
