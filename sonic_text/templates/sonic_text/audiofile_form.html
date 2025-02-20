@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+
+    <h2>{% if object %}Edit{% else %}Upload{% endif %} Audio File</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'sonic_text:audiofile_list' %}">Back to list</a>
+
+    {% comment %} {% for audiofile in object_list %}
+
+        <h2>{{ audiofile.name }}</h2>
+
+        <a href="{% url 'sonic_text:audiofile_detail' audiofile.id %}">View Audio File Details</a>
+        |
+        <a href="{% url 'sonic_text:audiofile_update' audiofile.id %}">Edit Audio File</a>
+        <br>
+
+        <p class="card-text">
+            {% for tag in audiofile.tag.all %}
+                <a href="{% url 'sonic_text:tag_detail' tag.id %}">
+                    {{ tag.name }}
+                    <i class="fas fa-info-circle"></i>
+                </a>
+                {% if not forloop.last %} | {% endif %}
+            {% endfor %}
+        </p>
+
+        {% if audiofile.main_image %}
+            <img
+                style="width: 400px; height: auto;"
+                src="{{ audiofile.main_image.url }}"
+                >
+            <br>
+        {% endif %}
+
+        <p>{{ audiofile.description|linebreaks|truncatechars:300 }}</p>
+        {% if audiofile.file %}
+            <a href="{{ audiofile.file.url }}" target="_blank" rel="noopener" download>{{ audiofile.file.url }}</a>
+        {% endif %}
+        <p>- {{ audiofile.author }} on {{ audiofile.updated }}</p>
+        {% if not forloop.last %}
+            <br>
+        {% endif %}
+    {% endfor %} {% endcomment %}
+
+{% endblock content %}

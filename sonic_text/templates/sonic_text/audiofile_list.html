@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>Audio Files</h1>
+    <a href="{% url 'sonic_text:audiofile_create' %}">Upload New Audio File</a>
+    {% for object in object_list %}
+        <h2>{{ object.name }}</h2>
+        <p>{{ object.description }}</p>
+        <a href="{% url 'sonic_text:audiofile_detail' object.id %}">View Audio File Details</a>
+        |
+        <a href="{{ object.file.url }}" target="_blank" download>Download</a>
+    {% endfor %}
+
+{% endblock content %}

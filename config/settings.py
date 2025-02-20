@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
     "journal.apps.JournalConfig",
+    "sonic_text.apps.SonicTextConfig",
 ]
 
 MIDDLEWARE = [
