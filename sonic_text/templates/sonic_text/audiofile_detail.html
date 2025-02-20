@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+
+<h2>{{ object.name }}</h2>
+<p>{{ object.description }}</p>
+<p>File Type: {{ object.file_type }}</p>
+<audio controls>
+  <source src="{{ object.file.url }}" type="audio/{{ object.file_type }}">
+  Your browser does not support the audio element.
+</audio>
+<br>
+<a href="{% url 'sonic_text:audiofile_update' object.pk %}">Edit</a>
+|
+<a href="{% url 'sonic_text:audiofile_delete' object.pk %}">Delete</a>
+|
+<a href="{% url 'sonic_text:audiofile_list' %}">Back to Audiophiles</a>
+
+
+{% endblock content %}
