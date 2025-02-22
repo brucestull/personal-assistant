@@ -10,6 +10,7 @@
 
 <h2>{{ object.name }}</h2>
 <p>{{ object.description }}</p>
+<p>File Name: {{ object.file.name }}</p>
 <p>File Type: {{ object.file_type }}</p>
 <audio controls>
   <source src="{{ object.file.url }}" type="audio/{{ object.file_type }}">
