@@ -16,6 +16,11 @@
         {% if goal.is_ultimate_concern %}(Ultimate Concern){% endif %}
         {% if not goal.parent and not goal.is_ultimate_concern %}(Orphan Goal){% endif %}
     </h1>
+    <p>
+        <a href="{% url 'uc_goals:goal_create' %}?parent={{ object.pk }}">
+            Add Sub-Goal
+        </a>
+    </p>
     {% include "uc_goals/uc_links.html" %}
     {% if goal.parent %}
         <p>Parent: {{ goal.parent }}</p>

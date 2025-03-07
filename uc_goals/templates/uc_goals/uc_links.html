@@ -4,4 +4,10 @@
     <a href={% url 'uc_goals:orphan_list' %}>Orphan Goals</a>
     |
     <a href={% url 'uc_goals:goal_create' %}>Goal Create</a>
+    {% if object %}
+    |
+    <a href="{% url 'uc_goals:goal_create' %}?parent={{ object.pk }}">
+        Add Sub-Goal
+    </a>
+    {% endif %}
 </p>
