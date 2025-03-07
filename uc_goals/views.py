@@ -27,15 +27,57 @@ class GoalCreateView(RegistrationAcceptedMixin, CreateView):
     # success_url = reverse_lazy("uc_goals:uc_list")
 
     def form_valid(self, form):
+        """
+        Override the form_valid method to add extra functionality to the form.
+        This method is called when the form is valid and the user has submitted the
+        form. The form is then saved to the database and the user is redirected to
+        the success_url.
+
+        We are overriding this method to add the user to the form instance. This is
+        done to associate the goal with the user. The user is then saved to the
+        database and the user is redirected to the success_url.
+        """
         form.instance.user = self.request.user  # Assign the logged-in user
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
+        """
+        Override the get_context_data method to add extra context to the template.
+        This method is called by the CreateView class to get the context data for
+        the template. The context data is a dictionary of variables that will be
+        passed to the template.
+        The context data is used to render the template. The context data is
+        passed to the template as a dictionary. The template can then access the
+        context data using the {{ variable }} syntax.
+        This method is called by the CreateView class to get the context data for
+        the template. The context data is a dictionary of variables that will be
+        passed to the template.
+        We are adding the page title and the site name to the context data. The page
+        title is used to display the title of the page. The site name is used to display
+        the name of the site.
+        We are also adding the mode to the context data. The mode is used to change the
+        text of the submit button. The mode is set to "create" by default. If the mode
+        is set to "update", the submit button will display "Update" instead of "Create".
+        """
         context = super().get_context_data(**kwargs)
         context["page_title"] = "Create a Goal"
         context["the_site_name"] = THE_SITE_NAME
         context["mode"] = "create"
         return context
+
+    def get_initial(self):
+        """
+        Get the initial data for the form. This is used to pre-populate the form
+        fields with data from the request. This is useful for pre-populating the
+        form with data from the URL query string.
+        For example, if the URL is /goals/create/?parent=1, then the parent field
+        will be pre-populated with the value 1.
+        """
+        initial = super().get_initial()
+        parent_id = self.request.GET.get("parent")
+        if parent_id:
+            initial["parent"] = parent_id
+        return initial
 
 
 class GoalDetailView(RegistrationAcceptedMixin, DetailView):
