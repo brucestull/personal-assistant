@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Wisdom and Knowledge",
+        "description": "Cognitive strengths that involve the acquisition and use of knowledge. These strengths help individuals learn, think creatively, and make sound decisions."
+    },
+    {
+        "name": "Courage",
+        "description": "Emotional strengths that involve the exercise of will to accomplish goals in the face of opposition, external or internal. These strengths allow people to face adversity with bravery and integrity."
+    },
+    {
+        "name": "Humanity",
+        "description": "Interpersonal strengths that involve tending to and befriending others. These strengths support compassion, empathy, and forming strong social bonds."
+    },
+    {
+        "name": "Justice",
+        "description": "Civic strengths that support healthy and effective community life. These strengths help individuals work well in groups and promote fairness and leadership."
+    },
+    {
+        "name": "Temperance",
+        "description": "Strengths that protect against excess. These strengths help people regulate emotions, avoid overindulgence, and behave with humility and control."
+    },
+    {
+        "name": "Transcendence",
+        "description": "Strengths that connect us to the larger universe and provide meaning. These strengths foster a sense of purpose, gratitude, and appreciation for life."
+    }
+]
