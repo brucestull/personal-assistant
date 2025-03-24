@@ -1,0 +1,98 @@
+[
+    {
+        "name": "Creativity",
+        "description": "Thinking of novel and productive ways to conceptualize and do things; includes artistic achievement but is not limited to it."
+    },
+    {
+        "name": "Curiosity",
+        "description": "Taking an interest in ongoing experience for its own sake; finding subjects and topics fascinating; exploring and discovering."
+    },
+    {
+        "name": "Judgment",
+        "description": "Thinking things through and examining them from all sides; not jumping to conclusions; being able to change one’s mind in light of evidence; weighing all evidence fairly."
+    },
+    {
+        "name": "Love of Learning",
+        "description": "Mastering new skills, topics, and bodies of knowledge, whether on one’s own or formally; related to the strength of curiosity but goes beyond it to describe the tendency to add systematically to what one knows."
+    },
+    {
+        "name": "Perspective",
+        "description": "Being able to provide wise counsel to others; having ways of looking at the world that make sense to oneself and to other people."
+    },
+    {
+        "name": "Bravery",
+        "description": "Not shrinking from threat, challenge, difficulty, or pain; speaking up for what is right even if there’s opposition; acting on convictions even if unpopular."
+    },
+    {
+        "name": "Perseverance",
+        "description": "Finishing what one starts; persisting in a course of action despite obstacles; taking pleasure in completing tasks."
+    },
+    {
+        "name": "Honesty",
+        "description": "Speaking the truth but more broadly presenting oneself in a genuine way and acting in a sincere way; being without pretense; taking responsibility for one’s feelings and actions."
+    },
+    {
+        "name": "Zest",
+        "description": "Approaching life with excitement and energy; not doing things halfway or halfheartedly; living life as an adventure; feeling alive and activated."
+    },
+    {
+        "name": "Love",
+        "description": "Valuing close relations with others, in particular those in which sharing and caring are reciprocated; being close to people."
+    },
+    {
+        "name": "Kindness",
+        "description": "Doing favors and good deeds for others; helping them; taking care of them."
+    },
+    {
+        "name": "Social Intelligence",
+        "description": "Being aware of the motives and feelings of other people and oneself; knowing what to do to fit into different social situations; knowing what makes other people tick."
+    },
+    {
+        "name": "Teamwork",
+        "description": "Working well as a member of a group or team; being loyal to the group; doing one’s share."
+    },
+    {
+        "name": "Fairness",
+        "description": "Treating all people the same according to notions of fairness and justice; not letting personal feelings bias decisions about others; giving everyone a fair chance."
+    },
+    {
+        "name": "Leadership",
+        "description": "Encouraging a group of which one is a member to get things done and at the same time maintain good relations within the group; organizing group activities and seeing that they happen."
+    },
+    {
+        "name": "Forgiveness",
+        "description": "Forgiving those who have done wrong; accepting others’ shortcomings; giving people a second chance; not being vengeful."
+    },
+    {
+        "name": "Humility",
+        "description": "Letting one’s accomplishments speak for themselves; not seeking the spotlight; not regarding oneself as more special than one is."
+    },
+    {
+        "name": "Prudence",
+        "description": "Being careful about one’s choices; not taking undue risks; not saying or doing things that might later be regretted."
+    },
+    {
+        "name": "Self-Regulation",
+        "description": "Regulating what one feels and does; being disciplined; controlling one’s appetites and emotions."
+    },
+    {
+        "name": "Appreciation of Beauty & Excellence",
+        "description": "Noticing and appreciating beauty, excellence, and/or skilled performance in various domains of life, from nature to art to mathematics to science to everyday experience."
+    },
+    {
+        "name": "Gratitude",
+        "description": "Being aware of and thankful for the good things that happen; taking time to express thanks."
+    },
+    {
+        "name": "Hope",
+        "description": "Expecting the best in the future and working to achieve it; believing that a good future is something that can be brought about."
+    },
+    {
+        "name": "Humor",
+        "description": "Liking to laugh and tease; bringing smiles to other people; seeing the light side; making (not necessarily telling) jokes."
+    },
+    {
+        "name": "Spirituality",
+        "description": "Having coherent beliefs about the higher purpose and meaning of life; knowing where one fits within the larger universe; having beliefs about the meaning of life that shape conduct and provide comfort."
+    }
+]
