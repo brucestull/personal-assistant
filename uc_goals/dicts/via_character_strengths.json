@@ -1,0 +1,122 @@
+[
+    {
+        "virtue": "Wisdom and Knowledge",
+        "title": "Creativity",
+        "description": "Thinking of novel and productive ways to do things; includes artistic achievement but is not limited to it."
+    },
+    {
+        "virtue": "Wisdom and Knowledge",
+        "title": "Curiosity and Interest in the World",
+        "description": "Taking an interest in ongoing experience for its own sake; finding subjects and topics fascinating; exploring and discovering."
+    },
+    {
+        "virtue": "Wisdom and Knowledge",
+        "title": "Judgment (Critical Thinking and Open-Mindedness)",
+        "description": "Thinking things through and examining them from all sides; not jumping to conclusions; being open to new evidence and reasoning."
+    },
+    {
+        "virtue": "Wisdom and Knowledge",
+        "title": "Love of Learning",
+        "description": "Mastering new skills and topics; adding systematically to what one knows; motivated by a deep passion for knowledge."
+    },
+    {
+        "virtue": "Wisdom and Knowledge",
+        "title": "Perspective (Wisdom)",
+        "description": "Having a broader view of the world; providing wise counsel to others; understanding life in ways that make sense to self and others."
+    },
+    {
+        "virtue": "Courage",
+        "title": "Bravery",
+        "description": "Not shrinking from threat, challenge, difficulty, or pain; speaking up for what is right; acting on convictions even if unpopular."
+    },
+    {
+        "virtue": "Courage",
+        "title": "Perseverance",
+        "description": "Finishing what one starts; persisting in a course of action despite obstacles; taking pleasure in completing tasks."
+    },
+    {
+        "virtue": "Courage",
+        "title": "Honesty",
+        "description": "Speaking the truth and acting in a sincere way; presenting oneself genuinely and taking responsibility for one's feelings and actions."
+    },
+    {
+        "virtue": "Courage",
+        "title": "Zest",
+        "description": "Approaching life with excitement and energy; not doing things halfway; feeling alive and activated."
+    },
+    {
+        "virtue": "Humanity",
+        "title": "Love",
+        "description": "Valuing close relationships; being warm and genuine; caring deeply for others and receiving care in return."
+    },
+    {
+        "virtue": "Humanity",
+        "title": "Kindness",
+        "description": "Doing favors and good deeds for others; helping and taking care of people without expecting rewards."
+    },
+    {
+        "virtue": "Humanity",
+        "title": "Social Intelligence",
+        "description": "Being aware of the motives and feelings of self and others; knowing how to navigate social situations effectively."
+    },
+    {
+        "virtue": "Justice",
+        "title": "Teamwork",
+        "description": "Working well as part of a group; being loyal to the team; doing one’s share and promoting group cohesion."
+    },
+    {
+        "virtue": "Justice",
+        "title": "Fairness",
+        "description": "Treating people equally; giving everyone a fair chance; being guided by principles of justice and equity."
+    },
+    {
+        "virtue": "Justice",
+        "title": "Leadership",
+        "description": "Organizing and encouraging a group to get things done while maintaining good relations among members."
+    },
+    {
+        "virtue": "Temperance",
+        "title": "Forgiveness",
+        "description": "Forgiving those who have wronged you; giving people second chances; letting go of anger and resentment."
+    },
+    {
+        "virtue": "Temperance",
+        "title": "Humility",
+        "description": "Letting accomplishments speak for themselves; not regarding oneself as more special than others."
+    },
+    {
+        "virtue": "Temperance",
+        "title": "Prudence",
+        "description": "Being careful about one’s choices; not taking undue risks; considering the long-term consequences of actions."
+    },
+    {
+        "virtue": "Temperance",
+        "title": "Self-Regulation",
+        "description": "Regulating what one feels and does; being disciplined; controlling appetites and emotions."
+    },
+    {
+        "virtue": "Transcendence",
+        "title": "Appreciation of Beauty and Excellence",
+        "description": "Noticing and appreciating excellence, beauty, and skilled performance in various domains of life."
+    },
+    {
+        "virtue": "Transcendence",
+        "title": "Gratitude",
+        "description": "Being aware of and thankful for the good things that happen; expressing appreciation and returning kindness."
+    },
+    {
+        "virtue": "Transcendence",
+        "title": "Hope",
+        "description": "Expecting the best in the future and working to achieve it; believing that a good future is possible."
+    },
+    {
+        "virtue": "Transcendence",
+        "title": "Humor",
+        "description": "Liking to laugh and tease; bringing smiles to others; seeing the light side; making and enjoying jokes."
+    },
+    {
+        "virtue": "Transcendence",
+        "title": "Spirituality",
+        "description": "Having coherent beliefs about the higher purpose and meaning of life; understanding where one fits in the larger scheme."
+    }
+]

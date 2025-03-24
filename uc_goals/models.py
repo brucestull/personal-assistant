@@ -38,3 +38,26 @@ class Goal(models.Model):
     class Meta:
         verbose_name = "Goal"
         verbose_name_plural = "Goals"
+
+
+class Virtue(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+
+class VIACharacterStrength(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    virtue = models.ForeignKey(
+        Virtue, on_delete=models.CASCADE, related_name="character_strengths"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "VIA Character Strength"
+        verbose_name_plural = "VIA Character Strengths"
