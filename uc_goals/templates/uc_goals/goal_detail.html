@@ -8,6 +8,7 @@
 
 {% block content %}
     <h1>
+        {% comment %} Strike through if goal is completed {% endcomment %}
         {% if goal.completed %}
           <s>{{ goal.name }}</s>
         {% else %}
@@ -26,6 +27,12 @@
         <p>Parent: {{ goal.parent }}</p>
     {% endif %}
 
+    <h2>Character Strengths</h2>
+    <ul>
+      {% for strength in goal.character_strengths.all %}
+        <li>{{ strength }}</li>
+      {% endfor %}
+    </ul>
     <p>{{ goal.description | linebreaks }}</p>
 
     {% if goal.sub_goals.exists %}
