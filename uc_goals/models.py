@@ -11,11 +11,8 @@ class Goal(models.Model):
         related_name="uc_goals",
         help_text="The user that set the goal.",
     )
-    name = models.CharField(max_length=255)
     is_ultimate_concern = models.BooleanField(default=False)
-    description = models.TextField(blank=True, null=True)
-    due_date = models.DateField(blank=True, null=True)
-    completed = models.BooleanField(default=False)
+    name = models.CharField(max_length=255)
     parent = models.ForeignKey(
         "self",
         null=True,
@@ -23,6 +20,15 @@ class Goal(models.Model):
         on_delete=models.CASCADE,
         related_name="sub_goals",
     )
+    description = models.TextField(blank=True, null=True)
+    character_strengths = models.ManyToManyField(
+        "VIACharacterStrength",
+        blank=True,
+        related_name="goals",
+        help_text="Select character strengths associated with this goal.",
+    )
+    due_date = models.DateField(blank=True, null=True)
+    completed = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)
 
     def get_absolute_url(self):

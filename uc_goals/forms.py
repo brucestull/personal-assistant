@@ -4,7 +4,6 @@ from .models import Goal
 
 
 class GoalForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         """
         Override the __init__ method to filter the queryset for the parent field. This
@@ -13,6 +12,10 @@ class GoalForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance.pk:  # If updating an existing instance
             self.fields["parent"].queryset = Goal.objects.exclude(pk=self.instance.pk)
+            # Set initial values for the M2M field from related objects
+            self.fields["character_strengths"].initial = (
+                self.instance.character_strengths.all()
+            )
 
     class Meta:
         model = Goal
@@ -24,6 +27,7 @@ class GoalForm(forms.ModelForm):
             "due_date",
             "completed",
             "is_archived",
+            "character_strengths",  # Include the M2M field in the form
         ]
         labels = {
             "parent": "Parent",
@@ -33,6 +37,7 @@ class GoalForm(forms.ModelForm):
             "due_date": "Due Date",
             "completed": "Completed",
             "is_archived": "Is Archived",
+            "character_strengths": "Character Strengths",
         }
         widgets = {
             "parent": forms.Select(attrs={"class": "form-control"}),
@@ -49,6 +54,9 @@ class GoalForm(forms.ModelForm):
             "due_date": forms.DateInput(attrs={"class": "form-control"}),
             "completed": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "is_archived": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+            "character_strengths": forms.SelectMultiple(
+                attrs={"class": "form-control"}
+            ),
         }
         help_texts = {
             "parent": "The parent goal of this goal.",

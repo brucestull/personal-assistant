@@ -5,10 +5,34 @@ from .models import Goal, Virtue, VIACharacterStrength
 
 @admin.register(Goal)
 class GoalAdmin(admin.ModelAdmin):
-    list_display = ("name", "parent", "is_ultimate_concern", "user", "completed")
+    list_display = (
+        "name",
+        "parent",
+        "display_character_strengths",  # Custom method to display M2M field
+        "user",
+        "is_ultimate_concern",
+        "completed",
+    )
+
+    def display_character_strengths(self, obj):
+        return ", ".join([str(cs) for cs in obj.character_strengths.all()])
+
+    display_character_strengths.short_description = "Character Strengths"
+
     search_fields = ("name",)
     list_filter = ("parent",)
-    ordering = ("name",)
+    ordering = (
+        "user",
+        "parent",
+        "name",
+    )
+
+
+class VIACharacterStrengthInline(admin.TabularInline):
+    model = VIACharacterStrength
+    extra = 1
+    fields = ("name", "description")
+    show_change_link = True
 
 
 @admin.register(Virtue)
@@ -16,6 +40,7 @@ class VirtueAdmin(admin.ModelAdmin):
     list_display = ("name", "short_description")
     search_fields = ("name", "description")
     ordering = ("name",)
+    inlines = [VIACharacterStrengthInline]
 
     def short_description(self, obj):
         if len(obj.description) > 45:
