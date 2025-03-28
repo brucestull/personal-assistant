@@ -12,18 +12,19 @@
 <ul>
   {% for goal in goals %}
     <li>
-      <a href="{% url 'uc_goals:goal_detail' goal.id %}">
-        {% if goal.completed %}
-          <s>{{ goal.name }}</s>
-        {% else %}
-          {{ goal.name }}
-        {% endif %}
-      </a>
-      |
+      <h2>
+        <a href="{% url 'uc_goals:goal_detail' goal.id %}">
+          {% if goal.completed %}
+            <s>{{ goal.name }}</s>
+          {% else %}
+            {{ goal.name }}
+          {% endif %}
+        </a>
+      </h2>
       <a href="{% url 'uc_goals:goal_create' %}?parent={{ goal.pk }}">
         Add Sub-Goal
       </a>
-      <h2>Character Strengths</h2>
+      <h3>Character Strengths</h3>
       <ul>
         {% for strength in goal.character_strengths.all %}
           <li>{{ strength }}</li>

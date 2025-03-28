@@ -24,7 +24,7 @@
     </p>
     {% include "uc_goals/uc_links.html" %}
     {% if goal.parent %}
-        <p>Parent: {{ goal.parent }}</p>
+        <p>Parent: <a href="{% url 'uc_goals:goal_detail' goal.parent.id %}">{{ goal.parent }}</p>
     {% endif %}
 
     <h2>Character Strengths</h2>
