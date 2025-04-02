@@ -24,16 +24,18 @@
       <a href="{% url 'uc_goals:goal_create' %}?parent={{ goal.pk }}">
         Add Sub-Goal
       </a>
+      {% comment %} {% if goal.character_strengths.all %}
       <h3>Character Strengths</h3>
       <ul>
         {% for strength in goal.character_strengths.all %}
           <li>{{ strength }}</li>
         {% endfor %}
       </ul>
-      <p>{{ goal.description | linebreaks }}</p>
-      {% if goal.sub_goals.exists %}
+      {% endif %} {% endcomment %}
+      {% comment %} <p>{{ goal.description | linebreaks }}</p> {% endcomment %}
+      {% comment %} {% if goal.sub_goals.exists %}
         {% include "uc_goals/goal_sub.html" with sub_goals=goal.sub_goals.all %}
-      {% endif %}
+      {% endif %} {% endcomment %}
     </li>
   {% endfor %}
 </ul>
