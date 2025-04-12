@@ -17,10 +17,6 @@ from dotenv import load_dotenv
 
 from config.utils import get_database_config_variables
 
-# Loads variables from .env
-load_dotenv()
-# Loads variables from .env.email, and possibly overwrites variables from .env
-load_dotenv(".env.email")
 
 # Get the value of the ENVIRONMENT environment variable, or use a default
 # value of "development" if it's not set
@@ -70,6 +66,8 @@ INSTALLED_APPS = [
     "unimportant_notes.apps.UnimportantNotesConfig",
     "journal.apps.JournalConfig",
     "sonic_text.apps.SonicTextConfig",
+    "django_celery_beat",
+    "boosts.apps.BoostsConfig",
 ]
 
 MIDDLEWARE = [
@@ -101,17 +99,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
-
-########################################################################
-# Email settings:
-# https://docs.djangoproject.com/en/4.0/topics/email/
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_USE_TLS = True
-########################################################################
 
 
 # Password validation
@@ -181,14 +168,25 @@ AWS_MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 ########################################################################
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+########################################################################
+# Email settings:
+# https://docs.djangoproject.com/en/4.0/topics/email/
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
+########################################################################
+
 
 if ENVIRONMENT == "production":
     MIDDLEWARE = MIDDLEWARE + ["whitenoise.middleware.WhiteNoiseMiddleware"]
     database_config_variables = get_database_config_variables(
         os.environ.get("DATABASE_URL")
     )
+
+    # Database
+    # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -203,17 +201,51 @@ if ENVIRONMENT == "production":
     SECRET_KEY = os.environ.get("SECRET_KEY")
     STATIC_ROOT = BASE_DIR / "staticfiles"
 else:
+    # Loads variables from .env
+    load_dotenv()
+    # Loads variables from .env.email, and possibly overwrites variables from .env
+    # load_dotenv(".env.email")
+    # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    SECRET_KEY = os.environ.get(
+        "SECRET_KEY",
+        "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l",
+    )
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-    SECRET_KEY = "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l"  # noqa E501
     STATICFILES_DIRS = [
         BASE_DIR / "static",
     ]
+
+# Celery settings
+CELERY_BROKER_URL = os.environ.get("REDISCLOUD_URL", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("REDISCLOUD_URL", "redis://localhost:6379/0")
+CELERY_TASK_ALWAYS_EAGER = True
+
+# Logging settings:
+# This allows Celery to use the same logger as Django. Currently, the logger is using
+# the console handler.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "celery": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}
 
 # To create a new `SECRET_KEY`:
 """
