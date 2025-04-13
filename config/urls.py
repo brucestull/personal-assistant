@@ -49,4 +49,5 @@ urlpatterns = [
     path("uc-goals/", include("uc_goals.urls")),
     path("journal/", include("journal.urls")),
     path("sonic-text/", include("sonic_text.urls")),
+    path("care-craft/", include("care_craft.urls")),
 ]
