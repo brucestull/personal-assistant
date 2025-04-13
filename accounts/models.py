@@ -14,10 +14,13 @@ class CustomUser(AbstractUser):
     # `registration_accepted` is used to control access to the site.
     registration_accepted = models.BooleanField(
         default=False,
-        help_text=(
-            "Designates whether this user's registration has "
-            "been accepted."
-        )
+        help_text=("Designates whether this user's registration has " "been accepted."),
+    )
+    beastie = models.ForeignKey(
+        "accounts.CustomUser",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
     )
 
     def get_blood_pressure_range(self):

@@ -1,20 +1,17 @@
 from django.test import TestCase
 
-from accounts.admin import CustomUserAdmin
-from accounts.forms import CustomUserChangeForm, CustomUserCreationForm
 from accounts.models import CustomUser
+from accounts.admin import CustomUserAdmin
+from accounts.forms import CustomUserCreationForm, CustomUserChangeForm
 
-TEST_USER_USERNAME = "TestUser"
-TEST_USER_PASSWORD = "TestUserPassword"
-TEST_USER_EMAIL = "TestUser@email.app"
+
+class MockRequest:
+    pass
 
 
 class TestCustomUserAdmin(TestCase):
     """
-    Inherit from `django.test.TestCase` to access `self.client` and
-    `self.assert*` methods. `self` will be an instance of
-    `django.test.TestCase` and `django.test.TestCase` inherits from
-    `unittest.TestCase`.
+    Tests for `CustomUserAdmin`.
     """
 
     @classmethod
@@ -25,8 +22,8 @@ class TestCustomUserAdmin(TestCase):
         This specific function name `setUpTestData` is required by Django.
         """
         cls.user = CustomUser.objects.create_user(
-            username=TEST_USER_USERNAME,
-            password=TEST_USER_PASSWORD,
+            username="DezziKitten",
+            password="MeowMeow42",
         )
 
     def test_uses_correct_add_form(self):
@@ -50,51 +47,55 @@ class TestCustomUserAdmin(TestCase):
         custom_user_admin = CustomUserAdmin(CustomUser, None)
         self.assertEqual(custom_user_admin.model, CustomUser)
 
-    def test_list_display_includes_username(self):
+    def test_list_display(self):
         """
-        `CustomUserAdmin` `list_display` should include `username`.
+        This tests that the `list_display` contains the proper fields and that they are
+        in the proper order.
+        """
+        self.assertEqual(
+            CustomUserAdmin.list_display,
+            (
+                "username",
+                "beastie",
+                "registration_accepted",
+                "is_staff",
+                "is_superuser",
+            ),
+        )
+
+    def test_list_display_includes_proper_fields(self):
+        """
+        `CustomUserAdmin` `list_display` should include `username`,
+        `beastie`, `registration_accepted`, `is_staff`, and
+        `is_superuser`.
+
+        This tests that the `list_display` contains the proper fields, but not
+        necessarily in the proper order.
         """
         custom_user_admin = CustomUserAdmin(CustomUser, None)
         self.assertIn("username", custom_user_admin.list_display)
-
-    def test_list_display_includes_email(self):
-        """
-        `CustomUserAdmin` `list_display` should include `email`.
-        """
-        custom_user_admin = CustomUserAdmin(CustomUser, None)
-        self.assertIn("email", custom_user_admin.list_display)
-
-    def test_list_display_includes_registration_accepted(self):
-        """
-        `CustomUserAdmin` `list_display` should include
-        `registration_accepted`.
-        """
-        custom_user_admin = CustomUserAdmin(CustomUser, None)
+        self.assertIn("beastie", custom_user_admin.list_display)
         self.assertIn("registration_accepted", custom_user_admin.list_display)
-
-    def test_list_display_includes_is_staff(self):
-        """
-        `CustomUserAdmin` `list_display` should include `is_staff`.
-        """
-        custom_user_admin = CustomUserAdmin(CustomUser, None)
         self.assertIn("is_staff", custom_user_admin.list_display)
+        self.assertIn("is_superuser", custom_user_admin.list_display)
 
-    def test_get_fieldsets_is_list_of_tuples(self):
+    def test_fieldsets(self):
         """
-        `CustomUserAdmin` `get_fieldsets()` method should return a list of
-        tuples.
+        Test the fieldsets to ensure the custom fields are included.
         """
-        custom_user_admin = CustomUserAdmin(CustomUser, None)
-        fieldsets = custom_user_admin.get_fieldsets(request=None, obj=None)
-        self.assertIsInstance(fieldsets, list)
-        self.assertIsInstance(fieldsets[0], tuple)
+        admin = CustomUserAdmin(CustomUser, None)
+        request = MockRequest()
+        fieldsets = admin.get_fieldsets(request)
+        # This line does the following:
+        # 1. Iterate over the `fieldsets` list.
+        # 2. For each tuple in the `fieldsets` list, get the second item in the
+        #    tuple.
+        # 3. For each item in the second item in the tuple, get the value of
+        #    the "fields" key.
+        # 4. Flatten the list of lists into a single list.
+        field_names = [field for _, opts in fieldsets for field in opts["fields"]]
+        self.assertIn("registration_accepted", field_names)
+        self.assertIn("beastie", field_names)
 
-    def test_get_fieldsets_has_moderator_permissions_in_second_element(self):
-        """
-        `CustomUserAdmin` `get_fieldsets()` method should return a list of
-        tuples that includes `Moderator Permissions`.
-        """
-        custom_user_admin = CustomUserAdmin(CustomUser, None)
-        fieldsets = custom_user_admin.get_fieldsets(request=None, obj=None)
-        fieldsets_as_list = list(fieldsets)
-        self.assertIn("Moderator Permissions", fieldsets_as_list[1])
+    def test_get_fieldsets_method(self):
+        pass

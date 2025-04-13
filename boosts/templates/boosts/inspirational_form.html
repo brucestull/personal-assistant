@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ the_site_name }}
+-
+{{ page_title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Create a Inspirational</h1>
+    <form method='post'>
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.as_p }}
+        </div>
+        <button type="submit"
+                class="btn btn-primary">Create Inspirational</button>
+    </form>
+    <p>
+        <a href="{% url 'boosts:inspirational-list' %}">Back to Inspirational List</a>
+    </p>
+</div>
+{% endblock content %}
