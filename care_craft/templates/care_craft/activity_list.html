@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Activities
+{% endblock title%}
+
+{% block content %}
+  <h1>Activities</h1>
+  {% comment %} <a href="{% url 'activity_create' %}">+ Add New Activity</a> {% endcomment %}
+  <ul>
+    {% for activity in activities %}
+      <li>
+        <h2>{{ activity.description }}</h2>
+        {% comment %} <a href="{% url 'activity_detail' activity.pk %}">Edit</a> {% endcomment %}
+        <hr>
+      </li>
+    {% empty %}
+      <li>No activities available.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

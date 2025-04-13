@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "unimportant_notes.apps.UnimportantNotesConfig",
     "journal.apps.JournalConfig",
     "sonic_text.apps.SonicTextConfig",
+    "care_craft.apps.CareCraftConfig",
     "django_celery_beat",
     "boosts.apps.BoostsConfig",
 ]

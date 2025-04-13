@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Delete Activity - {{ activity.description }}
+{% endblock title %}
+
+{% block content %}
+  <h1>Delete Activity</h1>
+  <p>Are you sure you want to delete "{{ activity.description }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+  </form>
+  <a href="{% url 'activity_detail' activity.pk %}">Cancel</a>
+{% endblock %}
