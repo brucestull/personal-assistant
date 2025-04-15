@@ -13,7 +13,7 @@
         {% for device in devices %}
             <li>
                 <a href="{% url 'pi_tracker:pi_device_detail' device.pk %}">
-                    {{ device.name }} - {{ device.form_factor }}
+                    {{ device.name }} - {{ device.ram }} - {{ device.form_factor }}
                 </a>
                 (<a href="{% url 'pi_tracker:pi_device_update' device.pk %}">Edit</a>)
             </li>
