@@ -1,17 +1,20 @@
 {% extends "base.html" %}
 {% block title %}
-    {{ device.name }} - {{ the_site_name }}
+{{ device.name }} - {{ the_site_name }}
 {% endblock title %}
 
 {% block content %}
-    <h1>{{ device.name }}</h1>
-    {% comment %} "{{ device.id }}/update/" {% endcomment %}
-    <a href="{% url 'pi_tracker:pi_device_update' device.pk %}">Edit</a>
-    <p><strong>Description:</strong> {{ device.description }}</p>
-    <p><strong>Host Name:</strong> {{ device.host_name }}</p>
-    <p><strong>Operating System:</strong> {{ device.operating_system }}</p>
-    <p><strong>MAC Address:</strong> {{ device.mac_address }}</p>
-    <p><strong>RAM:</strong> {{ device.ram }}</p>
-    <p><strong>Form Factor:</strong> {{ device.get_form_factor_display }}</p>
-    <a href="{% url 'pi_tracker:pi_device_list' %}">Back to list</a>
+<h1>{{ device.name }}</h1>
+{% comment %} "{{ device.id }}/update/" {% endcomment %}
+<a href="{% url 'pi_tracker:pi_device_update' device.pk %}">Edit</a>
+<h2><strong>Description:</strong></h2>
+<p>
+    {{ device.description | linebreaks }}
+</p>
+<p><strong>Host Name:</strong> {{ device.host_name }}</p>
+<p><strong>Operating System:</strong> {{ device.operating_system }}</p>
+<p><strong>MAC Address:</strong> {{ device.mac_address }}</p>
+<p><strong>RAM:</strong> {{ device.ram }}</p>
+<p><strong>Form Factor:</strong> {{ device.get_form_factor_display }}</p>
+<a href="{% url 'pi_tracker:pi_device_list' %}">Back to list</a>
 {% endblock content %}
