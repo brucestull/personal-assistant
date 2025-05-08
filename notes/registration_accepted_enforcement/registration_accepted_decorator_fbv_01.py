@@ -49,7 +49,9 @@ def main():
             for filename in filenames:
                 if filename == "views.py":
                     full_path = os.path.join(dirpath, filename)
-                    with_decorator, without_decorator = analyze_view_functions(full_path)
+                    with_decorator, without_decorator = analyze_view_functions(
+                        full_path
+                    )  # noqa E501
 
                     if with_decorator or without_decorator:
                         rel_path = os.path.relpath(full_path, PROJECT_ROOT)

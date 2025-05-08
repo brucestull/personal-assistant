@@ -22,9 +22,15 @@ def has_decorator(func_node, decorator_name):
             return True
         elif isinstance(decorator, ast.Call):
             # Handles @decorator(...) form
-            if isinstance(decorator.func, ast.Name) and decorator.func.id == decorator_name:
+            if (
+                isinstance(decorator.func, ast.Name)
+                and decorator.func.id == decorator_name
+            ):  # noqa E501
                 return True
-            elif isinstance(decorator.func, ast.Attribute) and decorator.func.attr == decorator_name:
+            elif (
+                isinstance(decorator.func, ast.Attribute)
+                and decorator.func.attr == decorator_name
+            ):
                 return True
     return False
 
@@ -51,7 +57,9 @@ def main():
             for filename in filenames:
                 if filename == "views.py":
                     full_path = os.path.join(dirpath, filename)
-                    with_decorator, without_decorator = analyze_fbv_decorators(full_path)
+                    with_decorator, without_decorator = analyze_fbv_decorators(
+                        full_path
+                    )
 
                     if with_decorator or without_decorator:
                         rel_path = os.path.relpath(full_path, PROJECT_ROOT)

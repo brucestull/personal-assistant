@@ -1,0 +1,150 @@
+REGISTRATION ENFORCEMENT REPORT
+=================================
+
+File: boosts/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - InspirationalListView
+    - InspirationalCreateView
+  ❌ CBVs MISSING RegistrationAcceptedMixin:
+    - BretBeastieInspirationalListView
+  ❌ FBVs MISSING @registration_accepted_required:
+    - send_inspirational
+    - landing_view
+
+File: app_tracker/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - OrganizationalConceptListView
+  ❌ FBVs MISSING @registration_accepted_required:
+    - home
+
+File: activity_tracker/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - ActivityListView
+    - ActivityDetailView
+  ❌ FBVs MISSING @registration_accepted_required:
+    - json_response
+    - complete_an_activity_view
+
+File: project_manager/views.py
+  ❌ FBVs MISSING @registration_accepted_required:
+    - temporary_http_response
+
+File: pharma_tracker/views.py
+  ❌ CBVs MISSING RegistrationAcceptedMixin:
+    - PharmaceuticalListView
+
+File: care_craft/views.py
+  ✅ FBVs with @registration_accepted_required:
+    - activity_create
+    - activity_update
+    - activity_delete
+  ❌ FBVs MISSING @registration_accepted_required:
+    - activity_list
+    - activity_detail
+
+File: uc_goals/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - GoalCreateView
+    - GoalDetailView
+    - GoalUpdateView
+    - GoalDeleteView
+  ✅ FBVs with @registration_accepted_required:
+    - ultimate_concerns
+    - orphan_goals
+
+File: career_organizerator/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - PurposeListView
+    - SkillListView
+    - BehavioralInterviewQuestionListView
+    - QuestionResponseListView
+    - QuestionResponseCreateView
+    - QuestionResponseUpdateView
+    - BulletPointListView
+  ❌ FBVs MISSING @registration_accepted_required:
+    - home
+    - skill_move_up
+    - skill_move_down
+    - skill_delete
+
+File: vitals/views.py
+  ❌ CBVs MISSING RegistrationAcceptedMixin:
+    - BloodPressureListView
+    - BloodPressureCreateView
+  ❌ FBVs MISSING @registration_accepted_required:
+    - home
+
+File: opportunity_search/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - WorkSearchActivityListView
+
+File: cbt/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - CognitiveDistortionListView
+    - ThoughtListView
+    - ThoughtCreateView
+    - ThoughtDetailView
+  ❌ FBVs MISSING @registration_accepted_required:
+    - home
+
+File: value_centric/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - PersonalValueCreateView
+    - PersonalValueDetailView
+    - PersonalValueUpdateView
+    - PersonalValueDeleteView
+    - PersonalValueListView
+
+File: accounts/views.py
+  ❌ CBVs MISSING RegistrationAcceptedMixin:
+    - ForbiddenView
+    - CustomUserSignUpView
+    - CustomLoginView
+    - CustomUserUpdateView
+    - CustomUserDetailView
+
+File: goals/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - GoalListView
+
+File: sonic_text/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - AudioFileListView
+    - AudioFileDetailView
+    - AudioFileCreateView
+    - AudioFileUpdateView
+    - AudioFileDeleteView
+
+File: pi_tracker/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - PiDeviceCreateView
+    - PiDeviceUpdateView
+  ✅ FBVs with @registration_accepted_required:
+    - pi_device_list
+    - pi_device_detail
+
+File: unimportant_notes/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - NoteTagDetailView
+    - NoteTagListView
+    - UnimportantNoteCreateView
+    - UnimportantNoteDetailView
+    - UnimportantNoteUpdateView
+    - UnimportantNoteListView
+
+File: journal/views.py
+  ✅ CBVs with RegistrationAcceptedMixin:
+    - EntryCreateView
+    - EntryDetailView
+    - EntryUpdateView
+    - EntryDeleteView
+    - EntryListView
+
+File: self_enquiry/views.py
+  ❌ CBVs MISSING RegistrationAcceptedMixin:
+    - JournalCreateView
+    - JournalListView
+    - JournalDetailView
+    - JournalUpdateView
+    - JournalConfirmDeleteView
+    - JournalDeleteView
