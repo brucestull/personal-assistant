@@ -66,6 +66,7 @@ class JournalCreateViewTest(TestCase):
         cls.user = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
+            registration_accepted=True,
         )
 
     def test_journal_create_url_returns_200(self):
@@ -117,8 +118,7 @@ class JournalCreateViewTest(TestCase):
         response = self.client.get(JOURNAL_CREATE_URL)
         self.assertEqual(response.status_code, 200)
         self.assertTrue("page_title" in response.context)
-        self.assertEqual(
-            response.context["page_title"], JOURNAL_CREATE_PAGE_TITLE)
+        self.assertEqual(response.context["page_title"], JOURNAL_CREATE_PAGE_TITLE)
 
     def test_view_context_contains_the_site_name(self):
         """
@@ -183,8 +183,7 @@ class JournalCreateViewTest(TestCase):
                 "content": TEST_JOURNAL_CONTENT,
             },
         )
-        self.assertTrue(Journal.objects.filter(
-            title=TEST_JOURNAL_TITLE).exists())
+        self.assertTrue(Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists())
 
     def test_created_journal_is_owned_by_current_user(self):
         """
@@ -207,8 +206,8 @@ class JournalCreateViewTest(TestCase):
             Journal.objects.filter(title=TEST_JOURNAL_TITLE).exists(),
         )
         self.assertTrue(
-            Journal.objects.filter(
-                title=TEST_JOURNAL_TITLE).first().author == self.user,
+            Journal.objects.filter(title=TEST_JOURNAL_TITLE).first().author
+            == self.user,
         )
 
 
@@ -225,6 +224,7 @@ class JournalListViewTest(TestCase):
         cls.user = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
+            registration_accepted=True,
         )
         # Create 13 journals for pagination tests.
         number_of_journals = 13
@@ -326,8 +326,7 @@ class JournalListViewTest(TestCase):
         self.assertTrue("is_paginated" in response.context)
         self.assertTrue(response.context["is_paginated"])
         self.assertTrue(
-            len(response.context["journal_list"]
-                ) == NUMBER_OF_JOURNALS_PER_PAGE
+            len(response.context["journal_list"]) == NUMBER_OF_JOURNALS_PER_PAGE
         )
         for journal in response.context["journal_list"]:
             self.assertTrue(isinstance(journal, Journal))
@@ -361,12 +360,10 @@ class JournalListViewTest(TestCase):
         self.assertTrue("is_paginated" in response_page_one.context)
         self.assertTrue(response_page_one.context["is_paginated"])
         self.assertTrue(
-            len(
-                response_page_one.context["journal_list"]
-            ) == NUMBER_OF_JOURNALS_PER_PAGE
+            len(response_page_one.context["journal_list"])
+            == NUMBER_OF_JOURNALS_PER_PAGE
         )
-        response_page_two = self.client.get(
-            reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
+        response_page_two = self.client.get(reverse(JOURNAL_LIST_VIEW_NAME) + "?page=2")
         self.assertEqual(response_page_two.status_code, 200)
         self.assertTrue("is_paginated" in response_page_two.context)
         self.assertTrue(response_page_two.context["is_paginated"])
@@ -386,10 +383,12 @@ class JournalDetailViewTest(TestCase):
         cls.user_one = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
+            registration_accepted=True,
         )
         cls.user_two = CustomUser.objects.create_user(
             username=TEST_USERNAME_TWO,
             password=TEST_PASSWORD_TWO,
+            registration_accepted=True,
         )
         cls.journal = Journal.objects.create(
             author=cls.user_one,
@@ -499,10 +498,12 @@ class JournalUpdateViewTest(TestCase):
         cls.user_one = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
+            registration_accepted=True,
         )
         cls.user_two = CustomUser.objects.create_user(
             username=TEST_USERNAME_TWO,
             password=TEST_PASSWORD_TWO,
+            registration_accepted=True,
         )
         cls.journal_one = Journal.objects.create(
             author=cls.user_one,
@@ -562,8 +563,7 @@ class JournalUpdateViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(
-            response.context["page_title"], JOURNAL_UPDATE_PAGE_TITLE)
+        self.assertEqual(response.context["page_title"], JOURNAL_UPDATE_PAGE_TITLE)
         self.assertEqual(
             response.context["form_button_text"],
             JOURNAL_UPDATE_FORM_BUTTON_TEXT,
@@ -634,6 +634,7 @@ class JournalConfirmDeleteViewTest(TestCase):
         cls.user_one = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
+            registration_accepted=True,
         )
         cls.journal_one = Journal.objects.create(
             author=cls.user_one,
@@ -656,8 +657,7 @@ class JournalConfirmDeleteViewTest(TestCase):
         )
         self.assertTrue(login)
         response = self.client.get(
-            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME,
-                    args=[self.journal_one.id])
+            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME, args=[self.journal_one.id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, JOURNAL_CONFIRM_DELETE_TEMPLATE)
@@ -672,14 +672,14 @@ class JournalConfirmDeleteViewTest(TestCase):
         )
         self.assertTrue(login)
         response = self.client.get(
-            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME,
-                    args=[self.journal_one.id])
+            reverse(JOURNAL_CONFIRM_DELETE_VIEW_NAME, args=[self.journal_one.id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["journal"], self.journal_one)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
         self.assertEqual(
-            response.context["page_title"], JOURNAL_CONFIRM_DELETE_PAGE_TITLE)
+            response.context["page_title"], JOURNAL_CONFIRM_DELETE_PAGE_TITLE
+        )
         # TODO: Fix this test.
         # self.assertEqual(
         #     response.context["form_button_text"],
@@ -700,6 +700,7 @@ class JournalDeleteViewTest(TestCase):
         cls.user_one = CustomUser.objects.create_user(
             username=TEST_USERNAME_ONE,
             password=TEST_PASSWORD_ONE,
+            registration_accepted=True,
         )
         cls.journal_one = Journal.objects.create(
             author=cls.user_one,
