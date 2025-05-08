@@ -15,7 +15,10 @@ def analyze_view_classes(filepath):
 
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
-            base_names = [base.id if isinstance(base, ast.Name) else getattr(base, "attr", "") for base in node.bases]
+            base_names = [
+                base.id if isinstance(base, ast.Name) else getattr(base, "attr", "")
+                for base in node.bases
+            ]  # noqa: E501
             if any("View" in name for name in base_names):  # likely a CBV
                 if MIXIN_NAME in base_names:
                     inherits_mixin.append(node.name)
