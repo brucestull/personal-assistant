@@ -68,9 +68,7 @@ class TestForbiddenView(TestCase):
         """
         response = self.client.get(FORBIDDEN_VIEW_URL)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.context["page_title"], FORBIDDEN_VIEW_PAGE_TITLE
-        )
+        self.assertEqual(response.context["page_title"], FORBIDDEN_VIEW_PAGE_TITLE)
 
     def test_context_has_correct_the_site_name(self):
         """
@@ -206,6 +204,7 @@ class CustomUserUpdateViewTest(TestCase):
         cls.a_test_user = CustomUser.objects.create_user(
             username=A_TEST_USERNAME,
             password=A_TEST_PASSWORD,
+            registration_accepted=True,
         )
 
     def test_url_redirects_non_authenticated_user(self):
@@ -263,6 +262,7 @@ class CustomUserUpdateViewTest(TestCase):
         another_test_user = CustomUser.objects.create_user(
             username=ANOTHER_TEST_USERNAME,
             password=ANOTHER_TEST_PASSWORD,
+            registration_accepted=True,
         )
         self.client.force_login(another_test_user)
         response = self.client.get(
@@ -297,6 +297,7 @@ class CustomUserDetailViewTest(TestCase):
         cls.a_test_user = CustomUser.objects.create_user(
             username=A_TEST_USERNAME,
             password=A_TEST_PASSWORD,
+            registration_accepted=True,
         )
 
     def test_url_redirects_non_authenticated_user(self):
@@ -352,6 +353,7 @@ class CustomUserDetailViewTest(TestCase):
         another_test_user = CustomUser.objects.create_user(
             username=ANOTHER_TEST_USERNAME,
             password=ANOTHER_TEST_PASSWORD,
+            registration_accepted=True,
         )
         self.client.force_login(another_test_user)
         response = self.client.get(
