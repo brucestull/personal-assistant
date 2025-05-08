@@ -5,12 +5,23 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
+from base.decorators import registration_accepted_required
 from config.settings import THE_SITE_NAME
 
-from .forms import (BehavioralInterviewQuestionForm, BulletPointForm,
-                    PurposeForm, QuestionResponseForm, SkillForm)
-from .models import (BehavioralInterviewQuestion, BulletPoint, Purpose,
-                     QuestionResponse, Skill)
+from .forms import (
+    BehavioralInterviewQuestionForm,
+    BulletPointForm,
+    PurposeForm,
+    QuestionResponseForm,
+    SkillForm,
+)
+from .models import (
+    BehavioralInterviewQuestion,
+    BulletPoint,
+    Purpose,
+    QuestionResponse,
+    Skill,
+)
 
 
 def home(request):
@@ -127,6 +138,7 @@ class SkillListView(FormMixin, RegistrationAcceptedMixin, ListView):
 #     return redirect(f"{model.__name__.lower()}-list")
 
 
+@registration_accepted_required
 def skill_move_up(request, skill_id):
     """
     View function to move a `Skill` object up in the list.
@@ -145,6 +157,7 @@ def skill_move_up(request, skill_id):
     return redirect("career_organizerator:skill-list")
 
 
+@registration_accepted_required
 def skill_move_down(request, skill_id):
     """
     View function to move a `Skill` object down in the list.
@@ -166,6 +179,7 @@ def skill_move_down(request, skill_id):
     return redirect("career_organizerator:skill-list")
 
 
+@registration_accepted_required
 def skill_delete(request, skill_id):
     """
     View function to delete a `Skill` object.
