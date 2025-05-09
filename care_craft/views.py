@@ -1,14 +1,18 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Activity
-from .forms import ActivityForm
+from django.shortcuts import get_object_or_404, redirect, render
+
 from base.decorators import registration_accepted_required
 
+from .forms import ActivityForm
+from .models import Activity
 
+
+@registration_accepted_required
 def activity_list(request):
     activities = Activity.objects.all()
     return render(request, "care_craft/activity_list.html", {"activities": activities})
 
 
+@registration_accepted_required
 def activity_detail(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     return render(request, "care_craft/activity_detail.html", {"activity": activity})

@@ -1,5 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView
+
+from base.mixins import RegistrationAcceptedMixin
 
 # We import like this so that we don't have to rely on the package name
 # which contains the pharmaceutical model. This makes it easier to add
@@ -7,11 +8,7 @@ from django.views.generic import ListView
 from .models import Pharmaceutical
 
 
-class PharmaceuticalListView(
-    LoginRequiredMixin,
-    UserPassesTestMixin,
-    ListView
-):
+class PharmaceuticalListView(RegistrationAcceptedMixin, ListView):
     """
     'ListView' for 'Pharmaceutical' model. This view is only accessible
     to users who are authenticated and have 'registration_accepted' set
@@ -20,16 +17,6 @@ class PharmaceuticalListView(
     """
 
     model = Pharmaceutical
-
-    def test_func(self):
-        """
-        This method is used by 'UserPassesTestMixin' to determine if the
-        user is allowed to access the view. The user must be authenticated
-        and have 'registration_accepted' set to 'True'.
-        """
-
-        user = self.request.user
-        return user.is_authenticated and user.registration_accepted
 
     def get_queryset(self):
         """

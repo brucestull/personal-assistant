@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
-from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -9,6 +8,7 @@ from django.views.generic.edit import CreateView
 
 from accounts.models import CustomUser
 from base.mixins import RegistrationAcceptedMixin
+from base.decorators import registration_accepted_required
 from boosts.forms import InspirationalForm
 from boosts.models import Inspirational, InspirationalSent
 from boosts.tasks import send_inspirational_to_beastie
@@ -98,32 +98,12 @@ class InspirationalCreateView(RegistrationAcceptedMixin, CreateView):
 
 
 # TODO: Possible refactor permissions for this view, using decorators.
+@registration_accepted_required
 def send_inspirational(request, pk):
     """
     Send an inspirational quote to the User's Beastie (a User which has
     been designated as the User's Beastie).
     """
-    # Check if user is authenticated:
-    if not request.user.is_authenticated:
-        messages.error(
-            request,
-            "You must be logged in to send an inspirational quote to your Beastie.",
-        )
-        # return redirect("boosts:inspirational-list")
-        return HttpResponseForbidden(
-            "403 Forbidden: You must be logged in to send an inspirational quote to "
-            "your Beastie."
-        )
-    # Check if user's registration is accepted:
-    if not request.user.registration_accepted:
-        messages.error(
-            request,
-            "Your registration has not been accepted yet. "
-            "You cannot send an inspirational quote to your Beastie.",
-        )
-        return HttpResponseForbidden(
-            "403 Forbidden: Your registration has not been accepted yet."
-        )
     try:
         # Get the inspirational quote from the pk sent in the URL:
         inspirational = get_object_or_404(Inspirational, pk=pk)
@@ -218,7 +198,7 @@ def landing_view(request):
 
     If they are not, they are routed to the `BretBeastieInspirationalListView`.
     """
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.registration_accepted:
         return InspirationalListView.as_view()(request)
     else:
         return BretBeastieInspirationalListView.as_view()(request)

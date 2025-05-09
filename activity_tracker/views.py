@@ -2,7 +2,6 @@
 from typing import Any
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.http import JsonResponse
@@ -11,6 +10,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
 
 from base.mixins import RegistrationAcceptedMixin
+from base.decorators import registration_accepted_required
 from config.settings import THE_SITE_NAME
 
 from .models import Activity, ActivityCompleted  # ActivityType,
@@ -67,7 +67,7 @@ class ActivityDetailView(RegistrationAcceptedMixin, DetailView):
         return Activity.objects.get(pk=self.kwargs.get("pk"), user=self.request.user)
 
 
-@login_required
+@registration_accepted_required
 def complete_an_activity_view(request, pk):
     """
     View function for the `activity_complete_view` view.

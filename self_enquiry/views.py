@@ -1,10 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.urls.base import reverse_lazy
 from django.views.generic import DetailView, ListView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
+from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
 from .models import Journal
@@ -23,7 +24,7 @@ JOURNAL_DELETE_FORM_BUTTON_TEXT = "Delete your Journal!"
 JOURNAL_DETAIL_PAGE_TITLE = "Journal Detail"
 
 
-class JournalCreateView(LoginRequiredMixin, CreateView):
+class JournalCreateView(RegistrationAcceptedMixin, CreateView):
     """
     Create view for a new `self_enquiry.Journal`.
     """
@@ -47,7 +48,7 @@ class JournalCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class JournalListView(LoginRequiredMixin, ListView):
+class JournalListView(RegistrationAcceptedMixin, ListView):
     """
     List view a user's `self_enquiry.Journal`s.
     """
@@ -68,7 +69,7 @@ class JournalListView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(author=self.request.user)
 
 
-class JournalDetailView(UserPassesTestMixin, DetailView):
+class JournalDetailView(RegistrationAcceptedMixin, UserPassesTestMixin, DetailView):
     """
     Detail view for a single `self_enquiry.Journal`.
     """
@@ -88,7 +89,7 @@ class JournalDetailView(UserPassesTestMixin, DetailView):
         return self.request.user == journal.author
 
 
-class JournalUpdateView(UserPassesTestMixin, UpdateView):
+class JournalUpdateView(RegistrationAcceptedMixin, UserPassesTestMixin, UpdateView):
     """
     Update view for a single `self_enquiry.Journal`.
     """
@@ -121,7 +122,7 @@ class JournalUpdateView(UserPassesTestMixin, UpdateView):
 
 
 class JournalConfirmDeleteView(
-    LoginRequiredMixin,
+    RegistrationAcceptedMixin,
     View,
 ):
     """
@@ -143,7 +144,7 @@ class JournalConfirmDeleteView(
 
 
 class JournalDeleteView(
-    LoginRequiredMixin,
+    RegistrationAcceptedMixin,
     UserPassesTestMixin,
     DeleteView,
 ):

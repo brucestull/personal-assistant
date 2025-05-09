@@ -1,7 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.views.generic import CreateView, ListView
 
+from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 from vitals.models import BloodPressure
 
@@ -20,7 +20,7 @@ def home(request):
     )
 
 
-class BloodPressureListView(LoginRequiredMixin, ListView):
+class BloodPressureListView(RegistrationAcceptedMixin, ListView):
     """
     `ListView` for a user's blood pressure measurements.
     """
@@ -65,9 +65,9 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
                 "diastolic_median": None,
             }
         else:
-            context[
-                "user_averages_and_medians"
-            ] = user_blood_pressure_averages_and_medians
+            context["user_averages_and_medians"] = (
+                user_blood_pressure_averages_and_medians
+            )
             context["user_pressure_range"] = user_blood_pressure_range
         return context
 
@@ -91,8 +91,7 @@ class BloodPressureListView(LoginRequiredMixin, ListView):
 # TODO: Check if the order of the mixins matters. Order does matter:
 # It's best practice to use mixins from more general to more specific.
 class BloodPressureCreateView(
-    LoginRequiredMixin,
-    UserPassesTestMixin,
+    RegistrationAcceptedMixin,
     CreateView,
 ):
     """
@@ -118,13 +117,6 @@ class BloodPressureCreateView(
         "the_site_name": THE_SITE_NAME,
         "page_title": "Create Blood Pressure",
     }
-
-    def test_func(self):
-        """
-        Override the `test_func` method to check if the current user has
-        `registration_accepted` `True`.
-        """
-        return self.request.user.registration_accepted
 
     def form_valid(self, form):
         """
