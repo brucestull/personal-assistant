@@ -111,7 +111,8 @@ def send_inspirational(request, pk):
         # and to the production domain in PROD:
         current_site = get_current_site(request)
         plain_text_body = (
-            f"{inspirational.created.strftime('%y-%m-%d')} - {inspirational.body}\n"
+            f"{inspirational.created.strftime('%y-%m-%d')} - {request.user.username}:\n\n"  # noqa E501
+            f"{inspirational.body}\n\n"
             f"Sent from https://{current_site.domain} by {request.user.username} "
             f"({request.user.email})."
         )

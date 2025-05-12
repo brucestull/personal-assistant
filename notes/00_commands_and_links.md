@@ -1,29 +1,18 @@
 # Useful Commands and Links
 
-## Development server web links
-
-* Applications:
-  * <http://localhost:8000/journals/list/>
-  * [HTML](http://localhost:8000/valued-goals/html/)
-  * [Goals](http://localhost:8000/valued-goals/goals/)
-  * [Goals Create](http://localhost:8000/valued-goals/goals/create/)
-  * [App Tracker](http://localhost:8000/app-tracker/)
-  * [Unimportant Notes](http://localhost:8000/unimportant-notes/)
-  * [Project Manager](http://localhost:8000/project-manager/)
-* Create user:
-  * <http://localhost:8000/accounts/signup/>
-* Server Root:
-  * <http://localhost:8000/>
-* Django Admin:
-  * <http://localhost:8000/admin/>
-* Django Admin Documentation:
-  * <http://localhost:8000/admin/doc/>
-  * <http://localhost:8000/admin/doc/tags/>
-  * <http://localhost:8000/admin/doc/filters/>
-  * <http://localhost:8000/admin/doc/models/>
-  * <http://localhost:8000/admin/doc/models/auth.user/>
-
 ## Commands
+
+### Starting Services in Order
+1. `redis-server`: Start Redis server. It may already be running.
+1. `celery -A config worker --loglevel=info`: Start Celery worker with info logging. Keep this running in a separate terminal, if needed.
+1. `python manage.py runserver`: Start Django development server.
+
+### Redis
+* `redis-server`: Start Redis server.
+* `celery -A config worker --loglevel=info`: Start Celery worker with info logging.
+* `redis-cli`: Start Redis CLI.
+* `redis-cli monitor`: Monitor Redis commands.
+* `redis-cli ping`: Check if Redis server is running.
 
 ### This Project
 
@@ -95,6 +84,29 @@
 ### Git
 
 * `git remote -v`
+
+## Development server web links
+
+* Applications:
+  * <http://localhost:8000/journals/list/>
+  * [HTML](http://localhost:8000/valued-goals/html/)
+  * [Goals](http://localhost:8000/valued-goals/goals/)
+  * [Goals Create](http://localhost:8000/valued-goals/goals/create/)
+  * [App Tracker](http://localhost:8000/app-tracker/)
+  * [Unimportant Notes](http://localhost:8000/unimportant-notes/)
+  * [Project Manager](http://localhost:8000/project-manager/)
+* Create user:
+  * <http://localhost:8000/accounts/signup/>
+* Server Root:
+  * <http://localhost:8000/>
+* Django Admin:
+  * <http://localhost:8000/admin/>
+* Django Admin Documentation:
+  * <http://localhost:8000/admin/doc/>
+  * <http://localhost:8000/admin/doc/tags/>
+  * <http://localhost:8000/admin/doc/filters/>
+  * <http://localhost:8000/admin/doc/models/>
+  * <http://localhost:8000/admin/doc/models/auth.user/>
 
 ## Production deployment links
 
