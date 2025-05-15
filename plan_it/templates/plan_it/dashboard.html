@@ -8,19 +8,35 @@
 
 {% block content %}
 
-<h1>Household Dashboard</h1>
+<h1>{{ page_title }}</h1>
 
 <h2>Upcoming Activities</h2>
 <ul>
     {% for activity in activities %}
-        <li>{{ activity.name }} - Due: {{ activity.due_date }}</li>
+        <li>
+            {{ activity.name }} - Due: {{ activity.due_date|default:"No due date" }}
+            {% if activity.target_item %}
+                (Item: {{ activity.target_item }})
+            {% endif %}
+            {% if activity.target_location %}
+                (Location: {{ activity.target_location }})
+            {% endif %}
+            <a href="{% url 'plan_it:activity_edit' activity.pk %}">Edit</a>
+        </li>
+    {% empty %}
+        <li>No upcoming activities.</li>
     {% endfor %}
 </ul>
 
 <h2>Items</h2>
 <ul>
     {% for item in items %}
-        <li>{{ item.name }} - Location: {{ item.storage_location }}</li>
+        <li>
+            {{ item.name }} - Stored at: {{ item.storage_location }}
+            <a href="{% url 'plan_it:item_edit' item.pk %}">Edit</a>
+        </li>
+    {% empty %}
+        <li>No items found.</li>
     {% endfor %}
 </ul>
 
