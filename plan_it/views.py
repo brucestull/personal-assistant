@@ -17,7 +17,7 @@ def dashboard(request):
     items = Item.objects.filter(user=request.user)[:10]
     return render(
         request,
-        "plan_it/adhd_base.html",
+        "plan_it/base.html",
         {
             "activities": activities,
             "items": items,

@@ -102,9 +102,24 @@
                                             href={% url 'plan_it:dashboard' %}>Plan It!</a>
                                         </li>
                                         <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'plan_it:activity_list' %}>Activities</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'plan_it:item_list' %}>Items</a>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'plan_it:storage_location_list' %}>Locations</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'plan_it:activity_type_list' %}>Activity Types</a>
+                                        </li>
+                                        <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        {% comment %} <li>
+                                                                                {% comment %} <li>
                                             <a class="dropdown-item"
                                             href={% url 'activity_list' %}>Activities</a>
                                         </li>
