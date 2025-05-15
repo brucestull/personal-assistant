@@ -1,0 +1,19 @@
+{% extends "plan_it/adhd_base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Delete Activity Type</h1>
+
+    <div class="alert alert-warning">
+        <strong>Are you sure you want to delete:</strong> {{ object }}?
+        <br>
+        Any activities using this type may be affected.
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <a href="{% url 'plan_it:activity_type_list' %}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    </form>
+</div>
+{% endblock %}

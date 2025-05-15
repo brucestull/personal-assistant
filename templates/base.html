@@ -99,11 +99,18 @@
                                         </li>
                                         <li>
                                             <a class="dropdown-item"
-                                            href={% url 'activity_list' %}>Activities</a>
+                                            href={% url 'plan_it:dashboard' %}>Plan It!</a>
                                         </li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
+                                        {% comment %} <li>
+                                            <a class="dropdown-item"
+                                            href={% url 'activity_list' %}>Activities</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li> {% endcomment %}
                                         <li>
                                             <a class="dropdown-item"
                                             href={% url 'uc_goals:uc_list' %}>Ultimate Concern Goals</a>

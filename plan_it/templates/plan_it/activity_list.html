@@ -1,0 +1,27 @@
+{% extends "plan_it/adhd_base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Activities</h1>
+
+    <div class="mb-3">
+        <a href="{% url 'plan_it:activity_add' %}" class="btn btn-primary">➕ Add Activity</a>
+    </div>
+
+    {% if object_list %}
+        <ul class="list-group">
+            {% for activity in object_list %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ activity }}{% if activity.due_date %} - Due: {{ activity.due_date }}{% endif %}
+                    <div>
+                        <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a href="{% url 'plan_it:activity_delete' activity.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No activities found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,8 +1,8 @@
 # plan_it/models.py
 
-from django.db import models
-
 from django.contrib.auth import get_user_model
+from django.db import models
+from django.urls import reverse
 
 
 class StorageLocation(models.Model):
@@ -19,6 +19,9 @@ class StorageLocation(models.Model):
         related_name="sublocations",
         on_delete=models.CASCADE,
     )
+
+    def get_absolute_url(self):
+        return reverse("plan_it:storage_location_list")
 
     def __str__(self):
         return (
@@ -38,6 +41,9 @@ class Item(models.Model):
     storage_location = models.ForeignKey(StorageLocation, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
 
+    def get_absolute_url(self):
+        return reverse("plan_it:item_list")
+
     def __str__(self):
         return self.name
 
@@ -49,6 +55,9 @@ class ActivityType(models.Model):
         related_name="plan_it_activity_types",
     )
     name = models.CharField(max_length=50)
+
+    def get_absolute_url(self):
+        return reverse("plan_it:activity_type_list")
 
     def __str__(self):
         return self.name
@@ -72,6 +81,9 @@ class Activity(models.Model):
     due_date = models.DateField(null=True, blank=True)
     is_recurring = models.BooleanField(default=False)
     last_completed = models.DateField(null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse("plan_it:activity_list")
 
     def __str__(self):
         return self.name
