@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+
+<h1>Household Dashboard</h1>
+
+<h2>Upcoming Activities</h2>
+<ul>
+    {% for activity in activities %}
+        <li>{{ activity.name }} - Due: {{ activity.due_date }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Items</h2>
+<ul>
+    {% for item in items %}
+        <li>{{ item.name }} - Location: {{ item.storage_location }}</li>
+    {% endfor %}
+</ul>
+
+
+{% endblock content %}
