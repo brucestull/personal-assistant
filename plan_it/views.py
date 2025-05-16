@@ -1,4 +1,5 @@
 # plan_it/views.py
+
 from datetime import date
 
 from django.shortcuts import render
