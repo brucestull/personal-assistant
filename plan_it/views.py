@@ -36,7 +36,7 @@ def dashboard(request):
             "upcoming_activities": upcoming_activities,
             "items": items,
             "today": today,
-            "page_title": "Plan It Dashboard",
+            "page_title": "Plan It! Dashboard",
             "the_site_name": THE_SITE_NAME,
         },
     )
