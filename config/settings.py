@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "care_craft.apps.CareCraftConfig",
     "django_celery_beat",
     "boosts.apps.BoostsConfig",
+    "plan_it.apps.PlanItConfig",
 ]
 
 MIDDLEWARE = [

@@ -95,6 +95,7 @@
   * [App Tracker](http://localhost:8000/app-tracker/)
   * [Unimportant Notes](http://localhost:8000/unimportant-notes/)
   * [Project Manager](http://localhost:8000/project-manager/)
+  * [Plan It - Dashboard](http://localhost:8000/plan-it/)
 * Create user:
   * <http://localhost:8000/accounts/signup/>
 * Server Root:

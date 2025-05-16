@@ -1,3 +1,5 @@
+# config/urls.py
+
 """config URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -51,4 +53,5 @@ urlpatterns = [
     path("sonic-text/", include("sonic_text.urls")),
     path("care-craft/", include("care_craft.urls")),
     path("boosts/", include("boosts.urls")),
+    path("plan-it/", include("plan_it.urls")),
 ]

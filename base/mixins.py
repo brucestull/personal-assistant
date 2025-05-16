@@ -1,3 +1,5 @@
+# base/mixins.py
+
 from django.contrib.auth.mixins import AccessMixin
 from django.core.exceptions import PermissionDenied
 

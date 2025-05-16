@@ -1,0 +1,19 @@
+{% extends "plan_it/plan_it_base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">
+        Delete {{ view.model._meta.verbose_name|title }}
+    </h1>
+
+    <div class="alert alert-warning">
+        <strong>Are you sure you want to delete:</strong> {{ object }}?
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <a href="{{ object.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    </form>
+</div>
+{% endblock %}
