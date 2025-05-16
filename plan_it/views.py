@@ -13,15 +13,28 @@ from .models import Activity, ActivityType, Item, StorageLocation
 
 @registration_accepted_required
 def dashboard(request):
-    activities = Activity.objects.filter(user=request.user).order_by("due_date")[:10]
+    today = date.today()
+    overdue_activities = Activity.objects.filter(
+        user=request.user, due_date__lt=today
+    ).order_by("due_date")
+    today_activities = Activity.objects.filter(
+        user=request.user, due_date=today
+    ).order_by("due_date")
+    upcoming_activities = Activity.objects.filter(
+        user=request.user, due_date__gt=today
+    ).order_by("due_date")[:10]
+
     items = Item.objects.filter(user=request.user)[:10]
+
     return render(
         request,
-        "plan_it/base.html",
+        "plan_it/dashboard.html",
         {
-            "activities": activities,
+            "overdue_activities": overdue_activities,
+            "today_activities": today_activities,
+            "upcoming_activities": upcoming_activities,
             "items": items,
-            "today": date.today(),
+            "today": today,
             "page_title": "Plan It Dashboard",
             "the_site_name": THE_SITE_NAME,
         },
