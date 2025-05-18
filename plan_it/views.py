@@ -1,23 +1,18 @@
 # plan_it/views.py
 
-from datetime import date
 from collections import defaultdict
+from datetime import date
 
 from django.shortcuts import render
-from django.views import generic
 from django.urls import reverse_lazy
+from django.views import generic
 
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
-from .models import (
-    StorageLocation,
-    ActivityLocation,
-    Item,
-    ActivityType,
-    Activity,
-)
+from .models import (Activity, ActivityLocation, ActivityType, Item,
+                     StorageLocation)
 
 
 @registration_accepted_required

@@ -1,13 +1,9 @@
 # plan_it/admin.py
 
 from django.contrib import admin
-from plan_it.models import (
-    StorageLocation,
-    ActivityLocation,
-    Item,
-    ActivityType,
-    Activity,
-)
+
+from plan_it.models import (Activity, ActivityLocation, ActivityType, Item,
+                            StorageLocation)
 
 
 @admin.register(StorageLocation)

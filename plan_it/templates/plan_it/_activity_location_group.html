@@ -1,4 +1,3 @@
-{# plan_it/_activity_location_group.html #}
 {% load dict_filters %}
 <div class="ms-{{ location.depth }}">
     <div class="accordion mb-3" id="accordion-{{ location.pk }}">
@@ -19,10 +18,22 @@
                     {% with grouped_activities|get_item:location as loc_activities %}
                         {% if loc_activities %}
                             {% for activity in loc_activities %}
-                                <div class="alert alert-light d-flex justify-content-between">
+                                <div class="alert 
+                                    {% if activity.due_status == 'overdue' %}alert-danger
+                                    {% elif activity.due_status == 'today' %}alert-warning
+                                    {% else %}alert-success
+                                    {% endif %} d-flex justify-content-between">
                                     <div>
                                         <strong>{{ activity.name }}</strong><br>
-                                        {% if activity.due_date %}📅 Due: {{ activity.due_date }}<br>{% endif %}
+                                        {% if activity.due_date %}
+                                            📅 Due: 
+                                            {% if activity.due_status == "today" %}
+                                                Today
+                                            {% else %}
+                                                {{ activity.due_date }}
+                                            {% endif %}
+                                            <br>
+                                        {% endif %}
                                         {% if activity.target_item %}🧰 Item: {{ activity.target_item }}<br>{% endif %}
                                     </div>
                                     <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>

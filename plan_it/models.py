@@ -1,9 +1,10 @@
 # plan_it/models.py
 
+from datetime import date
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-
 
 User = get_user_model()
 
@@ -113,6 +114,17 @@ class Activity(models.Model):
 
     def __str__(self):
         return f"{self.name}[{self.activity_location}]"
+
+    def due_status(self):
+        if not self.due_date:
+            return "none"
+        today = date.today()
+        if self.due_date < today:
+            return "overdue"
+        elif self.due_date == today:
+            return "today"
+        else:
+            return "upcoming"
 
     class Meta:
         verbose_name = "Activity"
