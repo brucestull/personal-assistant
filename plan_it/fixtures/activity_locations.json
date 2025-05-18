@@ -1,0 +1,26 @@
+[
+    {
+        "model": "plan_it.activitylocation",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "name": "Kitchen"
+        }
+    },
+    {
+        "model": "plan_it.activitylocation",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "name": "Yard"
+        }
+    },
+    {
+        "model": "plan_it.activitylocation",
+        "pk": 3,
+        "fields": {
+            "user": 1,
+            "name": "Living Room"
+        }
+    }
+]

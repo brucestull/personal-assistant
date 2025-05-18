@@ -1,89 +1,44 @@
 {% extends "plan_it/plan_it_base.html" %}
+{% load dict_filters %}
 
 {% block title %}
-    {{ page_title }}
-    -
-    {{ the_site_name }}
+    {{ page_title }} - {{ the_site_name }}
 {% endblock title %}
 
 {% block dashboard %}
 <div class="container py-4">
     <h1 class="mb-4">{{ page_title }}</h1>
 
-    <!-- 🛑 Overdue Activities -->
-    <div class="card mb-4 border-danger">
-        <div class="card-header bg-danger text-white">
-            🛑 Overdue Activities
-        </div>
-        <div class="card-body">
-            {% if overdue_activities %}
-                {% for activity in overdue_activities %}
-                    <div class="alert alert-danger d-flex justify-content-between">
-                        <div>
-                            <strong>{{ activity.name }}</strong><br>
-                            Due: {{ activity.due_date }}
-                            {% if activity.target_item %}<br>🧰 Item: {{ activity.target_item }}{% endif %}
-                            {% if activity.target_location %}<br>📍 Location: {{ activity.target_location }}{% endif %}
-                        </div>
-                        <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-outline-light">Edit</a>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="text-muted">No overdue activities.</p>
-            {% endif %}
-        </div>
-    </div>
+    <!-- 🗂 Activities by ActivityLocation hierarchy -->
+    {% for location in top_locations %}
+        {% include "plan_it/_activity_location_group.html" with location=location grouped_activities=grouped_activities %}
+    {% endfor %}
 
-    <!-- 🟡 Activities Due Today -->
-    <div class="card mb-4 border-warning">
-        <div class="card-header bg-warning text-dark">
-            🟡 Activities Due Today
-        </div>
-        <div class="card-body">
-            {% if today_activities %}
-                {% for activity in today_activities %}
-                    <div class="alert alert-warning d-flex justify-content-between">
-                        <div>
-                            <strong>{{ activity.name }}</strong><br>
-                            Due: Today
-                            {% if activity.target_item %}<br>🧰 Item: {{ activity.target_item }}{% endif %}
-                            {% if activity.target_location %}<br>📍 Location: {{ activity.target_location }}{% endif %}
+    <!-- Render Uncategorized -->
+    {% with grouped_activities|get_item:None as uncategorized %}
+        {% if uncategorized %}
+            <div class="card mt-5 border-dark">
+                <div class="card-header bg-dark text-white">
+                    📂 Uncategorized Activities
+                </div>
+                <div class="card-body">
+                    {% for activity in uncategorized %}
+                        <div class="alert alert-light d-flex justify-content-between">
+                            <div>
+                                <strong>{{ activity.name }}</strong><br>
+                                {% if activity.due_date %}📅 Due: {{ activity.due_date }}<br>{% endif %}
+                                {% if activity.target_item %}🧰 Item: {{ activity.target_item }}<br>{% endif %}
+                            </div>
+                            <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
                         </div>
-                        <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-outline-dark">Edit</a>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="text-muted">No activities today.</p>
-            {% endif %}
-        </div>
-    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
 
-    <!-- ✅ Upcoming Activities -->
-    <div class="card mb-4 border-success">
-        <div class="card-header bg-success text-white">
-            ✅ Upcoming Activities
-        </div>
-        <div class="card-body">
-            {% if upcoming_activities %}
-                {% for activity in upcoming_activities %}
-                    <div class="alert alert-success d-flex justify-content-between">
-                        <div>
-                            <strong>{{ activity.name }}</strong><br>
-                            Due: {{ activity.due_date }}
-                            {% if activity.target_item %}<br>🧰 Item: {{ activity.target_item }}{% endif %}
-                            {% if activity.target_location %}<br>📍 Location: {{ activity.target_location }}{% endif %}
-                        </div>
-                        <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-outline-light">Edit</a>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="text-muted">No upcoming activities.</p>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- 📦 Items by Location -->
-    <div class="card border-secondary">
+    <!-- 📦 Items by Storage Location -->
+    <div class="card border-secondary mt-5">
         <div class="card-header bg-secondary text-white">
             📦 Items by Storage Location
         </div>

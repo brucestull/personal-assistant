@@ -1,3 +1,5 @@
+# boosts/views.py
+
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
