@@ -67,4 +67,25 @@ urlpatterns = [
         views.ActivityDeleteView.as_view(),
         name="activity_delete",
     ),
+    # ActivityLocation routes
+    path(
+        "activity-locations/",
+        views.ActivityLocationListView.as_view(),
+        name="activity_location_list",
+    ),
+    path(
+        "activity-locations/add/",
+        views.ActivityLocationCreateView.as_view(),
+        name="activity_location_add",
+    ),
+    path(
+        "activity-locations/<int:pk>/edit/",
+        views.ActivityLocationUpdateView.as_view(),
+        name="activity_location_edit",
+    ),
+    path(
+        "activity-locations/<int:pk>/delete/",
+        views.ActivityLocationDeleteView.as_view(),
+        name="activity_location_delete",
+    ),
 ]

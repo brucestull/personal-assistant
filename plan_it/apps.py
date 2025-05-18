@@ -1,3 +1,5 @@
+# plan_it/apps.py
+
 from django.apps import AppConfig
 
 
