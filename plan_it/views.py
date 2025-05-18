@@ -11,8 +11,7 @@ from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
-from .models import (Activity, ActivityLocation, ActivityType, Item,
-                     StorageLocation)
+from .models import Activity, ActivityLocation, ActivityType, Item, StorageLocation
 
 
 @registration_accepted_required
@@ -69,6 +68,10 @@ class StorageLocationListView(
     RegistrationAcceptedMixin, UserQuerySetMixin, generic.ListView
 ):
     model = StorageLocation
+    extra_context = {
+        "page_title": "Storage Locations",
+        "the_site_name": THE_SITE_NAME,
+    }
 
 
 class StorageLocationCreateView(
@@ -76,6 +79,11 @@ class StorageLocationCreateView(
 ):
     model = StorageLocation
     fields = ["name", "parent_location"]
+    extra_context = {
+        "page_title": "Create Storage Location",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "create",
+    }
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -86,7 +94,11 @@ class StorageLocationCreateView(
 
 
 class StorageLocationUpdateView(StorageLocationCreateView, generic.UpdateView):
-    pass
+    extra_context = {
+        "page_title": "Update Storage Location",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "update",
+    }
 
 
 class StorageLocationDeleteView(
@@ -101,6 +113,10 @@ class ActivityLocationListView(
     RegistrationAcceptedMixin, UserQuerySetMixin, generic.ListView
 ):
     model = ActivityLocation
+    extra_context = {
+        "page_title": "Activity Locations",
+        "the_site_name": THE_SITE_NAME,
+    }
 
 
 class ActivityLocationCreateView(
@@ -108,6 +124,11 @@ class ActivityLocationCreateView(
 ):
     model = ActivityLocation
     fields = ["name", "parent_location"]
+    extra_context = {
+        "page_title": "Create Activity Location",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "create",
+    }
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -118,24 +139,42 @@ class ActivityLocationCreateView(
 
 
 class ActivityLocationUpdateView(ActivityLocationCreateView, generic.UpdateView):
-    pass
+    extra_context = {
+        "page_title": "Update Activity Location",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "update",
+    }
 
 
 class ActivityLocationDeleteView(
     RegistrationAcceptedMixin, UserQuerySetMixin, generic.DeleteView
 ):
     model = ActivityLocation
+    extra_context = {
+        "page_title": "Delete Activity Location",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "delete",
+    }
     success_url = reverse_lazy("plan_it:activity_location_list")
 
 
 # ---- Item Views ----
 class ItemListView(RegistrationAcceptedMixin, UserQuerySetMixin, generic.ListView):
     model = Item
+    extra_context = {
+        "page_title": "Items",
+        "the_site_name": THE_SITE_NAME,
+    }
 
 
 class ItemCreateView(RegistrationAcceptedMixin, UserAssignMixin, generic.CreateView):
     model = Item
     fields = ["name", "storage_location", "description"]
+    extra_context = {
+        "page_title": "Create Item",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "create",
+    }
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -146,7 +185,11 @@ class ItemCreateView(RegistrationAcceptedMixin, UserAssignMixin, generic.CreateV
 
 
 class ItemUpdateView(ItemCreateView, generic.UpdateView):
-    pass
+    extra_context = {
+        "page_title": "Update Item",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "update",
+    }
 
 
 class ItemDeleteView(RegistrationAcceptedMixin, UserQuerySetMixin, generic.DeleteView):
@@ -159,6 +202,10 @@ class ActivityTypeListView(
     RegistrationAcceptedMixin, UserQuerySetMixin, generic.ListView
 ):
     model = ActivityType
+    extra_context = {
+        "page_title": "Activity Types",
+        "the_site_name": THE_SITE_NAME,
+    }
 
 
 class ActivityTypeCreateView(
@@ -166,6 +213,11 @@ class ActivityTypeCreateView(
 ):
     model = ActivityType
     fields = ["name"]
+    extra_context = {
+        "page_title": "Create Activity Type",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "create",
+    }
 
 
 class ActivityTypeUpdateView(ActivityTypeCreateView, generic.UpdateView):
@@ -182,6 +234,10 @@ class ActivityTypeDeleteView(
 # ---- Activity Views ----
 class ActivityListView(RegistrationAcceptedMixin, UserQuerySetMixin, generic.ListView):
     model = Activity
+    extra_context = {
+        "page_title": "Activities",
+        "the_site_name": THE_SITE_NAME,
+    }
 
 
 class ActivityCreateView(
@@ -198,6 +254,11 @@ class ActivityCreateView(
         "is_recurring",
         "last_completed",
     ]
+    extra_context = {
+        "page_title": "Create Activity",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "create",
+    }
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -221,4 +282,9 @@ class ActivityDeleteView(
     RegistrationAcceptedMixin, UserQuerySetMixin, generic.DeleteView
 ):
     model = Activity
+    extra_context = {
+        "page_title": "Delete Activity",
+        "the_site_name": THE_SITE_NAME,
+        "mode": "delete",
+    }
     success_url = reverse_lazy("plan_it:activity_list")

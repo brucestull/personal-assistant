@@ -1,5 +1,11 @@
 {% extends "plan_it/plan_it_base.html" %}
 
+{% block title %}
+    {{ page_title }}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
 {% block content %}
 <div class="container py-4">
     <h1 class="mb-4">Items</h1>
