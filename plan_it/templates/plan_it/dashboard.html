@@ -1,3 +1,4 @@
+{# plan_it/templates/plan_it/dashboard.html #}
 {% extends "plan_it/plan_it_base.html" %}
 {% load dict_filters %}
 
@@ -6,36 +7,39 @@
 {% endblock title %}
 
 {% block dashboard %}
-<div class="container py-4">
-    <h1 class="mb-4">{{ page_title }}</h1>
+    <div class="container py-4">
+        <h1 class="mb-4">{{ page_title }}</h1>
 
-    <!-- 🗂 Activities by ActivityLocation hierarchy -->
-    {% for location in top_locations %}
-        {% include "plan_it/_activity_location_group.html" with location=location grouped_activities=grouped_activities %}
-    {% endfor %}
+        <!-- 🗂 Activities by ActivityLocation hierarchy -->
+        {% for location in top_locations %}
+            {% include "plan_it/_activity_location_group.html" with location=location grouped_activities=grouped_activities %}
+        {% endfor %}
 
-    <!-- 📂 Uncategorized Activities -->
-    {% with grouped_activities|get_item:None as uncategorized %}
-        {% if uncategorized %}
-            <div class="card mt-5 border-dark">
-                <div class="card-header bg-dark text-white">
-                    📂 Uncategorized Activities
-                </div>
-                <div class="card-body">
-                    {% for activity in uncategorized %}
-                        <div class="alert alert-light d-flex justify-content-between">
-                            <div>
-                                <strong>{{ activity.name }}</strong><br>
-                                {% if activity.due_date %}📅 Due: {{ activity.due_date }}<br>{% endif %}
-                                {% if activity.target_item %}🧰 Item: {{ activity.target_item }}<br>{% endif %}
+        <!-- Render Uncategorized -->
+        {% with grouped_activities|get_item:None as uncategorized %}
+            {% if uncategorized %}
+                <div class="card mt-5 border-dark">
+                    <div class="card-header bg-dark text-white">
+                        📂 Uncategorized Activities ({{ uncategorized|length }})
+                    </div>
+                    <div class="card-body">
+                        {% for activity in uncategorized %}
+                            <div class="alert alert-light d-flex justify-content-between">
+                                <div>
+                                    <strong>{{ activity.name }}</strong><br>
+                                    {% if activity.due_date %}📅 Due: {{ activity.due_date }}<br>{% endif %}
+                                    {% if activity.target_item %}🧰 Item: {{ activity.target_item }}<br>{% endif %}
+                                </div>
+                                <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
                             </div>
-                            <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endif %}
-    {% endwith %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+
 
     <!-- 📦 Items by Storage Location -->
     <div class="card border-secondary mt-5">
@@ -61,5 +65,4 @@
             {% endif %}
         </div>
     </div>
-</div>
 {% endblock dashboard %}

@@ -35,6 +35,10 @@ def dashboard(request):
         loc = activity.activity_location
         grouped_activities[loc].append(activity)
 
+    top_locations = ActivityLocation.objects.filter(
+        user=request.user, parent_location__isnull=True
+    ).prefetch_related("sublocations")
+
     items = Item.objects.filter(user=request.user).select_related("storage_location")[
         :10
     ]
@@ -44,9 +48,7 @@ def dashboard(request):
         "plan_it/dashboard.html",
         {
             "grouped_activities": grouped_activities,
-            "top_locations": ActivityLocation.objects.filter(
-                user=request.user, parent_location__isnull=True
-            ).prefetch_related("sublocations"),
+            "top_locations": top_locations,
             "items": items,
             "today": today,
             "page_title": "Plan It Dashboard",

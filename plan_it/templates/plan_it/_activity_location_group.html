@@ -1,6 +1,5 @@
 {# plan_it/_activity_location_group.html #}
 {% load dict_filters %}
-
 <div class="ms-{{ location.depth }}">
     <div class="accordion mb-3" id="accordion-{{ location.pk }}">
         <div class="accordion-item">
@@ -10,12 +9,11 @@
                         data-bs-target="#collapse-{{ location.pk }}"
                         aria-expanded="false"
                         aria-controls="collapse-{{ location.pk }}">
-                    {{ location }}
+                    {{ location }} ({{ grouped_activities|get_item:location|length }})
                 </button>
             </h2>
             <div id="collapse-{{ location.pk }}" class="accordion-collapse collapse"
-                 aria-labelledby="heading-{{ location.pk }}"
-                 data-bs-parent="#accordion-{{ location.pk }}">
+                 aria-labelledby="heading-{{ location.pk }}" data-bs-parent="#accordion-{{ location.pk }}">
                 <div class="accordion-body">
 
                     {% with grouped_activities|get_item:location as loc_activities %}
@@ -35,7 +33,6 @@
                         {% endif %}
                     {% endwith %}
 
-                    <!-- Recurse into sublocations -->
                     {% for sub in location.sublocations.all %}
                         {% include "plan_it/_activity_location_group.html" with location=sub grouped_activities=grouped_activities %}
                     {% endfor %}
