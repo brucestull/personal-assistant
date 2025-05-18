@@ -14,7 +14,7 @@
         {% include "plan_it/_activity_location_group.html" with location=location grouped_activities=grouped_activities %}
     {% endfor %}
 
-    <!-- Render Uncategorized -->
+    <!-- 📂 Uncategorized Activities -->
     {% with grouped_activities|get_item:None as uncategorized %}
         {% if uncategorized %}
             <div class="card mt-5 border-dark">

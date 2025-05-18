@@ -26,23 +26,14 @@ def dashboard(request):
 
     all_activities = (
         Activity.objects.filter(user=request.user)
-        .select_related("activity_location")
+        .select_related("activity_location", "target_item")
         .order_by("due_date")
     )
 
     grouped_activities = defaultdict(list)
-
     for activity in all_activities:
         loc = activity.activity_location
-        if not loc:
-            grouped_activities[None].append(activity)
-            continue
-
-        top_level = loc
-        while top_level.parent_location:
-            top_level = top_level.parent_location
-
-        grouped_activities[top_level.id].append(activity)
+        grouped_activities[loc].append(activity)
 
     items = Item.objects.filter(user=request.user).select_related("storage_location")[
         :10
