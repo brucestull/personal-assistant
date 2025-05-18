@@ -7,6 +7,15 @@
 {% endblock title %}
 
 {% block dashboard %}
+    <div class="mb-4">
+        <h5 class="fw-bold">Legend</h5>
+        <ul class="list-unstyled">
+            <li>🔴 <span class="text-danger fw-bold">Overdue</span>: Past due date</li>
+            <li>🟡 <span class="text-warning fw-bold">Due Today</span>: Due today</li>
+            <li>🟢 <span class="text-success fw-bold">Upcoming</span>: Due later</li>
+        </ul>
+    </div>
+
     <div class="container py-4">
         <h1 class="mb-4">{{ page_title }}</h1>
 

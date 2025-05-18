@@ -24,7 +24,11 @@
                                     {% else %}alert-success
                                     {% endif %} d-flex justify-content-between">
                                     <div>
-                                        <strong>{{ activity.name }}</strong><br>
+                                        <strong>
+                                            {% if activity.due_status == "overdue" %}🔴{% elif activity.due_status == "today" %}🟡{% else %}🟢{% endif %}
+                                            {{ activity.name }}
+                                        </strong><br>
+
                                         {% if activity.due_date %}
                                             📅 Due: 
                                             {% if activity.due_status == "today" %}
