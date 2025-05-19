@@ -2,19 +2,18 @@
 
 from django.contrib import admin
 
-from plan_it.models import (Activity, ActivityLocation, ActivityType, Item,
-                            StorageLocation)
+from plan_it.models import (
+    Activity,
+    ActivityInstance,
+    ActivityLocation,
+    ActivityType,
+    Item,
+    StorageLocation,
+)
 
 
 @admin.register(StorageLocation)
 class StorageLocationAdmin(admin.ModelAdmin):
-    list_display = ["name", "user", "parent_location"]
-    search_fields = ["name"]
-    list_filter = ["user"]
-
-
-@admin.register(ActivityLocation)
-class ActivityLocationAdmin(admin.ModelAdmin):
     list_display = ["name", "user", "parent_location"]
     search_fields = ["name"]
     list_filter = ["user"]
@@ -34,6 +33,13 @@ class ActivityTypeAdmin(admin.ModelAdmin):
     list_filter = ["user"]
 
 
+@admin.register(ActivityLocation)
+class ActivityLocationAdmin(admin.ModelAdmin):
+    list_display = ["name", "user", "parent_location"]
+    search_fields = ["name"]
+    list_filter = ["user"]
+
+
 @admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
     list_display = [
@@ -46,6 +52,25 @@ class ActivityAdmin(admin.ModelAdmin):
         "is_recurring",
         "last_completed",
     ]
-    list_filter = ["type", "is_recurring", "due_date", "user"]
+    list_filter = ["type", "is_recurring", "due_date", "user", "last_completed"]
     search_fields = ["name", "description"]
     autocomplete_fields = ["type", "target_item", "activity_location"]
+
+
+@admin.register(ActivityInstance)
+class ActivityInstanceAdmin(admin.ModelAdmin):
+    list_display = (
+        "name_snapshot",
+        "type_name_snapshot",
+        "target_item_name_snapshot",
+        "activity_location_name_snapshot",
+        "completed_at",
+    )
+    list_filter = (
+        "name_snapshot",
+        "type_name_snapshot",
+        "target_item_name_snapshot",
+        "activity_location_name_snapshot",
+        "completed_at",
+    )
+    search_fields = ("name_snapshot", "type_name_snapshot")

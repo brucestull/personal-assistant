@@ -1,0 +1,249 @@
+[
+    {
+        "model": "accounts.customuser",
+        "pk": 1,
+        "fields": {
+            "username": "RegCepted",
+            "password": "pbkdf2_sha256$260000$demo$demo",
+            "is_superuser": true,
+            "is_staff": true,
+            "is_active": true,
+            "registration_accepted": true
+        }
+    },
+    {
+        "model": "plan_it.storagelocation",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "name": "Basement",
+            "parent_location": null
+        }
+    },
+    {
+        "model": "plan_it.storagelocation",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "name": "Workbench",
+            "parent_location": 1
+        }
+    },
+    {
+        "model": "plan_it.storagelocation",
+        "pk": 3,
+        "fields": {
+            "user": 1,
+            "name": "Garage",
+            "parent_location": null
+        }
+    },
+    {
+        "model": "plan_it.storagelocation",
+        "pk": 4,
+        "fields": {
+            "user": 1,
+            "name": "Garage Shelf A",
+            "parent_location": 3
+        }
+    },
+    {
+        "model": "plan_it.activitylocation",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "name": "Home",
+            "parent_location": null
+        }
+    },
+    {
+        "model": "plan_it.activitylocation",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "name": "Kitchen",
+            "parent_location": 1
+        }
+    },
+    {
+        "model": "plan_it.activitylocation",
+        "pk": 3,
+        "fields": {
+            "user": 1,
+            "name": "Outside",
+            "parent_location": null
+        }
+    },
+    {
+        "model": "plan_it.activitylocation",
+        "pk": 4,
+        "fields": {
+            "user": 1,
+            "name": "Garden Shed",
+            "parent_location": 3
+        }
+    },
+    {
+        "model": "plan_it.item",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "name": "Hammer",
+            "storage_location": 2,
+            "description": "Standard claw hammer"
+        }
+    },
+    {
+        "model": "plan_it.item",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "name": "Shovel",
+            "storage_location": 4,
+            "description": "Used for gardening"
+        }
+    },
+    {
+        "model": "plan_it.item",
+        "pk": 3,
+        "fields": {
+            "user": 1,
+            "name": "Wrench Set",
+            "storage_location": 3,
+            "description": "Metric and SAE"
+        }
+    },
+    {
+        "model": "plan_it.item",
+        "pk": 4,
+        "fields": {
+            "user": 1,
+            "name": "Drill",
+            "storage_location": 2,
+            "description": "Cordless drill"
+        }
+    },
+    {
+        "model": "plan_it.activitytype",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "name": "Maintenance"
+        }
+    },
+    {
+        "model": "plan_it.activitytype",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "name": "Cleaning"
+        }
+    },
+    {
+        "model": "plan_it.activitytype",
+        "pk": 3,
+        "fields": {
+            "user": 1,
+            "name": "Inspection"
+        }
+    },
+    {
+        "model": "plan_it.activity",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "name": "Sharpen Shovel",
+            "type": 1,
+            "target_item": 2,
+            "activity_location": 4,
+            "description": "Ensure the shovel blade is sharp",
+            "due_date": "2025-06-01",
+            "is_recurring": true,
+            "last_completed": "2025-05-10"
+        }
+    },
+    {
+        "model": "plan_it.activity",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "name": "Check Drill Battery",
+            "type": 3,
+            "target_item": 4,
+            "activity_location": 1,
+            "description": "Inspect battery charge level",
+            "due_date": "2025-05-20",
+            "is_recurring": true,
+            "last_completed": "2025-05-01"
+        }
+    },
+    {
+        "model": "plan_it.activity",
+        "pk": 3,
+        "fields": {
+            "user": 1,
+            "name": "Clean Workbench",
+            "type": 2,
+            "target_item": null,
+            "activity_location": 2,
+            "description": "Remove clutter and wipe down surfaces",
+            "due_date": "2025-05-19",
+            "is_recurring": false,
+            "last_completed": null
+        }
+    },
+    {
+        "model": "plan_it.activity",
+        "pk": 4,
+        "fields": {
+            "user": 1,
+            "name": "Oil Wrench Set",
+            "type": 1,
+            "target_item": 3,
+            "activity_location": 3,
+            "description": "Prevent rust by oiling tools",
+            "due_date": "2025-05-18",
+            "is_recurring": true,
+            "last_completed": "2025-05-10"
+        }
+    },
+    {
+        "model": "plan_it.activityinstance",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "activity": 1,
+            "name_snapshot": "Sharpen Shovel",
+            "type_name_snapshot": "Maintenance",
+            "target_item_name_snapshot": "Shovel",
+            "activity_location_name_snapshot": "Garden Shed",
+            "completed_at": "2025-05-10T10:00:00Z"
+        }
+    },
+    {
+        "model": "plan_it.activityinstance",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "activity": 2,
+            "name_snapshot": "Check Drill Battery",
+            "type_name_snapshot": "Inspection",
+            "target_item_name_snapshot": "Drill",
+            "activity_location_name_snapshot": "Home",
+            "completed_at": "2025-05-01T08:30:00Z"
+        }
+    },
+    {
+        "model": "plan_it.activityinstance",
+        "pk": 3,
+        "fields": {
+            "user": 1,
+            "activity": 4,
+            "name_snapshot": "Oil Wrench Set",
+            "type_name_snapshot": "Maintenance",
+            "target_item_name_snapshot": "Wrench Set",
+            "activity_location_name_snapshot": "Outside",
+            "completed_at": "2025-05-10T12:45:00Z"
+        }
+    }
+]

@@ -67,6 +67,11 @@ urlpatterns = [
         views.ActivityDeleteView.as_view(),
         name="activity_delete",
     ),
+    path(
+        "activities/<int:pk>/complete/",
+        views.mark_activity_completed,
+        name="activity_complete",
+    ),
     # ActivityLocation routes
     path(
         "activity-locations/",
