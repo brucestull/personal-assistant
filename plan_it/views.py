@@ -3,7 +3,8 @@
 from collections import defaultdict
 from datetime import date
 
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -11,7 +12,14 @@ from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
-from .models import Activity, ActivityLocation, ActivityType, Item, StorageLocation
+from .models import (
+    Activity,
+    ActivityInstance,
+    ActivityLocation,
+    ActivityType,
+    Item,
+    StorageLocation,
+)
 
 
 @registration_accepted_required
@@ -37,6 +45,10 @@ def dashboard(request):
         :10
     ]
 
+    recent_completions = ActivityInstance.objects.filter(user=request.user).order_by(
+        "-completed_at"
+    )[:5]
+
     return render(
         request,
         "plan_it/dashboard.html",
@@ -44,6 +56,7 @@ def dashboard(request):
             "grouped_activities": grouped_activities,
             "top_locations": top_locations,
             "items": items,
+            "recent_completions": recent_completions,
             "today": today,
             "page_title": "Plan It Dashboard",
             "the_site_name": THE_SITE_NAME,
@@ -288,3 +301,15 @@ class ActivityDeleteView(
         "mode": "delete",
     }
     success_url = reverse_lazy("plan_it:activity_list")
+
+
+@registration_accepted_required
+def mark_activity_completed(request, pk):
+    activity = get_object_or_404(Activity, pk=pk, user=request.user)
+
+    if request.method == "POST":
+        instance = activity.record_completion(user=request.user)  # noqa F841
+        messages.success(request, f"Activity '{activity.name}' marked as completed.")
+        return redirect("plan_it:dashboard")
+
+    return redirect("plan_it:activity_list")

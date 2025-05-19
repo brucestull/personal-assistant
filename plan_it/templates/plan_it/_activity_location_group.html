@@ -1,3 +1,4 @@
+{# plan_it/templates/plan_it/_activity_location_group.html #}
 {% load dict_filters %}
 <div class="ms-{{ location.depth }}">
     <div class="accordion mb-3" id="accordion-{{ location.pk }}">
@@ -30,7 +31,7 @@
                                         </strong><br>
 
                                         {% if activity.due_date %}
-                                            📅 Due: 
+                                            📅 Due:
                                             {% if activity.due_status == "today" %}
                                                 Today
                                             {% else %}
@@ -40,7 +41,13 @@
                                         {% endif %}
                                         {% if activity.target_item %}🧰 Item: {{ activity.target_item }}<br>{% endif %}
                                     </div>
-                                    <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <form action="{% url 'plan_it:activity_complete' activity.pk %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-success">✅ Complete</button>
+                                        </form>
+                                    </div>
                                 </div>
                             {% endfor %}
                         {% else %}

@@ -5,6 +5,7 @@ from datetime import date
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+from django.utils.timezone import now
 
 User = get_user_model()
 
@@ -126,6 +127,45 @@ class Activity(models.Model):
         else:
             return "upcoming"
 
+    def record_completion(self, user):
+        from .models import ActivityInstance  # avoid circular import
+
+        instance = ActivityInstance.objects.create(
+            user=user,
+            activity=self,
+            name_snapshot=self.name,
+            type_name_snapshot=self.type.name,
+            target_item_name_snapshot=self.target_item.name if self.target_item else "",
+            activity_location_name_snapshot=(
+                self.activity_location.name if self.activity_location else ""
+            ),
+        )
+        self.last_completed = instance.completed_at.date()
+        self.save(update_fields=["last_completed"])
+        return instance
+
     class Meta:
         verbose_name = "Activity"
         verbose_name_plural = "Activities"
+
+
+class ActivityInstance(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="activity_instances"
+    )
+    activity = models.ForeignKey(
+        Activity,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="instances",
+        help_text="Reference to original activity",
+    )
+    name_snapshot = models.CharField(max_length=100)
+    type_name_snapshot = models.CharField(max_length=50)
+    target_item_name_snapshot = models.CharField(max_length=100, blank=True)
+    activity_location_name_snapshot = models.CharField(max_length=100, blank=True)
+    completed_at = models.DateTimeField(default=now)
+
+    def __str__(self):
+        return f"{self.name_snapshot} @ {self.completed_at.strftime('%Y-%m-%d %H:%M')}"

@@ -22,6 +22,10 @@
                     <div>
                         <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
                         <a href="{% url 'plan_it:activity_delete' activity.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        <form action="{% url 'plan_it:activity_complete' activity.pk %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-success">✅ Complete</button>
+                        </form>
                     </div>
                 </li>
             {% endfor %}

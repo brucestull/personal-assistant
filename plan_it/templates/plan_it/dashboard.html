@@ -33,22 +33,53 @@
                     </div>
                     <div class="card-body">
                         {% for activity in uncategorized %}
-                            <div class="alert alert-light d-flex justify-content-between">
+                            <div class="alert 
+                                {% if activity.due_status == 'overdue' %}alert-danger
+                                {% elif activity.due_status == 'today' %}alert-warning
+                                {% else %}alert-success
+                                {% endif %} d-flex justify-content-between">
                                 <div>
-                                    <strong>{{ activity.name }}</strong><br>
-                                    {% if activity.due_date %}📅 Due: {{ activity.due_date }}<br>{% endif %}
+                                    <strong>
+                                        {% if activity.due_status == "overdue" %}🔴{% elif activity.due_status == "today" %}🟡{% else %}🟢{% endif %}
+                                        {{ activity.name }}
+                                    </strong><br>
+                                    {% if activity.due_date %}
+                                        📅 Due:
+                                        {% if activity.due_status == "today" %}
+                                            Today
+                                        {% else %}
+                                            {{ activity.due_date }}
+                                        {% endif %}
+                                        <br>
+                                    {% endif %}
                                     {% if activity.target_item %}🧰 Item: {{ activity.target_item }}<br>{% endif %}
                                 </div>
-                                <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <div class="d-flex align-items-center gap-2">
+                                    <a href="{% url 'plan_it:activity_edit' activity.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    <form action="{% url 'plan_it:activity_complete' activity.pk %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-success">✅ Complete</button>
+                                    </form>
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
             {% endif %}
         {% endwith %}
+
+        <!-- ✅ Recently Completed -->
+        <h2 class="mt-5">✅ Recently Completed</h2>
+        <ul class="list-group mb-4">
+            {% for instance in recent_completions %}
+                <li class="list-group-item">
+                    {{ instance.name_snapshot }} @ {{ instance.completed_at|date:"Y-m-d H:i" }}
+                </li>
+            {% empty %}
+                <li class="list-group-item text-muted">No completions yet.</li>
+            {% endfor %}
+        </ul>
     </div>
-
-
 
     <!-- 📦 Items by Storage Location -->
     <div class="card border-secondary mt-5">
@@ -74,4 +105,8 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+        setTimeout(() => window.location.reload(), 90000);
+    </script>
 {% endblock dashboard %}
