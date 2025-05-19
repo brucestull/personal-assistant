@@ -52,7 +52,7 @@ class ActivityAdmin(admin.ModelAdmin):
         "is_recurring",
         "last_completed",
     ]
-    list_filter = ["type", "is_recurring", "due_date", "user"]
+    list_filter = ["type", "is_recurring", "due_date", "user", "last_completed"]
     search_fields = ["name", "description"]
     autocomplete_fields = ["type", "target_item", "activity_location"]
 
@@ -66,5 +66,11 @@ class ActivityInstanceAdmin(admin.ModelAdmin):
         "activity_location_name_snapshot",
         "completed_at",
     )
-    list_filter = ("completed_at",)
+    list_filter = (
+        "name_snapshot",
+        "type_name_snapshot",
+        "target_item_name_snapshot",
+        "activity_location_name_snapshot",
+        "completed_at",
+    )
     search_fields = ("name_snapshot", "type_name_snapshot")

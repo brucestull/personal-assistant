@@ -169,3 +169,8 @@ class ActivityInstance(models.Model):
 
     def __str__(self):
         return f"{self.name_snapshot} @ {self.completed_at.strftime('%Y-%m-%d %H:%M')}"
+
+    class Meta:
+        verbose_name = "Activity Instance"
+        verbose_name_plural = "Activity Instances"
+        ordering = ["-completed_at"]
