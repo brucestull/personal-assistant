@@ -1,3 +1,5 @@
+# accounts/models.py
+
 from statistics import median
 
 from django.contrib.auth.models import AbstractUser

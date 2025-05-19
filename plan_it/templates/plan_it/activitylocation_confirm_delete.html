@@ -1,5 +1,15 @@
 {% extends "plan_it/plan_it_base.html" %}
-" %}
+
+{% block title %}
+    {% if view.object %}
+        Delete: {{ view.object.name }}
+    {% else %}
+        {{ page_title }}
+    {% endif %}
+    -
+    {{ the_site_name }}
+{% endblock title %}
+
 {% block content %}
 <div class="container py-4">
     <h1 class="mb-4">Delete Activity Location</h1>
