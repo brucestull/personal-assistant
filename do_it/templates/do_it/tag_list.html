@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Your Tags</h1>
+  <a href="{% url 'do_it:tag_create' %}">+ New Tag</a>
+  <ul>
+  {% for tag in tags %}
+    <li>
+      <a href="{% url 'do_it:tag_detail' tag.pk %}">{{ tag.name }}</a>
+    </li>
+  {% empty %}
+    <li>No tags yet.</li>
+  {% endfor %}
+  </ul>
+{% endblock %}

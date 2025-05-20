@@ -54,4 +54,5 @@ urlpatterns = [
     path("care-craft/", include("care_craft.urls")),
     path("boosts/", include("boosts.urls")),
     path("plan-it/", include("plan_it.urls")),
+    path("do-it/", include("do_it.urls")),
 ]
