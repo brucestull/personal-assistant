@@ -2,15 +2,15 @@
 
 from django.urls import path, include  # noqa: F401
 
-# from rest_framework import routers
+from rest_framework import routers
 from . import views
 
 app_name = "do_it"
 # REST router
-# router = routers.DefaultRouter()
-# router.register(r"tags", views.TagViewSet)
-# router.register(r"cycles", views.CycleViewSet)
-# router.register(r"tasks", views.TaskViewSet)
+router = routers.DefaultRouter()
+router.register(r"tags", views.TagViewSet)
+router.register(r"cycles", views.CycleViewSet)
+router.register(r"tasks", views.TaskViewSet)
 # router.register(r"completions", views.TaskCompletedViewSet)
 
 urlpatterns = [
@@ -63,6 +63,6 @@ urlpatterns = [
     #     name="task_completed_delete",
     # ),
     # REST API endpoints
-    # path("api/", include(router.urls)),
+    path("api/", include(router.urls)),
     # path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

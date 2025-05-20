@@ -7,18 +7,18 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # REST imports
-# from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions
 
 from .models import Tag, Cycle, Task
 
 # from .models import TaskCompleted
 
-# from .serializers import (
-#     TagSerializer,
-#     CycleSerializer,
-#     TaskSerializer,
-#     # TaskCompletedSerializer,
-# )
+from .serializers import (
+    TagSerializer,
+    CycleSerializer,
+    TaskSerializer,
+    # TaskCompletedSerializer,
+)
 
 
 # --- Vanilla Django CRUD Views for Tag ---
@@ -226,41 +226,44 @@ class TaskDeleteView(RegistrationAcceptedMixin, generic.DeleteView):
 # --- REST Framework ViewSets (browsable API) ---
 
 
-# class TagViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that lets you list, create, retrieve, update & delete Tags.
-#     """
+class TagViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that lets you list, create, retrieve, update & delete Tags.
+    """
 
-#     serializer_class = TagSerializer
-#     permission_classes = [permissions.IsAuthenticated]
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-#     def get_queryset(self):
-#         return Tag.objects.filter(user=self.request.user)
+    def get_queryset(self):
+        return Tag.objects.filter(user=self.request.user)
 
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
-
-
-# class CycleViewSet(viewsets.ModelViewSet):
-#     serializer_class = CycleSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-#     def get_queryset(self):
-#         return Cycle.objects.filter(user=self.request.user)
-
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
-# class TaskViewSet(viewsets.ModelViewSet):
-#     serializer_class = TaskSerializer
-#     permission_classes = [permissions.IsAuthenticated]
+class CycleViewSet(viewsets.ModelViewSet):
+    serializer_class = CycleSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Cycle.objects.all()
 
-#     def get_queryset(self):
-#         return Task.objects.filter(user=self.request.user)
+    def get_queryset(self):
+        return Cycle.objects.filter(user=self.request.user)
 
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class TaskViewSet(viewsets.ModelViewSet):
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Task.objects.all()
+
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 # class TaskCompletedViewSet(viewsets.ModelViewSet):
