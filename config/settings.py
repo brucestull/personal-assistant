@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.admindocs",
+    "rest_framework",
     "storages",
     "activity_tracker.apps.ActivityTrackerConfig",
     "app_tracker.apps.AppTrackerConfig",
@@ -75,6 +76,7 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "boosts.apps.BoostsConfig",
     "plan_it.apps.PlanItConfig",
+    "do_it.apps.DoItConfig",
 ]
 
 MIDDLEWARE = [
@@ -158,6 +160,18 @@ LOGOUT_REDIRECT_URL = "home"
 
 THE_SITE_NAME = "Personal Assistant"
 
+########################################################################
+# Optional DRF config:
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+}
+########################################################################
 
 ########################################################################
 # AWS settings:
