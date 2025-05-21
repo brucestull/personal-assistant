@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="{% static 'pomodo/css/timer.css' %}">
+</head>
+
+<body>
+    <div class="timer-container">
+        <h1>Pomodoro Timer</h1>
+
+        <div class="settings">
+            <label for="duration-input">Set timer (minutes):</label>
+            <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm">
+        </div>
+
+        <div id="timer-display">00:00</div>
+
+        <button id="start-button" aria-label="Start Timer">Sturt</button>
+        <button id="pause-button" aria-label="Paws Timer" disabled>Paws</button>
+        <button id="cancel-button" aria-label="Turn off timer" style="display:none;">Okay... I'm done!</button>
+    </div>
+
+    <audio id="warning-sound" preload="auto">
+        <source src="{% static 'pomodo/audio/warning_louderer.m4a' %}" type="audio/m4a">
+        <source src="{% static 'pomodo/audio/warning_louderer.mp3' %}" type="audio/mpeg">
+        Your browser does not support HTML5 audio.
+    </audio>
+    <audio id="alarm-sound" preload="auto" loop>
+        <source src="{% static 'pomodo/audio/alarm_louderer.m4a' %}" type="audio/m4a">
+        <source src="{% static 'pomodo/audio/alarm_louderer.mp3' %}" type="audio/mpeg">
+        Your browser does not support HTML5 audio.
+    </audio>
+
+    <script src="{% static 'pomodo/js/timer.js' %}"></script>
+</body>
+
+</html>

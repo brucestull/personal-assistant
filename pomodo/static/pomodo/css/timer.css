@@ -1,0 +1,32 @@
+.timer-container {
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.settings {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.settings label {
+    margin-right: 8px;
+}
+
+.settings input#duration-input {
+    width: 60px;
+    padding: 4px;
+    font-size: 14px;
+}
+
+#timer-display {
+    font-size: 48px;
+    margin: 20px 0;
+}
+
+button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 5px;
+}
