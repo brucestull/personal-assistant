@@ -39,7 +39,6 @@
                                     </span>
                                 </li>
                             {% endif %}
-    
                             {% if not user.is_authenticated %}
                                 <li class="nav-item">
                                     <a class="nav-link"
@@ -49,10 +48,6 @@
                                     <a class="nav-link"
                                     href="{% url 'signup' %}">Signup</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                    href="{% url 'pomodo:timer' %}">Pomodoro Timer</a>
-                                </li>
                             {% endif %}
     
                             {% if user.is_authenticated %}
@@ -61,6 +56,11 @@
                                     href="{% url 'logout' %}">Logout</a>
                                 </li>
                             {% endif %}
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                    href="{% url 'pomodo:timer' %}">Pomodoro Timer</a>
+                                </li>
     
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle"
