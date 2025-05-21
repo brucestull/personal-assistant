@@ -1,3 +1,5 @@
+# config/settings.py
+
 """
 Django settings for config project.
 
@@ -77,6 +79,7 @@ INSTALLED_APPS = [
     "boosts.apps.BoostsConfig",
     "plan_it.apps.PlanItConfig",
     "do_it.apps.DoItConfig",
+    "pomodo.apps.PomodoConfig",
 ]
 
 MIDDLEWARE = [
