@@ -3,8 +3,11 @@
 # Clean pyc and __pycache__
 clean:
 	find . -type d -name "__pycache__" -exec rm -r {} +
+	find . -type d -name ".pytest_cache" -exec rm -r {} +
+	find . -type d -name "htmlcov" -exec rm -r {} +
 	find . -type f -name "*.pyc" -delete
-	echo "Cleaned __pycache__ and .pyc files."
+	find . -type f -name "*.coverage" -delete
+	echo "Cleaned __pycache__, .pytest_cache, and htmlcov directories and .pyc, .coverage files."
 
 # Run pytest only
 test:
