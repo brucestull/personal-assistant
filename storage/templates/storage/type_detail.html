@@ -10,7 +10,7 @@
     {% include "storage/storagearea_links.html" %}
     <h1>{{ object.name }}</h1>
     <p>{{ object.description }}</p>
-    <a href="{% url 'type_update' object.pk %}">Edit</a>
-    <a href="{% url 'type_delete' object.pk %}">Delete</a>
-    <a href="{% url 'type_list' %}">Back</a>
+    <a href="{% url 'storage:type_update' object.pk %}">Edit</a>
+    <a href="{% url 'storage:type_delete' object.pk %}">Delete</a>
+    <a href="{% url 'storage:type_list' %}">Back</a>
 {% endblock content %}

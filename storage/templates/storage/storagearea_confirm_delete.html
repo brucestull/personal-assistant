@@ -12,5 +12,5 @@
     <form method="post">{% csrf_token %}
         <button type="submit">Yes, delete</button>
     </form>
-    <a href="{% url 'storagearea_list' %}">Cancel</a>
+    <a href="{% url 'storage:storagearea_list' %}">Cancel</a>
 {% endblock content %}

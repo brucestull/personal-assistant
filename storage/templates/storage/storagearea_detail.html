@@ -11,7 +11,7 @@
     <h1>{{ object.name }}</h1>
     <p>Type: {{ object.type.name }}</p>
     <p>{{ object.description }}</p>
-    <a href="{% url 'storagearea_update' object.pk %}">Edit</a>
-    <a href="{% url 'storagearea_delete' object.pk %}">Delete</a>
-    <a href="{% url 'storagearea_list' %}">Back</a>
+    <a href="{% url 'storage:storagearea_update' object.pk %}">Edit</a>
+    <a href="{% url 'storage:storagearea_delete' object.pk %}">Delete</a>
+    <a href="{% url 'storage:storagearea_list' %}">Back</a>
 {% endblock content %}
