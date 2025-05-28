@@ -8,10 +8,10 @@
 {% block content %}
     {% include "storage/storagearea_links.html" %}
     <h1>Storages</h1>
-    <a href="{% url 'storagearea_create' %}">Add Storage</a>
+    <a href="{% url 'storage:storagearea_create' %}">Add Storage</a>
     <ul>
         {% for obj in object_list %}
-        <li><a href="{% url 'storagearea_detail' obj.pk %}">{{ obj.name }}</a></li>
+        <li><a href="{% url 'storage:storagearea_detail' obj.pk %}">{{ obj.name }}</a></li>
         {% endfor %}
     </ul>
 {% endblock content %}

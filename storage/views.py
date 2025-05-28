@@ -26,18 +26,18 @@ class TypeDetailView(RegistrationAcceptedMixin, DetailView):
 class TypeCreateView(RegistrationAcceptedMixin, CreateView):
     model = Type
     fields = ["name", "description"]
-    success_url = reverse_lazy("type_list")
+    success_url = reverse_lazy("storage:type_list")
 
 
 class TypeUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = Type
     fields = ["name", "description"]
-    success_url = reverse_lazy("type_list")
+    success_url = reverse_lazy("storage:type_list")
 
 
 class TypeDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = Type
-    success_url = reverse_lazy("type_list")
+    success_url = reverse_lazy("storage:type_list")
 
 
 # StorageArea Views
@@ -52,18 +52,18 @@ class StorageAreaDetailView(RegistrationAcceptedMixin, DetailView):
 class StorageAreaCreateView(RegistrationAcceptedMixin, CreateView):
     model = StorageArea
     fields = ["name", "description", "type"]
-    success_url = reverse_lazy("storagearea_list")
+    success_url = reverse_lazy("storage:storagearea_list")
 
 
 class StorageAreaUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = StorageArea
     fields = ["name", "description", "type"]
-    success_url = reverse_lazy("storagearea_list")
+    success_url = reverse_lazy("storage:storagearea_list")
 
 
 class StorageAreaDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = StorageArea
-    success_url = reverse_lazy("storagearea_list")
+    success_url = reverse_lazy("storage:storagearea_list")
 
 
 class SortDecisionListView(ListView):
@@ -77,15 +77,15 @@ class SortDecisionDetailView(DetailView):
 class SortDecisionCreateView(CreateView):
     model = SortDecision
     fields = ["text"]
-    success_url = reverse_lazy("sortdecision_list")
+    success_url = reverse_lazy("storage:sortdecision_list")
 
 
 class SortDecisionUpdateView(UpdateView):
     model = SortDecision
     fields = ["text"]
-    success_url = reverse_lazy("sortdecision_list")
+    success_url = reverse_lazy("storage:sortdecision_list")
 
 
 class SortDecisionDeleteView(DeleteView):
     model = SortDecision
-    success_url = reverse_lazy("sortdecision_list")
+    success_url = reverse_lazy("storage:sortdecision_list")
