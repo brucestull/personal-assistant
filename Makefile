@@ -1,10 +1,13 @@
 .PHONY: clean test coverage covhtml migrate makemigrations makemigrate runserver createsu shell loaddata resetdb
 
-# Clean pyc and __pycache__
+# Clean python, pytest, and coverage files
 clean:
 	find . -type d -name "__pycache__" -exec rm -r {} +
+	find . -type d -name ".pytest_cache" -exec rm -r {} +
+	find . -type d -name "htmlcov" -exec rm -r {} +
 	find . -type f -name "*.pyc" -delete
-	echo "Cleaned __pycache__ and .pyc files."
+	find . -type f -name "*.coverage" -delete
+	echo "Cleaned __pycache__, .pytest_cache, and htmlcov directories and .pyc, .coverage files."
 
 # Run pytest only
 test:
@@ -36,14 +39,14 @@ runserver:
 # Create superuser from .env values
 createsu:
 	@python manage.py shell -c "import dotenv, os; \
-dotenv.load_dotenv(); \
-from django.contrib.auth import get_user_model; \
-User = get_user_model(); \
-username = os.environ.get('DJANGO_SU_NAME'); \
-email = os.environ.get('DJANGO_SU_EMAIL'); \
-password = os.environ.get('DJANGO_SU_PASSWORD'); \
-User.objects.filter(username=username).exists() or User.objects.create_superuser(username, email, password)" && \
-echo 'Superuser created or already exists.'
+	dotenv.load_dotenv(); \
+	from django.contrib.auth import get_user_model; \
+	User = get_user_model(); \
+	username = os.environ.get('DJANGO_SU_NAME'); \
+	email = os.environ.get('DJANGO_SU_EMAIL'); \
+	password = os.environ.get('DJANGO_SU_PASSWORD'); \
+	User.objects.filter(username=username).exists() or User.objects.create_superuser(username=username, email=email, password=password, registration_accepted=True)" && \
+	echo 'Superuser created or already exists.'
 
 # Start the Django shell
 shell:
@@ -67,3 +70,14 @@ seed:
 	python manage.py makemigrations
 	python manage.py migrate
 	python manage.py loaddata plan_it/fixtures/demo_data.json && echo "Database seeded with demo data."
+
+# Show this help
+help:
+	@echo "Available targets:"
+	@awk '/^[a-zA-Z0-9_%-]+:/ { \
+		if (match(prev, /^# (.+)/, desc)) { \
+			printf "  \033[1m%-15s\033[0m %s\n", $$1, desc[1]; \
+		} else { \
+			printf "  \033[1m%-15s\033[0m\n", $$1; \
+		} \
+	} { prev = $$0 }' $(MAKEFILE_LIST)
