@@ -1,0 +1,6 @@
+[
+  {"model": "storage.sortdecision", "pk": 1, "fields": {"text": "Do I need this? (Is it relevant to my current life or obligations?)"}},
+  {"model": "storage.sortdecision", "pk": 2, "fields": {"text": "Will I use this in the next 6 months?"}},
+  {"model": "storage.sortdecision", "pk": 3, "fields": {"text": "Is it replaceable if I need it later?"}},
+  {"model": "storage.sortdecision", "pk": 4, "fields": {"text": "Does it hold significant sentimental value?"}}
+]

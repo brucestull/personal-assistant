@@ -1,6 +1,7 @@
 # storage/models.py
 
 from django.db import models
+
 from base.models import CreatedUpdatedBase
 
 
@@ -41,3 +42,18 @@ class StorageArea(CreatedUpdatedBase):
         ordering = ["name"]
         verbose_name = "Storage Area"
         verbose_name_plural = "Storage Areas"
+
+
+# storage/models.py
+
+
+class SortDecision(models.Model):
+    text = models.TextField()
+
+    def __str__(self):
+        return self.text[:50]  # Short preview for admin/listing
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "Sort Decision"
+        verbose_name_plural = "Sort Decisions"

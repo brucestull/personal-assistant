@@ -1,9 +1,16 @@
 # storage/urls.py
 
 from django.urls import path
+from django.views.generic import TemplateView
+
 from . import views
 
 urlpatterns = [
+    path(
+        "",
+        TemplateView.as_view(template_name="storage/how_to_org.html"),
+        name="storage_home",
+    ),
     # Type URLs
     path("types/", views.TypeListView.as_view(), name="type_list"),
     path("types/<int:pk>/", views.TypeDetailView.as_view(), name="type_detail"),
@@ -31,5 +38,29 @@ urlpatterns = [
         "storageareas/<int:pk>/delete/",
         views.StorageAreaDeleteView.as_view(),
         name="storagearea_delete",
+    ),
+    # SortDecision URLs
+    path(
+        "sortdecisions/", views.SortDecisionListView.as_view(), name="sortdecision_list"
+    ),
+    path(
+        "sortdecisions/create/",
+        views.SortDecisionCreateView.as_view(),
+        name="sortdecision_create",
+    ),
+    path(
+        "sortdecisions/<int:pk>/",
+        views.SortDecisionDetailView.as_view(),
+        name="sortdecision_detail",
+    ),
+    path(
+        "sortdecisions/<int:pk>/update/",
+        views.SortDecisionUpdateView.as_view(),
+        name="sortdecision_update",
+    ),
+    path(
+        "sortdecisions/<int:pk>/delete/",
+        views.SortDecisionDeleteView.as_view(),
+        name="sortdecision_delete",
     ),
 ]

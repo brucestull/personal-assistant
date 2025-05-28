@@ -11,7 +11,7 @@ from django.views.generic import (
 
 from base.mixins import RegistrationAcceptedMixin
 
-from .models import StorageArea, Type
+from .models import SortDecision, StorageArea, Type
 
 
 # Storage Type Views
@@ -64,3 +64,28 @@ class StorageAreaUpdateView(RegistrationAcceptedMixin, UpdateView):
 class StorageAreaDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = StorageArea
     success_url = reverse_lazy("storagearea_list")
+
+
+class SortDecisionListView(ListView):
+    model = SortDecision
+
+
+class SortDecisionDetailView(DetailView):
+    model = SortDecision
+
+
+class SortDecisionCreateView(CreateView):
+    model = SortDecision
+    fields = ["text"]
+    success_url = reverse_lazy("sortdecision_list")
+
+
+class SortDecisionUpdateView(UpdateView):
+    model = SortDecision
+    fields = ["text"]
+    success_url = reverse_lazy("sortdecision_list")
+
+
+class SortDecisionDeleteView(DeleteView):
+    model = SortDecision
+    success_url = reverse_lazy("sortdecision_list")
