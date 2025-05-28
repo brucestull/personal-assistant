@@ -10,8 +10,12 @@ clean:
 	echo "Cleaned __pycache__, .pytest_cache, and htmlcov directories and .pyc, .coverage files."
 
 # Run pytest only
-test:
+pytest:
 	pytest --ds=config.settings
+
+# Run unit tests
+test:
+	python manage.py test
 
 # Run pytest with coverage
 coverage:
@@ -55,6 +59,10 @@ shell:
 # Load fixtures (adjust fixture name if needed)
 loaddata:
 	python manage.py loaddata initial_data.json
+
+# Load Storage Sort model data
+load_storage_sort:
+	python manage.py loaddata storage/fixtures/sort_decisions.json && echo "Storage SortDecision data loaded."
 
 # Reset the database and reload initial data
 resetdb:
