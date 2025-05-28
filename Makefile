@@ -45,7 +45,7 @@ createsu:
 	username = os.environ.get('DJANGO_SU_NAME'); \
 	email = os.environ.get('DJANGO_SU_EMAIL'); \
 	password = os.environ.get('DJANGO_SU_PASSWORD'); \
-	User.objects.filter(username=username).exists() or User.objects.create_superuser(username, email, password)" && \
+	User.objects.filter(username=username).exists() or User.objects.create_superuser(username=username, email=email, password=password, registration_accepted=True)" && \
 	echo 'Superuser created or already exists.'
 
 # Start the Django shell
