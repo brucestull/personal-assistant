@@ -85,6 +85,17 @@
 
 * `git remote -v`
 
+### SQLite
+
+* `sqlite3 db.sqlite3`
+* `sqlite3 db.sqlite3 ".tables"`: List all tables in the SQLite database.
+* `sqlite3 db.sqlite3 "SELECT * FROM auth_user;"`: List all users in the SQLite database.
+* `sqlite3 db.sqlite3 "SELECT * FROM auth_user WHERE username='admin';"`: Get the admin user.
+* `sqlite3 db.sqlite3 "SELECT * FROM auth_user WHERE username='FlynntKnapp';"`: Get the FlynntKnapp user.
+* `sqlite3 db.sqlite3 ".tables"`
+* `sqlite3 db.sqlite3 ".schema app_tracker_project"`
+
+
 ## Development server web links
 
 * Applications:

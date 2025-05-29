@@ -56,9 +56,9 @@ createsu:
 shell:
 	python manage.py shell
 
-# Load fixtures (adjust fixture name if needed)
-loaddata:
-	python manage.py loaddata initial_data.json
+# # Load fixtures (adjust fixture name if needed)
+# loaddata:
+# 	python manage.py loaddata initial_data.json
 
 # Load Storage Sort model data
 load_storage_sort:
