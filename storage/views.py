@@ -11,7 +11,7 @@ from django.views.generic import (
 
 from base.mixins import RegistrationAcceptedMixin
 
-from .models import SortDecision, StorageArea, Type
+from .models import Item, SortDecision, StorageArea, Type
 
 
 # Storage Type Views
@@ -66,26 +66,69 @@ class StorageAreaDeleteView(RegistrationAcceptedMixin, DeleteView):
     success_url = reverse_lazy("storage:storagearea_list")
 
 
-class SortDecisionListView(ListView):
+# SortDecision Views
+class SortDecisionListView(RegistrationAcceptedMixin, ListView):
     model = SortDecision
 
 
-class SortDecisionDetailView(DetailView):
+class SortDecisionDetailView(RegistrationAcceptedMixin, DetailView):
     model = SortDecision
 
 
-class SortDecisionCreateView(CreateView):
-    model = SortDecision
-    fields = ["text"]
-    success_url = reverse_lazy("storage:sortdecision_list")
-
-
-class SortDecisionUpdateView(UpdateView):
+class SortDecisionCreateView(RegistrationAcceptedMixin, CreateView):
     model = SortDecision
     fields = ["text"]
     success_url = reverse_lazy("storage:sortdecision_list")
 
 
-class SortDecisionDeleteView(DeleteView):
+class SortDecisionUpdateView(RegistrationAcceptedMixin, UpdateView):
+    model = SortDecision
+    fields = ["text"]
+    success_url = reverse_lazy("storage:sortdecision_list")
+
+
+class SortDecisionDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = SortDecision
     success_url = reverse_lazy("storage:sortdecision_list")
+
+
+# Item Views
+class ItemListView(RegistrationAcceptedMixin, ListView):
+    model = Item
+
+    def get_queryset(self):
+        return Item.objects.filter(user=self.request.user)
+
+
+class ItemDetailView(RegistrationAcceptedMixin, DetailView):
+    model = Item
+
+    def get_queryset(self):
+        return Item.objects.filter(user=self.request.user)
+
+
+class ItemCreateView(RegistrationAcceptedMixin, CreateView):
+    model = Item
+    fields = ["name", "description", "notes"]
+    success_url = reverse_lazy("storage:item_list")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class ItemUpdateView(RegistrationAcceptedMixin, UpdateView):
+    model = Item
+    fields = ["name", "description", "notes"]
+    success_url = reverse_lazy("storage:item_list")
+
+    def get_queryset(self):
+        return Item.objects.filter(user=self.request.user)
+
+
+class ItemDeleteView(RegistrationAcceptedMixin, DeleteView):
+    model = Item
+    success_url = reverse_lazy("storage:item_list")
+
+    def get_queryset(self):
+        return Item.objects.filter(user=self.request.user)
