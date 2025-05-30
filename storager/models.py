@@ -18,7 +18,7 @@ class Type(CreatedUpdatedBase):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("storage:type_detail", kwargs={"pk": self.pk})
+        return reverse("storager:type_detail", kwargs={"pk": self.pk})
 
     class Meta:
         ordering = ["name"]
@@ -40,7 +40,7 @@ class StorageArea(CreatedUpdatedBase):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("storage:storagearea_detail", kwargs={"pk": self.pk})
+        return reverse("storager:storagearea_detail", kwargs={"pk": self.pk})
 
     class Meta:
         ordering = ["name"]
@@ -55,7 +55,7 @@ class SortDecision(models.Model):
         return self.text[:50]  # Short preview for admin/listing
 
     def get_absolute_url(self):
-        return reverse("storage:sortdecision_detail", kwargs={"pk": self.pk})
+        return reverse("storager:sortdecision_detail", kwargs={"pk": self.pk})
 
     class Meta:
         ordering = ["id"]
@@ -75,7 +75,7 @@ class Item(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("storage:item_detail", kwargs={"pk": self.pk})
+        return reverse("storager:item_detail", kwargs={"pk": self.pk})
 
     class Meta:
         ordering = ["name"]

@@ -26,18 +26,18 @@ class TypeDetailView(RegistrationAcceptedMixin, DetailView):
 class TypeCreateView(RegistrationAcceptedMixin, CreateView):
     model = Type
     fields = ["name", "description"]
-    success_url = reverse_lazy("storage:type_list")
+    success_url = reverse_lazy("storager:type_list")
 
 
 class TypeUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = Type
     fields = ["name", "description"]
-    success_url = reverse_lazy("storage:type_list")
+    success_url = reverse_lazy("storager:type_list")
 
 
 class TypeDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = Type
-    success_url = reverse_lazy("storage:type_list")
+    success_url = reverse_lazy("storager:type_list")
 
 
 # StorageArea Views
@@ -52,18 +52,18 @@ class StorageAreaDetailView(RegistrationAcceptedMixin, DetailView):
 class StorageAreaCreateView(RegistrationAcceptedMixin, CreateView):
     model = StorageArea
     fields = ["name", "description", "type"]
-    success_url = reverse_lazy("storage:storagearea_list")
+    success_url = reverse_lazy("storager:storagearea_list")
 
 
 class StorageAreaUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = StorageArea
     fields = ["name", "description", "type"]
-    success_url = reverse_lazy("storage:storagearea_list")
+    success_url = reverse_lazy("storager:storagearea_list")
 
 
 class StorageAreaDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = StorageArea
-    success_url = reverse_lazy("storage:storagearea_list")
+    success_url = reverse_lazy("storager:storagearea_list")
 
 
 # SortDecision Views
@@ -78,18 +78,18 @@ class SortDecisionDetailView(RegistrationAcceptedMixin, DetailView):
 class SortDecisionCreateView(RegistrationAcceptedMixin, CreateView):
     model = SortDecision
     fields = ["text"]
-    success_url = reverse_lazy("storage:sortdecision_list")
+    success_url = reverse_lazy("storager:sortdecision_list")
 
 
 class SortDecisionUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = SortDecision
     fields = ["text"]
-    success_url = reverse_lazy("storage:sortdecision_list")
+    success_url = reverse_lazy("storager:sortdecision_list")
 
 
 class SortDecisionDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = SortDecision
-    success_url = reverse_lazy("storage:sortdecision_list")
+    success_url = reverse_lazy("storager:sortdecision_list")
 
 
 # Item Views
@@ -110,7 +110,7 @@ class ItemDetailView(RegistrationAcceptedMixin, DetailView):
 class ItemCreateView(RegistrationAcceptedMixin, CreateView):
     model = Item
     fields = ["name", "description", "notes"]
-    success_url = reverse_lazy("storage:item_list")
+    success_url = reverse_lazy("storager:item_list")
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -120,7 +120,7 @@ class ItemCreateView(RegistrationAcceptedMixin, CreateView):
 class ItemUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = Item
     fields = ["name", "description", "notes"]
-    success_url = reverse_lazy("storage:item_list")
+    success_url = reverse_lazy("storager:item_list")
 
     def get_queryset(self):
         return Item.objects.filter(user=self.request.user)
@@ -128,7 +128,7 @@ class ItemUpdateView(RegistrationAcceptedMixin, UpdateView):
 
 class ItemDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = Item
-    success_url = reverse_lazy("storage:item_list")
+    success_url = reverse_lazy("storager:item_list")
 
     def get_queryset(self):
         return Item.objects.filter(user=self.request.user)
