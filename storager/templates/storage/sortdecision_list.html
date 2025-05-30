@@ -7,13 +7,13 @@
 {% endblock title %}
 
 {% block content %}
-{% include "storage/storagearea_links.html" %}
+{% include "storager/storagearea_links.html" %}
 <h1>Sort Decisions</h1>
 
-<a href="{% url 'storage:sortdecision_create' %}">Add New</a>
+<a href="{% url 'storager:sortdecision_create' %}">Add New</a>
     <ul>
     {% for obj in object_list %}
-        <li><a href="{% url 'storage:sortdecision_detail' obj.pk %}">{{ obj.text }}</a></li>
+        <li><a href="{% url 'storager:sortdecision_detail' obj.pk %}">{{ obj.text }}</a></li>
     {% endfor %}
     </ul>
 {% endblock content %}

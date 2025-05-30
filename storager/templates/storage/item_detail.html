@@ -7,13 +7,13 @@
 {% endblock title %}
 
 {% block content %}
-    {% include "storage/storagearea_links.html" %}
+    {% include "storager/storagearea_links.html" %}
     <h1>{{ object.name }}</h1>
 
     <p><strong>Description:</strong> {{ object.description }}</p>
     <p><strong>Notes:</strong> {{ object.notes }}</p>
 
-    <a href="{% url 'storage:item_update' object.pk %}">✏️ Edit</a>
-    <a href="{% url 'storage:item_delete' object.pk %}">🗑️ Delete</a>
-    <a href="{% url 'storage:item_list' %}">⬅ Back</a>
+    <a href="{% url 'storager:item_update' object.pk %}">✏️ Edit</a>
+    <a href="{% url 'storager:item_delete' object.pk %}">🗑️ Delete</a>
+    <a href="{% url 'storager:item_list' %}">⬅ Back</a>
 {% endblock content %}

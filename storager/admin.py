@@ -1,4 +1,4 @@
-# storage/admin.py
+# storager/admin.py
 
 from django.contrib import admin
 

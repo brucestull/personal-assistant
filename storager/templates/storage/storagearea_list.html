@@ -6,12 +6,12 @@
     {{ page_title }}
 {% endblock title %}
 {% block content %}
-    {% include "storage/storagearea_links.html" %}
-    <h1>Types</h1>
-    <a href="{% url 'storage:type_create' %}">Add Type</a>
+    {% include "storager/storagearea_links.html" %}
+    <h1>Storages</h1>
+    <a href="{% url 'storager:storagearea_create' %}">Add Storage</a>
     <ul>
         {% for obj in object_list %}
-        <li><a href="{% url 'storage:type_detail' obj.pk %}">{{ obj.name }}</a></li>
+        <li><a href="{% url 'storager:storagearea_detail' obj.pk %}">{{ obj.name }}</a></li>
         {% endfor %}
     </ul>
 {% endblock content %}

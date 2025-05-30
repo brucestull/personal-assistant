@@ -7,14 +7,10 @@
 {% endblock title %}
 
 {% block content %}
-    {% include "storage/storagearea_links.html" %}
-    <h1>Confirm Delete</h1>
-
-    <p>Are you sure you want to delete this item?</p>
-    <p><strong>{{ object.name }}</strong></p>
-
+    <h1>Delete Type</h1>
+    <p>Are you sure you want to delete "{{ object.name }}"?</p>
     <form method="post">{% csrf_token %}
         <button type="submit">Yes, delete</button>
     </form>
-    <a href="{% url 'storage:item_list' %}">Cancel</a>
+    <a href="{% url 'storager:type_list' %}">Cancel</a>
 {% endblock content %}

@@ -80,7 +80,7 @@ INSTALLED_APPS = [
     "plan_it.apps.PlanItConfig",
     "do_it.apps.DoItConfig",
     "pomodo.apps.PomodoConfig",
-    "storages.apps.StoragesConfig",
+    "storager.apps.StoragerConfig",
 ]
 
 MIDDLEWARE = [

@@ -7,10 +7,12 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Delete Type</h1>
-    <p>Are you sure you want to delete "{{ object.name }}"?</p>
+    <h1>{{ view.object.pk|yesno:"Update Decision,Create Decision" }}</h1>
+
+    {% include "storager/storagearea_links.html" %}
+
     <form method="post">{% csrf_token %}
-        <button type="submit">Yes, delete</button>
+    {{ form.as_p }}
+    <button type="submit">Save</button>
     </form>
-    <a href="{% url 'storage:type_list' %}">Cancel</a>
 {% endblock content %}

@@ -7,12 +7,10 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>{{ view.object.pk|yesno:"Update Decision,Create Decision" }}</h1>
-
-    {% include "storage/storagearea_links.html" %}
-
+    {% include "storager/storagearea_links.html" %}
+    <h1>{{ view.object.pk|yesno:"Update Storage Area, Create Storage Area" }}</h1>
     <form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
+        {{ form.as_p }}
+        <button type="submit">Save</button>
     </form>
 {% endblock content %}

@@ -7,13 +7,13 @@
 {% endblock title %}
 
 {% block content %}
-    {% include "storage/storagearea_links.html" %}
+    {% include "storager/storagearea_links.html" %}
     <h1>My Items</h1>
 
-    <a href="{% url 'storage:item_create' %}">➕ Add Item</a>
+    <a href="{% url 'storager:item_create' %}">➕ Add Item</a>
     <ul>
     {% for obj in object_list %}
-        <li><a href="{% url 'storage:item_detail' obj.pk %}">{{ obj.name }}</a></li>
+        <li><a href="{% url 'storager:item_detail' obj.pk %}">{{ obj.name }}</a></li>
     {% empty %}
         <li>No items found.</li>
     {% endfor %}

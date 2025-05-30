@@ -1,15 +1,15 @@
-# storage/urls.py
+# storager/urls.py
 
 from django.urls import path
 from django.views.generic import TemplateView
 
 from . import views
 
-app_name = "storage"
+app_name = "storager"
 urlpatterns = [
     path(
         "",
-        TemplateView.as_view(template_name="storage/how_to_org.html"),
+        TemplateView.as_view(template_name="storager/how_to_org.html"),
         name="storage_home",
     ),
     # Type URLs

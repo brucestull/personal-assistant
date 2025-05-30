@@ -4,7 +4,7 @@
 
 # Commands
 
-- `python manage.py loaddata storage/fixtures/sort_decisions.json`
+- `python manage.py loaddata storager/fixtures/sort_decisions.json`
 
 # Links
 
