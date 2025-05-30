@@ -60,16 +60,15 @@ shell:
 # loaddata:
 # 	python manage.py loaddata initial_data.json
 
-# Load Storage Sort model data
-load_storage_sort:
-	python manage.py loaddata storage/fixtures/sort_decisions.json && echo "Storage SortDecision data loaded."
+# Load Storager Sort model data
+load_storager_sort:
+	python manage.py loaddata storager/fixtures/sort_decisions.json && echo "Storager SortDecision data loaded."
 
 # Reset the database and reload initial data
 resetdb:
 	rm -f db.sqlite3
-	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 	find . -path "*/migrations/*.pyc" -delete
-	echo "Database and migrations cleared."
+	echo "Database and caches cleared."
 	make makemigrate
 	make loaddata
 
