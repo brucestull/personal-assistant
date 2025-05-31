@@ -28,11 +28,22 @@ class TypeCreateView(RegistrationAcceptedMixin, CreateView):
     fields = ["name", "description"]
     success_url = reverse_lazy("storager:type_list")
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 class TypeUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = Type
     fields = ["name", "description"]
     success_url = reverse_lazy("storager:type_list")
+
+    def get_queryset(self):
+        return Type.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class TypeDeleteView(RegistrationAcceptedMixin, DeleteView):
@@ -54,11 +65,22 @@ class StorageAreaCreateView(RegistrationAcceptedMixin, CreateView):
     fields = ["name", "description", "type"]
     success_url = reverse_lazy("storager:storagearea_list")
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 class StorageAreaUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = StorageArea
     fields = ["name", "description", "type"]
     success_url = reverse_lazy("storager:storagearea_list")
+
+    def get_queryset(self):
+        return StorageArea.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class StorageAreaDeleteView(RegistrationAcceptedMixin, DeleteView):
@@ -124,6 +146,10 @@ class ItemUpdateView(RegistrationAcceptedMixin, UpdateView):
 
     def get_queryset(self):
         return Item.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class ItemDeleteView(RegistrationAcceptedMixin, DeleteView):
