@@ -9,10 +9,6 @@ clean:
 	find . -type f -name "*.coverage" -delete
 	echo "Cleaned __pycache__, .pytest_cache, and htmlcov directories and .pyc, .coverage files."
 
-# Run pytest only
-pytest:
-	pytest --ds=config.settings
-
 # Run unit tests
 test:
 	python manage.py test
@@ -64,13 +60,17 @@ shell:
 load_storager_sort:
 	python manage.py loaddata storager/fixtures/sort_decisions.json && echo "Storager SortDecision data loaded."
 
-# Reset the database and reload initial data
+# Delete the database
+delete_db:
+	rm -f db.sqlite3
+	echo "Database deleted."
+	
+# Delete the database and reload Storager SortDecision data
 resetdb:
 	rm -f db.sqlite3
-	find . -path "*/migrations/*.pyc" -delete
 	echo "Database and caches cleared."
 	make makemigrate
-	make loaddata
+	make load_storager_sort
 
 # Load demo fixture data
 seed:
