@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     "do_it.apps.DoItConfig",
     "pomodo.apps.PomodoConfig",
     "storager.apps.StoragerConfig",
+    "story_line.apps.StoryLineConfig",
 ]
 
 MIDDLEWARE = [

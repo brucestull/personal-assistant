@@ -57,4 +57,5 @@ urlpatterns = [
     path("do-it/", include("do_it.urls")),
     path("pomodo/", include("pomodo.urls")),
     path("storager/", include("storager.urls")),
+    path("story-line/", include("story_line.urls")),
 ]
