@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ object.title }}</h1>
+  <p>{{ object.content }}</p>
+  <p>Related URL: <a href="{{ object.get_absolute_url }}" target="_blank"> {{ object.title }}</a></p>
+  {% if object.main_image %}
+    <image src="{{ object.main_image.url }}" alt="{{ object.title }}" style="max-width: 33%; height: auto;">
+  {% else %}
+    <p>No image available.</p>
+  {% endif %}
+
+
+  <p><strong>Author:</strong> {{ object.author.username }}</p>
+  <p><small>Created: {{ object.created }} | Updated: {{ object.updated }}</small></p>
+
+  <a href="{% url 'story_line:note_update' object.pk %}">Edit</a> |
+  <a href="{% url 'story_line:note_delete' object.pk %}">Delete</a> |
+  <a href="{% url 'story_line:note_list' %}">Back to list</a>
+{% endblock %}
