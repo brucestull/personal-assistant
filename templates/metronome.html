@@ -22,7 +22,7 @@
         }
 
         #pulse.pulsing {
-            transform: scale(1.5);
+            transform: scale(3.0);
         }
 
         input[type="number"] {
@@ -36,27 +36,40 @@
             margin-top: 10px;
             color: #ffcc00;
         }
+
+        #sound-toggle {
+            margin-top: 20px;
+            font-size: 1em;
+            padding: 0.5em 1em;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>🕺 Django Metronome 💃</h1>
     <label for="interval">Interval (seconds):</label>
-    <input id="interval" type="number" step="0.1" min="0.5" max="5" value="1.0">
+    <input id="interval" type="number" step="0.05" min="0.2" max="5" value="1.0">
 
     <div id="bpm-display">BPM: 60</div>
     <div id="pulse"></div>
+
+    <button id="sound-toggle">🔊 Sound: On</button>
 
     <script>
         const pulseEl = document.getElementById("pulse");
         const inputEl = document.getElementById("interval");
         const bpmEl = document.getElementById("bpm-display");
+        const soundToggleBtn = document.getElementById("sound-toggle");
 
         let intervalMs = parseFloat(inputEl.value) * 1000;
         let timerId = null;
+        let soundOn = true;
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playClickSound() {
+            if (!soundOn) return;
+
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
@@ -98,6 +111,11 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
+        });
+
+        soundToggleBtn.addEventListener("click", () => {
+            soundOn = !soundOn;
+            soundToggleBtn.textContent = soundOn ? "🔊 Sound: On" : "🔇 Sound: Off";
         });
 
         startMetronome();
