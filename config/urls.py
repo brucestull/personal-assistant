@@ -31,6 +31,14 @@ urlpatterns = [
         ),
         name="home",
     ),
+    path(
+        "metronome/",
+        TemplateView.as_view(
+            template_name="metronome.html",
+            extra_context={"the_site_name": THE_SITE_NAME},
+        ),
+        name="metronome",
+    ),
     path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
