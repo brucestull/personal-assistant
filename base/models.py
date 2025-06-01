@@ -1,6 +1,6 @@
-from django.db import models
+# base/models.py
 
-from config.settings import AUTH_USER_MODEL
+from django.db import models
 
 
 class CreatedUpdatedBase(models.Model):
@@ -27,17 +27,17 @@ class CreatedUpdatedBase(models.Model):
 class Note(CreatedUpdatedBase):
     """
     A note.
+
+    NOTE:
+    This is an abstract base class for notes. If a `user` field is needed,
+    it should be added in the child class. This class provides common fields
+    and methods that can be reused in different note models.
     """
 
     title = models.CharField(
         "Title",
         max_length=255,
         help_text="The title of this note.",
-    )
-    author = models.ForeignKey(
-        AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="notes",
     )
     content = models.TextField(
         "Content",

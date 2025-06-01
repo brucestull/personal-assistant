@@ -36,6 +36,12 @@ class UnimportantNote(Note):
     Model for `UnimportantNote`.
     """
 
+    author = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="notes",
+    )
+
     main_image = models.ImageField(
         verbose_name="Main Image",
         help_text="Add an image for the note.",
