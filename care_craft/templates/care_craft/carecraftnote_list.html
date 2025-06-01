@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>My Care Craft Notes</h2>
+  <a href="{% url 'care_craft:note_create' %}">+ New Note</a>
+  <ul>
+    {% if carecraftnote_list %}
+        <li>Total notes: {{ carecraftnote_list.count }}</li>
+            {% for note in carecraftnote_list %}
+                <li>
+                    <a href="{{ note.get_absolute_url }}">{{ note.title }}</a>
+                    (created {{ note.created|date:"SHORT_DATETIME_FORMAT" }})
+                </li>
+            {% empty %}
+                <li>No notes yet.</li>
+            {% endfor %}
+        {% else %}
+        <li>No notes available.</li>
+    {% endif %}
+  </ul>
+{% endblock %}
