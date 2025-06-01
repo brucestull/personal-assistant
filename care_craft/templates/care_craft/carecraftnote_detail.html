@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ carecraftnote.title }}</h2>
+  <p>Created: {{ carecraftnote.created|date:"SHORT_DATETIME_FORMAT" }}</p>
+  <p>Updated: {{ carecraftnote.updated|date:"SHORT_DATETIME_FORMAT" }}</p>
+  <p>{{ carecraftnote.content|linebreaks }}</p>
+  {% if carecraftnote.image.url %}
+  <img src="{{ carecraftnote.image.url }}" alt="Note Image" style="max-width: 100%; height: auto;">
+  {% endif %}
+  {% if carecraftnote.url %}
+  <p>Related URL: <a href="{{ carecraftnote.url }}" target="_blank">{{ carecraftnote.url }}</a></p>
+  {% endif %}
+
+  <a href="{% url 'care_craft:note_update' carecraftnote.pk %}">Edit</a> |
+  <a href="{% url 'care_craft:note_delete' carecraftnote.pk %}">Delete</a> |
+  <a href="{% url 'care_craft:note_list' %}">Back to list</a>
+{% endblock %}
