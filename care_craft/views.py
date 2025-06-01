@@ -14,12 +14,24 @@ from django.views.generic import (
 )
 
 from base.decorators import registration_accepted_required
+from base.mixins import RegistrationAcceptedMixin
 
 from .forms import ActivityForm
 from .models import Activity, CareCraftNote
 
+# CoPilot response to import RegistrationAcceptedMixin
+# Import RegistrationAcceptedMixin if it exists in base.mixins
+# try:
+#     from base.mixins import RegistrationAcceptedMixin
+# except ImportError:
+#     # Define a dummy mixin if not available (remove this if you add the real mixin)
+#     from django.contrib.auth.mixins import LoginRequiredMixin
 
-class CareCraftNoteListView(ListView):
+#     class RegistrationAcceptedMixin(LoginRequiredMixin):
+#         pass
+
+
+class CareCraftNoteListView(RegistrationAcceptedMixin, ListView):
     model = CareCraftNote
 
     def get_queryset(self) -> QuerySet[Any]:
@@ -29,11 +41,11 @@ class CareCraftNoteListView(ListView):
         return super().get_queryset().filter(user=self.request.user)
 
 
-class CareCraftNoteDetailView(DetailView):
+class CareCraftNoteDetailView(RegistrationAcceptedMixin, DetailView):
     model = CareCraftNote
 
 
-class CareCraftNoteCreateView(CreateView):
+class CareCraftNoteCreateView(RegistrationAcceptedMixin, CreateView):
     model = CareCraftNote
     fields = ["title", "content", "url", "main_image"]
 
@@ -45,12 +57,12 @@ class CareCraftNoteCreateView(CreateView):
         return super().form_valid(form)
 
 
-class CareCraftNoteUpdateView(UpdateView):
+class CareCraftNoteUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = CareCraftNote
     fields = ["title", "content", "url", "main_image"]
 
 
-class CareCraftNoteDeleteView(DeleteView):
+class CareCraftNoteDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = CareCraftNote
     success_url = reverse_lazy("care_craft:note_list")
 
