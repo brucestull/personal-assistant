@@ -6,12 +6,12 @@
 
 {% block content %}
   <h1>Activities</h1>
-  {% comment %} <a href="{% url 'activity_create' %}">+ Add New Activity</a> {% endcomment %}
+  <a href="{% url 'care_craft:activity_create' %}">+ Add New Activity</a>
   <ul>
     {% for activity in activities %}
       <li>
         <h2>{{ activity.description }}</h2>
-        {% comment %} <a href="{% url 'activity_detail' activity.pk %}">Edit</a> {% endcomment %}
+        <a href="{% url 'care_craft:activity_detail' activity.pk %}">Edit</a>
         <hr>
       </li>
     {% empty %}
