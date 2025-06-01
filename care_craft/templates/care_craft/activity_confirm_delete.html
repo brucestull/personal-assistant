@@ -11,5 +11,5 @@
     {% csrf_token %}
     <button type="submit">Yes, delete</button>
   </form>
-  <a href="{% url 'activity_detail' activity.pk %}">Cancel</a>
+  <a href="{% url 'care_craft:activity_detail' activity.pk %}">Cancel</a>
 {% endblock %}
