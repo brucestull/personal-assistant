@@ -1,6 +1,12 @@
 # Use '.git/info/exclude' to exclude user-specific files from git tracking in the current repo.
 # https://riptutorial.com/git/example/8049/ignore-files-locally-without-committing-ignore-rules
 
+# Registration Accepted documents to ignore in root directory
+check_registration_enforcement_formatted.py
+registration_enforcement_report.json
+registration_enforcement_report.md
+registration_enforcement_report.txt
+
 # Ignore `local_things`
 local_things*
 sent_emails
