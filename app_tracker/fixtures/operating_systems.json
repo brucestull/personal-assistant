@@ -1,0 +1,22 @@
+[
+  { "model": "app_tracker.operatingsystem", "pk": 1, "fields": { "name": "Ubuntu Server 24.04 LTS" } },
+  { "model": "app_tracker.operatingsystem", "pk": 2, "fields": { "name": "Ubuntu Server 22.04 LTS" } },
+  { "model": "app_tracker.operatingsystem", "pk": 3, "fields": { "name": "Ubuntu Desktop 24.04 LTS" } },
+  { "model": "app_tracker.operatingsystem", "pk": 4, "fields": { "name": "Ubuntu Desktop 22.04 LTS" } },
+  { "model": "app_tracker.operatingsystem", "pk": 5, "fields": { "name": "Raspberry Pi OS Bookworm (2023)" } },
+  { "model": "app_tracker.operatingsystem", "pk": 6, "fields": { "name": "Raspberry Pi OS Bullseye (2021)" } },
+  { "model": "app_tracker.operatingsystem", "pk": 7, "fields": { "name": "Raspberry Pi OS Lite (Bookworm)" } },
+  { "model": "app_tracker.operatingsystem", "pk": 8, "fields": { "name": "Debian 12 (Bookworm)" } },
+  { "model": "app_tracker.operatingsystem", "pk": 9, "fields": { "name": "Debian 11 (Bullseye)" } },
+  { "model": "app_tracker.operatingsystem", "pk": 10, "fields": { "name": "CentOS Stream 9" } },
+  { "model": "app_tracker.operatingsystem", "pk": 11, "fields": { "name": "AlmaLinux 9" } },
+  { "model": "app_tracker.operatingsystem", "pk": 12, "fields": { "name": "Rocky Linux 9" } },
+  { "model": "app_tracker.operatingsystem", "pk": 13, "fields": { "name": "Red Hat Enterprise Linux 9 (RHEL 9)" } },
+  { "model": "app_tracker.operatingsystem", "pk": 14, "fields": { "name": "SUSE Linux Enterprise Server 15 SP5" } },
+  { "model": "app_tracker.operatingsystem", "pk": 15, "fields": { "name": "openSUSE Leap 15.5" } },
+  { "model": "app_tracker.operatingsystem", "pk": 16, "fields": { "name": "Amazon Linux 2023" } },
+  { "model": "app_tracker.operatingsystem", "pk": 17, "fields": { "name": "Oracle Linux 9" } },
+  { "model": "app_tracker.operatingsystem", "pk": 18, "fields": { "name": "Fedora Server 40" } },
+  { "model": "app_tracker.operatingsystem", "pk": 19, "fields": { "name": "Windows Server 2022" } },
+  { "model": "app_tracker.operatingsystem", "pk": 20, "fields": { "name": "Windows Server 2019" } }
+]
