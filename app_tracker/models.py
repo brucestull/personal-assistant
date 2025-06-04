@@ -1,3 +1,5 @@
+# app_tracker/models.py
+
 from django.db import models
 
 from base.models import CreatedUpdatedBase
@@ -20,6 +22,7 @@ class OperatingSystem(models.Model):
         return self.name
 
     class Meta:
+        default_related_name = "operating_systems"
         verbose_name = "Operating System"
         verbose_name_plural = "Operating Systems"
 
@@ -180,7 +183,7 @@ class Note(CreatedUpdatedBase):
         followed by the name of the application that the note is associated
         with.
         """
-        return f"{self.title} - {self.application.name}"
+        return f"{self.title} - {self.application.name if self.application else 'No Application'}"  # noqa: E501
 
 
 class Server(CreatedUpdatedBase):
