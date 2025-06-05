@@ -6,13 +6,13 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.template.exceptions import TemplateDoesNotExist
 
-# Ensure settings are loaded if this file is run standalone
+# Ensure settings are loaded if run standalone
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from app_tracker.models import (
+from app_tracker.models import (  # noqa: E402
     Application,
     Label,
     LanguageFrameworkSystem,
@@ -22,7 +22,6 @@ from app_tracker.models import (
     Project,
     Server,
 )
-from app_tracker.views import home
 
 User = get_user_model()
 
@@ -95,15 +94,16 @@ class ModelTestCase(TestCase):
 
     def test_application_str_and_get_absolute_url_and_m2m(self):
         app = Application.objects.create(name="MyApp")
-        self.assertEqual(str(app), "MyApp")
+        # Associate an LFS so that Application can exist
+        lfs = LanguageFrameworkSystem.objects.create(name="Flask")
+        app.language_framework_systems.add(lfs)
 
+        self.assertEqual(str(app), "MyApp")
         expected_url = reverse("app_tracker:application_detail", kwargs={"pk": app.pk})
         self.assertEqual(app.get_absolute_url(), expected_url)
 
         proj = Project.objects.create(name="ProjApp", description="Desc")
-        lfs = LanguageFrameworkSystem.objects.create(name="Flask")
         app.project.add(proj)
-        app.language_framework_systems.add(lfs)
         self.assertIn(proj, app.project.all())
         self.assertIn(lfs, app.language_framework_systems.all())
 
@@ -111,6 +111,10 @@ class ModelTestCase(TestCase):
         from app_tracker.models import DjangoModel
 
         app = Application.objects.create(name="AppDM")
+        # Associate an LFS so the Application is valid
+        lfs = LanguageFrameworkSystem.objects.create(name="DummyLFS")
+        app.language_framework_systems.add(lfs)
+
         dm_obj = DjangoModel.objects.create(
             name="Model1", description="Desc", application=app
         )
@@ -130,21 +134,27 @@ class ViewTestCase(TestCase):
 
         self.client.login(username="viewuser", password="pass")
 
-        # Create one instance of each model so list/detail have data
+        # Create sample instances for each model
         self.os_obj = OperatingSystem.objects.create(name="TestOS")
         self.lfs_obj = LanguageFrameworkSystem.objects.create(name="TestLFS")
         self.app_obj = Application.objects.create(name="TestApp")
+        self.app_obj.language_framework_systems.add(self.lfs_obj)
+
         self.label_obj = Label.objects.create(name="TestLabel")
         self.label_obj.application.add(self.app_obj)
+
         self.note_obj = Note.objects.create(
             title="TestNote", content="C", application=self.app_obj
         )
+
         self.oc_obj = OrganizationalConcept.objects.create(
             name="TestOC", description="Desc"
         )
         self.oc_obj.applications.add(self.app_obj)
+
         self.project_obj = Project.objects.create(name="TestProj", description="Desc")
         self.project_obj.owner.add(self.user)
+
         self.server_obj = Server.objects.create(
             host_name="TestServer",
             ip_address="10.0.0.1",
@@ -163,7 +173,7 @@ class ViewTestCase(TestCase):
 
     def _test_crud_views_for_model(self, model, instance, url_prefix, create_data):
         """
-        Tests for List, Detail, Create, Update, and Delete views of a model.
+        Tests List, Detail, Create, Update, and Delete views for a model.
         'create_data' is a dict of fields needed to create a new instance.
         """
         list_name = f"app_tracker:{url_prefix}_list"
@@ -172,7 +182,7 @@ class ViewTestCase(TestCase):
         update_name = f"app_tracker:{url_prefix}_update"
         delete_name = f"app_tracker:{url_prefix}_delete"
 
-        # ——— List view ———
+        # ——— GET List ———
         try:
             resp = self.client.get(reverse(list_name))
             self.assertEqual(resp.status_code, 200)
@@ -180,7 +190,7 @@ class ViewTestCase(TestCase):
         except TemplateDoesNotExist:
             self.skipTest(f"Missing template for {url_prefix}_list")
 
-        # ——— Detail view ———
+        # ——— GET Detail ———
         try:
             resp = self.client.get(reverse(detail_name, kwargs={"pk": instance.pk}))
             self.assertEqual(resp.status_code, 200)
@@ -188,25 +198,44 @@ class ViewTestCase(TestCase):
         except TemplateDoesNotExist:
             self.skipTest(f"Missing template for {url_prefix}_detail")
 
-        # ——— Create view (POST) ———
+        # ——— POST Create ———
         resp = self.client.post(reverse(create_name), create_data)
         self.assertEqual(resp.status_code, 302)
         target_list_url = reverse(list_name)
         self.assertTrue(resp["Location"].endswith(target_list_url))
 
-        # Verify new object exists
+        # Verify that new object was created
         for field, value in create_data.items():
-            self.assertTrue(model.objects.filter(**{field: value}).exists())
+            if isinstance(value, list):
+                # M2M: check that at least one of the created objects references these PKs # noqa: E501
+                obj = model.objects.order_by("-pk").first()
+                for pk in value:
+                    if hasattr(getattr(obj, field), "all"):
+                        self.assertIn(pk, [x.pk for x in getattr(obj, field).all()])
+                    else:
+                        self.assertTrue(model.objects.filter(**{field: pk}).exists())
+            else:
+                self.assertTrue(model.objects.filter(**{field: value}).exists())
 
-        # ——— Update view (POST) ———
+        # ——— POST Update ———
         modified_data = create_data.copy()
         first_field = list(modified_data.keys())[0]
         orig_val = getattr(instance, first_field)
         if isinstance(orig_val, str):
             modified_data[first_field] = orig_val + "_upd"
         else:
-            # For FK fields, reuse existing PK
-            modified_data[first_field] = getattr(instance, first_field).pk
+            # For FK or M2M fields, reuse existing PK(s)
+            if hasattr(orig_val, "all"):
+                modified_data[first_field] = [x.pk for x in orig_val.all()]
+            else:
+                modified_data[first_field] = orig_val.pk
+
+        # Ensure Application includes required M2M on update
+        if model == Application:
+            modified_data["language_framework_systems"] = [self.lfs_obj.pk]
+        # Ensure Project includes required M2M on update
+        if model == Project:
+            modified_data["owner"] = [self.user.pk]
 
         resp = self.client.post(
             reverse(update_name, kwargs={"pk": instance.pk}), modified_data
@@ -217,7 +246,7 @@ class ViewTestCase(TestCase):
         if isinstance(getattr(instance, first_field), str):
             self.assertTrue(getattr(instance, first_field).endswith("_upd"))
 
-        # ——— Delete view (POST) ———
+        # ——— POST Delete ———
         resp = self.client.post(reverse(delete_name, kwargs={"pk": instance.pk}))
         self.assertEqual(resp.status_code, 302)
         self.assertTrue(resp["Location"].endswith(reverse(list_name)))
@@ -225,7 +254,10 @@ class ViewTestCase(TestCase):
 
     def test_application_crud(self):
         self._test_crud_views_for_model(
-            Application, self.app_obj, "application", {"name": "CreatedApp"}
+            Application,
+            self.app_obj,
+            "application",
+            {"name": "CreatedApp", "language_framework_systems": [self.lfs_obj.pk]},
         )
 
     def test_label_crud(self):
@@ -240,6 +272,7 @@ class ViewTestCase(TestCase):
 
     def test_note_crud(self):
         new_app = Application.objects.create(name="ForNote")
+        new_app.language_framework_systems.add(self.lfs_obj)
         self._test_crud_views_for_model(
             Note,
             self.note_obj,
@@ -265,7 +298,7 @@ class ViewTestCase(TestCase):
             Project,
             self.project_obj,
             "project",
-            {"name": "CreatedProj", "description": "Desc"},
+            {"name": "CreatedProj", "description": "Desc", "owner": [self.user.pk]},
         )
 
     def test_server_crud(self):
@@ -284,7 +317,8 @@ class ViewTestCase(TestCase):
 
 class URLTests(TestCase):
     def test_reverse_list_and_create_urls(self):
-        # Assert that reverse(...) ends with the expected suffix
+        # We only assert that reverse() ends with the expected suffix,
+        # so it works even if your app is mounted at /app-tracker/...
         self.assertTrue(reverse("app_tracker:home").endswith("/"))
         self.assertTrue(
             reverse("app_tracker:application_list").endswith("/applications/")
