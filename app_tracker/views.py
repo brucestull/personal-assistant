@@ -53,31 +53,6 @@ def home(request):
     )
 
 
-# class OrganizationalConceptListView(
-#     RegistrationAcceptedMixin,
-#     ListView,
-# ):
-#     """
-#     View function for the list of a user's `OrganizationalConcept`s.
-#     """
-
-#     model = OrganizationalConcept
-
-#     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-#         """
-#         Adds the `the_site_name` and `page_title` variables to the context
-#         dictionary.
-
-#         These variables are used in the base template to set the page title
-#         and the site name.
-#         """
-#         # Get the context data from the parent class:
-#         context = super().get_context_data(**kwargs)
-#         context["the_site_name"] = THE_SITE_NAME
-#         context["page_title"] = "Organizational Concepts"
-#         return context
-
-
 # Application views
 class ApplicationListView(RegistrationAcceptedMixin, ListView):
     model = Application
