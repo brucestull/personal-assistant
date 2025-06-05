@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Projects</h1>
+  <a href="{% url 'app_tracker:project_create' %}">➕ Create New Project</a>
+  <ul>
+    {% for project in object_list %}
+      <li>
+        <a href="{% url 'app_tracker:project_detail' project.pk %}">
+          {{ project.name }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No Projects found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

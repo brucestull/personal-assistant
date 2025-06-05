@@ -1,6 +1,7 @@
 # app_tracker/models.py
 
 from django.db import models
+from django.urls import reverse
 
 from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
@@ -466,6 +467,9 @@ class Application(CreatedUpdatedBase):
         # `language_framework_system.applications`.
         related_name="applications",
     )
+
+    def get_absolute_url(self):
+        return reverse("app_tracker:application_detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         """

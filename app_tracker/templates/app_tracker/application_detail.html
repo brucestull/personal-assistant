@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ object.name }}</h1>
+
+  <p><strong>Description:</strong> {{ object.description }}</p>
+
+  {% if object.production_url %}
+    <p><strong>Production URL:</strong> <a href="{{ object.production_url }}">{{ object.production_url }}</a></p>
+  {% endif %}
+
+  {% if object.repository_url %}
+    <p><strong>Repository URL:</strong> <a href="{{ object.repository_url }}">{{ object.repository_url }}</a></p>
+  {% endif %}
+
+  <p><strong>Favorite:</strong> {{ object.is_favorite }}</p>
+  <p><strong>Production Deployment:</strong> {{ object.has_prod_deployment }}</p>
+
+  <p>
+    <a href="{% url 'app_tracker:application_update' object.pk %}">✏️ Edit</a> |
+    <a href="{% url 'app_tracker:application_delete' object.pk %}">❌ Delete</a> |
+    <a href="{% url 'app_tracker:application_list' %}">⬅️ Back to list</a>
+  </p>
+{% endblock %}

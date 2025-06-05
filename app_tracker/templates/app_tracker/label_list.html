@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Labels</h1>
+  <a href="{% url 'app_tracker:label_create' %}">➕ Create New Label</a>
+  <ul>
+    {% for label in object_list %}
+      <li>
+        <a href="{% url 'app_tracker:label_detail' label.pk %}">
+          {{ label.name }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No labels found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

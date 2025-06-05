@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Operating Systems</h1>
+  <a href="{% url 'app_tracker:os_create' %}">➕ Create New Operating System</a>
+  <ul>
+    {% for os in object_list %}
+      <li>
+        <a href="{% url 'app_tracker:os_detail' os.pk %}">
+          {{ os.name }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No Operating Systems found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
