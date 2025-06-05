@@ -5,6 +5,16 @@
   <ul>
     {% for label in object_list %}
       <li>
+        <span
+          style="
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-left: 8px;
+            border: 1px solid #ccc;
+            background-color: #{{ label.hue }};
+          "
+        ></span>
         <a href="{% url 'app_tracker:label_detail' label.pk %}">
           {{ label.name }}
         </a>
