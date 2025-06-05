@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Language Framework Systems</h1>
+  <a href="{% url 'app_tracker:lfs_create' %}">➕ Create New Language Framework System</a>
+  <ul>
+    {% for lfs in object_list %}
+      <li>
+        <a href="{% url 'app_tracker:lfs_detail' lfs.pk %}">
+          {{ lfs.name }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No Language/Framework/Systems found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

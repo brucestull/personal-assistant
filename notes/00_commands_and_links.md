@@ -103,11 +103,26 @@
   * [HTML](http://localhost:8000/valued-goals/html/)
   * [Goals](http://localhost:8000/valued-goals/goals/)
   * [Goals Create](http://localhost:8000/valued-goals/goals/create/)
-  * [App Tracker](http://localhost:8000/app-tracker/)
   * [Unimportant Notes](http://localhost:8000/unimportant-notes/)
   * [Project Manager](http://localhost:8000/project-manager/)
   * [Plan It - Dashboard](http://localhost:8000/plan-it/)
   * [Metronome - Dashboard](http://localhost:8000/metronome/)
+  * [App Tracker](http://localhost:8000/app-tracker/)
+  * [App Tracker - Applications](http://localhost:8000/app-tracker/applications/)
+  * [App Tracker - Labels](http://localhost:8000/app-tracker/labels/)
+  * [App Tracker - Language/Framework/Systems](http://localhost:8000/app-tracker/lfss/)
+  * [App Tracker - Notes](http://localhost:8000/app-tracker/notes/)
+  * [App Tracker - Operating Systems](http://localhost:8000/app-tracker/oses/)
+  * [App Tracker - Projects](http://localhost:8000/app-tracker/projects/)
+  * [App Tracker - Servers](http://localhost:8000/app-tracker/servers/)
+
+
+
+
+
+
+
+
 * Create user:
   * <http://localhost:8000/accounts/signup/>
 * Server Root:

@@ -1,17 +1,180 @@
 from django.urls import path
 
-from app_tracker.views import OrganizationalConceptListView, home
+from app_tracker import views
 
 app_name = "app_tracker"
 urlpatterns = [
     path(
         "",
-        home,
+        views.home,
         name="home",
     ),
+    path("applications/", views.ApplicationListView.as_view(), name="application_list"),
     path(
-        "organizational-concepts/",
-        OrganizationalConceptListView.as_view(),
-        name="organizational-concepts",
+        "applications/<int:pk>/",
+        views.ApplicationDetailView.as_view(),
+        name="application_detail",
+    ),
+    path(
+        "applications/create/",
+        views.ApplicationCreateView.as_view(),
+        name="application_create",
+    ),
+    path(
+        "applications/<int:pk>/update/",
+        views.ApplicationUpdateView.as_view(),
+        name="application_update",
+    ),
+    path(
+        "applications/<int:pk>/delete/",
+        views.ApplicationDeleteView.as_view(),
+        name="application_delete",
+    ),
+    path("labels/", views.LabelListView.as_view(), name="label_list"),
+    path(
+        "labels/<int:pk>/",
+        views.LabelDetailView.as_view(),
+        name="label_detail",
+    ),
+    path(
+        "labels/create/",
+        views.LabelCreateView.as_view(),
+        name="label_create",
+    ),
+    path(
+        "labels/<int:pk>/update/",
+        views.LabelUpdateView.as_view(),
+        name="label_update",
+    ),
+    path(
+        "labels/<int:pk>/delete/",
+        views.LabelDeleteView.as_view(),
+        name="label_delete",
+    ),
+    path("lfss/", views.LanguageFrameworkSystemListView.as_view(), name="lfs_list"),
+    path(
+        "lfss/<int:pk>/",
+        views.LanguageFrameworkSystemDetailView.as_view(),
+        name="lfs_detail",
+    ),
+    path(
+        "lfss/create/",
+        views.LanguageFrameworkSystemCreateView.as_view(),
+        name="lfs_create",
+    ),
+    path(
+        "lfss/<int:pk>/update/",
+        views.LanguageFrameworkSystemUpdateView.as_view(),
+        name="lfs_update",
+    ),
+    path(
+        "lfss/<int:pk>/delete/",
+        views.LanguageFrameworkSystemDeleteView.as_view(),
+        name="lfs_delete",
+    ),
+    path("notes/", views.NoteListView.as_view(), name="note_list"),
+    path(
+        "notes/<int:pk>/",
+        views.NoteDetailView.as_view(),
+        name="note_detail",
+    ),
+    path(
+        "notes/create/",
+        views.NoteCreateView.as_view(),
+        name="note_create",
+    ),
+    path(
+        "notes/<int:pk>/update/",
+        views.NoteUpdateView.as_view(),
+        name="note_update",
+    ),
+    path(
+        "notes/<int:pk>/delete/",
+        views.NoteDeleteView.as_view(),
+        name="note_delete",
+    ),
+    path("oses/", views.OperatingSystemListView.as_view(), name="os_list"),
+    path(
+        "oses/<int:pk>/",
+        views.OperatingSystemDetailView.as_view(),
+        name="os_detail",
+    ),
+    path(
+        "oses/create/",
+        views.OperatingSystemCreateView.as_view(),
+        name="os_create",
+    ),
+    path(
+        "oses/<int:pk>/update/",
+        views.OperatingSystemUpdateView.as_view(),
+        name="os_update",
+    ),
+    path(
+        "oses/<int:pk>/delete/",
+        views.OperatingSystemDeleteView.as_view(),
+        name="os_delete",
+    ),
+    path("oces/", views.OrganizationalConceptListView.as_view(), name="oc_list"),
+    path(
+        "oces/<int:pk>/",
+        views.OrganizationalConceptDetailView.as_view(),
+        name="oc_detail",
+    ),
+    path(
+        "oces/create/",
+        views.OrganizationalConceptCreateView.as_view(),
+        name="oc_create",
+    ),
+    path(
+        "oces/<int:pk>/update/",
+        views.OrganizationalConceptUpdateView.as_view(),
+        name="oc_update",
+    ),
+    path(
+        "oces/<int:pk>/delete/",
+        views.OrganizationalConceptDeleteView.as_view(),
+        name="oc_delete",
+    ),
+    path("projects/", views.ProjectListView.as_view(), name="project_list"),
+    path(
+        "projects/<int:pk>/",
+        views.ProjectDetailView.as_view(),
+        name="project_detail",
+    ),
+    path(
+        "projects/create/",
+        views.ProjectCreateView.as_view(),
+        name="project_create",
+    ),
+    path(
+        "projects/<int:pk>/update/",
+        views.ProjectUpdateView.as_view(),
+        name="project_update",
+    ),
+    path(
+        "projects/<int:pk>/delete/",
+        views.ProjectDeleteView.as_view(),
+        name="project_delete",
+    ),
+    path("servers/", views.ServerListView.as_view(), name="server_list"),
+    path(
+        "servers/<int:pk>/",
+        views.ServerDetailView.as_view(),
+        name="server_detail",
+    ),
+    path(
+        "servers/create/",
+        views.ServerCreateView.as_view(),
+        name="server_create",
+    ),
+    path(
+        "servers/<int:pk>/update/",
+        views.ServerUpdateView.as_view(),
+        name="server_update",
+    ),
+    path(
+        "servers/<int:pk>/delete/",
+        views.ServerDeleteView.as_view(),
+        name="server_delete",
     ),
 ]

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ object.host_name }}</h1>
+
+  <p><strong>IP Address:</strong> {{ object.ip_address }}</p>
+  <p><strong>Operating System:</strong> {{ object.operating_system }}</p>
+  <p><strong>Environment:</strong> {{ object.environment }}</p>
+  <p><strong>Notes:</strong> {{ object.notes }}</p>
+
+  {% if object.applications %}
+    <h2>Applications on this Server:</h2>
+    <ul>
+      {% for app in object.applications.all %}
+        <li>
+          <a href="{% url 'app_tracker:application_detail' app.pk %}">{{ app.name }}</a>
+        </li>
+          {% for project in app.project.all %}
+            <a href="{% url 'app_tracker:project_detail' project.pk %}">{{ project.name }}</a>
+          {% endfor %}
+      {% empty %}
+        <li>No applications found on this server.</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No applications are currently associated with this server.</p>
+  {% endif %}
+
+  <p>
+    <a href="{% url 'app_tracker:server_update' object.pk %}">✏️ Edit</a> |
+    <a href="{% url 'app_tracker:server_delete' object.pk %}">❌ Delete</a> |
+    <a href="{% url 'app_tracker:server_list' %}">⬅️ Back to list</a>
+  </p>
+{% endblock %}

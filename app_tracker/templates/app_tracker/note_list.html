@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Notes</h1>
+  <a href="{% url 'app_tracker:note_create' %}">➕ Create New Note</a>
+  <ul>
+    {% for note in object_list %}
+      <li>
+        <a href="{% url 'app_tracker:note_detail' note.pk %}">
+          {{ note.title }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No Notes found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

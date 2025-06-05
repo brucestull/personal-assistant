@@ -15,8 +15,8 @@
         {% if organizational_concept.applications.all %}
             <p>Applications: </p>
             <p>
-                {% for application in organizational_concept.applications.all %}
-                    {{ application.name}}{% if not forloop.last %} | {% endif %}
+                {% for note in organizational_concept.applications.all %}
+                    {{ note.name}}{% if not forloop.last %} | {% endif %}
                 {% endfor %}
             </p>
         {% endif %}

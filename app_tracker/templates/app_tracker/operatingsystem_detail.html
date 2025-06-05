@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ object.name }}</h1>
+
+  <p>
+    <a href="{% url 'app_tracker:os_update' object.pk %}">✏️ Edit</a> |
+    <a href="{% url 'app_tracker:os_delete' object.pk %}">❌ Delete</a> |
+    <a href="{% url 'app_tracker:os_list' %}">⬅️ Back to list</a>
+  </p>
+{% endblock %}

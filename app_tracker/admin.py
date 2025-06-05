@@ -1,9 +1,19 @@
+# app_tracker/admin.py
+
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from app_tracker.models import (Application, DjangoModel, Label,
-                                LanguageFrameworkSystem, Note,
-                                OrganizationalConcept, Project)
+from app_tracker.models import (
+    Application,
+    DjangoModel,
+    Label,
+    LanguageFrameworkSystem,
+    Note,
+    OrganizationalConcept,
+    Project,
+    OperatingSystem,
+    Server,
+)
 
 
 @admin.register(OrganizationalConcept)
@@ -337,9 +347,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     # so that the `Language Framework Systems` column in the admin panel will
     # display "Language Framework Systems" instead of
     # "Language Framework Systems List".
-    language_framework_systems_list.short_description = (
-        "Languages-Frameworks-Systems"
-    )
+    language_framework_systems_list.short_description = "Languages-Frameworks-Systems"
 
 
 @admin.register(Label)
@@ -475,6 +483,38 @@ class DjangoModelAdmin(admin.ModelAdmin):
                 "fields": (
                     "created",
                     "updated",
+                )
+            },
+        ),
+    )
+
+
+@admin.register(OperatingSystem)
+class OperatingSystemAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+    list_display = ["name"]
+    ordering = ["name"]
+
+
+@admin.register(Server)
+class ServerAdmin(admin.ModelAdmin):
+    list_display = ["host_name", "ip_address", "environment", "operating_system"]
+    list_filter = ["environment", "operating_system"]
+    search_fields = ["host_name", "ip_address", "notes"]
+    ordering = ["host_name"]
+    autocomplete_fields = ["operating_system", "applications"]
+    filter_horizontal = ["applications"]
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "host_name",
+                    "ip_address",
+                    "environment",
+                    "operating_system",
+                    "applications",
+                    "notes",
                 )
             },
         ),

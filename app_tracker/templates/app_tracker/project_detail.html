@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ object.name }}</h1>
+
+  <p><strong>Description:</strong> {{ object.description }}</p>
+  <strong>Owners:</strong>
+  {% for owner in object.owner.all %}
+  <p>{{ owner.username }}</p>
+  {% endfor %}
+
+  <p>
+    <a href="{% url 'app_tracker:project_update' object.pk %}">✏️ Edit</a> |
+    <a href="{% url 'app_tracker:project_delete' object.pk %}">❌ Delete</a> |
+    <a href="{% url 'app_tracker:project_list' %}">⬅️ Back to list</a>
+  </p>
+{% endblock %}

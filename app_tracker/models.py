@@ -1,7 +1,59 @@
+# app_tracker/models.py
+
 from django.db import models
+from django.urls import reverse
 
 from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
+
+
+class OperatingSystem(models.Model):
+    """
+    Represents a known server operating system (e.g., Ubuntu Server 22.04).
+    """
+
+    name = models.CharField(
+        verbose_name="Operating System Name",
+        help_text="The name and version of the operating system.",
+        max_length=100,
+        unique=True,
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        default_related_name = "operating_systems"
+        verbose_name = "Operating System"
+        verbose_name_plural = "Operating Systems"
+
+
+class LanguageFrameworkSystem(CreatedUpdatedBase):
+    """
+    This model represents a single language, framework, or system that is
+    being tracked. (e.g. Python, Django, Docker, CSS, JavaScript, Vue.js,
+    React.js, etc.)
+    """
+
+    # `name` is the name of the language, framework, or system.
+    name = models.CharField(
+        verbose_name="Name",
+        help_text=(
+            "The name of the language, framework, or system used in the application."
+        ),
+        max_length=30,
+        unique=True,
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the language, framework, or
+        system.
+        """
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Language/Framework/Systems"
 
 
 class OrganizationalConcept(CreatedUpdatedBase):
@@ -57,32 +109,143 @@ class OrganizationalConcept(CreatedUpdatedBase):
         verbose_name_plural = "Organizational Concepts"
 
 
-class LanguageFrameworkSystem(CreatedUpdatedBase):
+class Label(CreatedUpdatedBase):
     """
-    This model represents a single language, framework, or system that is
-    being tracked. (e.g. Python, Django, Docker, CSS, JavaScript, Vue.js,
-    React.js, etc.)
+    This model represents a single label that is being tracked. The label
+    is used to tag applications in GitHub Issues and Pull Requests.
     """
 
-    # `name` is the name of the language, framework, or system.
     name = models.CharField(
         verbose_name="Name",
-        help_text=(
-            "The name of the language, framework, or system used in the application."
-        ),
-        max_length=30,
+        help_text="The name of the label.",
+        max_length=50,
         unique=True,
+    )
+    hue = models.CharField(
+        verbose_name="Hue",
+        help_text=("The color of the label tag (e.g. '#2BDCC7', '#FF0000', 'ocre')."),
+        max_length=25,
+        null=True,
+        blank=True,
+    )
+    description = models.TextField(
+        verbose_name="Description",
+        help_text="The description of the label.",
+        null=True,
+        blank=True,
+    )
+    application = models.ManyToManyField(
+        "Application",
+        verbose_name="Application(s)",
+        help_text="The application(s) that the label is associated with.",
+        blank=True,
     )
 
     def __str__(self):
         """
-        Returns the string representation of the language, framework, or
-        system.
+        Returns the string representation of the label.
         """
         return self.name
 
+
+class Note(CreatedUpdatedBase):
+    """
+    This model represents a single note that is being tracked.
+    """
+
+    # `title` is the title of the note.
+    title = models.CharField(
+        help_text="The title of the note.",
+        max_length=255,
+    )
+    # `content` is the content of the note.
+    content = models.TextField(
+        help_text="The content of the note.",
+    )
+    # `application` is a foreign key to the `Application` model.
+    application = models.ForeignKey(
+        "Application",
+        help_text="The application that the note is associated with.",
+        # If the application is deleted, delete this note.
+        on_delete=models.CASCADE,
+        # The related name for the `application` field is `notes`.
+        # This allows us to access the notes for an application by
+        # using `application.notes`.
+        related_name="notes",
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        """
+        Returns the string representation of the note.
+
+        The string representation of the note is the title of the note
+        followed by the name of the application that the note is associated
+        with.
+        """
+        return f"{self.title} - {self.application.name if self.application else 'No Application'}"  # noqa: E501
+
+
+class Server(CreatedUpdatedBase):
+    """
+    Represents a physical or virtual server where applications are hosted.
+    """
+
+    host_name = models.CharField(
+        verbose_name="Host Name",
+        help_text="A unique host name for the server.",
+        max_length=100,
+        unique=True,
+    )
+    ip_address = models.GenericIPAddressField(
+        verbose_name="IP Address",
+        help_text="The IP address of the server.",
+        protocol="both",
+        null=True,
+        blank=True,
+    )
+    environment = models.CharField(
+        verbose_name="Environment",
+        help_text="The environment this server belongs to (e.g., production, staging, test).",  # noqa: E501
+        max_length=50,
+        choices=[
+            ("production", "Production"),
+            ("staging", "Staging"),
+            ("test", "Test"),
+            ("development", "Development"),
+        ],
+        null=True,
+        blank=True,
+    )
+    operating_system = models.ForeignKey(
+        OperatingSystem,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Operating System",
+        help_text="The OS running on this server.",
+    )
+    notes = models.TextField(
+        verbose_name="Notes",
+        help_text="Optional notes about the server (e.g., hardware specs, roles, etc.).",  # noqa: E501
+        blank=True,
+        null=True,
+    )
+    applications = models.ManyToManyField(
+        "Application",
+        verbose_name="Applications",
+        help_text="Applications hosted on this server.",
+        related_name="servers",
+        blank=True,
+    )
+
+    def __str__(self):
+        return f"{self.host_name} ({self.ip_address or 'no IP'})"
+
     class Meta:
-        verbose_name_plural = "Language/Framework/Systems"
+        verbose_name = "Server"
+        verbose_name_plural = "Servers"
 
 
 class Project(CreatedUpdatedBase):
@@ -305,89 +468,14 @@ class Application(CreatedUpdatedBase):
         related_name="applications",
     )
 
+    def get_absolute_url(self):
+        return reverse("app_tracker:application_detail", kwargs={"pk": self.pk})
+
     def __str__(self):
         """
         Returns the string representation of the application.
         """
         return self.name
-
-
-class Label(CreatedUpdatedBase):
-    """
-    This model represents a single label that is being tracked. The label
-    is used to tag applications in GitHub Issues and Pull Requests.
-    """
-
-    name = models.CharField(
-        verbose_name="Name",
-        help_text="The name of the label.",
-        max_length=50,
-        unique=True,
-    )
-    hue = models.CharField(
-        verbose_name="Hue",
-        help_text=("The color of the label tag (e.g. '#2BDCC7', '#FF0000', 'ocre')."),
-        max_length=25,
-        null=True,
-        blank=True,
-    )
-    description = models.TextField(
-        verbose_name="Description",
-        help_text="The description of the label.",
-        null=True,
-        blank=True,
-    )
-    application = models.ManyToManyField(
-        Application,
-        verbose_name="Application(s)",
-        help_text="The application(s) that the label is associated with.",
-        blank=True,
-    )
-
-    def __str__(self):
-        """
-        Returns the string representation of the label.
-        """
-        return self.name
-
-
-class Note(CreatedUpdatedBase):
-    """
-    This model represents a single note that is being tracked.
-    """
-
-    # `title` is the title of the note.
-    title = models.CharField(
-        help_text="The title of the note.",
-        max_length=255,
-    )
-    # `content` is the content of the note.
-    content = models.TextField(
-        help_text="The content of the note.",
-    )
-    # `application` is a foreign key to the `Application` model.
-    application = models.ForeignKey(
-        Application,
-        help_text="The application that the note is associated with.",
-        # If the application is deleted, delete this note.
-        on_delete=models.CASCADE,
-        # The related name for the `application` field is `notes`.
-        # This allows us to access the notes for an application by
-        # using `application.notes`.
-        related_name="notes",
-        null=True,
-        blank=True,
-    )
-
-    def __str__(self):
-        """
-        Returns the string representation of the note.
-
-        The string representation of the note is the title of the note
-        followed by the name of the application that the note is associated
-        with.
-        """
-        return f"{self.title} - {self.application.name}"
 
 
 class DjangoModel(CreatedUpdatedBase):
@@ -425,7 +513,7 @@ class DjangoModel(CreatedUpdatedBase):
     )
     # `application` is a foreign key to the `Application` model.
     application = models.ForeignKey(
-        Application,
+        "Application",
         verbose_name="Application",
         # If the application is deleted, delete this Django model.
         on_delete=models.CASCADE,

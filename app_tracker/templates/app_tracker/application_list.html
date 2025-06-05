@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Applications</h1>
+  <a href="{% url 'app_tracker:application_create' %}">➕ Create New Application</a>
+  <ul>
+    {% for application in object_list %}
+      <li>
+        <a href="{% url 'app_tracker:application_detail' application.pk %}">
+          {{ application.name }}
+        </a>
+      </li>
+      {% for project in application.project.all %}
+        <a href="{% url 'app_tracker:project_detail' project.pk %}">{{ project.name }}</a>
+      {% endfor %}
+    {% empty %}
+      <li>No applications found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
