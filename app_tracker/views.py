@@ -220,18 +220,18 @@ class OrganizationalConceptDetailView(RegistrationAcceptedMixin, DetailView):
 class OrganizationalConceptCreateView(RegistrationAcceptedMixin, CreateView):
     model = OrganizationalConcept
     fields = "__all__"
-    success_url = reverse_lazy("app_tracker:organizationalconcept_list")
+    success_url = reverse_lazy("app_tracker:oc_list")
 
 
 class OrganizationalConceptUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = OrganizationalConcept
     fields = "__all__"
-    success_url = reverse_lazy("app_tracker:organizationalconcept_list")
+    success_url = reverse_lazy("app_tracker:oc_list")
 
 
 class OrganizationalConceptDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = OrganizationalConcept
-    success_url = reverse_lazy("app_tracker:organizationalconcept_list")
+    success_url = reverse_lazy("app_tracker:oc_list")
 
 
 # Project views
