@@ -1,0 +1,41 @@
+[
+  {
+    "model": "pi_tracker.pidevice",
+    "pk": 1,
+    "fields": {
+      "name": "WeatherPi",
+      "description": "Outdoor weather monitoring station",
+      "operating_system": "Raspberry Pi OS Lite",
+      "host_name": "WEATHER-PI",
+      "mac_address": "B8:27:EB:AA:BB:01",
+      "ram": "1GB",
+      "form_factor": "PiZero"
+    }
+  },
+  {
+    "model": "pi_tracker.pidevice",
+    "pk": 2,
+    "fields": {
+      "name": "MediaHub",
+      "description": "Living room media center",
+      "operating_system": "LibreELEC",
+      "host_name": "MEDIA-HUB",
+      "mac_address": "B8:27:EB:AA:BB:02",
+      "ram": "4GB",
+      "form_factor": "Pi4"
+    }
+  },
+  {
+    "model": "pi_tracker.pidevice",
+    "pk": 3,
+    "fields": {
+      "name": "PiCam",
+      "description": "Bird feeder camera system",
+      "operating_system": "Raspberry Pi OS with desktop",
+      "host_name": "PI-CAM",
+      "mac_address": "B8:27:EB:AA:BB:03",
+      "ram": "2GB",
+      "form_factor": "Pi4"
+    }
+  }
+]
