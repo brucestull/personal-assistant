@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # load_pi_devices.py
 
 import json
@@ -26,8 +27,8 @@ for entry in data:
     for key in fields.keys():
         print("key:", key)
         print("value:", fields[key])
-    # obj, created = PiDevice.objects.update_or_create(
-    #     name=fields["name"],
-    #     defaults=fields,
-    # )
-    # print(f"{'Created' if created else 'Updated'}: {obj}")
+    obj, created = PiDevice.objects.update_or_create(
+        name=fields["name"],
+        defaults=fields,
+    )
+    print(f"{'Created' if created else 'Updated'}: {obj}")
