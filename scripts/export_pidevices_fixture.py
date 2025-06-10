@@ -22,6 +22,7 @@ for device in PiDevice.objects.all():
         {
             "model": "pi_tracker.pidevice",
             "fields": {
+                "pk": device.pk,
                 "name": device.name,
                 "description": device.description,
                 "operating_system": device.operating_system,

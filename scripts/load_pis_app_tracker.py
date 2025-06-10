@@ -34,6 +34,7 @@ for entry in data:
     )[0]
 
     obj, created = Server.objects.update_or_create(
+        pk=fields["pk"],
         name=fields["name"],
         description=fields.get("description", ""),
         operating_system=operating_system,
