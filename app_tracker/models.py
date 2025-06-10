@@ -222,7 +222,12 @@ class Server(CreatedUpdatedBase):
         blank=True,
         null=True,
     )
-    ram = models.CharField(max_length=50, help_text="e.g., 500MB, .5GB, 2GB, 4GB, 8GB")
+    ram = models.CharField(
+        max_length=50,
+        help_text="e.g., 500MB, .5GB, 2GB, 4GB, 8GB",
+        blank=True,
+        null=True,
+    )
     form_factor = models.CharField(max_length=10, choices=FORM_FACTOR_CHOICES)
 
     ip_address = models.GenericIPAddressField(
