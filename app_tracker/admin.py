@@ -499,9 +499,9 @@ class OperatingSystemAdmin(admin.ModelAdmin):
 @admin.register(Server)
 class ServerAdmin(admin.ModelAdmin):
     list_display = [
-        "ip_address",
-        "name",
         "host_name",
+        "name",
+        "ip_address",
         "operating_system",
         "form_factor",
         "ram",
