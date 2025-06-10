@@ -1,3 +1,5 @@
+# app_tracker/urls.py
+
 from django.urls import path
 
 from app_tracker import views

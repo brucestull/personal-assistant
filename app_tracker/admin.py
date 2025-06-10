@@ -498,7 +498,15 @@ class OperatingSystemAdmin(admin.ModelAdmin):
 
 @admin.register(Server)
 class ServerAdmin(admin.ModelAdmin):
-    list_display = ["host_name", "ip_address", "environment", "operating_system"]
+    list_display = [
+        "host_name",
+        "name",
+        "ip_address",
+        "operating_system",
+        "form_factor",
+        "ram",
+        "environment",
+    ]
     list_filter = ["environment", "operating_system"]
     search_fields = ["host_name", "ip_address", "notes"]
     ordering = ["host_name"]

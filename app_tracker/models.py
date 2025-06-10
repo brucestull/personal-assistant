@@ -192,12 +192,44 @@ class Server(CreatedUpdatedBase):
     Represents a physical or virtual server where applications are hosted.
     """
 
+    FORM_FACTOR_CHOICES = [
+        ("Pi4", "Raspberry Pi 4"),
+        ("Pi5", "Raspberry Pi 5"),
+        ("PiZero", "Raspberry Pi Zero"),
+        ("PiPico", "Raspberry Pi Pico"),
+    ]
+
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)
+    operating_system = models.ForeignKey(
+        OperatingSystem,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Operating System",
+        help_text="The OS running on this server.",
+    )
     host_name = models.CharField(
         verbose_name="Host Name",
         help_text="A unique host name for the server.",
         max_length=100,
         unique=True,
     )
+    mac_address = models.CharField(
+        max_length=17,
+        unique=True,
+        help_text="Format: XX:XX:XX:XX:XX:XX",
+        blank=True,
+        null=True,
+    )
+    ram = models.CharField(
+        max_length=50,
+        help_text="e.g., 500MB, .5GB, 2GB, 4GB, 8GB",
+        blank=True,
+        null=True,
+    )
+    form_factor = models.CharField(max_length=10, choices=FORM_FACTOR_CHOICES)
+
     ip_address = models.GenericIPAddressField(
         verbose_name="IP Address",
         help_text="The IP address of the server.",
@@ -217,14 +249,6 @@ class Server(CreatedUpdatedBase):
         ],
         null=True,
         blank=True,
-    )
-    operating_system = models.ForeignKey(
-        OperatingSystem,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name="Operating System",
-        help_text="The OS running on this server.",
     )
     notes = models.TextField(
         verbose_name="Notes",
