@@ -25,6 +25,7 @@ django-celery-beat = "==2.7.0"
 factory-boy = "*"
 pytest-django = "*"
 djangorestframework = "*"
+debugpy = "*"
 
 [dev-packages]
 
