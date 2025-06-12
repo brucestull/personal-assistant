@@ -38,5 +38,21 @@
             "django": true,
             "justMyCode": true
         },
+        {
+        "name": "Pipenv: Django Debug",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "/usr/bin/env",
+        "args": [
+            "pipenv",
+            "run",
+            "python",
+            "manage.py",
+            "runserver",
+            "127.0.0.1:8000"
+        ],
+        "console": "integratedTerminal",
+        "justMyCode": false
+        }
     ]
 }
