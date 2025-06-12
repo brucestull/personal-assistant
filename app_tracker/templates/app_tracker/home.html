@@ -8,4 +8,9 @@
 
 {% block content %}
     <h1>{{ page_title }}</h1>
+    <h2>App Tracker Links</h2>
+    <ul>
+        <li><a href="{% url 'app_tracker:application_list' %}">Application List</a></li>
+        <li><a href="{% url 'app_tracker:application_create' %}">Add New Application</a></li>
+    </ul>
 {% endblock content %}
