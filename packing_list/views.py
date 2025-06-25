@@ -1,8 +1,8 @@
 # packing_list/views.py
-
 from django.shortcuts import get_object_or_404, redirect, render
 
 from base.decorators import registration_accepted_required
+from config.settings import THE_SITE_NAME
 
 from .forms import ActivityForm, ItemForm
 from .models import Activity, Item
@@ -14,7 +14,13 @@ from .models import Activity, Item
 def activity_list(request):
     activities = Activity.objects.filter(user=request.user)
     return render(
-        request, "packing_list/activity_list.html", {"activities": activities}
+        request,
+        "packing_list/activity_list.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": "Activities",
+            "activities": activities,
+        },
     )
 
 
@@ -26,6 +32,8 @@ def activity_detail(request, pk):
         request,
         "packing_list/activity_detail.html",
         {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": activity.name,
             "activity": activity,
             "items": items,
         },
@@ -43,7 +51,15 @@ def activity_create(request):
             return redirect("packing_list:activity_list")
     else:
         form = ActivityForm()
-    return render(request, "packing_list/activity_form.html", {"form": form})
+    return render(
+        request,
+        "packing_list/activity_form.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": "Create Activity",
+            "form": form,
+        },
+    )
 
 
 @registration_accepted_required
@@ -56,7 +72,15 @@ def activity_update(request, pk):
             return redirect("packing_list:activity_list")
     else:
         form = ActivityForm(instance=activity)
-    return render(request, "packing_list/activity_form.html", {"form": form})
+    return render(
+        request,
+        "packing_list/activity_form.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": "Update Activity",
+            "form": form,
+        },
+    )
 
 
 @registration_accepted_required
@@ -66,7 +90,13 @@ def activity_delete(request, pk):
         activity.delete()
         return redirect("packing_list:activity_list")
     return render(
-        request, "packing_list/activity_confirm_delete.html", {"activity": activity}
+        request,
+        "packing_list/activity_confirm_delete.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": f"Delete {activity.name}",
+            "activity": activity,
+        },
     )
 
 
@@ -76,7 +106,15 @@ def activity_delete(request, pk):
 @registration_accepted_required
 def item_list(request):
     items = Item.objects.filter(user=request.user).select_related("activity")
-    return render(request, "packing_list/item_list.html", {"items": items})
+    return render(
+        request,
+        "packing_list/item_list.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": "Items",
+            "items": items,
+        },
+    )
 
 
 @registration_accepted_required
@@ -86,6 +124,8 @@ def item_detail(request, pk):
         request,
         "packing_list/item_detail.html",
         {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": item.name,
             "item": item,
         },
     )
@@ -114,7 +154,15 @@ def item_create(request):
             activity=activity_id,
         )
 
-    return render(request, "packing_list/item_form.html", {"form": form})
+    return render(
+        request,
+        "packing_list/item_form.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": "Create Item",
+            "form": form,
+        },
+    )
 
 
 @registration_accepted_required
@@ -127,7 +175,15 @@ def item_update(request, pk):
             return redirect("packing_list:item_list")
     else:
         form = ItemForm(instance=item)
-    return render(request, "packing_list/item_form.html", {"form": form})
+    return render(
+        request,
+        "packing_list/item_form.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": f"Update {item.name}",
+            "form": form,
+        },
+    )
 
 
 @registration_accepted_required
@@ -136,4 +192,12 @@ def item_delete(request, pk):
     if request.method == "POST":
         item.delete()
         return redirect("packing_list:item_list")
-    return render(request, "packing_list/item_confirm_delete.html", {"item": item})
+    return render(
+        request,
+        "packing_list/item_confirm_delete.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": f"Delete {item.name}",
+            "item": item,
+        },
+    )
