@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 
 class Activity(models.Model):
@@ -15,6 +16,9 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("packing_list:activity_detail", kwargs={"pk": self.pk})
 
     class Meta:
         verbose_name = "Activity"
@@ -36,6 +40,9 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("packing_list:item_detail", kwargs={"pk": self.pk})
 
     class Meta:
         verbose_name = "Item"
