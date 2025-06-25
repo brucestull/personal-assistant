@@ -22,8 +22,16 @@
     <tbody>
         {% for item in items %}
         <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.activity.name }}</td>
+            <td>
+                <a href="{% url 'packing_list:item_detail' item.pk %}" class="text-decoration-none">
+                {{ item.name }}
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'packing_list:activity_detail' item.activity.pk %}" class="text-decoration-none">
+                {{ item.activity.name }}
+                </a>
+            </td>
             <td>{{ item.quantity }}</td>
             <td>{{ item.is_packed }}</td>
             <td>{{ item.is_essential }}</td>
