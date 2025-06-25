@@ -19,7 +19,11 @@
     <tbody>
         {% for activity in activities %}
         <tr>
-            <td>{{ activity.name }}</td>
+            <td>
+                <a href="{% url 'packing_list:activity_detail' activity.pk %}">
+                    {{ activity.name }}
+                </a>
+            </td>
             <td>{{ activity.description }}</td>
             <td>
                 <a href="{% url 'packing_list:activity_update' activity.pk %}" class="btn btn-sm btn-warning">Edit</a>

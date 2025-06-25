@@ -8,6 +8,7 @@ app_name = "packing_list"
 urlpatterns = [
     # Activities
     path("activities/", views.activity_list, name="activity_list"),
+    path("activities/<int:pk>/", views.activity_detail, name="activity_detail"),
     path("activities/create/", views.activity_create, name="activity_create"),
     path("activities/<int:pk>/edit/", views.activity_update, name="activity_update"),
     path("activities/<int:pk>/delete/", views.activity_delete, name="activity_delete"),

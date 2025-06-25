@@ -19,6 +19,15 @@ def activity_list(request):
 
 
 @registration_accepted_required
+def activity_detail(request, pk):
+    activity = get_object_or_404(Activity, pk=pk, user=request.user)
+    items = activity.packing_items.all()  # uses related_name on Item.activity
+    return render(request, "packing_list/activity_detail.html", {
+        "activity": activity,
+        "items": items,
+    })
+
+@registration_accepted_required
 def activity_create(request):
     if request.method == "POST":
         form = ActivityForm(request.POST)
@@ -65,18 +74,31 @@ def item_list(request):
     return render(request, "packing_list/item_list.html", {"items": items})
 
 
+# packing_list/views.py
+
 @registration_accepted_required
 def item_create(request):
+    activity_id = request.GET.get("activity")  # e.g. from clicking “Add Item” on an activity page
+
     if request.method == "POST":
-        form = ItemForm(request.POST)
+        form = ItemForm(
+            request.POST,
+            user=request.user,
+            activity=activity_id,
+        )
         if form.is_valid():
             item = form.save(commit=False)
             item.user = request.user
             item.save()
             return redirect("packing_list:item_list")
     else:
-        form = ItemForm()
+        form = ItemForm(
+            user=request.user,
+            activity=activity_id,
+        )
+
     return render(request, "packing_list/item_form.html", {"form": form})
+
 
 
 @registration_accepted_required
