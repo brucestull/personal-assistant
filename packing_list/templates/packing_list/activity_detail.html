@@ -24,8 +24,8 @@
 <ul>
     {% for item in items %}
     <li>
-        {{ item.name }}
-        {% comment %} <a href="{% url 'packing_list:item_detail' item.pk %}">{{ item.name }}</a> {% endcomment %}
+        {% comment %} {{ item.name }} {% endcomment %}
+        <a href="{% url 'packing_list:item_detail' item.pk %}">{{ item.name }}</a>
     </li>
     {% endfor %}
 </ul>
