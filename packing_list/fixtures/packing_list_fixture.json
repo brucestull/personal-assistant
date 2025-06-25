@@ -1,0 +1,363 @@
+[
+    {
+        "model": "packing_list.activity",
+        "pk": 1,
+        "fields": {
+            "name": "Beach Vacation",
+            "description": "Packing for a beach trip.",
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.activity",
+        "pk": 2,
+        "fields": {
+            "name": "Camping Trip",
+            "description": "Packing for a weekend camping adventure.",
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.activity",
+        "pk": 3,
+        "fields": {
+            "name": "Business Conference",
+            "description": "Packing for a business conference.",
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.activity",
+        "pk": 4,
+        "fields": {
+            "name": "Gym Day",
+            "description": "Packing gear for a gym session.",
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 1,
+        "fields": {
+            "name": "Swimsuit",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 1,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 2,
+        "fields": {
+            "name": "Beach Towel",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 1,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 3,
+        "fields": {
+            "name": "Sunscreen",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 1,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 4,
+        "fields": {
+            "name": "Flip Flops",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 1,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 5,
+        "fields": {
+            "name": "Beach Hat",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 1,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 6,
+        "fields": {
+            "name": "Snorkel Gear",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 1,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 7,
+        "fields": {
+            "name": "Beach Umbrella",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 1,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 8,
+        "fields": {
+            "name": "Tent",
+            "description": "2-person tent",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 2,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 9,
+        "fields": {
+            "name": "Sleeping Bag",
+            "description": "",
+            "quantity": 2,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 2,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 10,
+        "fields": {
+            "name": "Camping Stove",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 2,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 11,
+        "fields": {
+            "name": "Flashlight",
+            "description": "",
+            "quantity": 2,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 2,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 12,
+        "fields": {
+            "name": "Insect Repellent",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 2,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 13,
+        "fields": {
+            "name": "First Aid Kit",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 2,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 14,
+        "fields": {
+            "name": "Laptop",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 3,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 15,
+        "fields": {
+            "name": "Charger",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 3,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 16,
+        "fields": {
+            "name": "Business Cards",
+            "description": "",
+            "quantity": 50,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 3,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 17,
+        "fields": {
+            "name": "Notebook",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 3,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 18,
+        "fields": {
+            "name": "Pen",
+            "description": "",
+            "quantity": 2,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 3,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 19,
+        "fields": {
+            "name": "Dress Shoes",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 3,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 20,
+        "fields": {
+            "name": "Sneakers",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 4,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 21,
+        "fields": {
+            "name": "Workout Clothes",
+            "description": "",
+            "quantity": 2,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 4,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 22,
+        "fields": {
+            "name": "Water Bottle",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": true,
+            "activity": 4,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 23,
+        "fields": {
+            "name": "Towel",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 4,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 24,
+        "fields": {
+            "name": "Protein Bar",
+            "description": "",
+            "quantity": 2,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 4,
+            "user": 1
+        }
+    },
+    {
+        "model": "packing_list.item",
+        "pk": 25,
+        "fields": {
+            "name": "Headphones",
+            "description": "",
+            "quantity": 1,
+            "is_packed": false,
+            "is_essential": false,
+            "activity": 4,
+            "user": 1
+        }
+    }
+]
