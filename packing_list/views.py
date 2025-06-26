@@ -1,16 +1,17 @@
 # packing_list/views.py
 import io
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
+from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfgen import canvas
 
 from base.decorators import registration_accepted_required
 from config.settings import THE_SITE_NAME
-from django.conf import settings
 
 from .forms import ActivityForm, ItemForm
 from .models import Activity, Item
@@ -126,35 +127,49 @@ def activity_pdf(request, pk):
     # build PDF in memory
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
-    width, height = letter  # these are in points
+    width, height = letter
 
-    # Title: activity.name at the chosen font size
+    # Title
     p.setFont("Helvetica-Bold", font_size)
     p.drawString(1 * inch, height - 1 * inch, activity.name)
 
-    # Items: same font, with computed leading
+    # Switch back to regular font
     p.setFont("Helvetica", font_size)
-    y = height - 1.5 * inch
-    bottom_margin = 1 * inch
+
+    # get real font metrics
+    face = pdfmetrics.getFont("Helvetica").face
+    ascent = face.ascent * font_size / 1000.0
+    descent = face.descent * font_size / 1000.0
+
+    leading = font_size * 1.2
     box_size = 0.2 * inch
+    bottom_margin = 1 * inch
+
+    # start y as the *baseline* of the first line,
+    # we want that baseline to sit 1.5" below the top edge, so we add half the box height # noqa E501
+    y = height - 1.5 * inch + box_size / 2
 
     for item in activity.packing_items.all():
-        # new page if we’d drop below the bottom margin
+        # new page?
         if y - leading < bottom_margin:
             p.showPage()
             p.setFont("Helvetica", font_size)
-            y = height - 1.5 * inch
+            y = height - 1.5 * inch + box_size / 2
 
-        # draw checkbox (fixed size)
-        p.rect(1 * inch, y - box_size / 2, box_size, box_size, stroke=1, fill=0)
+        # draw the text at the baseline y
+        text = f"({item.quantity}) {item.name}"
+        p.drawString(1.3 * inch, y, text)
 
-        # draw quantity before the item name
-        p.drawString(1.3 * inch, y - box_size / 2, f"{item.name} ({item.quantity})")
+        # compute the true text height and center the box around it
+        text_height = ascent - descent
+        box_y = y + descent + (text_height - box_size) / 2
+        p.rect(1 * inch, box_y, box_size, box_size, stroke=1, fill=0)
+
         y -= leading
 
-        # item description (indented), if any
+        # description, same idea (but no box)
         if item.description:
-            p.drawString(1.6 * inch, y - box_size / 2, item.description)
+            p.drawString(1.6 * inch, y, item.description)
             y -= leading
 
     p.save()
