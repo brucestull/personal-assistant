@@ -34,5 +34,10 @@
 <p><em>No items have been added to this activity yet.</em></p>
 {% endif %}
 
-<p><a href="{% url 'packing_list:activity_list' %}">&larr; Back to all activities</a></p>
+<p>
+    <a href="{% url 'packing_list:activity_list' %}">&larr; Back to all activities</a>
+</p>
+<p>
+    <a href="{% url 'packing_list:item_list' %}">&larr; Back to all items</a>
+</p>
 {% endblock content %}
