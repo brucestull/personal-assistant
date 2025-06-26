@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ page_title }}
+-
+{{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+<a href="{% url 'packing_list:item_create' %}" class="btn btn-primary mb-3">Add Item</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Activity</th>
+            <th>Quantity</th>
+            <th>Packed</th>
+            <th>Essential</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>
+                <a href="{% url 'packing_list:item_detail' item.pk %}" class="text-decoration-none">
+                {{ item.name }}
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'packing_list:activity_detail' item.activity.pk %}" class="text-decoration-none">
+                {{ item.activity.name }}
+                </a>
+            </td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.is_packed }}</td>
+            <td>{{ item.is_essential }}</td>
+            <td>
+                <a href="{% url 'packing_list:item_update' item.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{% url 'packing_list:item_delete' item.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No items found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

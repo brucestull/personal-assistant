@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ item.name }} – Details
+{% endblock title %}
+
+{% block content %}
+  <h1>{{ item.name }}</h1>
+
+  {% if item.description %}
+    <p>{{ item.description }}</p>
+  {% endif %}
+
+  <dl class="row">
+    <dt class="col-sm-3">Quantity</dt>
+    <dd class="col-sm-9">{{ item.quantity }}</dd>
+
+    <dt class="col-sm-3">Packed?</dt>
+    <dd class="col-sm-9">
+      {% if item.is_packed %}
+        Yes
+      {% else %}
+        No
+      {% endif %}
+    </dd>
+
+    <dt class="col-sm-3">Essential?</dt>
+    <dd class="col-sm-9">
+      {% if item.is_essential %}
+        Yes
+      {% else %}
+        No
+      {% endif %}
+    </dd>
+
+    <dt class="col-sm-3">Activity</dt>
+    <dd class="col-sm-9">
+      <a href="{% url 'packing_list:activity_detail' item.activity.pk %}">
+        {{ item.activity.name }}
+      </a>
+    </dd>
+  </dl>
+
+  <p>
+    <a href="{% url 'packing_list:item_update' item.pk %}" class="btn btn-sm btn-warning">Edit Item</a>
+    <a href="{% url 'packing_list:item_delete' item.pk %}" class="btn btn-sm btn-danger">Delete Item</a>
+  </p>
+
+  <p>
+    <a href="{% url 'packing_list:item_list' %}">&larr; Back to all items</a>
+  </p>
+{% endblock content %}

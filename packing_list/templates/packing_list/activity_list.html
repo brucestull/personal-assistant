@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ page_title }}
+-
+{{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+<a href="{% url 'packing_list:activity_create' %}" class="btn btn-primary mb-3">Add Activity</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for activity in activities %}
+        <tr>
+            <td>
+                <a href="{% url 'packing_list:activity_detail' activity.pk %}">
+                    {{ activity.name }}
+                </a>
+            </td>
+            <td>{{ activity.description }}</td>
+            <td>
+                <a href="{% url 'packing_list:activity_update' activity.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{% url 'packing_list:activity_delete' activity.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No activities found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

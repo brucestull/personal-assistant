@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ page_title }}
+-
+{{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+<form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'packing_list:item_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock content %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ page_title }}
+-
+{{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+<h1>{{ activity.name }}</h1>
+
+{% if activity.description %}
+<p>{{ activity.description }}</p>
+{% endif %}
+
+<p>
+    <a href="{% url 'packing_list:activity_update' activity.pk %}">Edit Activity</a> |
+    <a href="{% url 'packing_list:activity_delete' activity.pk %}">Delete Activity</a> |
+    <a href="{% url 'packing_list:item_create' %}?activity={{ activity.pk }}">Add Item</a> |
+    <a href="{% url 'packing_list:activity_pdf' activity.pk %}">Download Packing List (PDF)</a>
+</p>
+
+<h2>Items for “{{ activity.name }}”</h2>
+{% if items %}
+<ul>
+    {% for item in items %}
+    <li>
+        {% comment %} {{ item.name }} {% endcomment %}
+        <a href="{% url 'packing_list:item_detail' item.pk %}">{{ item.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p><em>No items have been added to this activity yet.</em></p>
+{% endif %}
+
+<p><a href="{% url 'packing_list:activity_list' %}">&larr; Back to all activities</a></p>
+{% endblock content %}
