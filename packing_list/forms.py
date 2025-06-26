@@ -23,12 +23,21 @@ class ItemForm(forms.ModelForm):
             "activity",
         ]
 
-    def __init__(self, *args, user=None, **kwargs):
+    def __init__(self, *args, **kwargs):
+        # pull out our custom kwargs so the base class never sees them
+        user = kwargs.pop("user", None)
+        activity = kwargs.pop("activity", None)
+
+        # now call the parent __init__
         super().__init__(*args, **kwargs)
 
-        # 1. show only this user's activities
-        self.fields["activity"].queryset = Activity.objects.filter(user=user)
+        # if the caller gave us a user, limit the activity choices
+        if user is not None:
+            self.fields["activity"].queryset = Activity.objects.filter(user=user)
 
-        # 2. if we're editing an existing item, pre-select its activity
-        if self.instance and self.instance.pk and self.instance.activity_id:
-            self.fields["activity"].initial = self.instance.activity_id
+        # if the caller gave us an activity (either ID or instance),
+        # pre-fill it and hide it so they can’t change it
+        if activity is not None:
+            # if they passed an ID, Django will still accept it as initial
+            self.fields["activity"].initial = activity
+            self.fields["activity"].widget = forms.HiddenInput()
