@@ -12,6 +12,7 @@ urlpatterns = [
     path("activities/create/", views.activity_create, name="activity_create"),
     path("activities/<int:pk>/edit/", views.activity_update, name="activity_update"),
     path("activities/<int:pk>/delete/", views.activity_delete, name="activity_delete"),
+    path("activities/<int:pk>/pdf/", views.activity_pdf, name="activity_pdf"),
     # Items
     path("items/", views.item_list, name="item_list"),
     path("items/<int:pk>/", views.item_detail, name="item_detail"),

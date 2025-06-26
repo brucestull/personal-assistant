@@ -1,5 +1,12 @@
 # packing_list/views.py
+import io
+
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.text import slugify
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.pdfgen import canvas
 
 from base.decorators import registration_accepted_required
 from config.settings import THE_SITE_NAME
@@ -98,6 +105,46 @@ def activity_delete(request, pk):
             "activity": activity,
         },
     )
+
+
+@registration_accepted_required
+def activity_pdf(request, pk):
+    # fetch only the user’s own activity
+    activity = get_object_or_404(Activity, pk=pk, user=request.user)
+
+    # build PDF in memory
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    # Title: Activity name at 20pt
+    p.setFont("Helvetica-Bold", 20)
+    p.drawString(1 * inch, height - 1 * inch, activity.name)
+
+    # Items: 20pt, with check-boxes
+    p.setFont("Helvetica", 20)
+    y = height - 1.5 * inch
+    for item in activity.packing_items.all():
+        # draw an empty square for checkbox
+        p.rect(1 * inch, y - 0.2 * inch, 0.2 * inch, 0.2 * inch, stroke=1, fill=0)
+        # item name
+        p.drawString(1.3 * inch, y - 0.2 * inch, item.name)
+
+        y -= 0.5 * inch
+        # new page if we run out of room
+        if y < 1 * inch:
+            p.showPage()
+            p.setFont("Helvetica", 20)
+            y = height - 1 * inch
+
+    p.save()
+    buffer.seek(0)
+
+    # return as attachment
+    response = HttpResponse(buffer, content_type="application/pdf")
+    activity_slug_name = slugify(activity.name)
+    response["Content-Disposition"] = f'attachment; filename="{activity_slug_name}.pdf"'
+    return response
 
 
 # ---------- Item Views ----------

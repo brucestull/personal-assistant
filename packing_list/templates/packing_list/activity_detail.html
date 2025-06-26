@@ -16,7 +16,8 @@
 <p>
     <a href="{% url 'packing_list:activity_update' activity.pk %}">Edit Activity</a> |
     <a href="{% url 'packing_list:activity_delete' activity.pk %}">Delete Activity</a> |
-    <a href="{% url 'packing_list:item_create' %}?activity={{ activity.pk }}">Add Item</a>
+    <a href="{% url 'packing_list:item_create' %}?activity={{ activity.pk }}">Add Item</a> |
+    <a href="{% url 'packing_list:activity_pdf' activity.pk %}">Download Packing List (PDF)</a>
 </p>
 
 <h2>Items for “{{ activity.name }}”</h2>

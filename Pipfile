@@ -26,6 +26,7 @@ factory-boy = "*"
 pytest-django = "*"
 djangorestframework = "*"
 debugpy = "*"
+reportlab = "*"
 
 [dev-packages]
 
