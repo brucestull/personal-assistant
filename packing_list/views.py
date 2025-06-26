@@ -215,23 +215,27 @@ def item_detail(request, pk):
 
 @registration_accepted_required
 def item_create(request):
-    # grab the activity ID (or 404 early if you prefer)
+    # 1. Try to grab an activity ID from the URL; if none, activity stays None
+    activity = None
     activity_id = request.GET.get("activity")
-    activity = get_object_or_404(Activity, pk=activity_id, user=request.user)
+    if activity_id:
+        activity = get_object_or_404(Activity, pk=activity_id, user=request.user)
 
-    # build the form: on GET, request.POST is empty so data=None
+    # 2. Build the form, passing activity instance or None
     form = ItemForm(
-        request.POST or None,  # always supply data or None
-        user=request.user,  # custom kw
-        activity=activity,  # pass the instance (not just the ID)
+        request.POST or None,  # data or None
+        user=request.user,  # your custom kwarg
+        activity=activity,  # instance or None
     )
 
+    # 3. On valid POST, save and redirect
     if form.is_valid():
         item = form.save(commit=False)
         item.user = request.user
         item.save()
         return redirect("packing_list:item_list")
 
+    # 4. Render form on GET or invalid POST
     return render(
         request,
         "packing_list/item_form.html",
@@ -239,6 +243,7 @@ def item_create(request):
             "the_site_name": settings.THE_SITE_NAME,
             "page_title": "Create Item",
             "form": form,
+            "activity": activity,  # you can use this in the template if you want
         },
     )
 
