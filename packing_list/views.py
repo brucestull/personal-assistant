@@ -10,6 +10,7 @@ from reportlab.pdfgen import canvas
 
 from base.decorators import registration_accepted_required
 from config.settings import THE_SITE_NAME
+from django.conf import settings
 
 from .forms import ActivityForm, ItemForm
 from .models import Activity, Item
@@ -199,32 +200,28 @@ def item_detail(request, pk):
 
 @registration_accepted_required
 def item_create(request):
-    activity_id = request.GET.get(
-        "activity"
-    )  # e.g. from clicking “Add Item” on an activity page
+    # grab the activity ID (or 404 early if you prefer)
+    activity_id = request.GET.get("activity")
+    activity = get_object_or_404(Activity, pk=activity_id, user=request.user)
 
-    if request.method == "POST":
-        form = ItemForm(
-            request.POST,
-            user=request.user,
-            activity=activity_id,
-        )
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.user = request.user
-            item.save()
-            return redirect("packing_list:item_list")
-    else:
-        form = ItemForm(
-            user=request.user,
-            activity=activity_id,
-        )
+    # build the form: on GET, request.POST is empty so data=None
+    form = ItemForm(
+        request.POST or None,  # always supply data or None
+        user=request.user,  # custom kw
+        activity=activity,  # pass the instance (not just the ID)
+    )
+
+    if form.is_valid():
+        item = form.save(commit=False)
+        item.user = request.user
+        item.save()
+        return redirect("packing_list:item_list")
 
     return render(
         request,
         "packing_list/item_form.html",
         {
-            "the_site_name": THE_SITE_NAME,
+            "the_site_name": settings.THE_SITE_NAME,
             "page_title": "Create Item",
             "form": form,
         },
