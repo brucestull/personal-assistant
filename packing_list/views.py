@@ -109,6 +109,7 @@ def activity_delete(request, pk):
 
 @registration_accepted_required
 def activity_pdf(request, pk):
+    font_size = 10  # pt
     # fetch only the user’s own activity
     activity = get_object_or_404(Activity, pk=pk, user=request.user)
 
@@ -117,33 +118,40 @@ def activity_pdf(request, pk):
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
 
-    # Title: Activity name at 20pt
-    p.setFont("Helvetica-Bold", 20)
+    # Title: Activity name at 20 pt
+    p.setFont("Helvetica-Bold", font_size)
     p.drawString(1 * inch, height - 1 * inch, activity.name)
 
-    # Items: 20pt, with check-boxes
-    p.setFont("Helvetica", 20)
+    # Items + descriptions: 20 pt, with check-boxes
+    p.setFont("Helvetica", font_size)
     y = height - 1.5 * inch
-    for item in activity.packing_items.all():
-        # draw an empty square for checkbox
-        p.rect(1 * inch, y - 0.2 * inch, 0.2 * inch, 0.2 * inch, stroke=1, fill=0)
-        # item name
-        p.drawString(1.3 * inch, y - 0.2 * inch, item.name)
 
-        y -= 0.5 * inch
+    for item in activity.packing_items.all():
         # new page if we run out of room
         if y < 1 * inch:
             p.showPage()
-            p.setFont("Helvetica", 20)
+            p.setFont("Helvetica", font_size)
             y = height - 1 * inch
+
+        # checkbox
+        p.rect(1 * inch, y - 0.2 * inch, 0.2 * inch, 0.2 * inch, stroke=1, fill=0)
+        # item name
+        p.drawString(1.3 * inch, y - 0.2 * inch, item.name)
+        y -= 0.4 * inch
+
+        # item description, if any
+        if item.description:
+            # keep same font size; indent a bit more
+            p.drawString(1.6 * inch, y - 0.2 * inch, item.description)
+            y -= 0.5 * inch
 
     p.save()
     buffer.seek(0)
 
-    # return as attachment
+    # return as attachment with slugified name
     response = HttpResponse(buffer, content_type="application/pdf")
-    activity_slug_name = slugify(activity.name)
-    response["Content-Disposition"] = f'attachment; filename="{activity_slug_name}.pdf"'
+    filename = f"{slugify(activity.name)}.pdf"
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response
 
 
@@ -215,13 +223,22 @@ def item_create(request):
 @registration_accepted_required
 def item_update(request, pk):
     item = get_object_or_404(Item, pk=pk, user=request.user)
+
     if request.method == "POST":
-        form = ItemForm(request.POST, instance=item)
+        form = ItemForm(
+            request.POST,
+            instance=item,
+            user=request.user,  # scope queryset to this user
+        )
         if form.is_valid():
             form.save()
             return redirect("packing_list:item_list")
     else:
-        form = ItemForm(instance=item)
+        form = ItemForm(
+            instance=item,
+            user=request.user,  # scope queryset + pick up .instance.activity
+        )
+
     return render(
         request,
         "packing_list/item_form.html",

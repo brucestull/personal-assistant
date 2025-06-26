@@ -23,20 +23,12 @@ class ItemForm(forms.ModelForm):
             "activity",
         ]
 
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user", None)
-        activity_id = kwargs.pop("activity", None)
+    def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # 1. always scope to this user
-        qs = Activity.objects.filter(user=user)
+        # 1. show only this user's activities
+        self.fields["activity"].queryset = Activity.objects.filter(user=user)
 
-        if activity_id:
-            # 2a. further restrict to the single activity
-            qs = qs.filter(pk=activity_id)
-            # 2b. pre-select it
-            self.fields["activity"].initial = activity_id
-            # 2c. optionally hide the widget so they can’t swap it
-            # self.fields["activity"].widget = forms.HiddenInput()
-
-        self.fields["activity"].queryset = qs
+        # 2. if we're editing an existing item, pre-select its activity
+        if self.instance and self.instance.pk and self.instance.activity_id:
+            self.fields["activity"].initial = self.instance.activity_id
