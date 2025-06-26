@@ -109,48 +109,59 @@ def activity_delete(request, pk):
 
 @registration_accepted_required
 def activity_pdf(request, pk):
-    font_size = 10  # pt
+    # 1. Read & clamp font size between 11 and 20
+    try:
+        font_size = int(request.GET.get("font_size", 12))
+    except (TypeError, ValueError):
+        font_size = 12
+    font_size = max(11, min(20, font_size))
+
+    # 2. Compute leading in POINTS (not inches)
+    leading = font_size * 1.2  # this is in points
+
     # fetch only the user’s own activity
     activity = get_object_or_404(Activity, pk=pk, user=request.user)
 
     # build PDF in memory
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
-    width, height = letter
+    width, height = letter  # these are in points
 
-    # Title: Activity name at 20 pt
+    # Title: activity.name at the chosen font size
     p.setFont("Helvetica-Bold", font_size)
     p.drawString(1 * inch, height - 1 * inch, activity.name)
 
-    # Items + descriptions: 20 pt, with check-boxes
+    # Items: same font, with computed leading
     p.setFont("Helvetica", font_size)
     y = height - 1.5 * inch
+    bottom_margin = 1 * inch
+    box_size = 0.2 * inch
 
     for item in activity.packing_items.all():
-        # new page if we run out of room
-        if y < 1 * inch:
+        # new page if we’d drop below the bottom margin
+        if y - leading < bottom_margin:
             p.showPage()
             p.setFont("Helvetica", font_size)
-            y = height - 1 * inch
+            y = height - 1.5 * inch
 
-        # checkbox
-        p.rect(1 * inch, y - 0.2 * inch, 0.2 * inch, 0.2 * inch, stroke=1, fill=0)
-        # item name
-        p.drawString(1.3 * inch, y - 0.2 * inch, item.name)
-        y -= 0.4 * inch
+        # draw checkbox (fixed size)
+        p.rect(1 * inch, y - box_size / 2, box_size, box_size, stroke=1, fill=0)
 
-        # item description, if any
+        # draw quantity before the item name
+        p.drawString(1.3 * inch, y - box_size / 2, f"{item.name} ({item.quantity})")
+        y -= leading
+
+        # item description (indented), if any
         if item.description:
-            # keep same font size; indent a bit more
-            p.drawString(1.6 * inch, y - 0.2 * inch, item.description)
-            y -= 0.5 * inch
+            p.drawString(1.6 * inch, y - box_size / 2, item.description)
+            y -= leading
 
     p.save()
     buffer.seek(0)
 
     # return as attachment with slugified name
-    response = HttpResponse(buffer, content_type="application/pdf")
     filename = f"{slugify(activity.name)}.pdf"
+    response = HttpResponse(buffer, content_type="application/pdf")
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response
 
