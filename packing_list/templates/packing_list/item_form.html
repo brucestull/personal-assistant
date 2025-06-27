@@ -11,6 +11,6 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-success">Save</button>
-    <a href="{% url 'packing_list:item_list' %}" class="btn btn-secondary">Cancel</a>
+    <a href="{% url 'packing_list:activity_detail' pk=activity.pk %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock content %}
