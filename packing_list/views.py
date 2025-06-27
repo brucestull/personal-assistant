@@ -233,7 +233,7 @@ def item_create(request):
         item = form.save(commit=False)
         item.user = request.user
         item.save()
-        return redirect("packing_list:item_list")
+        return redirect(item.activity)
 
     # 4. Render form on GET or invalid POST
     return render(
