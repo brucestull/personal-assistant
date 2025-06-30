@@ -5,6 +5,7 @@
 ### Starting Services in Order
 1. `redis-server`: Start Redis server. It may already be running.
 1. `celery -A config worker --loglevel=info`: Start Celery worker with info logging. Keep this running in a separate terminal, if needed.
+1. `celery -A config beat --loglevel=info`: Start Celery beat scheduler with info logging. Keep this running in a separate terminal, if needed.
 1. `python manage.py runserver`: Start Django development server.
 
 ### Redis
