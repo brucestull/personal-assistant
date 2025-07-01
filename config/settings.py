@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     "storager.apps.StoragerConfig",
     "story_line.apps.StoryLineConfig",
     "packing_list.apps.PackingListConfig",
+    "decide.apps.DecideConfig",
 ]
 
 MIDDLEWARE = [
