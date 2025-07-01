@@ -24,8 +24,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 # https://docs.celeryq.dev/en/stable/reference/celery.html#celery.Celery
 app = Celery("config")
 app.config_from_object("django.conf:settings", namespace="CELERY")
-# Set utc false to use local time:
-app.conf.enable_utc = False
+app.conf.enable_utc = True
 # Set the timezone to convert to and from local time:
 app.conf.timezone = settings.TIME_ZONE
 
