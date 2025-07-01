@@ -30,3 +30,6 @@ app.conf.enable_utc = False
 app.conf.timezone = settings.TIME_ZONE
 
 app.autodiscover_tasks()
+
+# Use django-celery-beat's database scheduler:
+app.conf.beat_scheduler = "django_celery_beat.schedulers:DatabaseScheduler"
