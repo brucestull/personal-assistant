@@ -11,7 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 # ------------------------------------
 # Celery should not need this.
 # ------------------------------------
-# BAD ACVICE:
+# BAD ADVICE:
 # This is a bad practice to set the Django settings module in the Celery app.
 # This will ensure that all the Django settings are loaded before Celery starts
 # processing tasks. It is crucial for tasks that depend on Django models and other
@@ -26,7 +26,7 @@ app = Celery("config")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 # Set utc false to use local time:
 app.conf.enable_utc = False
-# Set the timezone to use to convert to and from local time:
+# Set the timezone to convert to and from local time:
 app.conf.timezone = settings.TIME_ZONE
 
 app.autodiscover_tasks()
