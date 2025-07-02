@@ -23,6 +23,7 @@
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <h1 class="text-xl font-semibold"><a href="{% url 'decide:create_decision' %}" class="hover:text-indigo-600">Eisenhower Matrix</a></h1>
         <nav class="space-x-4">
+          <a href="{% url 'home' %}" class="text-sm font-medium text-indigo-600 hover:underline">Personal Assistant Home</a>
           <a href="{% url 'decide:create_decision' %}" class="text-sm font-medium text-indigo-600 hover:underline">New</a>
           <a href="{% url 'decide:decision_list' %}" class="text-sm font-medium text-indigo-600 hover:underline">Decisions</a>
           <a href="{% url 'decide:response_list' %}" class="text-sm font-medium text-indigo-600 hover:underline">Responses</a>
