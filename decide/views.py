@@ -3,10 +3,11 @@ import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Case, IntegerField, Value, When
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
+from django.urls import reverse
 
 from .forms import DecisionForm
 from .models import Decision, DecisionResponse, Prompt
@@ -78,12 +79,23 @@ def decision_flow_json(request, decision_id):
         decision.quadrant = "Q4"
     decision.save()
 
-    return JsonResponse({"quadrant": decision.get_quadrant_display()})
+    return JsonResponse(
+        {
+            "quadrant": decision.get_quadrant_display(),
+            "result_url": reverse("decide:decision_result", args=[decision.id]),
+        }
+    )
 
 
 @registration_accepted_required
 def decision_result(request, decision_id):
-    decision = get_object_or_404(Decision, id=decision_id, user=request.user)
+    decision = (
+        Decision.objects.filter(id=decision_id, user=request.user)
+        .prefetch_related("responses__prompt")
+        .first()
+    )
+    if not decision:
+        raise Http404()
     return render(request, "decide/decision_result.html", {"decision": decision})
 
 
