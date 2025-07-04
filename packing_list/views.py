@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
+from reportlab.lib.utils import simpleSplit
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfgen import canvas
 
@@ -111,71 +112,76 @@ def activity_delete(request, pk):
 
 @registration_accepted_required
 def activity_pdf(request, pk):
-    # 1. Read & clamp font size between 11 and 20
+    # 1. clamp font size between 11 and 20
     try:
         font_size = int(request.GET.get("font_size", 12))
     except (TypeError, ValueError):
         font_size = 12
     font_size = max(11, min(20, font_size))
 
-    # 2. Compute leading in POINTS (not inches)
-    leading = font_size * 1.2  # this is in points
+    # measurements
+    leading = font_size * 1.2  # line‐to‐line spacing
+    box_size = 0.2 * inch
+    bottom_margin = 1 * inch
+    left_box_x = 1 * inch
+    name_x = left_box_x + box_size + 0.1 * inch
+    desc_x = 1.6 * inch
+    right_margin = 1 * inch
 
-    # fetch only the user’s own activity
+    # fetch activity
     activity = get_object_or_404(Activity, pk=pk, user=request.user)
 
-    # build PDF in memory
+    # start PDF
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
 
+    # compute max width for description wrapping
+    max_width = width - desc_x - right_margin
+
     # Title
     p.setFont("Helvetica-Bold", font_size)
-    p.drawString(1 * inch, height - 1 * inch, activity.name)
+    p.drawString(left_box_x, height - 1 * inch, activity.name)
 
-    # Switch back to regular font
+    # switch back to body font
     p.setFont("Helvetica", font_size)
-
-    # get real font metrics
-    face = pdfmetrics.getFont("Helvetica").face
-    ascent = face.ascent * font_size / 1000.0
-    descent = face.descent * font_size / 1000.0
-
-    leading = font_size * 1.2
-    box_size = 0.2 * inch
-    bottom_margin = 1 * inch
-
-    # start y as the *baseline* of the first line,
-    # we want that baseline to sit 1.5" below the top edge, so we add half the box height # noqa E501
+    # first baseline
     y = height - 1.5 * inch + box_size / 2
 
     for item in activity.packing_items.all():
-        # new page?
+        # page‐break if needed
         if y - leading < bottom_margin:
             p.showPage()
             p.setFont("Helvetica", font_size)
             y = height - 1.5 * inch + box_size / 2
 
-        # draw the text at the baseline y
-        text = f"({item.quantity}) {item.name}"
-        p.drawString(1.3 * inch, y, text)
-
-        # compute the true text height and center the box around it
+        # draw checkbox centered on the text‐baseline
+        face = pdfmetrics.getFont("Helvetica").face
+        ascent = face.ascent * font_size / 1000.0
+        descent = face.descent * font_size / 1000.0
         text_height = ascent - descent
         box_y = y + descent + (text_height - box_size) / 2
-        p.rect(1 * inch, box_y, box_size, box_size, stroke=1, fill=0)
+        p.rect(left_box_x, box_y, box_size, box_size, stroke=1, fill=0)
 
+        # draw item name
+        p.drawString(name_x, y, f"({item.quantity}) {item.name}")
         y -= leading
 
-        # description, same idea (but no box)
+        # wrap & draw description
         if item.description:
-            p.drawString(1.6 * inch, y, item.description)
-            y -= leading
+            lines = simpleSplit(item.description, "Helvetica", font_size, max_width)
+            for line in lines:
+                if y - leading < bottom_margin:
+                    p.showPage()
+                    p.setFont("Helvetica", font_size)
+                    y = height - 1.5 * inch + box_size / 2
+                p.drawString(desc_x, y, line)
+                y -= leading
 
+    # finish up
     p.save()
     buffer.seek(0)
 
-    # return as attachment with slugified name
     filename = f"{slugify(activity.name)}.pdf"
     response = HttpResponse(buffer, content_type="application/pdf")
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
