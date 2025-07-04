@@ -120,12 +120,13 @@ def activity_pdf(request, pk):
     font_size = max(11, min(20, font_size))
 
     # measurements
-    leading = font_size * 1.2  # line‐to‐line spacing
     box_size = 0.2 * inch
-    bottom_margin = 1 * inch
+    extra_padding = 0.05 * inch
+    leading = font_size * 1.2 + extra_padding
     left_box_x = 1 * inch
     name_x = left_box_x + box_size + 0.1 * inch
     desc_x = 1.6 * inch
+    bottom_margin = 1 * inch
     right_margin = 1 * inch
 
     # fetch activity
@@ -136,9 +137,6 @@ def activity_pdf(request, pk):
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
 
-    # compute max width for description wrapping
-    max_width = width - desc_x - right_margin
-
     # Title
     p.setFont("Helvetica-Bold", font_size)
     p.drawString(left_box_x, height - 1 * inch, activity.name)
@@ -146,35 +144,39 @@ def activity_pdf(request, pk):
     # switch back to body font
     p.setFont("Helvetica", font_size)
     # first baseline
-    y = height - 1.5 * inch + box_size / 2
+    y = height - 1.5 * inch + (box_size + extra_padding) / 2
 
     for item in activity.packing_items.all():
         # page‐break if needed
         if y - leading < bottom_margin:
             p.showPage()
             p.setFont("Helvetica", font_size)
-            y = height - 1.5 * inch + box_size / 2
+            y = height - 1.5 * inch + (box_size + extra_padding) / 2
 
-        # draw checkbox centered on the text‐baseline
+        # draw checkbox
         face = pdfmetrics.getFont("Helvetica").face
         ascent = face.ascent * font_size / 1000.0
         descent = face.descent * font_size / 1000.0
-        text_height = ascent - descent
-        box_y = y + descent + (text_height - box_size) / 2
+        text_h = ascent - descent
+
+        # same centering but now within a taller line
+        box_y = y + descent + (text_h - box_size) / 2
         p.rect(left_box_x, box_y, box_size, box_size, stroke=1, fill=0)
 
         # draw item name
         p.drawString(name_x, y, f"({item.quantity}) {item.name}")
         y -= leading
 
-        # wrap & draw description
+        # descriptions, etc...
         if item.description:
-            lines = simpleSplit(item.description, "Helvetica", font_size, max_width)
+            lines = simpleSplit(
+                item.description, "Helvetica", font_size, width - desc_x - right_margin
+            )
             for line in lines:
                 if y - leading < bottom_margin:
                     p.showPage()
                     p.setFont("Helvetica", font_size)
-                    y = height - 1.5 * inch + box_size / 2
+                    y = height - 1.5 * inch + (box_size + extra_padding) / 2
                 p.drawString(desc_x, y, line)
                 y -= leading
 
