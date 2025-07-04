@@ -53,17 +53,29 @@ def send_inspirational_to_beastie(
 
 
 @shared_task
-def send_inspirational_to_self(user_id):
-    user_inspirational = Inspirational.objects.filter(author=user_id).first()
-    user_email = user_inspirational.author.email
-    if user_inspirational:
-        message = user_inspirational.body
-        send_mail(
-            subject="Your Daily Inspiration",
-            message=message,
-            from_email=user_email,
-            recipient_list=[user_email],
-        )
+def send_inspirational_to_self(user_id, inspirational_id=None):
+    """
+    If inspirational_id is given, use that; otherwise fall back to the first
+    Inspirational for the user.
+    """
+    # start with all that belong to the user
+    qs = Inspirational.objects.filter(author_id=user_id)
+    # if a specific one was passed in, narrow down to it
+    if inspirational_id is not None:
+        qs = qs.filter(pk=inspirational_id)
+    inspirational = qs.first()
+    if not inspirational:
+        # nothing to send
+        return
+
+    # send the daily inspiration
+    send_mail(
+        subject="Your Daily Inspiration",
+        message=inspirational.body,
+        from_email=inspirational.author.email,
+        recipient_list=[inspirational.author.email],
+        fail_silently=False,
+    )
 
 
 @shared_task
