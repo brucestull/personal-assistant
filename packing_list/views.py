@@ -257,6 +257,7 @@ def item_create(request):
 @registration_accepted_required
 def item_update(request, pk):
     item = get_object_or_404(Item, pk=pk, user=request.user)
+    activity = item.activity
 
     if request.method == "POST":
         form = ItemForm(
@@ -280,6 +281,7 @@ def item_update(request, pk):
             "the_site_name": THE_SITE_NAME,
             "page_title": f"Update {item.name}",
             "form": form,
+            "activity": activity,
         },
     )
 
