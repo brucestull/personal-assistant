@@ -1,41 +1,43 @@
 {% load static %}
+{% comment %}pomodo/templates/pomodo/timer.html{% endcomment %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Pomodoro Timer</title>
-    <link rel="stylesheet" href="{% static 'pomodo/css/timer.css' %}">
-</head>
+    <link rel="stylesheet" href="{% static 'pomodo/css/timer.css' %}" />
+  </head>
 
-<body>
+  <body>
     <div class="timer-container">
-        <h1>Pomodoro Timer</h1>
+      <h1>Pomodoro Timer</h1>
 
-        <div class="settings">
-            <label for="duration-input">Set timer (minutes):</label>
-            <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm">
-        </div>
+      <div class="settings">
+        <label for="duration-input">Set timer (minutes):</label>
+        <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm" />
+      </div>
 
-        <div id="timer-display">00:00</div>
+      <div class="timer-display">
+        <div id="remaining-display">25:00</div>
+        <div id="elapsed-display">00:00</div>
+      </div>
+      <button id="start-button" aria-label="Start Timer">Sturt</button>
+      <!-- pause & continue live together -->
+      <button id="pause-button" aria-label="Pause Timer" disabled>Paws</button>
+      <button id="continue-button" aria-label="Continue Timer" style="display:none;">Can't Tinue</button>
 
-        <button id="start-button" aria-label="Start Timer">Sturt</button>
-        <button id="pause-button" aria-label="Paws Timer" disabled>Paws</button>
-        <button id="cancel-button" aria-label="Turn off timer" style="display:none;">Okay... I'm done!</button>
+      <button id="cancel-button" aria-label="Turn off timer" style="display:none;">Okay… I'm done!</button>
     </div>
 
     <audio id="warning-sound" preload="auto">
-        <source src="{% static 'pomodo/audio/warning_louderer.m4a' %}" type="audio/m4a">
-        <source src="{% static 'pomodo/audio/warning_louderer.mp3' %}" type="audio/mpeg">
-        Your browser does not support HTML5 audio.
+      <source src="{% static 'pomodo/audio/warning_louderer.m4a' %}" type="audio/m4a" />
+      <source src="{% static 'pomodo/audio/warning_louderer.mp3' %}" type="audio/mpeg" />Your browser does not support HTML5 audio.
     </audio>
     <audio id="alarm-sound" preload="auto" loop>
-        <source src="{% static 'pomodo/audio/alarm_louderer.m4a' %}" type="audio/m4a">
-        <source src="{% static 'pomodo/audio/alarm_louderer.mp3' %}" type="audio/mpeg">
-        Your browser does not support HTML5 audio.
+      <source src="{% static 'pomodo/audio/alarm_louderer.m4a' %}" type="audio/m4a" />
+      <source src="{% static 'pomodo/audio/alarm_louderer.mp3' %}" type="audio/mpeg" />Your browser does not support HTML5 audio.
     </audio>
 
     <script src="{% static 'pomodo/js/timer.js' %}"></script>
-</body>
-
+  </body>
 </html>
