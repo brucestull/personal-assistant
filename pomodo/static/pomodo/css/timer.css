@@ -30,3 +30,19 @@ button {
     padding: 10px 20px;
     margin: 5px;
 }
+
+.timer-display {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+#remaining-display {
+  font-size: 4rem;       /* Big focus */
+  font-weight: bold;
+}
+
+#elapsed-display {
+  font-size: 1.25rem;    /* Smaller, secondary */
+  color: #666;
+  margin-top: 0.5rem;
+}
