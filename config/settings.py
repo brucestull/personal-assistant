@@ -41,6 +41,9 @@ DEBUG = ENVIRONMENT != "production"
 # DEBUG = ENVIRONMENT == "production"
 ########################################
 
+# MAINTENANCE_MODE is set to "on" or "off" based on the environment variable
+MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE", "off") == "on"
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -99,6 +102,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "config.middleware.SuperuserMaintenanceMiddleware",  # Custom middleware for maintenance mode # noqa E501
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
