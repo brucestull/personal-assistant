@@ -38,7 +38,7 @@ DEBUG = ENVIRONMENT != "production"
 # `DEBUG = ENVIRONMENT != "production"` will set DEBUG to True when ENVIRONMENT is not "production", # noqa E501
 # DEBUG = ENVIRONMENT != "production"
 # `DEBUG = ENVIRONMENT == "production"` will set DEBUG to True when ENVIRONMENT is "production",` # noqa E501
-DEBUG = ENVIRONMENT == "production"
+# DEBUG = ENVIRONMENT == "production"
 ########################################
 
 
