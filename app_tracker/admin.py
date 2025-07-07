@@ -517,6 +517,7 @@ class ServerAdmin(admin.ModelAdmin):
             None,
             {
                 "fields": (
+                    "name",
                     "host_name",
                     "ip_address",
                     "environment",
