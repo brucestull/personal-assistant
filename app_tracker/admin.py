@@ -518,12 +518,16 @@ class ServerAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "name",
+                    "description",
+                    "operating_system",
                     "host_name",
+                    "mac_address",
+                    "ram",
+                    "form_factor",
                     "ip_address",
                     "environment",
-                    "operating_system",
-                    "applications",
                     "notes",
+                    "applications",
                 )
             },
         ),
