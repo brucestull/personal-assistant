@@ -34,6 +34,13 @@ ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
 # If ENVIRONMENT is anything else, DEBUG is True
 DEBUG = ENVIRONMENT != "production"
 
+############# DEBUG TOGGLE ############# # noqa E266
+# `DEBUG = ENVIRONMENT != "production"` will set DEBUG to True when ENVIRONMENT is not "production", # noqa E501
+# DEBUG = ENVIRONMENT != "production"
+# `DEBUG = ENVIRONMENT == "production"` will set DEBUG to True when ENVIRONMENT is "production",` # noqa E501
+DEBUG = ENVIRONMENT == "production"
+########################################
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -234,7 +241,11 @@ if ENVIRONMENT == "production":
 else:
     # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = [
+        "localhost",
+        "127.0.0.1",
+        "flynnt-knapp-8e0b83ab9b88.herokuapp.com",
+    ]
     SECRET_KEY = os.environ.get(
         "SECRET_KEY",
         "django-insecure-mm8cx0al6wo$$0hhv3&eevzsst9dbw&(5p$#9k(1rx%e@j+=$l",
