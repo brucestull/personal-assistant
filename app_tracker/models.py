@@ -270,6 +270,7 @@ class Server(CreatedUpdatedBase):
     class Meta:
         verbose_name = "Server"
         verbose_name_plural = "Servers"
+        ordering = ["host_name"]
 
 
 class Project(CreatedUpdatedBase):
