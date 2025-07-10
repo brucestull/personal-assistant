@@ -2,7 +2,7 @@
 {% block content %}
   <h1>{{ object.title }}</h1>
 
-  <p>{{ object.content }}</p>
+  <p>{{ object.name }}</p>
 
   <p>
     <a href="{% url 'app_tracker:oc_update' object.pk %}">✏️ Edit</a> |

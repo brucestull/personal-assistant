@@ -9,6 +9,8 @@
 {% block content %}
 
     <h1>{{ page_title }}</h1>
+    <a href="{% url 'app_tracker:oc_create' %}">➕ Create New Organizational Concept</a>
+	{% if object_list %}
     {% for organizational_concept in object_list %}
         <h2>{{ organizational_concept.name }}</h2>
         <pre>{{ organizational_concept.description|linebreaksbr }}</pre>
@@ -20,7 +22,9 @@
                 {% endfor %}
             </p>
         {% endif %}
-        {% comment %} <p><a href="{% url 'organizational_concept_detail' organizational_concept.id %}">Details</a></p> {% endcomment %}
+        <p><a href="{% url 'app_tracker:oc_detail' organizational_concept.id %}">Details</a></p>
     {% endfor %}
-
+	{% else %}
+		<p>No organizational concepts found.</p>
+	{% endif %}
 {% endblock content %}
