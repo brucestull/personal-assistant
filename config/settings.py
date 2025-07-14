@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     "story_line.apps.StoryLineConfig",
     "packing_list.apps.PackingListConfig",
     "decide.apps.DecideConfig",
+    "tasks.apps.TasksConfig",
 ]
 
 MIDDLEWARE = [
