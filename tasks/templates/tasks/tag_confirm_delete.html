@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h1>Delete Tag?</h1>
+  <p>Are you sure you want to delete “{{ object.name }}”?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'tasks:tag_detail' object.pk %}" class="btn btn-link">Cancel</a>
+  </form>
+</div>
+{% endblock %}
