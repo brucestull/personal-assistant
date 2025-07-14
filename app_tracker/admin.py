@@ -492,7 +492,7 @@ class DjangoModelAdmin(admin.ModelAdmin):
 @admin.register(OperatingSystem)
 class OperatingSystemAdmin(admin.ModelAdmin):
     search_fields = ["name"]
-    list_display = ["name"]
+    list_display = ["name", "code_name"]
     ordering = ["name"]
 
 
@@ -520,7 +520,6 @@ class ServerAdmin(admin.ModelAdmin):
                     "name",
                     "description",
                     "operating_system",
-                    "code_name",
                     "host_name",
                     "mac_address",
                     "ram",

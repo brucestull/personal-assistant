@@ -221,6 +221,8 @@ class Server(CreatedUpdatedBase):
         help_text="A unique host name for the server.",
         max_length=100,
         unique=True,
+        null=True,
+        blank=True,
     )
     mac_address = models.CharField(
         max_length=17,
@@ -235,7 +237,9 @@ class Server(CreatedUpdatedBase):
         blank=True,
         null=True,
     )
-    form_factor = models.CharField(max_length=10, choices=FORM_FACTOR_CHOICES)
+    form_factor = models.CharField(
+        max_length=10, choices=FORM_FACTOR_CHOICES, blank=True, null=True
+    )  # noqa: E501
 
     ip_address = models.GenericIPAddressField(
         verbose_name="IP Address",
