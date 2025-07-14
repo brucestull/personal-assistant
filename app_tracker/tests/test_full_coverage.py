@@ -71,15 +71,18 @@ class ModelTestCase(TestCase):
     def test_server_str_and_fields(self):
         os_obj = OperatingSystem.objects.create(name="CentOS 8")
         server = Server.objects.create(
+            operating_system=os_obj,
             host_name="SERVER1",
+            form_factor="Pi4",
             ip_address="192.168.1.10",
             environment="production",
-            operating_system=os_obj,
             notes="Specs",
         )
         self.assertEqual(str(server), "SERVER1 (192.168.1.10)")
 
-        server_no_ip = Server.objects.create(name="Server 2", host_name="SERVER2")
+        server_no_ip = Server.objects.create(
+            name="Server 2", host_name="SERVER2", form_factor="Pi4"
+        )
         self.assertEqual(str(server_no_ip), "SERVER2 (no IP)")
 
         app_for_server = Application.objects.create(name="AppServer")
@@ -140,6 +143,11 @@ class ViewTestCase(TestCase):
         self.app_obj = Application.objects.create(name="TestApp")
         self.app_obj.language_framework_systems.add(self.lfs_obj)
 
+        self.oc_obj = OrganizationalConcept.objects.create(
+            name="TestOC", description="Desc"
+        )
+        self.oc_obj.applications.add(self.app_obj)
+
         self.label_obj = Label.objects.create(name="TestLabel")
         self.label_obj.application.add(self.app_obj)
 
@@ -147,21 +155,17 @@ class ViewTestCase(TestCase):
             title="TestNote", content="C", application=self.app_obj
         )
 
-        self.oc_obj = OrganizationalConcept.objects.create(
-            name="TestOC", description="Desc"
+        self.server_obj = Server.objects.create(
+            operating_system=self.os_obj,
+            host_name="TestServer",
+            form_factor="Pi4",
+            ip_address="10.0.0.1",
+            environment="test",
         )
-        self.oc_obj.applications.add(self.app_obj)
+        self.server_obj.applications.add(self.app_obj)
 
         self.project_obj = Project.objects.create(name="TestProj", description="Desc")
         self.project_obj.owner.add(self.user)
-
-        self.server_obj = Server.objects.create(
-            host_name="TestServer",
-            ip_address="10.0.0.1",
-            environment="test",
-            operating_system=self.os_obj,
-        )
-        self.server_obj.applications.add(self.app_obj)
 
     def test_home_view_render(self):
         """
