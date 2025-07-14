@@ -18,6 +18,13 @@ class OperatingSystem(models.Model):
         max_length=100,
         unique=True,
     )
+    code_name = models.CharField(
+        verbose_name="Code Name",
+        help_text="The code name of the operating system (e.g., Jammy Jellyfish).",
+        max_length=100,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
