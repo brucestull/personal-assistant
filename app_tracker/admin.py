@@ -520,6 +520,7 @@ class ServerAdmin(admin.ModelAdmin):
                     "name",
                     "description",
                     "operating_system",
+                    "code_name",
                     "host_name",
                     "mac_address",
                     "ram",
