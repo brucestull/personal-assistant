@@ -6,7 +6,7 @@
   <ul class="list-group">
     {% for tag in object_list %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <a href="{% url 'tasks:tag_detail' tag.pk %}">{{ tag.name }}</a>
+        <a href="{% url 'tasks:tag_detail' tag.pk %}">{{ tag.name }} - ({{ tag.tasks.count }} Tasks)</a>
         <div>
           <a href="{% url 'tasks:tag_update' tag.pk %}" class="btn btn-sm btn-secondary">Edit</a>
           <a href="{% url 'tasks:tag_delete' tag.pk %}" class="btn btn-sm btn-danger">Delete</a>
