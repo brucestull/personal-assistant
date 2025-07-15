@@ -1,4 +1,4 @@
-.PHONY: clean test coverage covhtml migrate makemigrations makemigrate runserver createsu shell loaddata resetdb
+.PHONY: clean test coverage makemigrations migrate makemigrate runserver createsu shell loaddata resetdb
 
 # Clean python, pytest, and coverage files
 clean:
@@ -15,11 +15,9 @@ test:
 
 # Run pytest with coverage
 coverage:
-	pytest --ds=config.settings --cov=plan_it --cov-report=term-missing --cov-report=html
-
-# Open the HTML coverage report (Linux/Mac)
-covhtml:
-	xdg-open htmlcov/index.html || open htmlcov/index.html || echo "Please open htmlcov/index.html manually."
+	coverage run manage.py test && \
+	coverage report && \
+	coverage html
 
 # Run makemigrations
 makemigrations:
