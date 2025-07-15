@@ -3,13 +3,19 @@
 <div class="container py-4">
   <h1>({{ object.level }}) - {{ object.name }}</h1>
 
-  <h2 class="mt-4">Tasks with this priority</h2>
+  <h2 class="mt-4">Tasks with '{{ object.name }}' priority</h2>
   {% if object.tasks.exists %}
     <ul class="list-group mb-4">
       {% for task in object.tasks.all %}
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <div>
-            <strong>{{ task.name }}</strong>
+            <strong>
+              {% if task.completed %}
+                <strike>{{ task.name }}</strike>
+              {% else %}
+                {{ task.name }}
+              {% endif %}
+            </strong>
             {% if task.tag.exists %}
               <small class="text-muted ms-2">
                 {% for tag in task.tag.all %}
@@ -19,12 +25,17 @@
             {% endif %}
             <p class="mb-0 text-muted">{{ task.information|truncatechars:100 }}</p>
           </div>
-          <a href="{% url 'tasks:task_detail' task.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+          <div class="d-flex gap-2">
+            {% if not task.completed %}
+              <a href="{% url 'tasks:task_complete' task.pk %}" class="btn btn-sm btn-success">Complete</a>
+            {% endif %}
+            <a href="{% url 'tasks:task_detail' task.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+          </div>
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <p class="text-muted">No tasks are assigned this priority.</p>
+    <p class="text-muted">No tasks are assigned '{{ object.name }}' priority.</p>
   {% endif %}
 
   <a href="{% url 'tasks:priority_update' object.pk %}" class="btn btn-secondary">Edit</a>

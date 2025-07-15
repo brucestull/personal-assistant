@@ -5,12 +5,38 @@
   <a href="{% url 'tasks:priority_create' %}" class="btn btn-primary mb-3">+ Add Priority</a>
   <ul class="list-group">
     {% for priority in object_list %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <a href="{% url 'tasks:priority_detail' priority.pk %}">({{priority.level}})-{{ priority.name }} - ({{priority.tasks.count}} Tasks)</a>
-        <div>
-          <a href="{% url 'tasks:priority_update' priority.pk %}" class="btn btn-sm btn-secondary">Edit</a>
-          <a href="{% url 'tasks:priority_delete' priority.pk %}" class="btn btn-sm btn-danger">Delete</a>
+      <li class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center">
+          <a href="{% url 'tasks:priority_detail' priority.pk %}">
+            ({{priority.level}}) – {{ priority.name }} – ({{priority.tasks.count}} Tasks)
+          </a>
+          <div>
+            <a href="{% url 'tasks:priority_update' priority.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+            <a href="{% url 'tasks:priority_delete' priority.pk %}" class="btn btn-sm btn-danger">Delete</a>
+          </div>
         </div>
+        {% if priority.tasks.exists %}
+          <ul class="mt-2">
+            {% for task in priority.tasks.all %}
+              <li class="d-flex justify-content-between align-items-center border-top pt-2">
+                <span>
+                  {% if task.completed %}
+                    <strike>{{ task.name }}</strike>
+                  {% else %}
+                    {{ task.name }}
+                  {% endif %}
+                </span>
+                <div>
+                  {% if not task.completed %}
+                    <a href="{% url 'tasks:task_complete' task.pk %}" class="btn btn-sm btn-success">Complete</a>
+                  {% endif %}
+                  <a href="{% url 'tasks:task_update' task.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+                  <a href="{% url 'tasks:task_delete' task.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       </li>
     {% empty %}
       <li class="list-group-item">No priorities yet.</li>

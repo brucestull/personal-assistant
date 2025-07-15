@@ -36,6 +36,7 @@ class Priority(CreatedUpdatedBase):
 class Task(CreatedUpdatedBase):
     name = models.CharField(max_length=100)
     information = models.TextField(blank=True)
+    completed = models.BooleanField(default=False, help_text="Mark task as completed.")
     tag = models.ManyToManyField(
         Tag,
         blank=True,
@@ -50,7 +51,7 @@ class Task(CreatedUpdatedBase):
     )
 
     class Meta:
-        ordering = ["priority__level", "name", "created"]
+        ordering = ["completed", "priority__level", "name", "created"]
 
     def __str__(self):
         return self.name

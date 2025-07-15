@@ -33,6 +33,7 @@ class PriorityAdmin(admin.ModelAdmin):
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = (
+        "completed",  # Show completion status in admin list
         "name",
         "user",
         "priority",
@@ -42,7 +43,7 @@ class TaskAdmin(admin.ModelAdmin):
     list_select_related = ("priority", "user")
     filter_horizontal = ("tag",)
     search_fields = ("name", "information")
-    ordering = ("priority__level", "-created")
+    ordering = ("completed", "priority__level", "-created")
 
     def display_tags(self, obj):
         return ", ".join(str(tag.name) for tag in obj.tag.all())
