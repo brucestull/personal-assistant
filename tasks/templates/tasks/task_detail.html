@@ -11,7 +11,13 @@
     <span class="text-muted">no tags</span>
   {% endfor %}
 
-  <h1>{{ object.name }}</h1>
+  <h1>
+    {% if object.completed %}
+      <strike>{{ object.name }}</strike>
+    {% else %}
+      {{ object.name }}
+    {% endif %}
+  </h1>
   <p>{{ object.information|linebreaks }}</p>
   <a href="{% url 'tasks:task_update' object.pk %}" class="btn btn-secondary">Edit</a>
   <a href="{% url 'tasks:task_delete' object.pk %}" class="btn btn-danger">Delete</a>

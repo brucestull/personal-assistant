@@ -10,13 +10,24 @@
       {% for task in object.tasks.all %}
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <div>
-            <strong>{{ task.name }}</strong>
+            <strong>
+              {% if task.completed %}
+                <strike>{{ task.name }}</strike>
+              {% else %}
+                {{ task.name }}
+              {% endif %}
+            </strong>
             {% if task.priority %}
               <span class="badge bg-info text-dark ms-2">{{ task.priority.name }}</span>
             {% endif %}
             <p class="mb-0 text-muted">{{ task.information|truncatechars:100 }}</p>
           </div>
-          <a href="{% url 'tasks:task_detail' task.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+          <div class="d-flex gap-2">
+            {% if not task.completed %}
+              <a href="{% url 'tasks:task_complete' task.pk %}" class="btn btn-sm btn-success">Complete</a>
+            {% endif %}
+            <a href="{% url 'tasks:task_detail' task.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+          </div>
         </li>
       {% endfor %}
     </ul>

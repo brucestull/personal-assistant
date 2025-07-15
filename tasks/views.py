@@ -1,17 +1,20 @@
 # todo/views.py
 """Class-based views for the tasks app."""
 
-from base.mixins import RegistrationAcceptedMixin
-
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView,
-    DetailView,
     CreateView,
-    UpdateView,
     DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
 )
-from .models import Tag, Priority, Task
+
+from base.decorators import registration_accepted_required
+from base.mixins import RegistrationAcceptedMixin
+
+from .models import Priority, Tag, Task
 
 
 # --- Tag CBVs ---
@@ -87,7 +90,7 @@ class TaskDetailView(RegistrationAcceptedMixin, DetailView):
 
 class TaskCreateView(RegistrationAcceptedMixin, CreateView):
     model = Task
-    fields = ["name", "information", "tag", "priority"]
+    fields = ["completed", "name", "information", "tag", "priority"]
     success_url = reverse_lazy("tasks:task_list")
 
     def form_valid(self, form):
@@ -98,10 +101,18 @@ class TaskCreateView(RegistrationAcceptedMixin, CreateView):
 
 class TaskUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = Task
-    fields = ["name", "information", "tag", "priority"]
+    fields = ["completed", "name", "information", "tag", "priority"]
     success_url = reverse_lazy("tasks:task_list")
 
 
 class TaskDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = Task
     success_url = reverse_lazy("tasks:task_list")
+
+
+@registration_accepted_required
+def complete_task(request, pk):
+    task = get_object_or_404(Task, pk=pk, user=request.user)
+    task.completed = True
+    task.save()
+    return redirect("tasks:task_list")
