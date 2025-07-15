@@ -1,0 +1,370 @@
+[
+  {
+    "model": "tasks.tag",
+    "pk": 1,
+    "fields": {
+      "name": "Home",
+      "description": "Home-related tasks and errands.",
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.tag",
+    "pk": 2,
+    "fields": {
+      "name": "Work",
+      "description": "Projects and work-related items.",
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.tag",
+    "pk": 3,
+    "fields": {
+      "name": "Health",
+      "description": "Health appointments and routines.",
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.tag",
+    "pk": 4,
+    "fields": {
+      "name": "Chores",
+      "description": "Housekeeping and maintenance.",
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.tag",
+    "pk": 5,
+    "fields": {
+      "name": "Shopping",
+      "description": "Items to purchase.",
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.tag",
+    "pk": 6,
+    "fields": {
+      "name": "Learning",
+      "description": "Study, reading, and skill-building.",
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.priority",
+    "pk": 1,
+    "fields": {
+      "name": "Urgent",
+      "level": 1,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.priority",
+    "pk": 2,
+    "fields": {
+      "name": "High",
+      "level": 2,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.priority",
+    "pk": 3,
+    "fields": {
+      "name": "Medium",
+      "level": 3,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.priority",
+    "pk": 4,
+    "fields": {
+      "name": "Low",
+      "level": 4,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "name": "Buy groceries",
+      "information": "Milk, eggs, bread, and vegetables.",
+      "tag": [
+        1,
+        5
+      ],
+      "priority": 3,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "name": "Clean kitchen",
+      "information": "Wipe counters, mop floor, empty dishwasher.",
+      "tag": [
+        4
+      ],
+      "priority": 2,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 3,
+    "fields": {
+      "name": "Schedule dentist appointment",
+      "information": "Call Dr. Smith\u2019s office to book a cleaning.",
+      "tag": [
+        2,
+        3
+      ],
+      "priority": 3,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 4,
+    "fields": {
+      "name": "Finish Django ToDo app",
+      "information": "Implement CRUD, fixtures, and admin.",
+      "tag": [
+        2
+      ],
+      "priority": 1,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 5,
+    "fields": {
+      "name": "Workout",
+      "information": "30-minute run and stretching routine.",
+      "tag": [
+        3
+      ],
+      "priority": 2,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 6,
+    "fields": {
+      "name": "Read Obsidian notes tutorial",
+      "information": "Go through the Markdown template guide.",
+      "tag": [
+        6
+      ],
+      "priority": 3,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 7,
+    "fields": {
+      "name": "Pay rent",
+      "information": "Transfer funds via online portal.",
+      "tag": [
+        1,
+        4
+      ],
+      "priority": 1,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 8,
+    "fields": {
+      "name": "Organize desk",
+      "information": "Sort papers, clear cables, wipe surface.",
+      "tag": [
+        4
+      ],
+      "priority": 4,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 9,
+    "fields": {
+      "name": "Plan birthday party",
+      "information": "Decide theme, guest list, and venue.",
+      "tag": [
+        1
+      ],
+      "priority": 3,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 10,
+    "fields": {
+      "name": "Order new wireless headset",
+      "information": "Check reviews and price on Amazon.",
+      "tag": [
+        5
+      ],
+      "priority": 4,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 11,
+    "fields": {
+      "name": "Study for certification exam",
+      "information": "Complete practice questions and flashcards.",
+      "tag": [
+        6
+      ],
+      "priority": 2,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 12,
+    "fields": {
+      "name": "Call mom",
+      "information": "Catch up and check on her schedule.",
+      "tag": [
+        1
+      ],
+      "priority": 3,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 13,
+    "fields": {
+      "name": "Update resume",
+      "information": "Add recent projects and skills.",
+      "tag": [
+        2
+      ],
+      "priority": 3,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 14,
+    "fields": {
+      "name": "Schedule therapy session",
+      "information": "Email therapist for next available slot.",
+      "tag": [
+        3
+      ],
+      "priority": 2,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 15,
+    "fields": {
+      "name": "Backup Raspberry Pi configs",
+      "information": "Copy /etc and /home/pi to external drive.",
+      "tag": [
+        2
+      ],
+      "priority": 4,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 16,
+    "fields": {
+      "name": "Clean out email inbox",
+      "information": "Archive old mails and unsubscribe newsletters.",
+      "tag": [
+        4
+      ],
+      "priority": 3,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 17,
+    "fields": {
+      "name": "Organize digital documents",
+      "information": "Sort files into folders by category.",
+      "tag": [
+        6
+      ],
+      "priority": 4,
+      "user": 1,
+      "created": "2025-01-01T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  }
+]
