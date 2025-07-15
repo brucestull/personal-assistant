@@ -6,7 +6,7 @@
   <ul class="list-group">
     {% for priority in object_list %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <a href="{% url 'tasks:priority_detail' priority.pk %}">{{ priority.name }}</a>
+        <a href="{% url 'tasks:priority_detail' priority.pk %}">{{ priority.name }} - ({{priority.level}})</a>
         <div>
           <a href="{% url 'tasks:priority_update' priority.pk %}" class="btn btn-sm btn-secondary">Edit</a>
           <a href="{% url 'tasks:priority_delete' priority.pk %}" class="btn btn-sm btn-danger">Delete</a>
