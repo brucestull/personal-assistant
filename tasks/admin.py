@@ -36,12 +36,15 @@ class TaskAdmin(admin.ModelAdmin):
         "name",
         "user",
         "priority",
-        "tag",
-        "created",
-        "updated",
+        "display_tags",  # New method for displaying tags
     )
     list_filter = ("priority", "tag", "user")
+    list_select_related = ("priority", "user")
+    filter_horizontal = ("tag",)
     search_fields = ("name", "information")
-    raw_id_fields = ("tag", "priority", "user")
-    list_select_related = ("priority", "tag", "user")
     ordering = ("priority__level", "-created")
+
+    def display_tags(self, obj):
+        return ", ".join(str(tag.name) for tag in obj.tag.all())
+
+    display_tags.short_description = "Tags"
