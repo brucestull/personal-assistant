@@ -27,6 +27,7 @@ class Priority(CreatedUpdatedBase):
 
     class Meta:
         ordering = ["level"]
+        verbose_name_plural = "priorities"
 
     def __str__(self):
         return f"{self.name} (Level {self.level})"
@@ -35,8 +36,11 @@ class Priority(CreatedUpdatedBase):
 class Task(CreatedUpdatedBase):
     name = models.CharField(max_length=100)
     information = models.TextField(blank=True)
-    tag = models.ForeignKey(
-        Tag, on_delete=models.SET_NULL, null=True, related_name="tasks"
+    tag = models.ManyToManyField(
+        Tag,
+        blank=True,
+        related_name="tasks",
+        help_text="Tags associated with this task (optional).",
     )
     priority = models.ForeignKey(
         Priority, on_delete=models.SET_NULL, null=True, related_name="tasks"
@@ -46,7 +50,7 @@ class Task(CreatedUpdatedBase):
     )
 
     class Meta:
-        ordering = ["priority__level", "created"]
+        ordering = ["priority__level", "name", "created"]
 
     def __str__(self):
         return self.name
