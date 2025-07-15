@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h1>({{ object.level }}) - {{ object.name }}</h1>
+  <a href="{% url 'tasks:priority_update' object.pk %}" class="btn btn-secondary">Edit</a>
+  <a href="{% url 'tasks:priority_delete' object.pk %}" class="btn btn-danger">Delete</a>
+  <a href="{% url 'tasks:priority_list' %}" class="btn btn-link">← Back to list</a>
+</div>
+{% endblock %}

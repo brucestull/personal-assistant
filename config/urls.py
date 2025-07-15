@@ -68,4 +68,5 @@ urlpatterns = [
     path("story-line/", include("story_line.urls")),
     path("pack-it/", include("packing_list.urls")),
     path("decide/", include("decide.urls")),
+    path("tasks/", include("tasks.urls")),
 ]
