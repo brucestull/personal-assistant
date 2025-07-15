@@ -8,4 +8,8 @@
 python manage.py loaddata tasks/fixtures/tasks_initial_data.json
 ```
 
-## Links
+## Development Links
+
+- [Tags](http://localhost:8000/tasks/tags/)
+- [Tasks](http://localhost:8000/tasks/tasks/)
+- [Priorities](http://localhost:8000/tasks/priorities/)
