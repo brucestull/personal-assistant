@@ -36,23 +36,11 @@ runserver:
 
 # Create superuser from .env values
 createsu:
-	@python manage.py shell -c "import dotenv, os; \
-	dotenv.load_dotenv(); \
-	from django.contrib.auth import get_user_model; \
-	User = get_user_model(); \
-	username = os.environ.get('DJANGO_SU_NAME'); \
-	email = os.environ.get('DJANGO_SU_EMAIL'); \
-	password = os.environ.get('DJANGO_SU_PASSWORD'); \
-	User.objects.filter(username=username).exists() or User.objects.create_superuser(username=username, email=email, password=password, registration_accepted=True)" && \
-	echo 'Superuser created or already exists.'
+	@python manage.py createsu
 
 # Start the Django shell
 shell:
 	python manage.py shell
-
-# # Load fixtures (adjust fixture name if needed)
-# loaddata:
-# 	python manage.py loaddata initial_data.json
 
 # Load Storager Sort model data
 load_storager_sort:
