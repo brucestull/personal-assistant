@@ -1,23 +1,26 @@
 # Personal Assistant Apps To Remove
 
-## Remove
+## Package Creation and App Removal Checklist
 
-- [ ] activity_tracker
-- [ ] care_craft
-- [ ] cbt
-- [ ] do_it
-- [ ] goals
-- [ ] journal
-- [ ] opportunity_search
-- [ ] pharma_tracker
-- [ ] pi_tracker
-- [ ] project_manager
-- [ ] self_enquiry
-- [ ] storager
-- [ ] value_centric
-- [ ] sonic_text
-- [ ] career_organizerator
-- [ ] uc_goals
+| Package Name                 | Create Package | Remove App          |
+|-----------------------------|----------------|---------------------|
+| django-adtivity-tracker     | [ ]            | [ ] activity_tracker |
+| django-career-organizerator| [ ]            | [ ] career_organizerator |
+| django-care-craft           | [ ]            | [ ] care_craft       |
+| django-cbt                  | [ ]            | [ ] cbt              |
+| django-do-it                | [ ]            | [ ] do_it            |
+| django-goals                | [ ]            | [ ] goals            |
+| django-journal              | [ ]            | [ ] journal          |
+| django-opportunity-search   | [ ]            | [ ] opportunity_search |
+| django-pharma-tracker       | [ ]            | [ ] pharma_tracker   |
+| django-pi-tracker           | [ ]            | [ ] pi_tracker       |
+| django-project-manager      | [ ]            | [ ] project_manager  |
+| django-self-enquiry         | [ ]            | [ ] self_enquiry     |
+| django-sonic-text           | [ ]            | [ ] sonic_text       |
+| django-storager             | [ ]            | [ ] storager         |
+| django-value-centric        | [ ]            | [ ] value_centric    |
+| django-uc-goals             | [ ]            | [ ] uc_goals         |
+
 
 ## Keep
 
