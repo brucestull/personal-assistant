@@ -15,22 +15,22 @@
 - [ ] self_enquiry
 - [ ] storager
 - [ ] value_centric
+- [ ] sonic_text
+- [ ] career_organizerator
+- [ ] uc_goals
 
 ## Keep
 
-- [ ] boosts
-- [ ] app_tracker
-- [ ] career_organizerator
-- [ ] decide
-- [ ] packing_list
-- [ ] plan_it
-- [ ] pomodo
-- [ ] sonic_text
-- [ ] story_line
-- [ ] tasks
-- [ ] uc_goals
-- [ ] unimportant_notes
-- [ ] vitals
+- [X] boosts
+- [X] app_tracker
+- [X] packing_list
+- [X] pomodo
+- [X] story_line
+- [X] unimportant_notes
+- [X] tasks
+- [X] vitals
+- [X] decide
+- [X] plan_it
 
 
 
