@@ -1,16 +1,53 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ page_title }}
--
-{{ the_site_name }}
+{{ page_title }} - {{ the_site_name }}
 {% endblock title %}
 
 {% block content %}
+<h2>{{ page_title }}</h2>
+
 <form method="post" class="needs-validation" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+
+    <div class="mb-3">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.description.label_tag }}
+        {{ form.description }}
+        {{ form.description.errors }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.quantity.label_tag }}
+        {{ form.quantity }}
+        {{ form.quantity.errors }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.is_packed.label_tag }}
+        {{ form.is_packed }}
+        {{ form.is_packed.errors }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.is_essential.label_tag }}
+        {{ form.is_essential }}
+        {{ form.is_essential.errors }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.activities.label_tag }}
+        {{ form.activities }}
+        {{ form.activities.errors }}
+    </div>
+
     <button type="submit" class="btn btn-success">Save</button>
-    <a href="{% url 'packing_list:activity_detail' pk=activity.pk %}" class="btn btn-secondary">Cancel</a>
+    <a href="{% url 'packing_list:item_list' %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock content %}

@@ -31,8 +31,10 @@ class Item(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     is_packed = models.BooleanField(default=False)
     is_essential = models.BooleanField(default=False)
-    activity = models.ForeignKey(
-        Activity, on_delete=models.CASCADE, related_name="packing_items"
+    activities = models.ManyToManyField(
+        "Activity",
+        related_name="items",
+        blank=True,
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="packing_items"
@@ -47,4 +49,4 @@ class Item(models.Model):
     class Meta:
         verbose_name = "Item"
         verbose_name_plural = "Items"
-        ordering = ["activity", "name"]
+        ordering = ["name"]

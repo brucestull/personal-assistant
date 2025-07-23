@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ item.name }} – Details
+  {{ item.name }} – Details
 {% endblock title %}
 
 {% block content %}
@@ -16,40 +16,34 @@
     <dd class="col-sm-9">{{ item.quantity }}</dd>
 
     <dt class="col-sm-3">Packed?</dt>
-    <dd class="col-sm-9">
-      {% if item.is_packed %}
-        Yes
-      {% else %}
-        No
-      {% endif %}
-    </dd>
+    <dd class="col-sm-9">{{ item.is_packed|yesno:"Yes,No" }}</dd>
 
     <dt class="col-sm-3">Essential?</dt>
-    <dd class="col-sm-9">
-      {% if item.is_essential %}
-        Yes
-      {% else %}
-        No
-      {% endif %}
-    </dd>
+    <dd class="col-sm-9">{{ item.is_essential|yesno:"Yes,No" }}</dd>
 
-    <dt class="col-sm-3">Activity</dt>
+    <dt class="col-sm-3">Activities</dt>
     <dd class="col-sm-9">
-      <a href="{% url 'packing_list:activity_detail' item.activity.pk %}">
-        {{ item.activity.name }}
-      </a>
+      {% if item.activities.all %}
+        <ul>
+          {% for activity in item.activities.all %}
+            <li><a href="{% url 'packing_list:activity_detail' activity.pk %}">{{ activity.name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <em>Not linked to any activities.</em>
+      {% endif %}
     </dd>
   </dl>
 
-  <p>
+  <div class="mt-4">
     <a href="{% url 'packing_list:item_update' item.pk %}" class="btn btn-sm btn-warning">Edit Item</a>
     <a href="{% url 'packing_list:item_delete' item.pk %}" class="btn btn-sm btn-danger">Delete Item</a>
-  </p>
+  </div>
+
+  <hr>
 
   <p>
-    <a href="{% url 'packing_list:item_list' %}">&larr; Back to all items</a>
-  </p>
-  <p>
+    <a href="{% url 'packing_list:item_list' %}">&larr; Back to all items</a><br>
     <a href="{% url 'packing_list:activity_list' %}">&larr; Back to all activities</a>
   </p>
 {% endblock content %}
