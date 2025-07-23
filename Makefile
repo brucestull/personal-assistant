@@ -57,6 +57,7 @@ resetdb:
 	echo "Database and caches cleared."
 	make makemigrate
 	make load_storager_sort
+	make createsu
 
 # Load demo fixture data
 seed:
