@@ -11,6 +11,10 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-success">Save</button>
+    {% if form.instance.pk %}
     <a href="{% url 'packing_list:activity_detail' pk=activity.pk %}" class="btn btn-secondary">Cancel</a>
+    {% else %}
+    <a href="{% url 'packing_list:item_list' %}" class="btn btn-secondary">Cancel</a>
+    {% endif %}
 </form>
 {% endblock content %}
