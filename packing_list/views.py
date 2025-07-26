@@ -58,7 +58,8 @@ def activity_create(request):
             activity = form.save(commit=False)
             activity.user = request.user
             activity.save()
-            return redirect("packing_list:activity_list")
+            return redirect("packing_list:activity_detail", pk=activity.pk)
+
     else:
         form = ActivityForm()
     return render(
