@@ -1,8 +1,0 @@
-{% extends "base.html" %}
-{% block content %}
-  <h1>{{ tag.name }}</h1>
-  <p>{{ tag.description|linebreaks }}</p>
-  <a href="{% url 'do_it:tag_update' tag.pk %}">Edit</a> |
-  <a href="{% url 'do_it:tag_delete' tag.pk %}">Delete</a> |
-  <a href="{% url 'do_it:tag_list' %}">Back</a>
-{% endblock %}

@@ -62,7 +62,6 @@ urlpatterns = [
     path("care-craft/", include("care_craft.urls")),
     path("boosts/", include("boosts.urls")),
     path("plan-it/", include("plan_it.urls")),
-    path("do-it/", include("do_it.urls")),
     path("pomodo/", include("pomodo.urls")),
     path("storager/", include("storager.urls")),
     path("story-line/", include("story_line.urls")),
