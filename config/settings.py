@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "django.contrib.admindocs",
     "rest_framework",
     "storages",
+    "base",
     "activity_tracker.apps.ActivityTrackerConfig",
     "app_tracker.apps.AppTrackerConfig",
     "cbt.apps.CbtConfig",
