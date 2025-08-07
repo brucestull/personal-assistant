@@ -4,15 +4,15 @@ import json
 import sys
 
 
-def reassign_pks(input_path, output_path, start_pk):
+def reassign_pks(django_model, input_path, output_path, start_pk):
     # Load the full fixture list
     with open(input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    # Reassign PKs on all unimportantnote entries
+    # Reassign PKs on all 'django_model' entries
     current = start_pk
     for entry in data:
-        if entry.get("model") == "unimportant_notes.unimportantnote":
+        if entry.get("model") == django_model:
             entry["pk"] = current
             current += 1
 
@@ -22,13 +22,17 @@ def reassign_pks(input_path, output_path, start_pk):
 
     count = current - start_pk
     print(
-        f"✅ Reassigned {count} unimportantnote PKs starting at {start_pk} and wrote to {output_path}"  # noqa: E501
+        f"✅ Reassigned {count} '{django_model}' PKs starting at {start_pk} and wrote to {output_path}"  # noqa: E501
     )
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Reassign PKs for unimportant_notes.unimportantnote entries in a Django fixture."  # noqa: E501
+        description="Reassign PKs for model entries in a Django fixture."  # noqa: E501
+    )
+    parser.add_argument(
+        "django_model",
+        help="The model to reassign PKs for (e.g. unimportant_notes.unimportantnote)",  # noqa: E501
     )
     parser.add_argument(
         "input_file",
@@ -46,7 +50,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        reassign_pks(args.input_file, args.output_file, args.start)
+        reassign_pks(args.django_model, args.input_file, args.output_file, args.start)
     except Exception as e:
         print(f"❌ Error: {e}", file=sys.stderr)
         sys.exit(1)
