@@ -4,6 +4,18 @@ from django.contrib.auth.mixins import AccessMixin
 from django.core.exceptions import PermissionDenied
 
 
+# Generic mixins
+class UserQuerySetMixin:
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
+
+
+class UserAssignMixin:
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
 class RegistrationAcceptedMixin(AccessMixin):
     """
     Mixin to check if the user is authenticated and their registration is accepted.
