@@ -52,7 +52,6 @@ urlpatterns = [
     path("activity-tracker/", include("activity_tracker.urls")),
     path("opportunity-search/", include("opportunity_search.urls")),
     path("goals/", include("goals.urls")),
-    path("pi-tracker/", include("pi_tracker.urls")),
     path("uc-goals/", include("uc_goals.urls")),
     path("journal/", include("journal.urls")),
     path("sonic-text/", include("sonic_text.urls")),
