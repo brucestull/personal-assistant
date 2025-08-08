@@ -77,7 +77,6 @@ INSTALLED_APPS = [
     "opportunity_search.apps.OpportunitySearchConfig",
     "pharma_tracker.apps.PharmaTrackerConfig",
     "pi_tracker.apps.PiTrackerConfig",
-    "project_manager.apps.ProjectManagerConfig",
     "self_enquiry.apps.SelfEnquiryConfig",
     "vitals.apps.VitalsConfig",
     "uc_goals.apps.UCGoalsConfig",
