@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     "cbt.apps.CbtConfig",
     "career_organizerator.apps.CareerOrganizeratorConfig",
     "goals.apps.GoalsConfig",
-    "opportunity_search.apps.OpportunitySearchConfig",
     "pharma_tracker.apps.PharmaTrackerConfig",
     "vitals.apps.VitalsConfig",
     "uc_goals.apps.UCGoalsConfig",

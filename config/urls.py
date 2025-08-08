@@ -50,7 +50,6 @@ urlpatterns = [
     path("career-organizerator/", include("career_organizerator.urls")),
     path("unimportant-notes/", include("unimportant_notes.urls")),
     path("activity-tracker/", include("activity_tracker.urls")),
-    path("opportunity-search/", include("opportunity_search.urls")),
     path("goals/", include("goals.urls")),
     path("uc-goals/", include("uc_goals.urls")),
     path("journal/", include("journal.urls")),
