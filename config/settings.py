@@ -73,7 +73,6 @@ INSTALLED_APPS = [
     "app_tracker.apps.AppTrackerConfig",
     "cbt.apps.CbtConfig",
     "career_organizerator.apps.CareerOrganizeratorConfig",
-    "goals.apps.GoalsConfig",
     "vitals.apps.VitalsConfig",
     "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
