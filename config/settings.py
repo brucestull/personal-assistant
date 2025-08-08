@@ -77,7 +77,6 @@ INSTALLED_APPS = [
     "vitals.apps.VitalsConfig",
     "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
-    "journal.apps.JournalConfig",
     "sonic_text.apps.SonicTextConfig",
     "care_craft.apps.CareCraftConfig",
     "django_celery_beat",
