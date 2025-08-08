@@ -49,7 +49,6 @@ urlpatterns = [
     path("unimportant-notes/", include("unimportant_notes.urls")),
     path("uc-goals/", include("uc_goals.urls")),
     path("sonic-text/", include("sonic_text.urls")),
-    path("care-craft/", include("care_craft.urls")),
     path("boosts/", include("boosts.urls")),
     path("plan-it/", include("plan_it.urls")),
     path("pomodo/", include("pomodo.urls")),
