@@ -46,7 +46,6 @@ urlpatterns = [
     path("vitals/", include("vitals.urls")),
     path("app-tracker/", include("app_tracker.urls")),
     path("cbt/", include("cbt.urls")),
-    path("pharma-tracker/", include("pharma_tracker.urls")),
     path("career-organizerator/", include("career_organizerator.urls")),
     path("unimportant-notes/", include("unimportant_notes.urls")),
     path("activity-tracker/", include("activity_tracker.urls")),
