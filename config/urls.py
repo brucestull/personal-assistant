@@ -62,7 +62,6 @@ urlpatterns = [
     path("boosts/", include("boosts.urls")),
     path("plan-it/", include("plan_it.urls")),
     path("pomodo/", include("pomodo.urls")),
-    path("storager/", include("storager.urls")),
     path("story-line/", include("story_line.urls")),
     path("pack-it/", include("packing_list.urls")),
     path("decide/", include("decide.urls")),

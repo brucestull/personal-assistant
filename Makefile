@@ -42,16 +42,12 @@ createsu:
 shell:
 	python manage.py shell
 
-# Load Storager Sort model data
-load_storager_sort:
-	python manage.py loaddata storager/fixtures/sort_decisions.json && echo "Storager SortDecision data loaded."
-
 # Delete the database
 delete_db:
 	rm -f db.sqlite3
 	echo "Database deleted."
 	
-# Delete the database and reload Storager SortDecision data
+# Delete the database and recreate it, add superuser
 resetdb:
 	rm -f db.sqlite3
 	echo "Database and caches cleared."
