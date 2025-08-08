@@ -69,7 +69,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "storages",
     "base",
-    "activity_tracker.apps.ActivityTrackerConfig",
     "app_tracker.apps.AppTrackerConfig",
     "career_organizerator.apps.CareerOrganizeratorConfig",
     "vitals.apps.VitalsConfig",
