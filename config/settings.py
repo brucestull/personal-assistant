@@ -78,7 +78,6 @@ INSTALLED_APPS = [
     "pharma_tracker.apps.PharmaTrackerConfig",
     "pi_tracker.apps.PiTrackerConfig",
     "project_manager.apps.ProjectManagerConfig",
-    "self_enquiry.apps.SelfEnquiryConfig",
     "vitals.apps.VitalsConfig",
     "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
