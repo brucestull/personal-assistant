@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from base.decorators import registration_accepted_required
-from base.mixins import RegistrationAcceptedMixin
+from base.mixins import UserQuerySetMixin, UserAssignMixin, RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
 
 from .models import (
@@ -62,18 +62,6 @@ def dashboard(request):
             "the_site_name": THE_SITE_NAME,
         },
     )
-
-
-# Generic mixins
-class UserQuerySetMixin:
-    def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
-
-
-class UserAssignMixin:
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
 
 
 # ---- StorageLocation Views ----
