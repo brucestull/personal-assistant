@@ -152,46 +152,31 @@ class TemperatureAdmin(admin.ModelAdmin):
 
 @admin.register(BodyWeight)
 class BodyWeightAdmin(admin.ModelAdmin):
-    """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
-    the `BodyWeight` model.
-    """
-
-    list_display = (
-        "subject",
-        "measurement",
-        "created",
-    )
+    list_display = ("subject", "measurement", "created")
     ordering = ("-created",)
-    list_filter = (
-        "subject",
-        "created",
-    )
+    list_filter = ("subject", "created")
     search_fields = (
         "subject__username",
-        "measurement",
-    )
-    readonly_fields = (
-        "created",
-        "updated",
-    )
+    )  # keep; 'measurement' is numeric—search may be odd
+    readonly_fields = ("created", "updated")
     fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "subject",
-                    "measurement",
-                )
-            },
-        ),
-        (
-            "Dates",
-            {
-                "fields": (
-                    "created",
-                    "updated",
-                )
-            },
-        ),
+        (None, {"fields": ("subject", "measurement")}),
+        ("Dates", {"fields": ("created", "updated")}),
     )
+
+    # Performance: load related user in changelist
+    list_select_related = ("subject",)
+
+    # Nice UX for many users
+    autocomplete_fields = ("subject",)
+
+    # # Optional: if you want non-superusers in admin to only see their own records
+    # def get_queryset(self, request):
+    #     qs = super().get_queryset(request)
+    #     return qs if request.user.is_superuser else qs.filter(subject=request.user)
+
+    # Optional: default subject to the admin user creating the record
+    def save_model(self, request, obj, form, change):
+        if not change and not obj.subject_id:
+            obj.subject = request.user
+        super().save_model(request, obj, form, change)
