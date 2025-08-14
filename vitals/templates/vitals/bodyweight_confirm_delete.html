@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3 mb-3">Delete Body Weight</h1>
+  <div class="alert alert-warning">
+    <strong>Are you sure?</strong> This will permanently delete the entry:
+    <br>
+    <code>{{ object.subject.username }} — {{ object.measurement }} lb ({{ object.created|date:"Y-m-d H:i" }})</code>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <div class="d-flex gap-2">
+      <button class="btn btn-danger" type="submit">Yes, delete</button>
+      <a class="btn btn-secondary" href="{% url 'vitals:bodyweight_detail' object.pk %}">No, go back</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

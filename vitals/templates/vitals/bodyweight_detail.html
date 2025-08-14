@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">Body Weight Detail</h1>
+    <div class="btn-group">
+      <a class="btn btn-outline-secondary" href="{% url 'vitals:bodyweight_update' object.pk %}">Edit</a>
+      <a class="btn btn-outline-danger" href="{% url 'vitals:bodyweight_delete' object.pk %}">Delete</a>
+    </div>
+  </div>
+
+  <dl class="row">
+    <dt class="col-sm-3">Subject</dt>
+    <dd class="col-sm-9">{{ object.subject.username }}</dd>
+
+    <dt class="col-sm-3">Measurement</dt>
+    <dd class="col-sm-9">{{ object.measurement }} lb</dd>
+
+    <dt class="col-sm-3">Created</dt>
+    <dd class="col-sm-9">{{ object.created|date:"Y-m-d H:i" }}</dd>
+
+    <dt class="col-sm-3">Updated</dt>
+    <dd class="col-sm-9">{{ object.updated|date:"Y-m-d H:i" }}</dd>
+  </dl>
+
+  <a class="btn btn-secondary" href="{% url 'vitals:bodyweight_list' %}">Back to list</a>
+</div>
+{% endblock %}

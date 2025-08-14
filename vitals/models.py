@@ -1,3 +1,5 @@
+# vitals/models.py
+
 from django.db import models
 
 from base.models import CreatedUpdatedBase

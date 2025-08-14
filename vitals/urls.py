@@ -1,21 +1,33 @@
 from django.urls import path
 
-from vitals.views import BloodPressureCreateView, BloodPressureListView, home
+from vitals import views
 
 app_name = "vitals"
 urlpatterns = [
     path(
         "",
-        home,
+        views.home,
         name="home",
     ),
     path(
         "bloodpressures/",
-        BloodPressureListView.as_view(),
+        views.BloodPressureListView.as_view(),
         name="bloodpressure-list",
     ),
     path(
         "bloodpressures/create/",
-        BloodPressureCreateView.as_view(),
-        name="bloodpressure-create")
+        views.BloodPressureCreateView.as_view(),
+        name="bloodpressure-create",
+    ),
+    path("bodyweights/", views.bodyweight_list, name="bodyweight_list"),
+    path("bodyweights/create/", views.bodyweight_create, name="bodyweight_create"),
+    path("bodyweights/<int:pk>/", views.bodyweight_detail, name="bodyweight_detail"),
+    path(
+        "bodyweights/<int:pk>/edit/", views.bodyweight_update, name="bodyweight_update"
+    ),
+    path(
+        "bodyweights/<int:pk>/delete/",
+        views.bodyweight_delete,
+        name="bodyweight_delete",
+    ),
 ]

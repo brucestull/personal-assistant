@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3 mb-3">{{ is_create|yesno:"Add Body Weight,Edit Body Weight" }}</h1>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="row g-3">
+      {# If subject is enforced to current user, hide the visible field #}
+      {% if force_subject %}
+        <input type="hidden" name="subject" value="{{ request.user.pk }}">
+        <div class="col-md-6">
+          <label class="form-label">Subject</label>
+          <input class="form-control" value="{{ request.user.username }}" disabled>
+          <div class="form-text">Subject is fixed to your account.</div>
+        </div>
+      {% else %}
+        <div class="col-md-6">
+          <label class="form-label" for="{{ form.subject.id_for_label }}">Subject</label>
+          {{ form.subject }}
+          {% for e in form.subject.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.measurement.id_for_label }}">Measurement (lb)</label>
+        {{ form.measurement }}
+        {% for e in form.measurement.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+      </div>
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger mt-3">
+        {% for e in form.non_field_errors %}{{ e }}<br>{% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="mt-4 d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Save</button>
+      {% if not is_create %}
+        <a class="btn btn-outline-danger" href="{% url 'vitals:bodyweight_delete' object.pk %}">Delete</a>
+      {% endif %}
+      <a class="btn btn-secondary" href="{% url 'vitals:bodyweight_list' %}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

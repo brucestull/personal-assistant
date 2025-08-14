@@ -234,7 +234,7 @@ class BodyWeightAdminTest(TestCase):
         """
         self.assertEqual(
             self.admin.search_fields,
-            ("subject__username", "measurement"),
+            ("subject__username",),
         )
 
     def test_readonly_fields(self):
