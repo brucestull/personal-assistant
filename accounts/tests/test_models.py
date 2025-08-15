@@ -137,7 +137,7 @@ class CustomUserModelTest(TestCase):
 
     def test_blood_pressure_range_via_summary(self):
         """
-        The BloodPressure QuerySet.summary() should include min/max for systolic/diastolic.
+        The BloodPressure QuerySet.summary() should include min/max for systolic/diastolic. # noqa: E501
         """
         summary = BloodPressure.objects.for_user(self.user).summary()
         self.assertEqual(
@@ -157,10 +157,10 @@ class CustomUserModelTest(TestCase):
 
     def test_blood_pressure_averages_and_medians_via_summary(self):
         """
-        The BloodPressure QuerySet.summary() should include average (rounded to 2dp) and median.
+        The BloodPressure QuerySet.summary() should include average (rounded to 2dp) and median. # noqa: E501
         """
         summary = BloodPressure.objects.for_user(self.user).summary()
-        # Averages are rounded to 2 decimals; use assertAlmostEqual to avoid float issues.
+        # Averages are rounded to 2 decimals; use assertAlmostEqual to avoid float issues. # noqa: E501
         self.assertAlmostEqual(
             summary["systolic_average"], float(SYSTOLIC_AVERAGE), places=2
         )
