@@ -1,3 +1,4 @@
+# accounts/tests/test_models.py
 from django.test import TestCase
 
 from accounts.models import CustomUser
@@ -48,7 +49,8 @@ SYSTOLIC_AVERAGE = (
             BLOOD_PRESSURE_SYSTOLIC_2,
             BLOOD_PRESSURE_SYSTOLIC_3,
         ]
-    ) / 3
+    )
+    / 3
 )
 DIASTOLIC_AVERAGE = (
     sum(
@@ -57,7 +59,8 @@ DIASTOLIC_AVERAGE = (
             BLOOD_PRESSURE_DIASTOLIC_2,
             BLOOD_PRESSURE_DIASTOLIC_3,
         ]
-    ) / 3
+    )
+    / 3
 )
 SYSTOLIC_MEDIAN = sorted(
     [
@@ -77,15 +80,14 @@ DIASTOLIC_MEDIAN = sorted(
 
 class CustomUserModelTest(TestCase):
     """
-    Tests for `CustomUser` model.
+    Tests for `CustomUser` model (registration & __str__) and
+    the BloodPressure stats now provided by `vitals` (QuerySet.summary()).
     """
 
     @classmethod
     def setUpTestData(cls):
         """
         Set up non-modified objects used by all test methods.
-
-        This specific function name `setUpTestData` is required by Django.
         """
         cls.user = CustomUser.objects.create(
             username=A_TEST_USERNAME,
@@ -109,59 +111,42 @@ class CustomUserModelTest(TestCase):
             pulse=BLOOD_PRESSURE_PULSE_3,
         )
 
-    def test_registration_accepted_default_attribute_false(self):
-        """
-        `CustomUser` model `registration_accepted` field `default` should
-        be `False`.
+    # --- CustomUser field tests ---
 
-        This tests the `default` attribute of the `registration_accepted`
-        field of the `CustomUser` model.
-        """
-        user = CustomUser.objects.get(id=1)
-        field_registration_accepted = user._meta.get_field(
-            "registration_accepted",
-        )
+    def test_registration_accepted_default_attribute_false(self):
+        user = CustomUser.objects.get(id=self.user.id)
+        field_registration_accepted = user._meta.get_field("registration_accepted")
         self.assertEqual(field_registration_accepted.default, False)
 
     def test_new_user_has_registration_accepted_false(self):
-        """
-        A newly created `CustomUser` should have `registration_accepted`
-        `False`.
-
-        This tests the actual `default` value of the `registration_accepted`
-        field of a newly created user.
-
-        This test may be redundant with
-        `test_registration_accepted_default_attribute_false`, since Django
-        makes sure to use the `registration_accepted` default value we specify
-        in the model, which is tested in
-        `test_registration_accepted_default_attribute_false`.
-        """
-        user = CustomUser.objects.get(id=1)
+        user = CustomUser.objects.get(id=self.user.id)
         self.assertFalse(user.registration_accepted)
 
     def test_registration_accepted_help_text(self):
-        """
-        `CustomUser` model `registration_accepted` field `help_text` should
-        be `Designates whether this user's registration has been accepted.`.
-        """
-        user = CustomUser.objects.get(id=1)
+        user = CustomUser.objects.get(id=self.user.id)
         self.assertEqual(
-            user._meta.get_field(
-                "registration_accepted",
-            ).help_text,
+            user._meta.get_field("registration_accepted").help_text,
             CUSTOM_USER_REGISTRATION_ACCEPTED_HELP_TEXT,
         )
 
-    def test_get_blood_pressure_range_method(self):
-        """
-        `CustomUser` model `get_blood_pressure_range` method should
-        return the minimum and maximum systolic and diastolic blood pressure
-        readings for the current user.
-        """
+    def test_dunder_string_method(self):
         user = CustomUser.objects.get(id=self.user.id)
+        self.assertEqual(str(user), user.username)
+
+    # --- BloodPressure stats (moved to vitals) ---
+
+    def test_blood_pressure_range_via_summary(self):
+        """
+        The BloodPressure QuerySet.summary() should include min/max for systolic/diastolic. # noqa: E501
+        """
+        summary = BloodPressure.objects.for_user(self.user).summary()
         self.assertEqual(
-            user.get_blood_pressure_range(),
+            {
+                "systolic_min": summary["systolic_min"],
+                "diastolic_min": summary["diastolic_min"],
+                "systolic_max": summary["systolic_max"],
+                "diastolic_max": summary["diastolic_max"],
+            },
             {
                 "systolic_min": SYSTOLIC_MIN,
                 "diastolic_min": DIASTOLIC_MIN,
@@ -170,55 +155,37 @@ class CustomUserModelTest(TestCase):
             },
         )
 
-    def test_get_blood_pressure_range_method_with_no_blood_pressures(self):
+    def test_blood_pressure_averages_and_medians_via_summary(self):
         """
-        `CustomUser` model `get_blood_pressure_range` method should
-        return `None` if the current user has no blood pressure readings.
+        The BloodPressure QuerySet.summary() should include average (rounded to 2dp) and median. # noqa: E501
         """
-        user = CustomUser.objects.create(
-            username=ANOTHER_TEST_USERNAME,
+        summary = BloodPressure.objects.for_user(self.user).summary()
+        # Averages are rounded to 2 decimals; use assertAlmostEqual to avoid float issues. # noqa: E501
+        self.assertAlmostEqual(
+            summary["systolic_average"], float(SYSTOLIC_AVERAGE), places=2
         )
-        self.assertIsNone(user.get_blood_pressure_range())
-
-    def test_get_average_and_median_blood_pressure_method_with_bp(self):
-        """
-        `CustomUser` model `get_average_and_median_blood_pressure` method
-        should return the average and median systolic and diastolic blood
-        pressure readings for the current user.
-        """
-        user = CustomUser.objects.get(id=self.user.id)
-        self.assertEqual(
-            user.get_average_and_median_blood_pressure(),
-            {
-                "systolic_average": SYSTOLIC_AVERAGE,
-                "diastolic_average": DIASTOLIC_AVERAGE,
-                "systolic_median": SYSTOLIC_MEDIAN,
-                "diastolic_median": DIASTOLIC_MEDIAN,
-            },
+        self.assertAlmostEqual(
+            summary["diastolic_average"], float(DIASTOLIC_AVERAGE), places=2
         )
+        self.assertEqual(summary["systolic_median"], SYSTOLIC_MEDIAN)
+        self.assertEqual(summary["diastolic_median"], DIASTOLIC_MEDIAN)
 
-    def test_get_average_and_median_blood_pressure_method_with_no_bp(self):
+    def test_summary_with_no_blood_pressures(self):
         """
-        `CustomUser` model `get_average_and_median_blood_pressure` method
-        should return `None` for the average and median systolic and diastolic
-        blood pressure readings for the current user if there are no blood
-        pressures.
+        Summary should return all None values when the user has no BP readings.
         """
-        user = CustomUser.objects.get(id=1)
-        user.blood_pressures.all().delete()
+        empty_user = CustomUser.objects.create(username=ANOTHER_TEST_USERNAME)
+        summary = BloodPressure.objects.for_user(empty_user).summary()
         self.assertEqual(
-            user.get_average_and_median_blood_pressure(),
+            summary,
             {
                 "systolic_average": None,
                 "diastolic_average": None,
                 "systolic_median": None,
                 "diastolic_median": None,
+                "systolic_min": None,
+                "diastolic_min": None,
+                "systolic_max": None,
+                "diastolic_max": None,
             },
         )
-
-    def test_dunder_string_method(self):
-        """
-        `CustomUser` model `__str__` method should return `username`.
-        """
-        user = CustomUser.objects.get(id=1)
-        self.assertEqual(user.__str__(), user.username)
