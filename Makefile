@@ -1,4 +1,4 @@
-.PHONY: clean test coverage makemigrations migrate makemigrate runserver createsu shell loaddata resetdb
+.PHONY: clean test coverage makemigrations migrate makemigrate runserver createuser shell loaddata resetdb
 
 # Clean python, pytest, and coverage files
 clean:
@@ -35,8 +35,8 @@ runserver:
 	python manage.py runserver
 
 # Create superuser from .env values
-createsu:
-	@python manage.py createsu
+createuser:
+	@python manage.py create_user
 
 # Start the Django shell
 shell:
@@ -52,7 +52,7 @@ resetdb:
 	rm -f db.sqlite3
 	echo "Database and caches cleared."
 	make makemigrate
-	make createsu
+	make createuser
 
 # Load demo fixture data
 seed:
