@@ -1,0 +1,582 @@
+[
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 1,
+    "fields": {
+      "name": "Outdoor & Nature-Based Activities",
+      "author": ["FlynntKnapp"]
+    }
+  },
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 2,
+    "fields": {
+      "name": "Gardening & Plant Care",
+      "author": ["FlynntKnapp"]
+    }
+  },
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 3,
+    "fields": {
+      "name": "Creative & Artistic Activities",
+      "author": ["FlynntKnapp"]
+    }
+  },
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 4,
+    "fields": {
+      "name": "Music & Sensory Activities",
+      "author": ["FlynntKnapp"]
+    }
+  },
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 5,
+    "fields": {
+      "name": "Food & Eating Experiences",
+      "author": ["FlynntKnapp"]
+    }
+  },
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 6,
+    "fields": {
+      "name": "Conversation & Memory Activities",
+      "author": ["FlynntKnapp"]
+    }
+  },
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 7,
+    "fields": {
+      "name": "Cognitive Games & Gentle Challenges",
+      "author": ["FlynntKnapp"]
+    }
+  },
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 8,
+    "fields": {
+      "name": "Comfort, Calm & Body Awareness",
+      "author": ["FlynntKnapp"]
+    }
+  },
+  {
+    "model": "unimportant_notes.notetag",
+    "pk": 9,
+    "fields": {
+      "name": "Enriching Mom's Life",
+      "author": ["FlynntKnapp"]
+    }
+  },
+
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 1,
+    "fields": {
+      "title": "Go to a park",
+      "content": "Provides fresh air, gentle exercise, and change of scenery to stimulate her senses and uplift mood.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 2,
+    "fields": {
+      "title": "Take pictures at a park",
+      "content": "Encourages creativity and focus on surroundings while capturing memories together.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 3,
+    "fields": {
+      "title": "Take pictures somewhere",
+      "content": "Offers a chance to explore new places through photography and discuss what she sees.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 4,
+    "fields": {
+      "title": "Go to a nature center",
+      "content": "Engages curiosity about plants and wildlife in an educational setting.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 5,
+    "fields": {
+      "title": "Go see the buffalo",
+      "content": "Allows her to observe majestic animals, sparking wonder and conversation.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 6,
+    "fields": {
+      "title": "Take mom out for a walk with her electric scooter",
+      "content": "Combines mobility support with outdoor activity, boosting confidence and enjoyment.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 7,
+    "fields": {
+      "title": "Sit on the porch and watch the birds",
+      "content": "Provides soothing entertainment as you watch birds and nature's rhythms together.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 8,
+    "fields": {
+      "title": "Feed the ducks at a pond",
+      "content": "Invites interaction with wildlife and offers gentle, nurturing engagement.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 9,
+    "fields": {
+      "title": "Watch a sunrise or sunset together",
+      "content": "Creates a shared peaceful moment watching beautiful skies and discussing feelings.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 10,
+    "fields": {
+      "title": "Sit outside and listen to the wind in the trees",
+      "content": "Allows quiet reflection and sensory appreciation in a natural setting.",
+      "author": ["FlynntKnapp"],
+      "tag": [1, 9]
+    }
+  },
+
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 11,
+    "fields": {
+      "title": "Plant something in the garden",
+      "content": "Involves her in nurturing life, offering satisfaction and a sense of responsibility.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 12,
+    "fields": {
+      "title": "Plant flowers",
+      "content": "Helps maintain beauty in the garden, giving a sense of routine and accomplishment.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 13,
+    "fields": {
+      "title": "Maintain the garden",
+      "content": "Engages kinesthetic movement and pride of maintaining the garden's health.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 14,
+    "fields": {
+      "title": "Maintain the flowers",
+      "content": "Fosters repetitive, calming tasks that strengthen focus and care.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 15,
+    "fields": {
+      "title": "Plan where to plant wildflower patches",
+      "content": "Encourages planning and creativity in designing and caring for flower patches.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 16,
+    "fields": {
+      "title": "Talk about installing a garden fountain",
+      "content": "Promotes discussion of garden improvements and shared decision-making.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 17,
+    "fields": {
+      "title": "Water plants together",
+      "content": "Provides a calming task that nurtures plants and fosters connection.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 18,
+    "fields": {
+      "title": "Start a few indoor herbs in small pots",
+      "content": "Brings greenery indoors, stimulating senses and a sense of home.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 19,
+    "fields": {
+      "title": "Press flowers in a book for craft later",
+      "content": "Preserves memories through a tactile activity with colorful flowers.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 20,
+    "fields": {
+      "title": "Pick flowers to put in a vase indoors",
+      "content": "Brightens her space and strengthens sharing through selecting blooms.",
+      "author": ["FlynntKnapp"],
+      "tag": [2, 9]
+    }
+  },
+
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 21,
+    "fields": {
+      "title": "Color in adult coloring books",
+      "content": "Offers structured, relaxing creativity and focus in coloring intricate designs.",
+      "author": ["FlynntKnapp"],
+      "tag": [3, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 22,
+    "fields": {
+      "title": "Paint with watercolors or acrylics",
+      "content": "Encourages self-expression and sensory engagement through paint.",
+      "author": ["FlynntKnapp"],
+      "tag": [3, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 23,
+    "fields": {
+      "title": "Make a scrapbook with old or new photos",
+      "content": "Creates nostalgia and storytelling by arranging meaningful photos.",
+      "author": ["FlynntKnapp"],
+      "tag": [3, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 24,
+    "fields": {
+      "title": "Fold origami together",
+      "content": "Introduces simple, fun paper crafts that stimulate focus and fine motor skills.",
+      "author": ["FlynntKnapp"],
+      "tag": [3, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 25,
+    "fields": {
+      "title": "Do simple seasonal crafts",
+      "content": "Celebrates seasons through hands-on crafts that yield tangible results.",
+      "author": ["FlynntKnapp"],
+      "tag": [3, 9]
+    }
+  },
+
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 26,
+    "fields": {
+      "title": "Listen to her favorite songs from youth",
+      "content": "Revisits her favorite music, evoking memories and emotional connection.",
+      "author": ["FlynntKnapp"],
+      "tag": [4, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 27,
+    "fields": {
+      "title": "Watch a musical together",
+      "content": "Enjoys live or recorded performance together, stimulating auditory senses.",
+      "author": ["FlynntKnapp"],
+      "tag": [4, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 28,
+    "fields": {
+      "title": "Dance gently together to slow music",
+      "content": "Combines gentle movement with music for physical and emotional well-being.",
+      "author": ["FlynntKnapp"],
+      "tag": [4, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 29,
+    "fields": {
+      "title": "Play instruments or shake rhythm eggs",
+      "content": "Provides playful interaction and rhythmic stimulation via simple instruments.",
+      "author": ["FlynntKnapp"],
+      "tag": [4, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 30,
+    "fields": {
+      "title": "Light a candle or use essential oils",
+      "content": "Engages olfactory senses and discussion around favorite scents.",
+      "author": ["FlynntKnapp"],
+      "tag": [4, 9]
+    }
+  },
+
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 31,
+    "fields": {
+      "title": "Take mom out to eat",
+      "content": "Offers a social outing with familiar dining experiences and taste enjoyment.",
+      "author": ["FlynntKnapp"],
+      "tag": [5, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 32,
+    "fields": {
+      "title": "Bake cookies or bread together",
+      "content": "Engages smell, touch, and taste with comforting baking traditions.",
+      "author": ["FlynntKnapp"],
+      "tag": [5, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 33,
+    "fields": {
+      "title": "Make a favorite family recipe",
+      "content": "Strengthens family bonds through cooking and sharing favorite recipes.",
+      "author": ["FlynntKnapp"],
+      "tag": [5, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 34,
+    "fields": {
+      "title": "Pick out fruit at a farmer's market",
+      "content": "Involves selection of fresh produce, sensory exploration, and light activity.",
+      "author": ["FlynntKnapp"],
+      "tag": [5, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 35,
+    "fields": {
+      "title": "Have a picnic on the porch",
+      "content": "Creates a cozy outdoor dining experience, combining fresh air and food.",
+      "author": ["FlynntKnapp"],
+      "tag": [5, 9]
+    }
+  },
+
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 36,
+    "fields": {
+      "title": "Look at old photo albums and talk about them",
+      "content": "Stimulates reminiscence and conversation by reviewing meaningful photos.",
+      "author": ["FlynntKnapp"],
+      "tag": [6, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 37,
+    "fields": {
+      "title": "Reminisce about favorite vacations or seasons",
+      "content": "Invokes joyful memories and storytelling about past experiences.",
+      "author": ["FlynntKnapp"],
+      "tag": [6, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 38,
+    "fields": {
+      "title": "Talk about pets she's had",
+      "content": "Fosters deep conversation and emotional connection about beloved pets.",
+      "author": ["FlynntKnapp"],
+      "tag": [6, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 39,
+    "fields": {
+      "title": "Do a “what's your favorite” list",
+      "content": "Encourages quick decision-making and sharing personal preferences.",
+      "author": ["FlynntKnapp"],
+      "tag": [6, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 40,
+    "fields": {
+      "title": "Read a short poem or story aloud",
+      "content": "Stimulates reading comprehension and discussion with short literature.",
+      "author": ["FlynntKnapp"],
+      "tag": [6, 9]
+    }
+  },
+
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 41,
+    "fields": {
+      "title": "Sort colorful buttons or beads",
+      "content": "Offers a tactile sorting activity that promotes focus and fine motor skills.",
+      "author": ["FlynntKnapp"],
+      "tag": [7, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 42,
+    "fields": {
+      "title": "Do a puzzle with large pieces",
+      "content": "Challenges cognitive skills safely with large-piece puzzles for joint completion.",
+      "author": ["FlynntKnapp"],
+      "tag": [7, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 43,
+    "fields": {
+      "title": "Match socks or fabric swatches",
+      "content": "Transforms a daily chore into a fun matching game reinforcing patterns.",
+      "author": ["FlynntKnapp"],
+      "tag": [7, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 44,
+    "fields": {
+      "title": "Play a simple card game",
+      "content": "Provides light-hearted gameplay that encourages turn-taking and memory.",
+      "author": ["FlynntKnapp"],
+      "tag": [7, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 45,
+    "fields": {
+      "title": "Play “Would you rather”",
+      "content": "Sparks laughter and discussion with imaginative this-or-that choices.",
+      "author": ["FlynntKnapp"],
+      "tag": [7, 9]
+    }
+  },
+
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 46,
+    "fields": {
+      "title": "Do gentle stretches together while seated",
+      "content": "Supports gentle movement, promoting circulation and mindful awareness.",
+      "author": ["FlynntKnapp"],
+      "tag": [8, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 47,
+    "fields": {
+      "title": "Give her a hand massage with lotion",
+      "content": "Offers soothing physical touch and care through a relaxing massage.",
+      "author": ["FlynntKnapp"],
+      "tag": [8, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 48,
+    "fields": {
+      "title": "Brush her hair slowly while talking",
+      "content": "Encourages bonding and comfort through attentive grooming.",
+      "author": ["FlynntKnapp"],
+      "tag": [8, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 49,
+    "fields": {
+      "title": "Sit together holding hands in silence",
+      "content": "Allows a peaceful moment of presence, reducing anxiety through gentle touch.",
+      "author": ["FlynntKnapp"],
+      "tag": [8, 9]
+    }
+  },
+  {
+    "model": "unimportant_notes.unimportantnote",
+    "pk": 50,
+    "fields": {
+      "title": "Take a slow drive to admire the scenery",
+      "content": "Creates a relaxing shared outing, discussing scenery and enjoying the drive.",
+      "author": ["FlynntKnapp"],
+      "tag": [8, 9]
+    }
+  }
+]
