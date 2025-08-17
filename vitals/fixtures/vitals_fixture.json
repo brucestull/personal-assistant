@@ -1,0 +1,1214 @@
+[
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "systolic": 101,
+      "diastolic": 61,
+      "pulse": 61,
+      "created": "2025-01-01T13:00:00Z",
+      "updated": "2025-01-01T13:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "systolic": 102,
+      "diastolic": 62,
+      "pulse": 62,
+      "created": "2025-01-01T14:00:00Z",
+      "updated": "2025-01-01T14:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "systolic": 103,
+      "diastolic": 63,
+      "pulse": 63,
+      "created": "2025-01-01T15:00:00Z",
+      "updated": "2025-01-01T15:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "systolic": 104,
+      "diastolic": 64,
+      "pulse": 64,
+      "created": "2025-01-01T16:00:00Z",
+      "updated": "2025-01-01T16:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 5,
+    "fields": {
+      "user": 1,
+      "systolic": 105,
+      "diastolic": 65,
+      "pulse": 65,
+      "created": "2025-01-01T17:00:00Z",
+      "updated": "2025-01-01T17:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 6,
+    "fields": {
+      "user": 1,
+      "systolic": 106,
+      "diastolic": 66,
+      "pulse": 66,
+      "created": "2025-01-01T18:00:00Z",
+      "updated": "2025-01-01T18:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 7,
+    "fields": {
+      "user": 1,
+      "systolic": 107,
+      "diastolic": 67,
+      "pulse": 67,
+      "created": "2025-01-01T19:00:00Z",
+      "updated": "2025-01-01T19:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 8,
+    "fields": {
+      "user": 1,
+      "systolic": 108,
+      "diastolic": 68,
+      "pulse": 68,
+      "created": "2025-01-01T20:00:00Z",
+      "updated": "2025-01-01T20:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 9,
+    "fields": {
+      "user": 1,
+      "systolic": 109,
+      "diastolic": 69,
+      "pulse": 69,
+      "created": "2025-01-01T21:00:00Z",
+      "updated": "2025-01-01T21:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 10,
+    "fields": {
+      "user": 1,
+      "systolic": 110,
+      "diastolic": 70,
+      "pulse": 70,
+      "created": "2025-01-01T22:00:00Z",
+      "updated": "2025-01-01T22:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 11,
+    "fields": {
+      "user": 1,
+      "systolic": 111,
+      "diastolic": 71,
+      "pulse": 71,
+      "created": "2025-01-01T23:00:00Z",
+      "updated": "2025-01-01T23:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 12,
+    "fields": {
+      "user": 1,
+      "systolic": 112,
+      "diastolic": 72,
+      "pulse": 72,
+      "created": "2025-01-02T00:00:00Z",
+      "updated": "2025-01-02T00:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 13,
+    "fields": {
+      "user": 1,
+      "systolic": 113,
+      "diastolic": 73,
+      "pulse": 73,
+      "created": "2025-01-02T01:00:00Z",
+      "updated": "2025-01-02T01:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 14,
+    "fields": {
+      "user": 1,
+      "systolic": 114,
+      "diastolic": 74,
+      "pulse": 74,
+      "created": "2025-01-02T02:00:00Z",
+      "updated": "2025-01-02T02:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 15,
+    "fields": {
+      "user": 1,
+      "systolic": 115,
+      "diastolic": 75,
+      "pulse": 75,
+      "created": "2025-01-02T03:00:00Z",
+      "updated": "2025-01-02T03:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 16,
+    "fields": {
+      "user": 1,
+      "systolic": 116,
+      "diastolic": 76,
+      "pulse": 76,
+      "created": "2025-01-02T04:00:00Z",
+      "updated": "2025-01-02T04:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 17,
+    "fields": {
+      "user": 1,
+      "systolic": 117,
+      "diastolic": 77,
+      "pulse": 77,
+      "created": "2025-01-02T05:00:00Z",
+      "updated": "2025-01-02T05:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 18,
+    "fields": {
+      "user": 1,
+      "systolic": 118,
+      "diastolic": 78,
+      "pulse": 78,
+      "created": "2025-01-02T06:00:00Z",
+      "updated": "2025-01-02T06:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 19,
+    "fields": {
+      "user": 1,
+      "systolic": 119,
+      "diastolic": 79,
+      "pulse": 79,
+      "created": "2025-01-02T07:00:00Z",
+      "updated": "2025-01-02T07:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 20,
+    "fields": {
+      "user": 1,
+      "systolic": 120,
+      "diastolic": 60,
+      "pulse": 80,
+      "created": "2025-01-02T08:00:00Z",
+      "updated": "2025-01-02T08:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 21,
+    "fields": {
+      "user": 1,
+      "systolic": 121,
+      "diastolic": 61,
+      "pulse": 81,
+      "created": "2025-01-02T09:00:00Z",
+      "updated": "2025-01-02T09:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 22,
+    "fields": {
+      "user": 1,
+      "systolic": 122,
+      "diastolic": 62,
+      "pulse": 82,
+      "created": "2025-01-02T10:00:00Z",
+      "updated": "2025-01-02T10:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 23,
+    "fields": {
+      "user": 1,
+      "systolic": 123,
+      "diastolic": 63,
+      "pulse": 83,
+      "created": "2025-01-02T11:00:00Z",
+      "updated": "2025-01-02T11:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 24,
+    "fields": {
+      "user": 1,
+      "systolic": 124,
+      "diastolic": 64,
+      "pulse": 84,
+      "created": "2025-01-02T12:00:00Z",
+      "updated": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 25,
+    "fields": {
+      "user": 1,
+      "systolic": 125,
+      "diastolic": 65,
+      "pulse": 85,
+      "created": "2025-01-02T13:00:00Z",
+      "updated": "2025-01-02T13:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 26,
+    "fields": {
+      "user": 1,
+      "systolic": 126,
+      "diastolic": 66,
+      "pulse": 86,
+      "created": "2025-01-02T14:00:00Z",
+      "updated": "2025-01-02T14:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 27,
+    "fields": {
+      "user": 1,
+      "systolic": 127,
+      "diastolic": 67,
+      "pulse": 87,
+      "created": "2025-01-02T15:00:00Z",
+      "updated": "2025-01-02T15:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 28,
+    "fields": {
+      "user": 1,
+      "systolic": 128,
+      "diastolic": 68,
+      "pulse": 88,
+      "created": "2025-01-02T16:00:00Z",
+      "updated": "2025-01-02T16:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 29,
+    "fields": {
+      "user": 1,
+      "systolic": 129,
+      "diastolic": 69,
+      "pulse": 89,
+      "created": "2025-01-02T17:00:00Z",
+      "updated": "2025-01-02T17:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 30,
+    "fields": {
+      "user": 1,
+      "systolic": 130,
+      "diastolic": 70,
+      "pulse": 90,
+      "created": "2025-01-02T18:00:00Z",
+      "updated": "2025-01-02T18:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 31,
+    "fields": {
+      "user": 1,
+      "systolic": 131,
+      "diastolic": 71,
+      "pulse": 91,
+      "created": "2025-01-02T19:00:00Z",
+      "updated": "2025-01-02T19:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 32,
+    "fields": {
+      "user": 1,
+      "systolic": 132,
+      "diastolic": 72,
+      "pulse": 92,
+      "created": "2025-01-02T20:00:00Z",
+      "updated": "2025-01-02T20:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 33,
+    "fields": {
+      "user": 1,
+      "systolic": 133,
+      "diastolic": 73,
+      "pulse": 93,
+      "created": "2025-01-02T21:00:00Z",
+      "updated": "2025-01-02T21:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 34,
+    "fields": {
+      "user": 1,
+      "systolic": 134,
+      "diastolic": 74,
+      "pulse": 94,
+      "created": "2025-01-02T22:00:00Z",
+      "updated": "2025-01-02T22:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 35,
+    "fields": {
+      "user": 1,
+      "systolic": 135,
+      "diastolic": 75,
+      "pulse": 95,
+      "created": "2025-01-02T23:00:00Z",
+      "updated": "2025-01-02T23:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 36,
+    "fields": {
+      "user": 1,
+      "systolic": 136,
+      "diastolic": 76,
+      "pulse": 96,
+      "created": "2025-01-03T00:00:00Z",
+      "updated": "2025-01-03T00:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 37,
+    "fields": {
+      "user": 1,
+      "systolic": 137,
+      "diastolic": 77,
+      "pulse": 97,
+      "created": "2025-01-03T01:00:00Z",
+      "updated": "2025-01-03T01:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 38,
+    "fields": {
+      "user": 1,
+      "systolic": 138,
+      "diastolic": 78,
+      "pulse": 98,
+      "created": "2025-01-03T02:00:00Z",
+      "updated": "2025-01-03T02:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 39,
+    "fields": {
+      "user": 1,
+      "systolic": 139,
+      "diastolic": 79,
+      "pulse": 99,
+      "created": "2025-01-03T03:00:00Z",
+      "updated": "2025-01-03T03:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 40,
+    "fields": {
+      "user": 1,
+      "systolic": 100,
+      "diastolic": 60,
+      "pulse": 60,
+      "created": "2025-01-03T04:00:00Z",
+      "updated": "2025-01-03T04:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 41,
+    "fields": {
+      "user": 1,
+      "systolic": 101,
+      "diastolic": 61,
+      "pulse": 61,
+      "created": "2025-01-03T05:00:00Z",
+      "updated": "2025-01-03T05:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 42,
+    "fields": {
+      "user": 1,
+      "systolic": 102,
+      "diastolic": 62,
+      "pulse": 62,
+      "created": "2025-01-03T06:00:00Z",
+      "updated": "2025-01-03T06:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 43,
+    "fields": {
+      "user": 1,
+      "systolic": 103,
+      "diastolic": 63,
+      "pulse": 63,
+      "created": "2025-01-03T07:00:00Z",
+      "updated": "2025-01-03T07:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 44,
+    "fields": {
+      "user": 1,
+      "systolic": 104,
+      "diastolic": 64,
+      "pulse": 64,
+      "created": "2025-01-03T08:00:00Z",
+      "updated": "2025-01-03T08:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 45,
+    "fields": {
+      "user": 1,
+      "systolic": 105,
+      "diastolic": 65,
+      "pulse": 65,
+      "created": "2025-01-03T09:00:00Z",
+      "updated": "2025-01-03T09:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 46,
+    "fields": {
+      "user": 1,
+      "systolic": 106,
+      "diastolic": 66,
+      "pulse": 66,
+      "created": "2025-01-03T10:00:00Z",
+      "updated": "2025-01-03T10:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 47,
+    "fields": {
+      "user": 1,
+      "systolic": 107,
+      "diastolic": 67,
+      "pulse": 67,
+      "created": "2025-01-03T11:00:00Z",
+      "updated": "2025-01-03T11:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 48,
+    "fields": {
+      "user": 1,
+      "systolic": 108,
+      "diastolic": 68,
+      "pulse": 68,
+      "created": "2025-01-03T12:00:00Z",
+      "updated": "2025-01-03T12:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 49,
+    "fields": {
+      "user": 1,
+      "systolic": 109,
+      "diastolic": 69,
+      "pulse": 69,
+      "created": "2025-01-03T13:00:00Z",
+      "updated": "2025-01-03T13:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 50,
+    "fields": {
+      "user": 1,
+      "systolic": 110,
+      "diastolic": 70,
+      "pulse": 70,
+      "created": "2025-01-03T14:00:00Z",
+      "updated": "2025-01-03T14:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bloodpressure",
+    "pk": 51,
+    "fields": {
+      "user": 1,
+      "systolic": 111,
+      "diastolic": 71,
+      "pulse": 71,
+      "created": "2025-01-03T15:00:00Z",
+      "updated": "2025-01-03T15:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1001,
+    "fields": {
+      "user": 1,
+      "bpm": 61,
+      "created": "2025-01-02T13:00:00Z",
+      "updated": "2025-01-02T13:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1002,
+    "fields": {
+      "user": 1,
+      "bpm": 62,
+      "created": "2025-01-02T14:00:00Z",
+      "updated": "2025-01-02T14:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1003,
+    "fields": {
+      "user": 1,
+      "bpm": 63,
+      "created": "2025-01-02T15:00:00Z",
+      "updated": "2025-01-02T15:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1004,
+    "fields": {
+      "user": 1,
+      "bpm": 64,
+      "created": "2025-01-02T16:00:00Z",
+      "updated": "2025-01-02T16:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1005,
+    "fields": {
+      "user": 1,
+      "bpm": 65,
+      "created": "2025-01-02T17:00:00Z",
+      "updated": "2025-01-02T17:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1006,
+    "fields": {
+      "user": 1,
+      "bpm": 66,
+      "created": "2025-01-02T18:00:00Z",
+      "updated": "2025-01-02T18:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1007,
+    "fields": {
+      "user": 1,
+      "bpm": 67,
+      "created": "2025-01-02T19:00:00Z",
+      "updated": "2025-01-02T19:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1008,
+    "fields": {
+      "user": 1,
+      "bpm": 68,
+      "created": "2025-01-02T20:00:00Z",
+      "updated": "2025-01-02T20:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1009,
+    "fields": {
+      "user": 1,
+      "bpm": 69,
+      "created": "2025-01-02T21:00:00Z",
+      "updated": "2025-01-02T21:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1010,
+    "fields": {
+      "user": 1,
+      "bpm": 70,
+      "created": "2025-01-02T22:00:00Z",
+      "updated": "2025-01-02T22:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1011,
+    "fields": {
+      "user": 1,
+      "bpm": 71,
+      "created": "2025-01-02T23:00:00Z",
+      "updated": "2025-01-02T23:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1012,
+    "fields": {
+      "user": 1,
+      "bpm": 72,
+      "created": "2025-01-03T00:00:00Z",
+      "updated": "2025-01-03T00:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1013,
+    "fields": {
+      "user": 1,
+      "bpm": 73,
+      "created": "2025-01-03T01:00:00Z",
+      "updated": "2025-01-03T01:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1014,
+    "fields": {
+      "user": 1,
+      "bpm": 74,
+      "created": "2025-01-03T02:00:00Z",
+      "updated": "2025-01-03T02:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1015,
+    "fields": {
+      "user": 1,
+      "bpm": 75,
+      "created": "2025-01-03T03:00:00Z",
+      "updated": "2025-01-03T03:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1016,
+    "fields": {
+      "user": 1,
+      "bpm": 76,
+      "created": "2025-01-03T04:00:00Z",
+      "updated": "2025-01-03T04:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1017,
+    "fields": {
+      "user": 1,
+      "bpm": 77,
+      "created": "2025-01-03T05:00:00Z",
+      "updated": "2025-01-03T05:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1018,
+    "fields": {
+      "user": 1,
+      "bpm": 78,
+      "created": "2025-01-03T06:00:00Z",
+      "updated": "2025-01-03T06:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1019,
+    "fields": {
+      "user": 1,
+      "bpm": 79,
+      "created": "2025-01-03T07:00:00Z",
+      "updated": "2025-01-03T07:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.pulse",
+    "pk": 1020,
+    "fields": {
+      "user": 1,
+      "bpm": 80,
+      "created": "2025-01-03T08:00:00Z",
+      "updated": "2025-01-03T08:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2001,
+    "fields": {
+      "subject": 1,
+      "measurement": "98.0",
+      "created": "2025-01-03T13:00:00Z",
+      "updated": "2025-01-03T13:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2002,
+    "fields": {
+      "subject": 1,
+      "measurement": "99.0",
+      "created": "2025-01-03T14:00:00Z",
+      "updated": "2025-01-03T14:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2003,
+    "fields": {
+      "subject": 1,
+      "measurement": "100.0",
+      "created": "2025-01-03T15:00:00Z",
+      "updated": "2025-01-03T15:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2004,
+    "fields": {
+      "subject": 1,
+      "measurement": "101.0",
+      "created": "2025-01-03T16:00:00Z",
+      "updated": "2025-01-03T16:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2005,
+    "fields": {
+      "subject": 1,
+      "measurement": "97.0",
+      "created": "2025-01-03T17:00:00Z",
+      "updated": "2025-01-03T17:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2006,
+    "fields": {
+      "subject": 1,
+      "measurement": "98.0",
+      "created": "2025-01-03T18:00:00Z",
+      "updated": "2025-01-03T18:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2007,
+    "fields": {
+      "subject": 1,
+      "measurement": "99.0",
+      "created": "2025-01-03T19:00:00Z",
+      "updated": "2025-01-03T19:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2008,
+    "fields": {
+      "subject": 1,
+      "measurement": "100.0",
+      "created": "2025-01-03T20:00:00Z",
+      "updated": "2025-01-03T20:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2009,
+    "fields": {
+      "subject": 1,
+      "measurement": "101.0",
+      "created": "2025-01-03T21:00:00Z",
+      "updated": "2025-01-03T21:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2010,
+    "fields": {
+      "subject": 1,
+      "measurement": "97.0",
+      "created": "2025-01-03T22:00:00Z",
+      "updated": "2025-01-03T22:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2011,
+    "fields": {
+      "subject": 1,
+      "measurement": "98.0",
+      "created": "2025-01-03T23:00:00Z",
+      "updated": "2025-01-03T23:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2012,
+    "fields": {
+      "subject": 1,
+      "measurement": "99.0",
+      "created": "2025-01-04T00:00:00Z",
+      "updated": "2025-01-04T00:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2013,
+    "fields": {
+      "subject": 1,
+      "measurement": "100.0",
+      "created": "2025-01-04T01:00:00Z",
+      "updated": "2025-01-04T01:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2014,
+    "fields": {
+      "subject": 1,
+      "measurement": "101.0",
+      "created": "2025-01-04T02:00:00Z",
+      "updated": "2025-01-04T02:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2015,
+    "fields": {
+      "subject": 1,
+      "measurement": "97.0",
+      "created": "2025-01-04T03:00:00Z",
+      "updated": "2025-01-04T03:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2016,
+    "fields": {
+      "subject": 1,
+      "measurement": "98.0",
+      "created": "2025-01-04T04:00:00Z",
+      "updated": "2025-01-04T04:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2017,
+    "fields": {
+      "subject": 1,
+      "measurement": "99.0",
+      "created": "2025-01-04T05:00:00Z",
+      "updated": "2025-01-04T05:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2018,
+    "fields": {
+      "subject": 1,
+      "measurement": "100.0",
+      "created": "2025-01-04T06:00:00Z",
+      "updated": "2025-01-04T06:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2019,
+    "fields": {
+      "subject": 1,
+      "measurement": "101.0",
+      "created": "2025-01-04T07:00:00Z",
+      "updated": "2025-01-04T07:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.temperature",
+    "pk": 2020,
+    "fields": {
+      "subject": 1,
+      "measurement": "97.0",
+      "created": "2025-01-04T08:00:00Z",
+      "updated": "2025-01-04T08:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3001,
+    "fields": {
+      "subject": 1,
+      "measurement": "151.00",
+      "created": "2025-01-04T13:00:00Z",
+      "updated": "2025-01-04T13:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3002,
+    "fields": {
+      "subject": 1,
+      "measurement": "152.00",
+      "created": "2025-01-04T14:00:00Z",
+      "updated": "2025-01-04T14:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3003,
+    "fields": {
+      "subject": 1,
+      "measurement": "153.00",
+      "created": "2025-01-04T15:00:00Z",
+      "updated": "2025-01-04T15:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3004,
+    "fields": {
+      "subject": 1,
+      "measurement": "154.00",
+      "created": "2025-01-04T16:00:00Z",
+      "updated": "2025-01-04T16:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3005,
+    "fields": {
+      "subject": 1,
+      "measurement": "155.00",
+      "created": "2025-01-04T17:00:00Z",
+      "updated": "2025-01-04T17:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3006,
+    "fields": {
+      "subject": 1,
+      "measurement": "156.00",
+      "created": "2025-01-04T18:00:00Z",
+      "updated": "2025-01-04T18:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3007,
+    "fields": {
+      "subject": 1,
+      "measurement": "157.00",
+      "created": "2025-01-04T19:00:00Z",
+      "updated": "2025-01-04T19:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3008,
+    "fields": {
+      "subject": 1,
+      "measurement": "158.00",
+      "created": "2025-01-04T20:00:00Z",
+      "updated": "2025-01-04T20:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3009,
+    "fields": {
+      "subject": 1,
+      "measurement": "159.00",
+      "created": "2025-01-04T21:00:00Z",
+      "updated": "2025-01-04T21:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3010,
+    "fields": {
+      "subject": 1,
+      "measurement": "160.00",
+      "created": "2025-01-04T22:00:00Z",
+      "updated": "2025-01-04T22:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3011,
+    "fields": {
+      "subject": 1,
+      "measurement": "161.00",
+      "created": "2025-01-04T23:00:00Z",
+      "updated": "2025-01-04T23:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3012,
+    "fields": {
+      "subject": 1,
+      "measurement": "162.00",
+      "created": "2025-01-05T00:00:00Z",
+      "updated": "2025-01-05T00:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3013,
+    "fields": {
+      "subject": 1,
+      "measurement": "163.00",
+      "created": "2025-01-05T01:00:00Z",
+      "updated": "2025-01-05T01:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3014,
+    "fields": {
+      "subject": 1,
+      "measurement": "164.00",
+      "created": "2025-01-05T02:00:00Z",
+      "updated": "2025-01-05T02:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3015,
+    "fields": {
+      "subject": 1,
+      "measurement": "165.00",
+      "created": "2025-01-05T03:00:00Z",
+      "updated": "2025-01-05T03:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3016,
+    "fields": {
+      "subject": 1,
+      "measurement": "166.00",
+      "created": "2025-01-05T04:00:00Z",
+      "updated": "2025-01-05T04:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3017,
+    "fields": {
+      "subject": 1,
+      "measurement": "167.00",
+      "created": "2025-01-05T05:00:00Z",
+      "updated": "2025-01-05T05:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3018,
+    "fields": {
+      "subject": 1,
+      "measurement": "168.00",
+      "created": "2025-01-05T06:00:00Z",
+      "updated": "2025-01-05T06:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3019,
+    "fields": {
+      "subject": 1,
+      "measurement": "169.00",
+      "created": "2025-01-05T07:00:00Z",
+      "updated": "2025-01-05T07:00:00Z"
+    }
+  },
+  {
+    "model": "vitals.bodyweight",
+    "pk": 3020,
+    "fields": {
+      "subject": 1,
+      "measurement": "170.00",
+      "created": "2025-01-05T08:00:00Z",
+      "updated": "2025-01-05T08:00:00Z"
+    }
+  }
+]

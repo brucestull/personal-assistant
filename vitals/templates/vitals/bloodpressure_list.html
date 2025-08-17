@@ -1,41 +1,169 @@
 {% extends "base.html" %}
 
-{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock title %}
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ page_title }}</h1>
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <a class="btn btn-primary" href="{% url 'vitals:bloodpressure-create' %}">
+      Add Blood Pressure
+    </a>
+  </div>
 
-    <a href="{% url 'vitals:bloodpressure-create' %}">Add Blood Pressure</a>
+  {% if user.registration_accepted == False %}
+    <div class="alert alert-warning" role="alert">
+      Your registration has not been accepted yet. Please check back later.
+    </div>
+  {% endif %}
 
-    {% if user.registration_accepted == False %}
-        <p>
-            Your registration has not been accepted yet.  Please check back later.
-        </p>
+  {% if user.registration_accepted %}
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Medians</h5>
+            <p class="card-text mb-0">
+              {{ user_averages_and_medians.systolic_median|default:"—" }}
+              /
+              {{ user_averages_and_medians.diastolic_median|default:"—" }}
+              mmHg
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Averages</h5>
+            <p class="card-text mb-0">
+              {{ user_averages_and_medians.systolic_average|floatformat:2|default:"—" }}
+              /
+              {{ user_averages_and_medians.diastolic_average|floatformat:2|default:"—" }}
+              mmHg
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Minimums</h5>
+            <p class="card-text mb-0">
+              {{ user_pressure_range.systolic_min|default:"—" }}
+              /
+              {{ user_pressure_range.diastolic_min|default:"—" }}
+              mmHg
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Maximums</h5>
+            <p class="card-text mb-0">
+              {{ user_pressure_range.systolic_max|default:"—" }}
+              /
+              {{ user_pressure_range.diastolic_max|default:"—" }}
+              mmHg
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if bloodpressure_list %}
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Systolic</th>
+              <th scope="col">Diastolic</th>
+              <th scope="col">Pulse</th>
+              <th scope="col">Recorded</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bp in bloodpressure_list %}
+              <tr>
+                <td>{{ bp.systolic }}</td>
+                <td>{{ bp.diastolic }}</td>
+                <td>{{ bp.pulse }} bpm</td>
+                <td>{{ bp.created }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if is_paginated %}
+        <nav aria-label="Blood pressures pagination">
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}" aria-label="First">
+                  « First
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}" aria-label="Previous">
+                  ‹ Prev
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">« First</span></li>
+              <li class="page-item disabled"><span class="page-link">‹ Prev</span></li>
+            {% endif %}
+
+            {# page window #}
+            {% for num in page_obj.paginator.page_range %}
+              {% if num >= page_obj.number|add:-2 and num <= page_obj.number|add:2 %}
+                {% if num == page_obj.number %}
+                  <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}">{{ num }}</a>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}" aria-label="Next">
+                  Next ›
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}" aria-label="Last">
+                  Last »
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">Next ›</span></li>
+              <li class="page-item disabled"><span class="page-link">Last »</span></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+
+        <form class="row row-cols-lg-auto g-2 align-items-center">
+        <div class="col">
+            <label class="form-label me-2" for="perPageSelect">Per page</label>
+            <select id="perPageSelect" class="form-select" name="per_page" onchange="this.form.submit()">
+            {% for size in per_page_options %}
+                <option value="{{ size }}" {% if size == current_per_page %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <input type="hidden" name="page" value="1">
+        </form>
+
+
+    {% else %}
+      <div class="alert alert-info">No blood pressure records yet.</div>
     {% endif %}
-
-    {% if user.registration_accepted %}
-        <hr>
-        <h2>{{ user.username }}'s Blood Pressures</h2>
-        <h3>Medians</h3>
-        {{ user_averages_and_medians.systolic_median }} / {{ user_averages_and_medians.diastolic_median }}
-        <h3>Averages</h3>
-        {{ user_averages_and_medians.systolic_average }} / {{ user_averages_and_medians.diastolic_average }}
-        <hr>
-        <h3>Minimums</h3>
-        {{ user_pressure_range.systolic_min }} / {{ user_pressure_range.diastolic_min }}
-        <h3>Maximums</h3>
-        {{ user_pressure_range.systolic_max }} / {{ user_pressure_range.diastolic_max }}
-        <hr>
-        {% for blood_pressure in bloodpressure_list %}
-        <p>
-            {{ blood_pressure.systolic }} / {{ blood_pressure.diastolic }}
-            &nbsp;&nbsp; - &nbsp;&nbsp;
-            {{ blood_pressure.pulse }} bpm
-            &nbsp;&nbsp; | &nbsp;&nbsp;
-            {{ blood_pressure.created }}
-        </p>
-        <hr>
-        {% endfor %}
-    {% endif %}
-
-{% endblock content %}
+  {% endif %}
+</div>
+{% endblock %}
