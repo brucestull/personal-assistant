@@ -2,19 +2,20 @@
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 
 from base.decorators import registration_accepted_required
-from base.mixins import RegistrationAcceptedMixin
+from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
 from config.settings import THE_SITE_NAME
-from vitals.models import BloodPressure
+from vitals.models import BloodPressure, BodyWeight
 
-from .forms import BodyWeightForm
-from .models import BodyWeight
+from vitals.forms import BodyWeightForm, BloodPressureForm
 
 
 def home(request):
@@ -31,81 +32,68 @@ def home(request):
     )
 
 
-class BloodPressureListView(RegistrationAcceptedMixin, ListView):
-    """
-    `ListView` for a user's blood pressure measurements.
-    """
+class BloodPressureListView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, ListView
+):
+    model = BloodPressure
+    ordering = "-created"
+    paginate_by = 10
+    PER_PAGE_OPTIONS = (10, 25, 50, 100)
+    page_title = "Blood Pressures"
+
+    def get_paginate_by(self, queryset):
+        # allow ?per_page=XX; clamp between 1 and 100
+        try:
+            per_page = int(self.request.GET.get("per_page", self.paginate_by))
+            return max(1, min(per_page, 100))
+        except (TypeError, ValueError):
+            return self.paginate_by
+
+    def get_queryset(self):
+        return BloodPressure.objects.for_user(self.request.user).order_by(self.ordering)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.request.user
-
-        # New: pull everything via QuerySet/Manager on BloodPressure
-        qs = BloodPressure.objects.for_user(user)
+        ctx = super().get_context_data(**kwargs)
+        qs = self.get_queryset()
         summary = qs.summary()
 
-        # Preserve your existing template variable names & structure
-        context["user_averages_and_medians"] = {
+        ctx["user_averages_and_medians"] = {
             "systolic_average": summary["systolic_average"],
             "diastolic_average": summary["diastolic_average"],
             "systolic_median": summary["systolic_median"],
             "diastolic_median": summary["diastolic_median"],
         }
-        context["user_pressure_range"] = {
+        ctx["user_pressure_range"] = {
             "systolic_min": summary["systolic_min"],
             "diastolic_min": summary["diastolic_min"],
             "systolic_max": summary["systolic_max"],
             "diastolic_max": summary["diastolic_max"],
         }
 
-        return context
+        # expose per-page controls
+        ctx["per_page_options"] = self.PER_PAGE_OPTIONS
+        try:
+            ctx["current_per_page"] = int(
+                self.request.GET.get("per_page", self.get_paginate_by(None))
+            )
+        except (TypeError, ValueError):
+            ctx["current_per_page"] = self.paginate_by
+        return ctx
 
-    extra_context = {
-        "the_site_name": THE_SITE_NAME,
-        "page_title": "Blood Pressures",
-    }
 
-    def get_queryset(self):
-        return BloodPressure.objects.for_user(self.request.user).order_by("-created")
-
-
-# Check if user is logged in and then check if the user has
-# "registration_accepted" set to "True".
-# TODO: Check if the order of the mixins matters. Order does matter:
-# It's best practice to use mixins from more general to more specific.
 class BloodPressureCreateView(
-    RegistrationAcceptedMixin,
-    CreateView,
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, CreateView
 ):
     """
-    `CreateView` for a user to create a blood pressure measurement.
+    Create form for a new blood pressure measurement.
     """
 
     model = BloodPressure
-    # Redirect to the list of blood pressure measurements after a successful
-    # creation.
-    success_url = "/vitals/bloodpressures/"
-    # TODO: Understand why this test doesn't work as expected.
-    # success_url = reverse("vitals:bloodpressures")
-    # Template name is not needed since we are using Django,s default template
-    # naming convention `bloodpressure_form.html`.
-
-    fields = [
-        "systolic",
-        "diastolic",
-        "pulse",
-    ]
-
-    extra_context = {
-        "the_site_name": THE_SITE_NAME,
-        "page_title": "Create Blood Pressure",
-    }
+    form_class = BloodPressureForm
+    success_url = reverse_lazy("vitals:bloodpressure-list")  # use named URL
+    page_title = "Create Blood Pressure"
 
     def form_valid(self, form):
-        """
-        Override the `form_valid` method to add the current user to the
-        `BloodPressure` object.
-        """
         form.instance.user = self.request.user
         return super().form_valid(form)
 
@@ -125,7 +113,6 @@ def bodyweight_list(request):
     q = request.GET.get("q", "").strip()
     qs = BodyWeight.objects.select_related("subject").order_by("-created")
 
-    # Non-staff see only their own records
     if not request.user.is_staff:
         qs = qs.filter(subject=request.user)
 
@@ -158,7 +145,6 @@ def bodyweight_create(request):
     if request.method == "POST":
         form = BodyWeightForm(request.POST)
         if not request.user.is_staff:
-            # enforce subject = current user
             form.data = form.data.copy()
             form.data["subject"] = str(request.user.pk)
 
@@ -188,7 +174,6 @@ def bodyweight_update(request, pk):
     if request.method == "POST":
         form = BodyWeightForm(request.POST, instance=obj)
         if not request.user.is_staff:
-            # Lock subject to the owner
             form.data = form.data.copy()
             form.data["subject"] = str(request.user.pk)
 

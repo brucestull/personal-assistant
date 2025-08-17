@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import BodyWeight
+from .models import BodyWeight, BloodPressure
 
 
 class BodyWeightForm(forms.ModelForm):
@@ -22,3 +22,14 @@ class BodyWeightForm(forms.ModelForm):
         if val > 1500:
             raise forms.ValidationError("That value seems unrealistically high.")
         return val
+
+
+class BloodPressureForm(forms.ModelForm):
+    class Meta:
+        model = BloodPressure
+        fields = ["systolic", "diastolic", "pulse"]
+        widgets = {
+            "systolic": forms.NumberInput(attrs={"class": "form-control"}),
+            "diastolic": forms.NumberInput(attrs={"class": "form-control"}),
+            "pulse": forms.NumberInput(attrs={"class": "form-control"}),
+        }

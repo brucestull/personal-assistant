@@ -1,3 +1,5 @@
+# vitals/tests/test_views.py
+
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 
@@ -169,8 +171,7 @@ class BloodPressureListViewTest(TestCase):
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(
-            response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
+        self.assertEqual(response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
         self.assertEqual(
             response.context["bloodpressure_list"][0].systolic,
             BLOOD_PRESSURE_SYSTOLIC_1,
@@ -180,9 +181,7 @@ class BloodPressureListViewTest(TestCase):
             BLOOD_PRESSURE_DIASTOLIC_1,
         )
         self.assertEqual(
-            response.context[
-                "bloodpressure_list"
-            ][0].user.registration_accepted,
+            response.context["bloodpressure_list"][0].user.registration_accepted,
             True,
         )
         self.assertEqual(
@@ -202,8 +201,7 @@ class BloodPressureListViewTest(TestCase):
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(
-            response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
+        self.assertEqual(response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
         self.assertEqual(
             response.context["user_pressure_range"],
             {
@@ -211,7 +209,7 @@ class BloodPressureListViewTest(TestCase):
                 "diastolic_min": BLOOD_PRESSURE_DIASTOLIC_MIN,
                 "systolic_max": BLOOD_PRESSURE_SYSTOLIC_MAX,
                 "diastolic_max": BLOOD_PRESSURE_DIASTOLIC_MAX,
-            }
+            },
         )
 
     def test_has_basic_context_with_zero_blood_pressures(self):
@@ -229,8 +227,7 @@ class BloodPressureListViewTest(TestCase):
         response = self.client.get(reverse(BLOOD_PRESSURE_LIST_VIEW_NAME))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(
-            response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
+        self.assertEqual(response.context["page_title"], BLOOD_PRESSURE_LIST_PAGE_TITLE)
 
     def test_has_blood_pressure_context_with_zero_blood_pressures(self):
         """
@@ -254,7 +251,7 @@ class BloodPressureListViewTest(TestCase):
                 "diastolic_average": None,
                 "systolic_median": None,
                 "diastolic_median": None,
-            }
+            },
         )
 
     def test_redirects_to_login_if_not_logged_in(self):

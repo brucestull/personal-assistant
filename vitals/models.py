@@ -1,7 +1,9 @@
 # vitals/models.py
 from statistics import median
+
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models import Avg, Min, Max
+from django.db.models import Avg, Max, Min
 
 from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
@@ -87,20 +89,26 @@ class BloodPressure(CreatedUpdatedBase):
     systolic = models.PositiveSmallIntegerField(
         verbose_name="Systolic Blood Pressure",
         help_text="The systolic blood pressure reading.",
+        validators=[MinValueValidator(50), MaxValueValidator(260)],
     )
     diastolic = models.PositiveSmallIntegerField(
         verbose_name="Diastolic Blood Pressure",
         help_text="The diastolic blood pressure reading.",
+        validators=[MinValueValidator(30), MaxValueValidator(160)],
     )
     pulse = models.PositiveSmallIntegerField(
         verbose_name="Pulse",
         help_text="The pulse rate in beats per minute.",
+        validators=[MinValueValidator(20), MaxValueValidator(220)],
     )
 
     objects = BloodPressureManager()
 
     class Meta:
         verbose_name_plural = "Blood Pressure Measurements"
+        indexes = [
+            models.Index(fields=["user", "-created"]),
+        ]
 
     def __str__(self):
         return (
