@@ -11,7 +11,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 
 from base.decorators import registration_accepted_required
-from base.mixins import RegistrationAcceptedMixin
+from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
 from config.settings import THE_SITE_NAME
 from vitals.models import BloodPressure, BodyWeight
 
@@ -32,11 +32,14 @@ def home(request):
     )
 
 
-class BloodPressureListView(RegistrationAcceptedMixin, LoginRequiredMixin, ListView):
+class BloodPressureListView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, ListView
+):
     model = BloodPressure
     ordering = "-created"
     paginate_by = 10
     PER_PAGE_OPTIONS = (10, 25, 50, 100)
+    page_title = "Blood Pressures"
 
     def get_paginate_by(self, queryset):
         # allow ?per_page=XX; clamp between 1 and 100
@@ -69,7 +72,6 @@ class BloodPressureListView(RegistrationAcceptedMixin, LoginRequiredMixin, ListV
 
         # expose per-page controls
         ctx["per_page_options"] = self.PER_PAGE_OPTIONS
-        # make it an int so template comparisons are easy
         try:
             ctx["current_per_page"] = int(
                 self.request.GET.get("per_page", self.get_paginate_by(None))
@@ -80,7 +82,7 @@ class BloodPressureListView(RegistrationAcceptedMixin, LoginRequiredMixin, ListV
 
 
 class BloodPressureCreateView(
-    RegistrationAcceptedMixin, LoginRequiredMixin, CreateView
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, CreateView
 ):
     """
     Create form for a new blood pressure measurement.
@@ -89,10 +91,7 @@ class BloodPressureCreateView(
     model = BloodPressure
     form_class = BloodPressureForm
     success_url = reverse_lazy("vitals:bloodpressure-list")  # use named URL
-    extra_context = {
-        "the_site_name": THE_SITE_NAME,
-        "page_title": "Create Blood Pressure",
-    }
+    page_title = "Create Blood Pressure"
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -114,7 +113,6 @@ def bodyweight_list(request):
     q = request.GET.get("q", "").strip()
     qs = BodyWeight.objects.select_related("subject").order_by("-created")
 
-    # Non-staff see only their own records
     if not request.user.is_staff:
         qs = qs.filter(subject=request.user)
 
@@ -147,7 +145,6 @@ def bodyweight_create(request):
     if request.method == "POST":
         form = BodyWeightForm(request.POST)
         if not request.user.is_staff:
-            # enforce subject = current user
             form.data = form.data.copy()
             form.data["subject"] = str(request.user.pk)
 
@@ -177,7 +174,6 @@ def bodyweight_update(request, pk):
     if request.method == "POST":
         form = BodyWeightForm(request.POST, instance=obj)
         if not request.user.is_staff:
-            # Lock subject to the owner
             form.data = form.data.copy()
             form.data["subject"] = str(request.user.pk)
 
