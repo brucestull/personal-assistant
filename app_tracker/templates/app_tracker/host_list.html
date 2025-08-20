@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Hosts</h1>
+  <a href="{% url 'app_tracker:host_create' %}">➕ Create New Host</a>
+  <ul>
+    {% for host in object_list %}
+      <li>
+        <a href="{% url 'app_tracker:host_detail' host.pk %}">
+          {{ host.host_name }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No Hosts found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

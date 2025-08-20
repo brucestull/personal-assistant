@@ -8,7 +8,7 @@
   <p><strong>Notes:</strong> {{ object.notes }}</p>
 
   {% if object.applications %}
-    <h2>Applications on this Server:</h2>
+    <h2>Applications on this Host:</h2>
     <ul>
       {% for app in object.applications.all %}
         <li>
@@ -18,16 +18,16 @@
             <a href="{% url 'app_tracker:project_detail' project.pk %}">{{ project.name }}</a>
           {% endfor %}
       {% empty %}
-        <li>No applications found on this server.</li>
+        <li>No applications found on this host.</li>
       {% endfor %}
     </ul>
   {% else %}
-    <p>No applications are currently associated with this server.</p>
+    <p>No applications are currently associated with this host.</p>
   {% endif %}
 
   <p>
-    <a href="{% url 'app_tracker:server_update' object.pk %}">✏️ Edit</a> |
-    <a href="{% url 'app_tracker:server_delete' object.pk %}">❌ Delete</a> |
-    <a href="{% url 'app_tracker:server_list' %}">⬅️ Back to list</a>
+    <a href="{% url 'app_tracker:host_update' object.pk %}">✏️ Edit</a> |
+    <a href="{% url 'app_tracker:host_delete' object.pk %}">❌ Delete</a> |
+    <a href="{% url 'app_tracker:host_list' %}">⬅️ Back to list</a>
   </p>
 {% endblock %}

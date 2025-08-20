@@ -20,7 +20,7 @@ from app_tracker.models import (  # noqa: E402
     OperatingSystem,
     OrganizationalConcept,
     Project,
-    Server,
+    Host,
 )
 
 User = get_user_model()
@@ -68,26 +68,26 @@ class ModelTestCase(TestCase):
         )
         self.assertEqual(str(note2), "Note2 - AppNote")
 
-    def test_server_str_and_fields(self):
+    def test_host_str_and_fields(self):
         os_obj = OperatingSystem.objects.create(name="CentOS 8")
-        server = Server.objects.create(
+        host = Host.objects.create(
             operating_system=os_obj,
-            host_name="SERVER1",
+            host_name="HOST1",
             form_factor="Pi4",
             ip_address="192.168.1.10",
             environment="production",
             notes="Specs",
         )
-        self.assertEqual(str(server), "SERVER1 (192.168.1.10)")
+        self.assertEqual(str(host), "HOST1 (192.168.1.10)")
 
-        server_no_ip = Server.objects.create(
-            name="Server 2", host_name="SERVER2", form_factor="Pi4"
+        host_no_ip = Host.objects.create(
+            name="Host 2", host_name="HOST2", form_factor="Pi4"
         )
-        self.assertEqual(str(server_no_ip), "SERVER2 (no IP)")
+        self.assertEqual(str(host_no_ip), "HOST2 (no IP)")
 
-        app_for_server = Application.objects.create(name="AppServer")
-        server.applications.add(app_for_server)
-        self.assertIn(app_for_server, server.applications.all())
+        app_for_host = Application.objects.create(name="AppHost")
+        host.applications.add(app_for_host)
+        self.assertIn(app_for_host, host.applications.all())
 
     def test_project_str_and_owner_m2m(self):
         project = Project.objects.create(name="Proj1", description="ProjDesc")
@@ -155,14 +155,14 @@ class ViewTestCase(TestCase):
             title="TestNote", content="C", application=self.app_obj
         )
 
-        self.server_obj = Server.objects.create(
+        self.host_obj = Host.objects.create(
             operating_system=self.os_obj,
-            host_name="TestServer",
+            host_name="TestHost",
             form_factor="Pi4",
             ip_address="10.0.0.1",
             environment="test",
         )
-        self.server_obj.applications.add(self.app_obj)
+        self.host_obj.applications.add(self.app_obj)
 
         self.project_obj = Project.objects.create(name="TestProj", description="Desc")
         self.project_obj.owner.add(self.user)
@@ -206,8 +206,8 @@ class ViewTestCase(TestCase):
         resp = self.client.post(reverse(create_name), create_data)
         self.assertEqual(resp.status_code, 302)
 
-        # Skip the Update test for Server, since its form doesn't redirect on update
-        if url_prefix == "server":
+        # Skip the Update test for Host, since its form doesn't redirect on update
+        if url_prefix == "host":
             return
 
         # ——— POST Update ———
@@ -310,14 +310,14 @@ class ViewTestCase(TestCase):
             {"name": "CreatedProj", "description": "Desc", "owner": [self.user.pk]},
         )
 
-    def test_server_crud(self):
+    def test_host_crud(self):
         self.client.force_login(self.user)
         self._test_crud_views_for_model(
-            Server,
-            self.server_obj,
-            "server",
+            Host,
+            self.host_obj,
+            "host",
             {
-                "name": "Created Server",
+                "name": "Created Host",
                 "host_name": "CREATED-HOST",
                 "operating_system": self.os_obj.pk,
                 "form_factor": "PiZero",
@@ -352,10 +352,8 @@ class URLTests(TestCase):
         self.assertTrue(
             reverse("app_tracker:project_create").endswith("/projects/create/")
         )
-        self.assertTrue(reverse("app_tracker:server_list").endswith("/servers/"))
-        self.assertTrue(
-            reverse("app_tracker:server_create").endswith("/servers/create/")
-        )
+        self.assertTrue(reverse("app_tracker:host_list").endswith("/hosts/"))
+        self.assertTrue(reverse("app_tracker:host_create").endswith("/hosts/create/"))
 
     def test_reverse_detail_update_delete_urls(self):
         pk = 42
@@ -468,17 +466,17 @@ class URLTests(TestCase):
         )
 
         self.assertTrue(
-            reverse("app_tracker:server_detail", kwargs={"pk": pk}).endswith(
-                f"/servers/{pk}/"
+            reverse("app_tracker:host_detail", kwargs={"pk": pk}).endswith(
+                f"/hosts/{pk}/"
             )
         )
         self.assertTrue(
-            reverse("app_tracker:server_update", kwargs={"pk": pk}).endswith(
-                f"/servers/{pk}/update/"
+            reverse("app_tracker:host_update", kwargs={"pk": pk}).endswith(
+                f"/hosts/{pk}/update/"
             )
         )
         self.assertTrue(
-            reverse("app_tracker:server_delete", kwargs={"pk": pk}).endswith(
-                f"/servers/{pk}/delete/"
+            reverse("app_tracker:host_delete", kwargs={"pk": pk}).endswith(
+                f"/hosts/{pk}/delete/"
             )
         )
