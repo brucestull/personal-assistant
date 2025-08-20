@@ -12,7 +12,7 @@ from app_tracker.models import (
     OrganizationalConcept,
     Project,
     OperatingSystem,
-    Server,
+    Host,
 )
 
 
@@ -496,8 +496,8 @@ class OperatingSystemAdmin(admin.ModelAdmin):
     ordering = ["name"]
 
 
-@admin.register(Server)
-class ServerAdmin(admin.ModelAdmin):
+@admin.register(Host)
+class HostAdmin(admin.ModelAdmin):
     list_display = [
         "host_name",
         "name",

@@ -18,7 +18,7 @@ from app_tracker.models import (
     OperatingSystem,
     OrganizationalConcept,
     Project,
-    Server,
+    Host,
 )
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
@@ -235,27 +235,27 @@ class ProjectDeleteView(RegistrationAcceptedMixin, DeleteView):
     success_url = reverse_lazy("app_tracker:project_list")
 
 
-# Server views
-class ServerListView(RegistrationAcceptedMixin, ListView):
-    model = Server
+# Host views
+class HostListView(RegistrationAcceptedMixin, ListView):
+    model = Host
 
 
-class ServerDetailView(RegistrationAcceptedMixin, DetailView):
-    model = Server
+class HostDetailView(RegistrationAcceptedMixin, DetailView):
+    model = Host
 
 
-class ServerCreateView(RegistrationAcceptedMixin, CreateView):
-    model = Server
+class HostCreateView(RegistrationAcceptedMixin, CreateView):
+    model = Host
     fields = "__all__"
-    success_url = reverse_lazy("app_tracker:server_list")
+    success_url = reverse_lazy("app_tracker:host_list")
 
 
-class ServerUpdateView(RegistrationAcceptedMixin, UpdateView):
-    model = Server
+class HostUpdateView(RegistrationAcceptedMixin, UpdateView):
+    model = Host
     fields = "__all__"
-    success_url = reverse_lazy("app_tracker:server_list")
+    success_url = reverse_lazy("app_tracker:host_list")
 
 
-class ServerDeleteView(RegistrationAcceptedMixin, DeleteView):
-    model = Server
-    success_url = reverse_lazy("app_tracker:server_list")
+class HostDeleteView(RegistrationAcceptedMixin, DeleteView):
+    model = Host
+    success_url = reverse_lazy("app_tracker:host_list")

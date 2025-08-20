@@ -9,7 +9,7 @@ from config.settings import AUTH_USER_MODEL
 
 class OperatingSystem(models.Model):
     """
-    Represents a known server operating system (e.g., Ubuntu Server 22.04).
+    Represents a known host operating system (e.g., Ubuntu Server 22.04).
     """
 
     name = models.CharField(
@@ -194,9 +194,9 @@ class Note(CreatedUpdatedBase):
         return f"{self.title} - {self.application.name if self.application else 'No Application'}"  # noqa: E501
 
 
-class Server(CreatedUpdatedBase):
+class Host(CreatedUpdatedBase):
     """
-    Represents a physical or virtual server where applications are hosted.
+    Represents a physical or virtual host where applications are hosted.
     """
 
     FORM_FACTOR_CHOICES = [
@@ -214,11 +214,11 @@ class Server(CreatedUpdatedBase):
         null=True,
         blank=True,
         verbose_name="Operating System",
-        help_text="The OS running on this server.",
+        help_text="The OS running on this host.",
     )
     host_name = models.CharField(
         verbose_name="Host Name",
-        help_text="A unique host name for the server.",
+        help_text="A unique host name for the host.",
         max_length=100,
         unique=True,
         null=True,
@@ -243,14 +243,14 @@ class Server(CreatedUpdatedBase):
 
     ip_address = models.GenericIPAddressField(
         verbose_name="IP Address",
-        help_text="The IP address of the server.",
+        help_text="The IP address of the host.",
         protocol="both",
         null=True,
         blank=True,
     )
     environment = models.CharField(
         verbose_name="Environment",
-        help_text="The environment this server belongs to (e.g., production, staging, test).",  # noqa: E501
+        help_text="The environment this host belongs to (e.g., production, staging, test).",  # noqa: E501
         max_length=50,
         choices=[
             ("production", "Production"),
@@ -263,15 +263,15 @@ class Server(CreatedUpdatedBase):
     )
     notes = models.TextField(
         verbose_name="Notes",
-        help_text="Optional notes about the server (e.g., hardware specs, roles, etc.).",  # noqa: E501
+        help_text="Optional notes about the host (e.g., hardware specs, roles, etc.).",  # noqa: E501
         blank=True,
         null=True,
     )
     applications = models.ManyToManyField(
         "Application",
         verbose_name="Applications",
-        help_text="Applications hosted on this server.",
-        related_name="servers",
+        help_text="Applications hosted on this host.",
+        related_name="hosts",
         blank=True,
     )
 
@@ -279,8 +279,8 @@ class Server(CreatedUpdatedBase):
         return f"{self.host_name} ({self.ip_address or 'no IP'})"
 
     class Meta:
-        verbose_name = "Server"
-        verbose_name_plural = "Servers"
+        verbose_name = "Host"
+        verbose_name_plural = "Hosts"
         ordering = ["host_name"]
 
 
