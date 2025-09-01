@@ -17,10 +17,23 @@
         <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm" />
       </div>
 
+      <!-- Audio Test Controls -->
+      <div class="audio-test" style="margin:.75rem 0;">
+        <label for="test-sound-select" style="margin-right:.5rem;">Test sound:</label>
+        <select id="test-sound-select" aria-label="Choose which sound to test">
+          <option value="alarm" selected>Alarm</option>
+          <option value="warning">Warning</option>
+          <option value="beep">Simple Beep</option>
+        </select>
+        <button id="test-audio-button" aria-label="Play test sound" style="margin-left:.5rem;">Test Audio</button>
+        <div id="audio-test-status" aria-live="polite" style="font-size:.9em;opacity:.75;margin-top:.25rem;"></div>
+      </div>
+
       <div class="timer-display">
         <div id="remaining-display">25:00</div>
         <div id="elapsed-display">00:00</div>
       </div>
+
       <button id="start-button" aria-label="Start Timer">Sturt</button>
       <!-- pause & continue live together -->
       <button id="pause-button" aria-label="Pause Timer" disabled>Paws</button>
