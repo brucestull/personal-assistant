@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const warningSound  = document.getElementById('warning-sound');
   const alarmSound    = document.getElementById('alarm-sound');
 
+  // NEW: time/apply & stop controls
+  const applyBtn      = document.getElementById('apply-time-button');
+  const stopBtn       = document.getElementById('stop-button');
+
   // NEW: Audio test controls
   const testBtn       = document.getElementById('test-audio-button');
   const testSelect    = document.getElementById('test-sound-select');
@@ -31,11 +35,44 @@ document.addEventListener('DOMContentLoaded', () => {
     elapsedDisp.textContent   = `${pad(Math.floor(elapsed/60))}:${pad(elapsed%60)}`;
   }
 
+  // NEW: small UI state helpers
+  function enterRunningState() {
+    startBtn.disabled         = true;
+    startBtn.textContent      = 'Sturt';
+    pauseBtn.disabled         = false;
+    pauseBtn.style.display    = 'inline-block';
+    continueBtn.style.display = 'none';
+    cancelBtn.style.display   = 'none';
+    stopBtn.disabled          = false;
+  }
+  function enterIdleState() {
+    startBtn.disabled         = false;
+    startBtn.textContent      = 'Sturt';
+    pauseBtn.disabled         = true;
+    pauseBtn.style.display    = 'inline-block';
+    continueBtn.style.display = 'none';
+    cancelBtn.style.display   = 'none';
+    stopBtn.disabled          = true;
+  }
+
+  function lockInDurationFromInput() {
+    const mins = parseInt(durationInput.value, 10);
+    originalDuration = (isNaN(mins) || mins < 1 ? 1 : mins) * 60;
+    duration  = originalDuration;
+    warningAt = originalDuration > 5*60 ? originalDuration - 5*60 : -1;
+  }
+
+  function stopInterval() {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  }
+
   function tick() {
     elapsed++;
     updateDisplay();
     if (warningAt > 0 && elapsed === warningAt) {
-      // reset position and play warning once
       try {
         warningSound.currentTime = 0;
         warningSound.play();
@@ -45,8 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (elapsed >= duration) {
-      clearInterval(intervalId);
-      intervalId = null;
+      stopInterval();
       try {
         alarmSound.currentTime = 0;
         alarmSound.play();
@@ -54,13 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Alarm sound failed:', e);
       }
 
-      // show reset opportunity
       cancelBtn.style.display   = 'inline-block';
       pauseBtn.disabled         = true;
       continueBtn.style.display = 'none';
 
       startBtn.disabled   = false;
       startBtn.textContent = 'ReSturt';
+      stopBtn.disabled     = true;
     }
   }
 
@@ -69,70 +105,109 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!isRestart) {
       // fresh start → stamp in originalDuration from the input
-      const mins = parseInt(durationInput.value, 10);
-      originalDuration = (isNaN(mins) || mins < 1 ? 1 : mins) * 60;
+      lockInDurationFromInput();
+    } else {
+      // restart uses last applied `originalDuration`
+      duration  = originalDuration;
+      warningAt = originalDuration > 5*60 ? originalDuration - 5*60 : -1;
     }
 
-    // set runtime & warning
-    duration  = originalDuration;
-    warningAt = originalDuration > 5*60 ? originalDuration - 5*60 : -1;
-
-    // reset and kick off
     elapsed = 0;
     updateDisplay();
-    startBtn.disabled         = true;
-    startBtn.textContent      = 'Sturt';  // revert label
-    pauseBtn.disabled         = false;
-    pauseBtn.style.display    = 'inline-block';
-    continueBtn.style.display = 'none';
-    cancelBtn.style.display   = 'none';
-    alarmSound.pause();
-    alarmSound.currentTime    = 0;
 
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+
+    enterRunningState();
+    stopInterval();
     intervalId = setInterval(tick, 1000);
   });
 
   pauseBtn.addEventListener('click', () => {
     if (!intervalId) return;
-    clearInterval(intervalId);
-    intervalId = null;
+    stopInterval();
 
     // hide pause, show continue, and activate restart
     pauseBtn.style.display    = 'none';
     continueBtn.style.display = 'inline-block';
     startBtn.disabled         = false;
     startBtn.textContent      = 'ReSturt';
+    stopBtn.disabled          = false; // still allow hard stop while paused
   });
 
   continueBtn.addEventListener('click', () => {
     if (intervalId) return;
     intervalId = setInterval(tick, 1000);
 
-    // swap back to running state
     continueBtn.style.display = 'none';
     pauseBtn.style.display    = 'inline-block';
     startBtn.disabled         = true;
     startBtn.textContent      = 'Sturt';
+    stopBtn.disabled          = false;
   });
 
   cancelBtn.addEventListener('click', () => {
-    clearInterval(intervalId);
-    intervalId = null;
+    stopInterval();
     alarmSound.pause();
-    alarmSound.currentTime    = 0;
+    alarmSound.currentTime = 0;
 
-    // full reset
     elapsed = 0;
+    duration = originalDuration;
     updateDisplay();
-    startBtn.disabled         = false;
-    startBtn.textContent      = 'Sturt';
-    pauseBtn.disabled         = true;
-    pauseBtn.style.display    = 'inline-block';
-    continueBtn.style.display = 'none';
-    cancelBtn.style.display   = 'none';
+    enterIdleState();
   });
 
-  // —— NEW: Audio Test Helpers ——
+  // —— NEW: Apply time (Enter key also applies) —— //
+  if (applyBtn) {
+    applyBtn.addEventListener('click', () => {
+      const wasRunning = !!intervalId;
+
+      // stop current countdown/alarm
+      stopInterval();
+      alarmSound.pause();
+      alarmSound.currentTime = 0;
+
+      // lock in new time and reset to 00:00 of that time
+      lockInDurationFromInput();
+      elapsed = 0;
+      updateDisplay();
+
+      if (wasRunning) {
+        // auto-restart with the new length
+        enterRunningState();
+        intervalId = setInterval(tick, 1000);
+      } else {
+        // leave idle; user can press Start
+        enterIdleState();
+      }
+    });
+  }
+
+  if (durationInput) {
+    durationInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyBtn?.click();
+      }
+    });
+  }
+
+  // —— NEW: Stop Now —— //
+  if (stopBtn) {
+    stopBtn.addEventListener('click', () => {
+      // stop everything and reset to last applied duration
+      stopInterval();
+      alarmSound.pause();
+      alarmSound.currentTime = 0;
+
+      elapsed  = 0;
+      duration = originalDuration;
+      updateDisplay();
+      enterIdleState();
+    });
+  }
+
+  // —— Audio Test Helpers (unchanged logic) —— //
   function setTestStatus(msg) {
     if (testStatus) testStatus.textContent = msg || '';
   }
@@ -141,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalVolume = el.volume;
     const originalLoop   = el.loop;
     try {
-      el.loop = false;          // ensure we don't keep looping during the short test
+      el.loop = false;
       el.currentTime = 0;
       el.volume = volume;
       await el.play();
@@ -155,7 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function playBeep(freq = 880, durationMs = 450, type = 'sine') {
-    // Create (or reuse) a single AudioContext—button click counts as a user gesture
     if (!audioCtx) {
       const Ctx = window.AudioContext || window.webkitAudioContext;
       audioCtx = new Ctx();
@@ -175,12 +249,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const now = audioCtx.currentTime;
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.5, now + 0.02); // quick fade-in
+    gain.gain.exponentialRampToValueAtTime(0.5, now + 0.02);
 
     osc.start(now);
 
     const endTime = now + durationMs / 1000;
-    gain.gain.exponentialRampToValueAtTime(0.0001, endTime); // fade-out
+    gain.gain.exponentialRampToValueAtTime(0.0001, endTime);
     osc.stop(endTime + 0.05);
 
     return new Promise((resolve) => {
@@ -188,12 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // —— NEW: Test button wiring ——
   if (testBtn && testSelect) {
     testBtn.addEventListener('click', async () => {
-      // If timer alarm is blaring, pause it so test is audible
       try { alarmSound.pause(); } catch (_) {}
-
       const choice = testSelect.value;
       try {
         if (choice === 'beep') {
@@ -207,7 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
           setTestStatus('Test complete.');
         }
       } catch (err) {
-        // Fallback to generated beep if file playback fails
         try {
           setTestStatus('Sound file failed—playing simple beep fallback…');
           await playBeep(880, 450, 'sine');
@@ -222,4 +292,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // initialize
   updateDisplay();
+  enterIdleState();
 });

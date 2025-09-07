@@ -12,9 +12,16 @@
     <div class="timer-container">
       <h1>Pomodoro Timer</h1>
 
-      <div class="settings">
+      <div class="settings" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;">
         <label for="duration-input">Set timer (minutes):</label>
         <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm" />
+        <!-- NEW controls -->
+        <button id="apply-time-button" aria-label="Apply minutes from the input (and restart if running)">
+          Set This Time
+        </button>
+        <button id="stop-button" aria-label="Stop the current timer" disabled>
+          Stop Now
+        </button>
       </div>
 
       <!-- Audio Test Controls -->
