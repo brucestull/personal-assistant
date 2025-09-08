@@ -1,63 +1,65 @@
+{% extends "base.html" %}
 {% load static %}
-{% comment %}pomodo/templates/pomodo/timer.html{% endcomment %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Pomodoro Timer</title>
-    <link rel="stylesheet" href="{% static 'pomodo/css/timer.css' %}" />
-  </head>
 
-  <body>
-    <div class="timer-container">
-      <h1>Pomodoro Timer</h1>
+{% block title %}Pomodoro Timer{% endblock %}
 
-      <div class="settings" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;">
-        <label for="duration-input">Set timer (minutes):</label>
-        <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm" />
+{% block content %}
+  {# Import component CSS since base.html doesn't expose an extra_head block #}
+  <style>@import url("{% static 'pomodo/css/timer.css' %}");</style>
+
+  <div class="py-3">
+    <div class="timer-container card p-3 shadow-sm">
+      <h1 class="h3 mb-3">Pomodoro Timer</h1>
+
+      <div class="settings d-flex flex-wrap align-items-center gap-2 mb-2" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;">
+        <label for="duration-input" class="me-1">Set timer (minutes):</label>
+        <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm" class="form-control" style="width:7rem;" />
         <!-- NEW controls -->
-        <button id="apply-time-button" aria-label="Apply minutes from the input (and restart if running)">
+        <button id="apply-time-button" class="btn btn-primary btn-sm" aria-label="Apply minutes from the input (and restart if running)">
           Set This Time
         </button>
-        <button id="stop-button" aria-label="Stop the current timer" disabled>
+        <button id="stop-button" class="btn btn-outline-danger btn-sm" aria-label="Stop the current timer" disabled>
           Stop Now
         </button>
       </div>
 
       <!-- Audio Test Controls -->
-      <div class="audio-test" style="margin:.75rem 0;">
-        <label for="test-sound-select" style="margin-right:.5rem;">Test sound:</label>
-        <select id="test-sound-select" aria-label="Choose which sound to test">
+      <div class="audio-test mb-2" style="margin:.75rem 0;">
+        <label for="test-sound-select" class="me-2">Test sound:</label>
+        <select id="test-sound-select" class="form-select form-select-sm" style="width:auto;display:inline-block;" aria-label="Choose which sound to test">
           <option value="alarm" selected>Alarm</option>
           <option value="warning">Warning</option>
           <option value="beep">Simple Beep</option>
         </select>
-        <button id="test-audio-button" aria-label="Play test sound" style="margin-left:.5rem;">Test Audio</button>
-        <div id="audio-test-status" aria-live="polite" style="font-size:.9em;opacity:.75;margin-top:.25rem;"></div>
+        <button id="test-audio-button" class="btn btn-secondary btn-sm ms-2" aria-label="Play test sound">Test Audio</button>
+        <div id="audio-test-status" aria-live="polite" class="mt-1" style="font-size:.9em;opacity:.75;"></div>
       </div>
 
-      <div class="timer-display">
+      <div class="timer-display mb-3">
         <div id="remaining-display">25:00</div>
         <div id="elapsed-display">00:00</div>
       </div>
 
-      <button id="start-button" aria-label="Start Timer">Sturt</button>
-      <!-- pause & continue live together -->
-      <button id="pause-button" aria-label="Pause Timer" disabled>Paws</button>
-      <button id="continue-button" aria-label="Continue Timer" style="display:none;">Can't Tinue</button>
-
-      <button id="cancel-button" aria-label="Turn off timer" style="display:none;">Okay… I'm done!</button>
+      <div class="d-flex flex-wrap gap-2">
+        <button id="start-button" class="btn btn-success" aria-label="Start Timer">Sturt</button>
+        <!-- pause & continue live together -->
+        <button id="pause-button" class="btn btn-warning" aria-label="Pause Timer" disabled>Paws</button>
+        <button id="continue-button" class="btn btn-info" aria-label="Continue Timer" style="display:none;">Can't Tinue</button>
+        <button id="cancel-button" class="btn btn-outline-secondary" aria-label="Turn off timer" style="display:none;">Okay… I'm done!</button>
+      </div>
     </div>
+  </div>
 
-    <audio id="warning-sound" preload="auto">
-      <source src="{% static 'pomodo/audio/warning_louderer.m4a' %}" type="audio/m4a" />
-      <source src="{% static 'pomodo/audio/warning_louderer.mp3' %}" type="audio/mpeg" />Your browser does not support HTML5 audio.
-    </audio>
-    <audio id="alarm-sound" preload="auto" loop>
-      <source src="{% static 'pomodo/audio/alarm_louderer.m4a' %}" type="audio/m4a" />
-      <source src="{% static 'pomodo/audio/alarm_louderer.mp3' %}" type="audio/mpeg" />Your browser does not support HTML5 audio.
-    </audio>
+  <audio id="warning-sound" preload="auto">
+    <source src="{% static 'pomodo/audio/warning_louderer.m4a' %}" type="audio/m4a" />
+    <source src="{% static 'pomodo/audio/warning_louderer.mp3' %}" type="audio/mpeg" />
+    Your browser does not support HTML5 audio.
+  </audio>
+  <audio id="alarm-sound" preload="auto" loop>
+    <source src="{% static 'pomodo/audio/alarm_louderer.m4a' %}" type="audio/m4a" />
+    <source src="{% static 'pomodo/audio/alarm_louderer.mp3' %}" type="audio/mpeg" />
+    Your browser does not support HTML5 audio.
+  </audio>
 
-    <script src="{% static 'pomodo/js/timer.js' %}"></script>
-  </body>
-</html>
+  <script src="{% static 'pomodo/js/timer.js' %}"></script>
+{% endblock %}
