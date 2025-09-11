@@ -11,6 +11,38 @@
     <div class="timer-container card p-3 shadow-sm">
       <h1 class="h3 mb-3">Pomodoro Timer</h1>
 
+      <!-- === NEW: Activity banner & input === -->
+      <div class="mb-3">
+        <!-- Big live activity text -->
+        <div id="activity-current"
+             class="text-center fw-semibold"
+             style="font-size: clamp(1.5rem, 3.5vw, 2.5rem); line-height:1.2; word-break: break-word;"
+             aria-live="polite">
+          <!-- set dynamically; shows placeholder if empty -->
+        </div>
+
+        <!-- Editor row -->
+        <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+          <label for="activity-input" class="form-label m-0 me-1">Activity:</label>
+          <input id="activity-input"
+                 type="text"
+                 class="form-control"
+                 style="max-width: 32rem;"
+                 placeholder="What are you working on right now?" />
+          <button id="activity-set-btn"
+                  class="btn btn-dark"
+                  aria-label="Set the current activity (Enter also works)">
+            Set Activity
+          </button>
+        </div>
+
+        <!-- Optional helper line -->
+        <div class="text-muted mt-1" style="font-size:.9rem;">
+          Tip: Press <kbd>Enter</kbd> to set. Keep it short (e.g., “Refactor Django view”, “Sort bedroom bin A”).
+        </div>
+      </div>
+      <!-- === /NEW === -->
+
       <div class="settings d-flex flex-wrap align-items-center gap-2 mb-2" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;">
         <label for="duration-input" class="me-1">Set timer (minutes):</label>
         <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm" class="form-control" style="width:7rem;" />
@@ -31,7 +63,7 @@
           <option value="warning">Warning</option>
           <option value="beep">Simple Beep</option>
         </select>
-        <button id="test-audio-button" class="btn btn-secondary btn-sm ms-2" aria-label="Play test sound">Test Audio</button>
+        <button id="test-audio-button" class="btn btn-secondary btn-sm" aria-label="Play test sound">Test Audio</button>
         <div id="audio-test-status" aria-live="polite" class="mt-1" style="font-size:.9em;opacity:.75;"></div>
       </div>
 
