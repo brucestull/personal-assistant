@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // ===== Element refs =====
   const startBtn      = document.getElementById('start-button');
   const pauseBtn      = document.getElementById('pause-button');
   const continueBtn   = document.getElementById('continue-button');
@@ -9,24 +10,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const warningSound  = document.getElementById('warning-sound');
   const alarmSound    = document.getElementById('alarm-sound');
 
-  // NEW: time/apply & stop controls
+  // Time/apply & stop
   const applyBtn      = document.getElementById('apply-time-button');
   const stopBtn       = document.getElementById('stop-button');
 
-  // NEW: Audio test controls
+  // Audio test controls
   const testBtn       = document.getElementById('test-audio-button');
   const testSelect    = document.getElementById('test-sound-select');
   const testStatus    = document.getElementById('audio-test-status');
 
+  // === NEW: Activity elements ===
+  const activityCurrent = document.getElementById('activity-current');
+  const activityInput   = document.getElementById('activity-input');
+  const activityBtn     = document.getElementById('activity-set-btn');
+
+  // ===== State =====
   let elapsed          = 0;
   let intervalId       = null;
   let duration         = 25 * 60;
   let warningAt        = duration - 5 * 60;
   let originalDuration = duration;  // store the “locked-in” run length
 
-  // NEW: web audio context (lazy)
+  // Web audio context (lazy)
   let audioCtx = null;
 
+  // ===== Helpers =====
   function pad(n) { return String(n).padStart(2, '0'); }
 
   function updateDisplay() {
@@ -35,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     elapsedDisp.textContent   = `${pad(Math.floor(elapsed/60))}:${pad(elapsed%60)}`;
   }
 
-  // NEW: small UI state helpers
   function enterRunningState() {
     startBtn.disabled         = true;
     startBtn.textContent      = 'Sturt';
@@ -45,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelBtn.style.display   = 'none';
     stopBtn.disabled          = false;
   }
+
   function enterIdleState() {
     startBtn.disabled         = false;
     startBtn.textContent      = 'Sturt';
@@ -72,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function tick() {
     elapsed++;
     updateDisplay();
+
     if (warningAt > 0 && elapsed === warningAt) {
       try {
         warningSound.currentTime = 0;
@@ -100,6 +109,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // ===== Activity banner logic =====
+  const ACTIVITY_KEY = 'pomodo.activity';
+
+  function normalizeActivity(s) {
+    return (s || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function renderActivity(text) {
+    const clean = normalizeActivity(text);
+    activityCurrent.textContent = clean || '— No activity set —';
+    // Optional: mirror in tab title (keeps base title intact)
+    const base = 'Pomodoro Timer';
+    document.title = clean ? `${clean} · ${base}` : base;
+  }
+
+  function setActivityFromInput() {
+    const value = normalizeActivity(activityInput.value);
+    try { localStorage.setItem(ACTIVITY_KEY, value); } catch (_) {}
+    renderActivity(value);
+  }
+
+  if (activityBtn) {
+    activityBtn.addEventListener('click', setActivityFromInput);
+  }
+  if (activityInput) {
+    activityInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        setActivityFromInput();
+      }
+    });
+  }
+
+  // ===== Controls =====
   startBtn.addEventListener('click', () => {
     const isRestart = startBtn.textContent === 'ReSturt';
 
@@ -157,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     enterIdleState();
   });
 
-  // —— NEW: Apply time (Enter key also applies) —— //
+  // Apply time (button & Enter on input)
   if (applyBtn) {
     applyBtn.addEventListener('click', () => {
       const wasRunning = !!intervalId;
@@ -192,10 +235,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // —— NEW: Stop Now —— //
+  // Stop Now
   if (stopBtn) {
     stopBtn.addEventListener('click', () => {
-      // stop everything and reset to last applied duration
       stopInterval();
       alarmSound.pause();
       alarmSound.currentTime = 0;
@@ -207,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // —— Audio Test Helpers (unchanged logic) —— //
+  // ===== Audio Test Helpers =====
   function setTestStatus(msg) {
     if (testStatus) testStatus.textContent = msg || '';
   }
@@ -290,7 +332,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // initialize
+  // ===== Initialize =====
+  // Timer
   updateDisplay();
   enterIdleState();
+
+  // Activity
+  try {
+    const saved = localStorage.getItem(ACTIVITY_KEY) || '';
+    if (activityInput) activityInput.value = saved;
+    renderActivity(saved);
+  } catch (_) {
+    renderActivity('');
+  }
 });
