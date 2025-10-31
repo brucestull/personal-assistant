@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <a class="btn btn-outline-secondary" href="{% url 'vitals:bloodpressure-list' %}">Back to List</a>
+  </div>
+
+  {% if user.registration_accepted == False %}
+    <div class="alert alert-warning" role="alert">
+      Your registration has not been accepted yet. Please check back later.
+    </div>
+  {% endif %}
+
+  {% if user.registration_accepted %}
+    <form class="card card-body mb-3" method="get" id="bp-filter-form">
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-md-3">
+          <label for="id_period" class="form-label">Period</label>
+          <select name="period" id="id_period" class="form-select" onchange="handlePeriodChange()">
+            <option value="{{ PERIOD_WEEK }}"  {% if period_choice == PERIOD_WEEK %}selected{% endif %}>Week</option>
+            <option value="{{ PERIOD_MONTH }}" {% if period_choice == PERIOD_MONTH %}selected{% endif %}>Month</option>
+            <option value="{{ PERIOD_CUSTOM }}" {% if period_choice == PERIOD_CUSTOM %}selected{% endif %}>Custom</option>
+            <option value="{{ PERIOD_ALL }}" {% if period_choice == PERIOD_ALL %}selected{% endif %}>All Time</option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-3 period-field period-week">
+          <label class="form-label" for="id_week">Week</label>
+          <input class="form-control" type="week" name="week" id="id_week" value="{{ filter_form.data.week|default_if_none:'' }}">
+        </div>
+
+        <div class="col-12 col-md-3 period-field period-month">
+          <label class="form-label" for="id_month">Month</label>
+          <input class="form-control" type="month" name="month" id="id_month" value="{{ filter_form.data.month|default_if_none:'' }}">
+        </div>
+
+        <div class="col-12 col-md-3 period-field period-custom">
+          <label class="form-label" for="id_start">Start</label>
+          <input class="form-control" type="date" name="start" id="id_start" value="{{ filter_form.data.start|default_if_none:'' }}">
+        </div>
+
+        <div class="col-12 col-md-3 period-field period-custom">
+          <label class="form-label" for="id_end">End</label>
+          <input class="form-control" type="date" name="end" id="id_end" value="{{ filter_form.data.end|default_if_none:'' }}">
+        </div>
+
+        <div class="col-12 col-md-3">
+          <button type="submit" class="btn btn-primary w-100">Apply</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="mb-3">
+      <span class="badge bg-secondary">Period: {{ period_label }}</span>
+      {% if period_start and period_end %}
+        <span class="ms-2 text-muted">({{ period_start }} &rarr; {{ period_end }})</span>
+      {% endif %}
+    </div>
+
+    <!-- Summary cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Medians</h5>
+            <p class="card-text mb-0">
+              {{ bp_summary.systolic_median|default:"—" }} /
+              {{ bp_summary.diastolic_median|default:"—" }} mmHg
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Averages</h5>
+            <p class="card-text mb-0">
+              {{ bp_summary.systolic_average|floatformat:2|default:"—" }} /
+              {{ bp_summary.diastolic_average|floatformat:2|default:"—" }} mmHg
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Range</h5>
+            <p class="card-text mb-0">
+              {{ bp_summary.systolic_min|default:"—" }}–{{ bp_summary.systolic_max|default:"—" }}
+              /
+              {{ bp_summary.diastolic_min|default:"—" }}–{{ bp_summary.diastolic_max|default:"—" }} mmHg
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Samples</h5>
+            <p class="card-text mb-0">{{ bp_summary.count }}</p>
+            {% if latest_bp %}
+              <small class="text-muted">Latest: {{ latest_bp.created }}</small>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if bp_page_obj.object_list %}
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Systolic</th>
+              <th scope="col">Diastolic</th>
+              <th scope="col">Pulse</th>
+              <th scope="col">Recorded</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bp in bp_page_obj %}
+              <tr>
+                <td>{{ bp.systolic }}</td>
+                <td>{{ bp.diastolic }}</td>
+                <td>{{ bp.pulse }} bpm</td>
+                <td>{{ bp.created }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if bp_page_obj.paginator.num_pages > 1 %}
+        <nav aria-label="Blood pressures pagination">
+          <ul class="pagination">
+            {% if bp_page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ bp_page_obj.previous_page_number }}&{{ request.GET.urlencode|safe }}">‹ Prev</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">‹ Prev</span></li>
+            {% endif %}
+
+            <li class="page-item disabled"><span class="page-link">Page {{ bp_page_obj.number }} of {{ bp_page_obj.paginator.num_pages }}</span></li>
+
+            {% if bp_page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ bp_page_obj.next_page_number }}&{{ request.GET.urlencode|safe }}">Next ›</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">Next ›</span></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    {% else %}
+      <div class="alert alert-info">No blood pressure records for this period.</div>
+    {% endif %}
+  {% endif %}
+</div>
+
+<script>
+  function handlePeriodChange() {
+    const sel = document.getElementById('id_period').value;
+    document.querySelectorAll('.period-field').forEach(el => el.style.display = 'none');
+    if (sel === '{{ PERIOD_WEEK }}') {
+      document.querySelectorAll('.period-week').forEach(el => el.style.display = '');
+    } else if (sel === '{{ PERIOD_MONTH }}') {
+      document.querySelectorAll('.period-month').forEach(el => el.style.display = '');
+    } else if (sel === '{{ PERIOD_CUSTOM }}') {
+      document.querySelectorAll('.period-custom').forEach(el => el.style.display = '');
+    }
+  }
+  // initialize
+  handlePeriodChange();
+</script>
+{% endblock %}

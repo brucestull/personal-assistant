@@ -1,4 +1,5 @@
 # vitals/models.py
+from datetime import date, timedelta
 from statistics import median
 
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -12,6 +13,25 @@ from config.settings import AUTH_USER_MODEL
 class BloodPressureQuerySet(models.QuerySet):
     def for_user(self, user):
         return self.filter(user=user)
+
+    # NEW: filter by a closed date range [start, end]
+    def in_date_range(self, start: date, end: date):
+        # assumes CreatedUpdatedBase has a DateTimeField named `created`
+        return self.filter(created__date__gte=start, created__date__lte=end)
+
+    # helpers for month/week windows (delegates to in_date_range)
+    def for_month(self, year: int, month: int):
+        from calendar import monthrange
+
+        start = date(year, month, 1)
+        end = date(year, month, monthrange(year, month)[1])
+        return self.in_date_range(start, end)
+
+    def for_iso_week(self, iso_year: int, iso_week: int):
+        # Monday of ISO week
+        start = date.fromisocalendar(iso_year, iso_week, 1)
+        end = start + timedelta(days=6)
+        return self.in_date_range(start, end)
 
     def _aggregate_stats(self):
         # DB-side aggregates for min/max/avg
