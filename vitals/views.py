@@ -1,6 +1,6 @@
 # vitals/views.py
 
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 
 from django import forms
 from django.contrib import messages
