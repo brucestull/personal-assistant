@@ -1,3 +1,5 @@
+# vitals/urls.py
+
 from django.urls import path
 
 from vitals import views
@@ -19,6 +21,7 @@ urlpatterns = [
         views.BloodPressureCreateView.as_view(),
         name="bloodpressure-create",
     ),
+    path("bloodpressures/report/", views.BloodPressureReportView.as_view(), name="bloodpressure-report"),
     path("bodyweights/", views.bodyweight_list, name="bodyweight_list"),
     path("bodyweights/create/", views.bodyweight_create, name="bodyweight_create"),
     path("bodyweights/<int:pk>/", views.bodyweight_detail, name="bodyweight_detail"),

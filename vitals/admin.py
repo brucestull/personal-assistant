@@ -1,3 +1,5 @@
+# vitals/admin.py
+
 from django.contrib import admin
 
 from vitals.models import BloodPressure, BodyWeight, Pulse, Temperature
