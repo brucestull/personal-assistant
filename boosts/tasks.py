@@ -273,12 +273,19 @@ def send_daily_boost_and_note(
     subject = "Your Daily Boost and Note"
     body = "".join(body_parts)
 
+    if not DEFAULT_FROM_EMAIL:
+        logger.error(
+            "DEFAULT_FROM_EMAIL not configured; cannot send email",
+            extra={"user_id": user_id},
+        )
+        return
+
     try:
         _send_email(
             subject,
             body,
             [user.email],
-            from_email=DEFAULT_FROM_EMAIL or user.email,
+            from_email=DEFAULT_FROM_EMAIL,
         )
         logger.info(
             "Sent daily boost and note",

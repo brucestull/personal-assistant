@@ -6,6 +6,7 @@ from unittest import mock
 
 from celery.exceptions import Retry
 from django.core import mail
+from django.db.models import Max
 from django.test import TestCase, override_settings
 
 from accounts.models import CustomUser
@@ -139,8 +140,12 @@ class SendDailyBoostAndNoteTest(TestCase):
         """
         Test that the task handles a non-existent user gracefully.
         """
+        # Get a user ID that doesn't exist
+        max_id = CustomUser.objects.aggregate(Max("id"))["id__max"] or 0
+        non_existent_id = max_id + 1
+
         # Act
-        send_daily_boost_and_note.delay(99999)
+        send_daily_boost_and_note.delay(non_existent_id)
 
         # Assert - no email should be sent
         self.assertEqual(len(mail.outbox), 0)
@@ -220,4 +225,15 @@ class SendDailyBoostAndNoteTest(TestCase):
         with self.assertRaises(Retry):
             send_daily_boost_and_note.delay(self.user.id)
         # Nothing should have been left in the outbox because send failed.
+        self.assertEqual(len(mail.outbox), 0)
+
+    @mock.patch("boosts.tasks.DEFAULT_FROM_EMAIL", None)
+    def test_handles_missing_default_from_email(self):
+        """
+        Test that the task handles missing DEFAULT_FROM_EMAIL configuration.
+        """
+        # Act
+        send_daily_boost_and_note.delay(self.user.id)
+
+        # Assert - no email should be sent
         self.assertEqual(len(mail.outbox), 0)
