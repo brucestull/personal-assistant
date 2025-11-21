@@ -242,10 +242,10 @@ def send_daily_boost_and_note(
         return
 
     # Get a random Inspirational
-    inspirational = Inspirational.objects.order_by("?").first()
+    inspirational = Inspirational.objects.select_related("author").order_by("?").first()
 
     # Get a random UnimportantNote
-    unimportant_note = UnimportantNote.objects.order_by("?").first()
+    unimportant_note = UnimportantNote.objects.select_related("author").order_by("?").first()
 
     if not inspirational and not unimportant_note:
         logger.info(
