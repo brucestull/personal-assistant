@@ -8,7 +8,10 @@ from celery.exceptions import Retry
 from django.core import mail
 from django.test import TestCase, override_settings
 
-from boosts.tasks import send_inspirational_to_beastie
+from accounts.models import CustomUser
+from boosts.models import Inspirational
+from boosts.tasks import send_daily_boost_and_note, send_inspirational_to_beastie
+from unimportant_notes.models import UnimportantNote
 
 
 @override_settings(
@@ -83,4 +86,138 @@ class SendInspirationalToBeastieTest(TestCase):
                 self.message,
             )
         # Nothing should have been left in the outbox because the first send failed.
+        self.assertEqual(len(mail.outbox), 0)
+
+
+@override_settings(
+    CELERY_TASK_ALWAYS_EAGER=True,
+    CELERY_TASK_EAGER_PROPAGATES=True,
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    DEFAULT_FROM_EMAIL="no-reply@example.com",
+)
+class SendDailyBoostAndNoteTest(TestCase):
+    def setUp(self) -> None:
+        # Create test user
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            email="test@example.com",
+            password="testpass123",
+        )
+        # Create test inspirational
+        self.inspirational = Inspirational.objects.create(
+            body="Test inspirational message",
+            author=self.user,
+        )
+        # Create test unimportant note
+        self.unimportant_note = UnimportantNote.objects.create(
+            title="Test Note Title",
+            content="Test note content",
+            url="https://example.com",
+            author=self.user,
+        )
+
+    def test_sends_email_with_both_items(self):
+        """
+        Test that the task sends an email with both inspirational and note.
+        """
+        # Act
+        send_daily_boost_and_note.delay(self.user.id)
+
+        # Assert
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox[0]
+        self.assertEqual(email.subject, "Your Daily Boost and Note")
+        self.assertIn("Your Daily Inspirational Quote", email.body)
+        self.assertIn("Test inspirational message", email.body)
+        self.assertIn("Your Daily Unimportant Note", email.body)
+        self.assertIn("Test Note Title", email.body)
+        self.assertIn("Test note content", email.body)
+        self.assertIn("https://example.com", email.body)
+        self.assertEqual(email.to, [self.user.email])
+
+    def test_handles_missing_user(self):
+        """
+        Test that the task handles a non-existent user gracefully.
+        """
+        # Act
+        send_daily_boost_and_note.delay(99999)
+
+        # Assert - no email should be sent
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_handles_user_without_email(self):
+        """
+        Test that the task skips users without email addresses.
+        """
+        # Create user without email
+        user_no_email = CustomUser.objects.create_user(
+            username="noemail",
+            password="testpass123",
+        )
+
+        # Act
+        send_daily_boost_and_note.delay(user_no_email.id)
+
+        # Assert - no email should be sent
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_handles_missing_inspirational(self):
+        """
+        Test that the task sends note even if no inspirational exists.
+        """
+        # Delete all inspirationals
+        Inspirational.objects.all().delete()
+
+        # Act
+        send_daily_boost_and_note.delay(self.user.id)
+
+        # Assert
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox[0]
+        self.assertNotIn("Your Daily Inspirational Quote", email.body)
+        self.assertIn("Your Daily Unimportant Note", email.body)
+        self.assertIn("Test Note Title", email.body)
+
+    def test_handles_missing_unimportant_note(self):
+        """
+        Test that the task sends inspirational even if no note exists.
+        """
+        # Delete all unimportant notes
+        UnimportantNote.objects.all().delete()
+
+        # Act
+        send_daily_boost_and_note.delay(self.user.id)
+
+        # Assert
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox[0]
+        self.assertIn("Your Daily Inspirational Quote", email.body)
+        self.assertIn("Test inspirational message", email.body)
+        self.assertNotIn("Your Daily Unimportant Note", email.body)
+
+    def test_handles_no_content(self):
+        """
+        Test that the task handles when neither inspirational nor note exist.
+        """
+        # Delete all
+        Inspirational.objects.all().delete()
+        UnimportantNote.objects.all().delete()
+
+        # Act
+        send_daily_boost_and_note.delay(self.user.id)
+
+        # Assert - no email should be sent
+        self.assertEqual(len(mail.outbox), 0)
+
+    @mock.patch(
+        "boosts.tasks.EmailMultiAlternatives.send",
+        side_effect=smtplib.SMTPException("boom"),
+    )
+    def test_autoretry_on_smtp_errors(self, _mock_send):
+        """
+        If the underlying SMTP send fails, the task is configured to autoretry.
+        """
+        with self.assertRaises(Retry):
+            send_daily_boost_and_note.delay(self.user.id)
+        # Nothing should have been left in the outbox because send failed.
         self.assertEqual(len(mail.outbox), 0)

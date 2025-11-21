@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
 
 from .models import Inspirational
+from unimportant_notes.models import UnimportantNote
 
 logger = get_task_logger(__name__)
 
@@ -213,3 +214,86 @@ def send_test_email(self) -> None:
 @shared_task
 def log_to_console() -> None:
     logger.info("LOGGER: This is a test.")
+
+
+@shared_task(**RETRY_KW)
+def send_daily_boost_and_note(
+    self,
+    user_id: int,
+) -> None:
+    """
+    Send a random Inspirational and UnimportantNote to a user.
+
+    This task selects a random Inspirational and a random UnimportantNote
+    from the database and sends them to the specified user via email.
+    """
+    from accounts.models import CustomUser
+
+    try:
+        user = CustomUser.objects.get(pk=user_id)
+    except CustomUser.DoesNotExist:
+        logger.warning("User not found", extra={"user_id": user_id})
+        return
+
+    if not getattr(user, "email", None):
+        logger.warning(
+            "User has no email; skipping send", extra={"user_id": user_id}
+        )
+        return
+
+    # Get a random Inspirational
+    inspirational = Inspirational.objects.order_by("?").first()
+
+    # Get a random UnimportantNote
+    unimportant_note = UnimportantNote.objects.order_by("?").first()
+
+    if not inspirational and not unimportant_note:
+        logger.info(
+            "No inspirational or unimportant note found to send",
+            extra={"user_id": user_id},
+        )
+        return
+
+    # Build email body
+    body_parts = []
+
+    if inspirational:
+        body_parts.append("=== Your Daily Inspirational Quote ===\n")
+        body_parts.append(f"{inspirational.body}\n")
+        body_parts.append(f"- {inspirational.author.username}\n")
+
+    if unimportant_note:
+        body_parts.append("\n=== Your Daily Unimportant Note ===\n")
+        body_parts.append(f"Title: {unimportant_note.title}\n")
+        if unimportant_note.content:
+            body_parts.append(f"\n{unimportant_note.content}\n")
+        if unimportant_note.url:
+            body_parts.append(f"\nURL: {unimportant_note.url}\n")
+
+    subject = "Your Daily Boost and Note"
+    body = "".join(body_parts)
+
+    try:
+        _send_email(
+            subject,
+            body,
+            [user.email],
+            from_email=DEFAULT_FROM_EMAIL or user.email,
+        )
+        logger.info(
+            "Sent daily boost and note",
+            extra={
+                "user_id": user_id,
+                "inspirational_id": (
+                    inspirational.pk if inspirational else None
+                ),
+                "unimportant_note_id": (
+                    unimportant_note.pk if unimportant_note else None
+                ),
+            },
+        )
+    except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
+        logger.exception(
+            "SMTP error while sending daily boost and note — retrying"
+        )
+        raise self.retry(exc=exc)
