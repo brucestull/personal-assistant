@@ -1,15 +1,18 @@
 # boosts/tasks.py
+
 from __future__ import annotations
 
+import random
 import smtplib
 from typing import Iterable, Optional
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives, get_connection
 
-from .models import Inspirational
+from .models import Inspirational, InspirationalSent
 
 logger = get_task_logger(__name__)
 
@@ -81,6 +84,68 @@ RETRY_KW = dict(
 
 
 @shared_task(**RETRY_KW)
+def send_random_inspirational_email(self, user_id: int) -> dict:
+    """
+    Pick a random Inspirational authored by `user_id` and email it to that user.
+    Also records an InspirationalSent with sender=user and beastie=user.
+    """
+    User = get_user_model()
+
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        logger.warning("send_random_inspirational_email: user %s not found", user_id)
+        return {"ok": False, "reason": "user_not_found"}
+
+    qs = Inspirational.objects.filter(author=user)
+    if not qs.exists():
+        logger.info("No Inspirational objects for user %s", user_id)
+        return {"ok": False, "reason": "no_inspirationals"}
+
+    # Random pick without ORDER BY ? (more efficient, still simple)
+    ids = list(qs.values_list("id", flat=True))
+    inspirational = qs.get(id=random.choice(ids))
+
+    site_name = getattr(settings, "THE_SITE_NAME", "Personal Assistant")
+    subject = f"{site_name} — Daily Boost"
+    body = (
+        f"Hey {user.username},\n\n"
+        f"Here’s your daily boost:\n\n"
+        f"{inspirational.body}\n\n"
+        f"— {site_name}"
+    )
+
+    # Prefer configured default sender; fallback to EMAIL_HOST_USER; last resort user.email  # noqa: E501
+    resolved_from = (
+        DEFAULT_FROM_EMAIL or getattr(settings, "EMAIL_HOST_USER", None) or user.email
+    )
+
+    try:
+        _send_email(subject, body, [user.email], from_email=resolved_from)
+    except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
+        # log without traceback spam
+        logger.warning(
+            "SMTP error while sending random inspirational — will retry: %s", exc
+        )
+        raise  # <- triggers Celery autoretry_for
+
+    InspirationalSent.objects.create(
+        inspirational=inspirational,
+        inspirational_text=inspirational.body,
+        sender=user,
+        beastie=user,
+    )
+
+    logger.info(
+        "Sent random Inspirational %s to user %s (%s)",
+        inspirational.id,
+        user.id,
+        user.email,
+    )
+    return {"ok": True, "inspirational_id": inspirational.id, "user_id": user.id}
+
+
+@shared_task(**RETRY_KW)
 def send_inspirational_to_beastie(
     self,
     user_username: str,
@@ -137,8 +202,10 @@ def send_inspirational_to_beastie(
                 extra={"to_beastie_sent": sent1, "to_user_sent": sent2},
             )
         except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
-            logger.exception("SMTP error while sending Beastie emails — retrying")
-            raise self.retry(exc=exc)
+            logger.warning(
+                "SMTP error while sending Beastie emails — will retry: %s", exc
+            )
+            raise  # <- triggers Celery autoretry_for
 
 
 @shared_task(**RETRY_KW)
@@ -182,8 +249,8 @@ def send_inspirational_to_self(
             extra={"user_id": user_id, "inspirational_id": inspirational.pk},
         )
     except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
-        logger.exception("SMTP error while sending to self — retrying")
-        raise self.retry(exc=exc)
+        logger.warning("SMTP error while sending to self — will retry: %s", exc)
+        raise  # <- triggers Celery autoretry_for
 
 
 @shared_task(**RETRY_KW)
@@ -206,8 +273,8 @@ def send_test_email(self) -> None:
         )
         logger.info("Sent test email", extra={"to": BOOSTS_TEST_EMAIL})
     except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
-        logger.exception("SMTP error while sending test email — retrying")
-        raise self.retry(exc=exc)
+        logger.warning("SMTP error while sending test email — will retry: %s", exc)
+        raise  # <- triggers Celery autoretry_for
 
 
 @shared_task
