@@ -123,8 +123,11 @@ def send_random_inspirational_email(self, user_id: int) -> dict:
     try:
         _send_email(subject, body, [user.email], from_email=resolved_from)
     except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
-        logger.exception("SMTP error while sending random inspirational — retrying")
-        raise self.retry(exc=exc)
+        # log without traceback spam
+        logger.warning(
+            "SMTP error while sending random inspirational — will retry: %s", exc
+        )
+        raise  # <- triggers Celery autoretry_for
 
     InspirationalSent.objects.create(
         inspirational=inspirational,
@@ -199,8 +202,10 @@ def send_inspirational_to_beastie(
                 extra={"to_beastie_sent": sent1, "to_user_sent": sent2},
             )
         except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
-            logger.exception("SMTP error while sending Beastie emails — retrying")
-            raise self.retry(exc=exc)
+            logger.warning(
+                "SMTP error while sending Beastie emails — will retry: %s", exc
+            )
+            raise  # <- triggers Celery autoretry_for
 
 
 @shared_task(**RETRY_KW)
@@ -244,8 +249,8 @@ def send_inspirational_to_self(
             extra={"user_id": user_id, "inspirational_id": inspirational.pk},
         )
     except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
-        logger.exception("SMTP error while sending to self — retrying")
-        raise self.retry(exc=exc)
+        logger.warning("SMTP error while sending to self — will retry: %s", exc)
+        raise  # <- triggers Celery autoretry_for
 
 
 @shared_task(**RETRY_KW)
@@ -268,8 +273,8 @@ def send_test_email(self) -> None:
         )
         logger.info("Sent test email", extra={"to": BOOSTS_TEST_EMAIL})
     except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
-        logger.exception("SMTP error while sending test email — retrying")
-        raise self.retry(exc=exc)
+        logger.warning("SMTP error while sending test email — will retry: %s", exc)
+        raise  # <- triggers Celery autoretry_for
 
 
 @shared_task
