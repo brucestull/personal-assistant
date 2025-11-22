@@ -58,7 +58,7 @@ def send_random_unimportant_note_email(
 
     # Base Note likely has title/body-ish fields; be defensive.
     title = getattr(note, "title", f"Note #{note.id}")
-    text = getattr(note, "body", None) or getattr(note, "text", None) or ""
+    text = getattr(note, "content", "")
     tag_names = ", ".join(note.tag.values_list("name", flat=True))
 
     subject = f"{getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')} — Daily Unimportant Note"  # noqa: E501
