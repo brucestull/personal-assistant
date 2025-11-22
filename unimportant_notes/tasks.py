@@ -56,12 +56,23 @@ def send_random_unimportant_note_email(
     ids = list(qs.values_list("id", flat=True))
     note = qs.get(id=random.choice(ids))
 
-    # Base Note likely has title/body-ish fields; be defensive.
+    # UnimportantNote inherits from base.Note, which has `title` and `content`.
     title = getattr(note, "title", f"Note #{note.id}")
-    text = getattr(note, "body", None) or getattr(note, "text", None) or ""
+
+    # ✅ Prefer `content`, but still be defensive with fallbacks:
+    text = (
+        getattr(note, "content", None)
+        or getattr(note, "body", None)
+        or getattr(note, "text", None)
+        or ""
+    )
+
     tag_names = ", ".join(note.tag.values_list("name", flat=True))
 
-    subject = f"{getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')} — Daily Unimportant Note"  # noqa: E501
+    subject = (
+        f"{getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')} — "
+        "Daily Unimportant Note"
+    )
     if tag_obj:
         subject += f" [{tag_obj.name}]"
 
@@ -72,8 +83,14 @@ def send_random_unimportant_note_email(
         "",
         f"Title: {title}",
     ]
+
+    # ✅ Actually include note.content in the email body
     if text:
-        body_lines += ["", text]
+        body_lines += [
+            "",
+            "Content:",
+            text,
+        ]
 
     if tag_names:
         body_lines += ["", f"Tags: {tag_names}"]
