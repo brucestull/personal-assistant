@@ -1,4 +1,4 @@
-# tests/test_tasks.py
+# unimportant_notes/tests/test_tasks.py
 from __future__ import annotations
 
 from django.core import mail
