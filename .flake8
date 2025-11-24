@@ -1,4 +1,14 @@
 [flake8]
-exclude = migrations
+exclude =
+    migrations,
+    */migrations/*,
+    .venv,
+    venv,
+    node_modules,
+    staticfiles,
+    media,
+    build,
+    dist,
+    htmlcov
 statistics = True
 max-line-length = 88
