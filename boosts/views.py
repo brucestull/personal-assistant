@@ -1,16 +1,22 @@
 # boosts/views.py
 
+import random
+
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
 from accounts.models import CustomUser
-from base.mixins import RegistrationAcceptedMixin
 from base.decorators import registration_accepted_required
+from base.mixins import RegistrationAcceptedMixin
 from boosts.forms import InspirationalForm
 from boosts.models import Inspirational, InspirationalSent
 from boosts.tasks import send_inspirational_to_beastie
@@ -155,6 +161,66 @@ def send_inspirational(request, pk):
             request, f"An error occurred while sending the inspirational quote: {e}"
         )
         return redirect("boosts:inspirational-list")
+
+
+@login_required
+@require_POST
+def send_random_inspirational_to_self(request):
+    """
+    Pick a random Inspirational authored by the logged-in user,
+    email its body to them, and record that in InspirationalSent.
+    """
+
+    user = request.user
+
+    # Only pick from the logged-in author's inspirationals
+    qs = Inspirational.objects.filter(author=user)
+
+    count = qs.count()
+    if count == 0:
+        messages.error(
+            request,
+            "You don't have any Inspirationals yet. Create one before sending.",
+        )
+        return redirect("boosts:inspirational-list")  # adjust if your name is different
+
+    # More efficient than order_by('?') for larger tables
+    random_index = random.randint(0, count - 1)
+    inspirational = qs[random_index]
+
+    if not user.email:
+        messages.error(
+            request,
+            "Your account has no email address set, so I can't send this to you.",
+        )
+        return redirect("boosts:inspirational-list")
+
+    subject = "Your random Inspirational ✨"
+    body_text = inspirational.body
+    from_email = getattr(settings, "DEFAULT_FROM_EMAIL", None)
+
+    # Send the email
+    send_mail(
+        subject,
+        body_text,
+        from_email,
+        [user.email],
+        fail_silently=False,
+    )
+
+    # Log what was sent (snapshot of the text at send time)
+    InspirationalSent.objects.create(
+        inspirational=inspirational,
+        inspirational_text=body_text,
+        sender=user,
+        beastie=user,  # treat the logged-in user as the beastie/recipient
+    )
+
+    messages.success(
+        request, "A random Inspirational has been emailed to you. Check your inbox!"
+    )
+
+    return redirect("boosts:inspirational-list")
 
 
 class BretBeastieInspirationalListView(ListView):

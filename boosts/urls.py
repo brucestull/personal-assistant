@@ -27,4 +27,9 @@ urlpatterns = [
         views.send_inspirational,
         name="send-inspirational",
     ),
+    path(
+        "inspirationals/send-random/",
+        views.send_random_inspirational_to_self,
+        name="send_random_inspirational",
+    ),
 ]
