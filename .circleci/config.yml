@@ -1,5 +1,5 @@
 # Python CircleCI 2.0 configuration file
-version: 2
+version: 2.1
 jobs:
   build_and_test:
     docker:
@@ -16,7 +16,10 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            pipenv install
+            # optional but nice: make sure pip/pipenv are up to date
+            python -m pip install --upgrade pip
+            pip install pipenv
+            pipenv install --dev
 
       # Step 3: run linter
       - run:
