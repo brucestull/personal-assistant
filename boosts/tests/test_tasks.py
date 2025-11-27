@@ -122,3 +122,17 @@ class SendRandomInspirationalEmailTest(TestCase):
         self.assertEqual(sent_email.from_email, self.user.email)
         self.assertEqual(sent_email.to, [self.user.email])
         self.assertIn("Daily Boost", sent_email.subject)
+
+    def test_returns_no_email_when_user_has_no_email(self):
+        """
+        send_random_inspirational_email should return no_email reason when
+        user has no email address.
+        """
+        self.user.email = ""
+        self.user.save()
+
+        result = send_random_inspirational_email.delay(self.user.id)
+
+        self.assertEqual(result.result["ok"], False)
+        self.assertEqual(result.result["reason"], "no_email")
+        self.assertEqual(len(mail.outbox), 0)

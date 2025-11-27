@@ -102,6 +102,10 @@ def send_random_inspirational_email(self, user_id: int) -> dict:
         logger.info("No Inspirational objects for user %s", user_id)
         return {"ok": False, "reason": "no_inspirationals"}
 
+    if not getattr(user, "email", None):
+        logger.warning("User has no email; skipping send", extra={"user_id": user_id})
+        return {"ok": False, "reason": "no_email"}
+
     # Random pick without ORDER BY ? (more efficient, still simple)
     ids = list(qs.values_list("id", flat=True))
     inspirational = qs.get(id=random.choice(ids))
