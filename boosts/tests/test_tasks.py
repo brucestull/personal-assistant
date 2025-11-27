@@ -5,10 +5,12 @@ import smtplib
 from unittest import mock
 
 from celery.exceptions import Retry
+from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase, override_settings
 
-from boosts.tasks import send_inspirational_to_beastie
+from boosts.models import Inspirational
+from boosts.tasks import send_inspirational_to_beastie, send_random_inspirational_email
 
 
 @override_settings(
@@ -84,3 +86,39 @@ class SendInspirationalToBeastieTest(TestCase):
             )
         # Nothing should have been left in the outbox because the first send failed.
         self.assertEqual(len(mail.outbox), 0)
+
+
+@override_settings(
+    CELERY_TASK_ALWAYS_EAGER=True,
+    CELERY_TASK_EAGER_PROPAGATES=True,
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    DEFAULT_FROM_EMAIL="no-reply@example.com",
+    THE_SITE_NAME="Test Site",
+)
+class SendRandomInspirationalEmailTest(TestCase):
+    def setUp(self) -> None:
+        User = get_user_model()
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="testuser@example.com",
+            password="testpass123",
+        )
+        self.inspirational = Inspirational.objects.create(
+            body="Keep going!",
+            author=self.user,
+        )
+
+    def test_uses_user_email_as_from_address(self):
+        """
+        send_random_inspirational_email should use the user's own email as the
+        'from' address, not the DEFAULT_FROM_EMAIL.
+        """
+        result = send_random_inspirational_email.delay(self.user.id)
+
+        self.assertEqual(result.result["ok"], True)
+        self.assertEqual(len(mail.outbox), 1)
+
+        sent_email = mail.outbox[0]
+        self.assertEqual(sent_email.from_email, self.user.email)
+        self.assertEqual(sent_email.to, [self.user.email])
+        self.assertIn("Daily Boost", sent_email.subject)

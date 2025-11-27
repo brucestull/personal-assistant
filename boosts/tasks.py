@@ -115,10 +115,8 @@ def send_random_inspirational_email(self, user_id: int) -> dict:
         f"— {site_name}"
     )
 
-    # Prefer configured default sender; fallback to EMAIL_HOST_USER; last resort user.email  # noqa: E501
-    resolved_from = (
-        DEFAULT_FROM_EMAIL or getattr(settings, "EMAIL_HOST_USER", None) or user.email
-    )
+    # Use the user's own email as the from address
+    resolved_from = user.email
 
     try:
         _send_email(subject, body, [user.email], from_email=resolved_from)
