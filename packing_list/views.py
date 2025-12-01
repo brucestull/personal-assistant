@@ -1,7 +1,7 @@
 # packing_list/views.py
 import io
 
-from django.conf import settings
+from django.conf import settings  # noqa F401
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
