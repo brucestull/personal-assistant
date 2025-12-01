@@ -196,7 +196,10 @@ def send_random_inspirational_to_self(request):
         return redirect("boosts:inspirational-list")
 
     subject = "Your random Inspirational ✨"
-    body_text = inspirational.body
+    body_text = (
+        f"{inspirational.created.strftime('%y-%m-%d')} - {user.username}:\n\n"
+        f"{inspirational.body}"
+    )
     from_email = getattr(settings, "DEFAULT_FROM_EMAIL", None)
 
     # Send the email
