@@ -48,3 +48,23 @@ class UrlsTest(SimpleTestCase):
     def test_item_delete_url(self):
         url = reverse("packing_list:item_delete", kwargs={"pk": 1})
         self.assertEqual(resolve(url).func, views.item_delete)
+
+    def test_task_list_url(self):
+        url = reverse("packing_list:task_list")
+        self.assertEqual(resolve(url).func, views.task_list)
+
+    def test_task_detail_url(self):
+        url = reverse("packing_list:task_detail", kwargs={"pk": 1})
+        self.assertEqual(resolve(url).func, views.task_detail)
+
+    def test_task_create_url(self):
+        url = reverse("packing_list:task_create")
+        self.assertEqual(resolve(url).func, views.task_create)
+
+    def test_task_update_url(self):
+        url = reverse("packing_list:task_update", kwargs={"pk": 1})
+        self.assertEqual(resolve(url).func, views.task_update)
+
+    def test_task_delete_url(self):
+        url = reverse("packing_list:task_delete", kwargs={"pk": 1})
+        self.assertEqual(resolve(url).func, views.task_delete)

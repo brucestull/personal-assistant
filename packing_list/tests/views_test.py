@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from packing_list.models import Activity, Item
+from packing_list.models import Activity, Item, Task
 
 User = get_user_model()
 
@@ -234,3 +234,84 @@ class ItemViewTests(TestCase):
         r2 = self.client.post(url)
         self.assertRedirects(r2, reverse("packing_list:item_list"))
         self.assertFalse(Item.objects.filter(pk=self.item.pk).exists())
+
+
+class TaskViewTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username="task_user", password="pw", registration_accepted=True
+        )
+        self.client.login(username="task_user", password="pw")
+        self.act = Activity.objects.create(name="Act", user=self.user)
+        self.task = Task.objects.create(
+            name="TaskX",
+            description="d",
+            is_completed=False,
+            activity=self.act,
+            user=self.user,
+        )
+
+    def test_list_and_detail(self):
+        r1 = self.client.get(reverse("packing_list:task_list"))
+        self.assertEqual(r1.status_code, 200)
+        self.assertIn(self.task, r1.context["tasks"])
+
+        r2 = self.client.get(
+            reverse("packing_list:task_detail", kwargs={"pk": self.task.pk})
+        )
+        self.assertEqual(r2.status_code, 200)
+
+        r404 = self.client.get(reverse("packing_list:task_detail", kwargs={"pk": 999}))
+        self.assertEqual(r404.status_code, 404)
+
+    def test_create_with_activity(self):
+        url = reverse("packing_list:task_create") + f"?activity={self.act.pk}"
+        r1 = self.client.get(url)
+        self.assertEqual(r1.status_code, 200)
+        self.assertIn("form", r1.context)
+
+        # POST valid
+        data = {
+            "name": "NewTask",
+            "description": "Task desc",
+            "is_completed": False,
+            "activity": self.act.pk,
+        }
+        r2 = self.client.post(url, data)
+        # Should redirect to activity detail
+        self.assertRedirects(
+            r2, reverse("packing_list:activity_detail", kwargs={"pk": self.act.pk})
+        )
+        self.assertTrue(Task.objects.filter(name="NewTask").exists())
+
+    def test_update_get_and_post(self):
+        url = reverse("packing_list:task_update", kwargs={"pk": self.task.pk})
+
+        r1 = self.client.get(url)
+        self.assertEqual(r1.status_code, 200)
+
+        r2 = self.client.post(
+            url,
+            {
+                "name": "TaskX2",
+                "description": "updated",
+                "is_completed": True,
+                "activity": self.act.pk,
+            },
+        )
+        self.assertRedirects(r2, reverse("packing_list:task_list"))
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.name, "TaskX2")
+        self.assertTrue(self.task.is_completed)
+
+    def test_delete_get_and_post(self):
+        url = reverse("packing_list:task_delete", kwargs={"pk": self.task.pk})
+
+        r1 = self.client.get(url)
+        self.assertEqual(r1.status_code, 200)
+        self.assertContains(r1, f"Delete {self.task.name}")
+
+        r2 = self.client.post(url)
+        self.assertRedirects(r2, reverse("packing_list:task_list"))
+        self.assertFalse(Task.objects.filter(pk=self.task.pk).exists())
