@@ -1,0 +1,61 @@
+{# templates/warcrafting/character_detail.html #}
+{% extends "base.html" %}
+{% block content %}
+
+<h1>{{ character.name }}</h1>
+
+<p><strong>Profile:</strong> {{ character.profile_line }}</p>
+<p><strong>Owner:</strong> {{ character.owner.username }}</p>
+<p><strong>Total Gold:</strong> {{ character.total_gold }} g</p>
+
+<h2>Professions</h2>
+{% if character.professions.all %}
+  <ul>
+    {% for tier in character.professions.all %}
+      <li>
+        {{ tier.expansion_label }} {{ tier.profession.name }}
+        {% if tier.max_skill %}
+          (Max: {{ tier.max_skill }})
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No professions tracked yet.</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No professions tracked yet.</p>
+{% endif %}
+
+<h2>Assets</h2>
+{% if character.assets.all %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Quantity</th>
+        <th>Unique?</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for asset in character.assets.all %}
+        <tr>
+          <td>{{ asset.name }}</td>
+          <td>{{ asset.get_category_display }}</td>
+          <td>{{ asset.quantity }}</td>
+          <td>{% if asset.is_unique %}✔{% else %}—{% endif %}</td>
+          <td>{{ asset.notes|default:"" }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>No assets tracked yet.</p>
+{% endif %}
+
+<p>
+  <a href="{% url 'warcrafting:character_list' %}">Back to my characters</a>
+</p>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{# templates/warcrafting/character_list.html #}
+{% extends "base.html" %}
+{% block content %}
+<h1>My WoW Characters</h1>
+
+{% if characters %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Profile</th>
+        <th>Gold</th>
+        <th>Professions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for character in characters %}
+        <tr>
+          <td>
+            <a href="{% url 'warcrafting:character_detail' character.pk %}">
+              {{ character.name }}
+            </a>
+          </td>
+          <td>{{ character.profile_line }}</td>
+          <td>{{ character.total_gold|default:"0" }} g</td>
+          <td>{{ character.profession_summary }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if is_paginated %}
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% else %}
+  <p>No characters yet. Go roll some alts. 😄</p>
+{% endif %}
+
+{% endblock %}
