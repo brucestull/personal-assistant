@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ task.name }} – Details
+{% endblock title %}
+
+{% block content %}
+  <h1>{{ task.name }}</h1>
+
+  {% if task.description %}
+    <p>{{ task.description }}</p>
+  {% endif %}
+
+  <dl class="row">
+    <dt class="col-sm-3">Completed?</dt>
+    <dd class="col-sm-9">
+      {% if task.is_completed %}
+        Yes
+      {% else %}
+        No
+      {% endif %}
+    </dd>
+
+    <dt class="col-sm-3">Activity</dt>
+    <dd class="col-sm-9">
+      <a href="{% url 'packing_list:activity_detail' task.activity.pk %}">
+        {{ task.activity.name }}
+      </a>
+    </dd>
+  </dl>
+
+  <p>
+    <a href="{% url 'packing_list:task_update' task.pk %}" class="btn btn-sm btn-warning">Edit Task</a>
+    <a href="{% url 'packing_list:task_delete' task.pk %}" class="btn btn-sm btn-danger">Delete Task</a>
+  </p>
+
+  <p>
+    <a href="{% url 'packing_list:task_list' %}">&larr; Back to all tasks</a>
+  </p>
+  <p>
+    <a href="{% url 'packing_list:activity_list' %}">&larr; Back to all activities</a>
+  </p>
+{% endblock content %}

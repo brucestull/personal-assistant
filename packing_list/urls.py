@@ -19,4 +19,10 @@ urlpatterns = [
     path("items/create/", views.item_create, name="item_create"),
     path("items/<int:pk>/edit/", views.item_update, name="item_update"),
     path("items/<int:pk>/delete/", views.item_delete, name="item_delete"),
+    # Tasks
+    path("tasks/", views.task_list, name="task_list"),
+    path("tasks/<int:pk>/", views.task_detail, name="task_detail"),
+    path("tasks/create/", views.task_create, name="task_create"),
+    path("tasks/<int:pk>/edit/", views.task_update, name="task_update"),
+    path("tasks/<int:pk>/delete/", views.task_delete, name="task_delete"),
 ]
