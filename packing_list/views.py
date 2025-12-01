@@ -1,7 +1,7 @@
 # packing_list/views.py
 import io
 
-from django.conf import settings
+from django.conf import settings  # noqa F401
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
@@ -14,8 +14,8 @@ from reportlab.pdfgen import canvas
 from base.decorators import registration_accepted_required
 from config.settings import THE_SITE_NAME
 
-from .forms import ActivityForm, ItemForm
-from .models import Activity, Item
+from .forms import ActivityForm, ItemForm, TaskForm
+from .models import Activity, Item, Task
 
 # ---------- Activity Views ----------
 
@@ -37,7 +37,8 @@ def activity_list(request):
 @registration_accepted_required
 def activity_detail(request, pk):
     activity = get_object_or_404(Activity, pk=pk, user=request.user)
-    items = activity.packing_items.all()  # uses related_name on Item.activity
+    items = activity.items.all()  # uses related_name on Item.activity
+    tasks = activity.tasks.all()  # uses related_name on Task.activity
     return render(
         request,
         "packing_list/activity_detail.html",
@@ -46,6 +47,7 @@ def activity_detail(request, pk):
             "page_title": activity.name,
             "activity": activity,
             "items": items,
+            "tasks": tasks,
         },
     )
 
@@ -147,7 +149,7 @@ def activity_pdf(request, pk):
     # first baseline
     y = height - 1.5 * inch + (box_size + extra_padding) / 2
 
-    for item in activity.packing_items.all():
+    for item in activity.items.all():
         # page‐break if needed
         if y - leading < bottom_margin:
             p.showPage()
@@ -249,7 +251,7 @@ def item_create(request):
         request,
         "packing_list/item_form.html",
         {
-            "the_site_name": settings.THE_SITE_NAME,
+            "the_site_name": THE_SITE_NAME,
             "page_title": "Create Item",
             "form": form,
             "activity": activity,  # you can use this in the template if you want
@@ -302,5 +304,120 @@ def item_delete(request, pk):
             "the_site_name": THE_SITE_NAME,
             "page_title": f"Delete {item.name}",
             "item": item,
+        },
+    )
+
+
+# ---------- Task Views ----------
+
+
+@registration_accepted_required
+def task_list(request):
+    tasks = Task.objects.filter(user=request.user).select_related("activity")
+    return render(
+        request,
+        "packing_list/task_list.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": "Tasks",
+            "tasks": tasks,
+        },
+    )
+
+
+@registration_accepted_required
+def task_detail(request, pk):
+    task = get_object_or_404(Task, pk=pk, user=request.user)
+    return render(
+        request,
+        "packing_list/task_detail.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": task.name,
+            "task": task,
+        },
+    )
+
+
+@registration_accepted_required
+def task_create(request):
+    # 1. Try to grab an activity ID from the URL; if none, activity stays None
+    activity = None
+    activity_id = request.GET.get("activity")
+    if activity_id:
+        activity = get_object_or_404(Activity, pk=activity_id, user=request.user)
+
+    # 2. Build the form, passing activity instance or None
+    form = TaskForm(
+        request.POST or None,  # data or None
+        user=request.user,  # your custom kwarg
+        activity=activity,  # instance or None
+    )
+
+    # 3. On valid POST, save and redirect
+    if form.is_valid():
+        task = form.save(commit=False)
+        task.user = request.user
+        task.save()
+        return redirect(task.activity)
+
+    # 4. Render form on GET or invalid POST
+    return render(
+        request,
+        "packing_list/task_form.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": "Create Task",
+            "form": form,
+            "activity": activity,  # you can use this in the template if you want
+        },
+    )
+
+
+@registration_accepted_required
+def task_update(request, pk):
+    task = get_object_or_404(Task, pk=pk, user=request.user)
+    activity = task.activity
+
+    if request.method == "POST":
+        form = TaskForm(
+            request.POST,
+            instance=task,
+            user=request.user,  # scope queryset to this user
+        )
+        if form.is_valid():
+            form.save()
+            return redirect("packing_list:task_list")
+    else:
+        form = TaskForm(
+            instance=task,
+            user=request.user,  # scope queryset + pick up .instance.activity
+        )
+
+    return render(
+        request,
+        "packing_list/task_form.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": f"Update {task.name}",
+            "form": form,
+            "activity": activity,
+        },
+    )
+
+
+@registration_accepted_required
+def task_delete(request, pk):
+    task = get_object_or_404(Task, pk=pk, user=request.user)
+    if request.method == "POST":
+        task.delete()
+        return redirect("packing_list:task_list")
+    return render(
+        request,
+        "packing_list/task_confirm_delete.html",
+        {
+            "the_site_name": THE_SITE_NAME,
+            "page_title": f"Delete {task.name}",
+            "task": task,
         },
     )
