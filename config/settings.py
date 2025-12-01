@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "django.contrib.admindocs",
     "rest_framework",
     "storages",
+    "django_celery_beat",
     "base",
     "app_tracker.apps.AppTrackerConfig",
     "career_organizerator.apps.CareerOrganizeratorConfig",
@@ -75,7 +76,6 @@ INSTALLED_APPS = [
     "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
     "sonic_text.apps.SonicTextConfig",
-    "django_celery_beat",
     "boosts.apps.BoostsConfig",
     "plan_it.apps.PlanItConfig",
     "pomodo.apps.PomodoConfig",
@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     "packing_list.apps.PackingListConfig",
     "decide.apps.DecideConfig",
     "tasks.apps.TasksConfig",
+    "warcrafting.apps.WarcraftingConfig",
 ]
 
 MIDDLEWARE = [
@@ -147,8 +148,6 @@ CELERY_TIMEZONE = "America/New_York"
 CELERY_ENABLE_UTC = False
 
 USE_I18N = True
-
-USE_L10N = True
 
 USE_TZ = True
 
