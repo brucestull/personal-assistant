@@ -56,4 +56,5 @@ urlpatterns = [
     path("pack-it/", include("packing_list.urls")),
     path("decide/", include("decide.urls")),
     path("tasks/", include("tasks.urls")),
+    path("warcrafting/", include("warcrafting.urls", namespace="warcrafting")),
 ]
