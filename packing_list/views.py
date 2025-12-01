@@ -251,7 +251,7 @@ def item_create(request):
         request,
         "packing_list/item_form.html",
         {
-            "the_site_name": settings.THE_SITE_NAME,
+            "the_site_name": THE_SITE_NAME,
             "page_title": "Create Item",
             "form": form,
             "activity": activity,  # you can use this in the template if you want
@@ -366,7 +366,7 @@ def task_create(request):
         request,
         "packing_list/task_form.html",
         {
-            "the_site_name": settings.THE_SITE_NAME,
+            "the_site_name": THE_SITE_NAME,
             "page_title": "Create Task",
             "form": form,
             "activity": activity,  # you can use this in the template if you want
