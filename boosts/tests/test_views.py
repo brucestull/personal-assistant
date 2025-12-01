@@ -494,3 +494,46 @@ class SendInspirationalViewTest(TestCase):
     #     response = self.client.get("/boosts/send_inspirational/1/")
     #     self.assertTrue("hide_inspirational_create_link" in response.context)
     #     self.assertEqual(response.context["hide_inspirational_create_link"], True)
+
+
+class SendRandomInspirationalToSelfViewTest(TestCase):
+    """
+    Test `send_random_inspirational_to_self` view.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Create test data.
+        """
+        cls.user = CustomUser.objects.create_user(
+            username="TestUser",
+            password="a_test_password",
+            email="test@example.com",
+            registration_accepted=True,
+        )
+        cls.inspirational = Inspirational.objects.create(
+            author=cls.user,
+            body="This is a test inspirational body text.",
+        )
+
+    def test_email_body_contains_created_date(self):
+        """
+        Email body should include the inspirational's created date in YY-MM-DD format.
+        """
+        from django.core import mail
+
+        self.client.login(
+            username="TestUser",
+            password="a_test_password",
+        )
+        response = self.client.post(reverse("boosts:send_random_inspirational"))
+        self.assertEqual(response.status_code, 302)
+        # Check that one email was sent
+        self.assertEqual(len(mail.outbox), 1)
+        sent_email = mail.outbox[0]
+        # Expected format: "YY-MM-DD - username:\n\nbody"
+        expected_date = self.inspirational.created.strftime("%y-%m-%d")
+        self.assertIn(expected_date, sent_email.body)
+        self.assertIn(self.user.username, sent_email.body)
+        self.assertIn(self.inspirational.body, sent_email.body)
