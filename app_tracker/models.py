@@ -200,10 +200,48 @@ class Host(CreatedUpdatedBase):
     """
 
     FORM_FACTOR_CHOICES = [
-        ("Pi4", "Raspberry Pi 4"),
-        ("Pi5", "Raspberry Pi 5"),
+        # Raspberry Pi 5 variants
+        ("Pi5-8GB", "Raspberry Pi 5 - 8GB"),
+        ("Pi5-4GB", "Raspberry Pi 5 - 4GB"),
+        ("Pi5-2GB", "Raspberry Pi 5 - 2GB"),
+        # Raspberry Pi 4 variants
+        ("Pi4-8GB", "Raspberry Pi 4 - 8GB"),
+        ("Pi4-4GB", "Raspberry Pi 4 - 4GB"),
+        ("Pi4-2GB", "Raspberry Pi 4 - 2GB"),
+        ("Pi4-1GB", "Raspberry Pi 4 - 1GB"),
+        # Raspberry Pi 3 variants
+        ("Pi3B+", "Raspberry Pi 3 Model B+"),
+        ("Pi3B", "Raspberry Pi 3 Model B"),
+        ("Pi3A+", "Raspberry Pi 3 Model A+"),
+        # Raspberry Pi Zero variants
+        ("PiZero2W", "Raspberry Pi Zero 2 W"),
+        ("PiZeroW", "Raspberry Pi Zero W"),
         ("PiZero", "Raspberry Pi Zero"),
+        # Raspberry Pi Pico variants
+        ("PiPico2W", "Raspberry Pi Pico 2 W"),
+        ("PiPico2", "Raspberry Pi Pico 2"),
+        ("PiPicoW", "Raspberry Pi Pico W"),
         ("PiPico", "Raspberry Pi Pico"),
+        # Traditional form factors
+        ("Desktop", "Desktop"),
+        ("Laptop", "Laptop"),
+        ("Server", "Server"),
+        ("Headless", "Headless Server"),
+        # Network devices
+        ("SwitchEth", "Switch - Ethernet"),
+        ("SwitchPOE", "Switch - Ethernet POE"),
+        ("Router", "Router"),
+        ("AccessPt", "Access Point"),
+        # IoT and embedded devices
+        ("IoT", "IoT - General"),
+        ("Camera", "Camera"),
+        ("Sensor", "Sensor"),
+        # Virtual and cloud
+        ("VM", "Virtual Machine"),
+        ("Container", "Container"),
+        ("Cloud", "Cloud Instance"),
+        # Other
+        ("Other", "Other"),
     ]
 
     name = models.CharField(max_length=100, unique=True)
@@ -238,8 +276,8 @@ class Host(CreatedUpdatedBase):
         null=True,
     )
     form_factor = models.CharField(
-        max_length=10, choices=FORM_FACTOR_CHOICES, blank=True, null=True
-    )  # noqa: E501
+        max_length=20, choices=FORM_FACTOR_CHOICES, blank=True, null=True
+    )
 
     ip_address = models.GenericIPAddressField(
         verbose_name="IP Address",
