@@ -79,3 +79,62 @@ class Note(CreatedUpdatedBase):
         abstract = True
         # `verbose_name` and `verbose_name_plural` and `ordering` are declared in the
         # child class.
+
+
+class URL(CreatedUpdatedBase):
+    """
+    An abstract base class model that provides a URL field with common attributes.
+
+    This can be used as a base for URL-related models in different applications,
+    providing a consistent structure for storing and categorizing URLs.
+
+    Attributes:
+        url: The actual URL string (required)
+        label: A human-readable label/name for the URL
+        description: An optional description of what the URL points to
+        url_type: The type/category of the URL (e.g., 'documentation', 'api', 'demo')
+    """
+
+    URL_TYPE_CHOICES = [
+        ("documentation", "Documentation"),
+        ("repository", "Repository"),
+        ("api", "API"),
+        ("demo", "Demo/Preview"),
+        ("production", "Production"),
+        ("staging", "Staging"),
+        ("development", "Development"),
+        ("tutorial", "Tutorial"),
+        ("reference", "Reference"),
+        ("other", "Other"),
+    ]
+
+    url = models.URLField(
+        verbose_name="URL",
+        help_text="The URL address.",
+        max_length=2000,
+    )
+    label = models.CharField(
+        verbose_name="Label",
+        help_text="A short label or name for this URL.",
+        max_length=100,
+    )
+    description = models.TextField(
+        verbose_name="Description",
+        help_text="An optional description of this URL.",
+        blank=True,
+        null=True,
+    )
+    url_type = models.CharField(
+        verbose_name="URL Type",
+        help_text="The type or category of this URL.",
+        max_length=20,
+        choices=URL_TYPE_CHOICES,
+        default="other",
+    )
+
+    def __str__(self):
+        return f"{self.label} ({self.url_type})"
+
+    class Meta:
+        abstract = True
+        ordering = ["label"]
