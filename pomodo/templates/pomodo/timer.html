@@ -11,7 +11,7 @@
     <div class="timer-container card p-3 shadow-sm">
       <h1 class="h3 mb-3">Pomodoro Timer</h1>
 
-      <!-- === NEW: Activity banner & input === -->
+      <!-- === Activity banner & input === -->
       <div class="mb-3">
         <!-- Big live activity text -->
         <div id="activity-current"
@@ -41,44 +41,102 @@
           Tip: Press <kbd>Enter</kbd> to set. Keep it short (e.g., “Refactor Django view”, “Sort bedroom bin A”).
         </div>
       </div>
-      <!-- === /NEW === -->
+      <!-- === /Activity === -->
 
-      <div class="settings d-flex flex-wrap align-items-center gap-2 mb-2" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;">
-        <label for="duration-input" class="me-1">Set timer (minutes):</label>
-        <input type="number" id="duration-input" min="1" value="25" title="Total minutes until alarm" class="form-control" style="width:7rem;" />
-        <!-- NEW controls -->
-        <button id="apply-time-button" class="btn btn-primary btn-sm" aria-label="Apply minutes from the input (and restart if running)">
-          Set This Time
-        </button>
-        <button id="stop-button" class="btn btn-outline-danger btn-sm" aria-label="Stop the current timer" disabled>
-          Stop Now
-        </button>
+      <!-- === Duration settings === -->
+      <div class="settings row g-2 align-items-center mb-3">
+        <div class="col-auto">
+          <label for="duration-input" class="col-form-label">Set timer (minutes):</label>
+        </div>
+        <div class="col-auto">
+          <input type="number"
+                 id="duration-input"
+                 min="1"
+                 value="25"
+                 title="Total minutes until alarm"
+                 class="form-control"
+                 style="width:7rem;" />
+        </div>
+        <div class="col-auto">
+          <button id="apply-time-button"
+                  class="btn btn-primary btn-sm"
+                  aria-label="Apply minutes from the input (and restart if running)">
+            Set This Time
+          </button>
+        </div>
       </div>
+      <!-- === /Duration settings === -->
 
-      <!-- Audio Test Controls -->
-      <div class="audio-test mb-2" style="margin:.75rem 0;">
+      <!-- === Audio Test Controls === -->
+      <div class="audio-test mb-3">
         <label for="test-sound-select" class="me-2">Test sound:</label>
-        <select id="test-sound-select" class="form-select form-select-sm" style="width:auto;display:inline-block;" aria-label="Choose which sound to test">
+        <select id="test-sound-select"
+                class="form-select form-select-sm d-inline-block w-auto"
+                aria-label="Choose which sound to test">
           <option value="alarm" selected>Alarm</option>
           <option value="warning">Warning</option>
           <option value="beep">Simple Beep</option>
         </select>
-        <button id="test-audio-button" class="btn btn-secondary btn-sm" aria-label="Play test sound">Test Audio</button>
-        <div id="audio-test-status" aria-live="polite" class="mt-1" style="font-size:.9em;opacity:.75;"></div>
+        <button id="test-audio-button"
+                class="btn btn-secondary btn-sm ms-2"
+                aria-label="Play test sound">
+          Test Audio
+        </button>
+        <div id="audio-test-status"
+             aria-live="polite"
+             class="mt-1"
+             style="font-size:.9em;opacity:.75;"></div>
       </div>
+      <!-- === /Audio Test === -->
 
-      <div class="timer-display mb-3">
+      <!-- === Timer display === -->
+      <div class="timer-display mb-3 text-center">
         <div id="remaining-display">25:00</div>
         <div id="elapsed-display">00:00</div>
       </div>
+      <!-- === /Timer display === -->
 
-      <div class="d-flex flex-wrap gap-2">
-        <button id="start-button" class="btn btn-success" aria-label="Start Timer">Sturt</button>
-        <!-- pause & continue live together -->
-        <button id="pause-button" class="btn btn-warning" aria-label="Pause Timer" disabled>Paws</button>
-        <button id="continue-button" class="btn btn-info" aria-label="Continue Timer" style="display:none;">Can't Tinue</button>
-        <button id="cancel-button" class="btn btn-outline-secondary" aria-label="Turn off timer" style="display:none;">Okay… I'm done!</button>
+      <!-- === Timer controls === -->
+      <div class="timer-controls">
+        <!-- Primary controls -->
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-2">
+          <button id="start-button"
+                  class="btn btn-success"
+                  aria-label="Start Timer">
+            Sturt
+          </button>
+          <!-- pause & continue live together -->
+          <button id="pause-button"
+                  class="btn btn-warning"
+                  aria-label="Pause Timer"
+                  disabled>
+            Paws
+          </button>
+          <button id="continue-button"
+                  class="btn btn-info"
+                  aria-label="Continue Timer"
+                  style="display:none;">
+            Can't Tinue
+          </button>
+        </div>
+
+        <!-- Secondary / stop controls -->
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          <button id="stop-button"
+                  class="btn btn-outline-danger btn-sm"
+                  aria-label="Stop the current timer"
+                  disabled>
+            Stop Now
+          </button>
+          <button id="cancel-button"
+                  class="btn btn-outline-secondary btn-sm"
+                  aria-label="Turn off timer"
+                  style="display:none;">
+            Okay… I'm done!
+          </button>
+        </div>
       </div>
+      <!-- === /Timer controls === -->
     </div>
   </div>
 
@@ -94,4 +152,5 @@
   </audio>
 
   <script src="{% static 'pomodo/js/timer.js' %}"></script>
-{% endblock %}
+{% endblock content %}
+
