@@ -1,33 +1,193 @@
 {% extends "base.html" %}
+
+{% block title %}{{ object.host_name }} - Host Details{% endblock %}
+
 {% block content %}
-  <h1>{{ object.host_name }}</h1>
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:host_list' %}">Hosts</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ object.host_name|default:"Host Details" }}</li>
+    </ol>
+  </nav>
 
-  <p><strong>IP Address:</strong> {{ object.ip_address }}</p>
-  <p><strong>Operating System:</strong> {{ object.operating_system }}</p>
-  <p><strong>Environment:</strong> {{ object.environment }}</p>
-  <p><strong>Notes:</strong> {{ object.notes }}</p>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">🖥️ {{ object.host_name|default:"Unnamed Host" }}</h1>
+    <div>
+      <a href="{% url 'app_tracker:host_update' object.pk %}" class="btn btn-primary me-2">
+        ✏️ Edit
+      </a>
+      <a href="{% url 'app_tracker:host_delete' object.pk %}" class="btn btn-outline-danger">
+        ❌ Delete
+      </a>
+    </div>
+  </div>
 
-  {% if object.applications %}
-    <h2>Applications on this Host:</h2>
-    <ul>
-      {% for app in object.applications.all %}
-        <li>
-          <a href="{% url 'app_tracker:application_detail' app.pk %}">{{ app.name }}</a>
-        </li>
-          {% for project in app.project.all %}
-            <a href="{% url 'app_tracker:project_detail' project.pk %}">{{ project.name }}</a>
-          {% endfor %}
-      {% empty %}
-        <li>No applications found on this host.</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No applications are currently associated with this host.</p>
-  {% endif %}
+  <div class="row">
+    <!-- Main Info Card -->
+    <div class="col-lg-8 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">📋 Host Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Name:</strong>
+              <p class="mb-0">{{ object.name|default:"—" }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Host Name:</strong>
+              <p class="mb-0">{{ object.host_name|default:"—" }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">IP Address:</strong>
+              <p class="mb-0">
+                {% if object.ip_address %}
+                  <code class="fs-6">{{ object.ip_address }}</code>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">MAC Address:</strong>
+              <p class="mb-0">
+                {% if object.mac_address %}
+                  <code class="fs-6">{{ object.mac_address }}</code>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Environment:</strong>
+              <p class="mb-0">
+                {% if object.environment %}
+                  {% if object.environment == "production" %}
+                    <span class="badge bg-success">🟢 Production</span>
+                  {% elif object.environment == "staging" %}
+                    <span class="badge bg-warning text-dark">🟡 Staging</span>
+                  {% elif object.environment == "test" %}
+                    <span class="badge bg-info">🔵 Test</span>
+                  {% elif object.environment == "development" %}
+                    <span class="badge bg-primary">🔵 Development</span>
+                  {% else %}
+                    <span class="badge bg-secondary">{{ object.environment|title }}</span>
+                  {% endif %}
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Operating System:</strong>
+              <p class="mb-0">{{ object.operating_system|default:"—" }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Form Factor:</strong>
+              <p class="mb-0">
+                {% if object.form_factor %}
+                  <span class="badge bg-secondary">{{ object.get_form_factor_display }}</span>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">RAM:</strong>
+              <p class="mb-0">{{ object.ram|default:"—" }}</p>
+            </div>
+          </div>
 
-  <p>
-    <a href="{% url 'app_tracker:host_update' object.pk %}">✏️ Edit</a> |
-    <a href="{% url 'app_tracker:host_delete' object.pk %}">❌ Delete</a> |
-    <a href="{% url 'app_tracker:host_list' %}">⬅️ Back to list</a>
-  </p>
+          {% if object.description %}
+            <hr>
+            <div class="mb-3">
+              <strong class="text-muted">Description:</strong>
+              <p class="mb-0">{{ object.description }}</p>
+            </div>
+          {% endif %}
+
+          {% if object.notes %}
+            <hr>
+            <div>
+              <strong class="text-muted">Notes:</strong>
+              <p class="mb-0">{{ object.notes|linebreaks }}</p>
+            </div>
+          {% endif %}
+        </div>
+        <div class="card-footer text-muted">
+          <small>
+            Created: {{ object.created|date:"M d, Y H:i" }} |
+            Updated: {{ object.updated|date:"M d, Y H:i" }}
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Applications Card -->
+    <div class="col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">📱 Applications on this Host</h5>
+        </div>
+        <div class="card-body">
+          {% if object.applications.all %}
+            <ul class="list-group list-group-flush">
+              {% for app in object.applications.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-start px-0">
+                  <div>
+                    <a href="{% url 'app_tracker:application_detail' app.pk %}" class="text-decoration-none fw-bold">
+                      {{ app.name }}
+                    </a>
+                    {% if app.project.all %}
+                      <br>
+                      <small class="text-muted">
+                        Projects:
+                        {% for project in app.project.all %}
+                          <a href="{% url 'app_tracker:project_detail' project.pk %}" class="text-decoration-none">{{ project.name }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                      </small>
+                    {% endif %}
+                  </div>
+                  <div>
+                    {% if app.has_prod_deployment %}
+                      <span class="badge bg-success" title="Production">🚀</span>
+                    {% endif %}
+                    {% if app.has_cicd %}
+                      <span class="badge bg-primary" title="CI/CD">🔄</span>
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">No applications are currently hosted here.</p>
+          {% endif %}
+        </div>
+        {% if object.applications.all %}
+          <div class="card-footer">
+            <small class="text-muted">
+              {{ object.applications.count }} application{{ object.applications.count|pluralize }}
+            </small>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="d-flex gap-2">
+    <a href="{% url 'app_tracker:host_list' %}" class="btn btn-outline-secondary">
+      ⬅️ Back to Hosts
+    </a>
+    <a href="{% url 'app_tracker:host_update' object.pk %}" class="btn btn-primary">
+      ✏️ Edit Host
+    </a>
+    <a href="{% url 'app_tracker:host_delete' object.pk %}" class="btn btn-outline-danger">
+      ❌ Delete Host
+    </a>
+  </div>
+</div>
 {% endblock %}
