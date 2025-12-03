@@ -1,5 +1,6 @@
 # app_tracker/views.py
 
+from django.db.models import Count
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -20,8 +21,104 @@ from app_tracker.models import (
     Project,
     Host,
 )
+from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
 from config.settings import THE_SITE_NAME
+
+
+@registration_accepted_required
+def dashboard(request):
+    """
+    Dashboard view for the app_tracker app providing useful statistics
+    and overviews of tracked applications.
+    """
+    # Get all applications
+    all_applications = Application.objects.all()
+
+    # Basic counts
+    total_applications = all_applications.count()
+    total_projects = Project.objects.count()
+    total_hosts = Host.objects.count()
+    total_lfs = LanguageFrameworkSystem.objects.count()
+
+    # Applications with specific features
+    apps_with_production = all_applications.filter(has_prod_deployment=True).count()
+    apps_with_cicd = all_applications.filter(has_cicd=True).count()
+    apps_with_custom_user = all_applications.filter(has_custom_user=True).count()
+    apps_public_repo = all_applications.filter(repository_is_public=True).count()
+    apps_all_tests_passing = all_applications.filter(all_tests_passing=True).count()
+
+    # Favorite applications
+    favorite_apps = all_applications.filter(is_favorite=True)[:10]
+
+    # Recent applications (by created date)
+    recent_apps = all_applications.order_by("-created")[:5]
+
+    # Applications by testing level
+    testing_level_counts = (
+        all_applications.exclude(testing_level__isnull=True)
+        .exclude(testing_level="")
+        .values("testing_level")
+        .annotate(count=Count("id"))
+        .order_by("-count")
+    )
+
+    # Language/Framework/System usage with application counts
+    lfs_usage = LanguageFrameworkSystem.objects.annotate(
+        app_count=Count("applications")
+    ).order_by("-app_count")[:10]
+
+    # Projects with their application counts
+    projects_overview = Project.objects.annotate(
+        app_count=Count("applications")
+    ).order_by("-app_count")[:10]
+
+    # Hosts by environment
+    hosts_by_environment = (
+        Host.objects.exclude(environment__isnull=True)
+        .exclude(environment="")
+        .values("environment")
+        .annotate(count=Count("id"))
+        .order_by("-count")
+    )
+
+    # Template/Archive/Official repository counts
+    template_repos = all_applications.filter(is_template_repository=True).count()
+    archive_repos = all_applications.filter(is_archive_repository=True).count()
+    official_repos = all_applications.filter(is_official_repository=True).count()
+
+    # Simple example applications
+    simple_example_apps = all_applications.filter(is_simple_example=True).count()
+
+    context = {
+        "the_site_name": THE_SITE_NAME,
+        "page_title": "App Tracker Dashboard",
+        # Basic counts
+        "total_applications": total_applications,
+        "total_projects": total_projects,
+        "total_hosts": total_hosts,
+        "total_lfs": total_lfs,
+        # Feature counts
+        "apps_with_production": apps_with_production,
+        "apps_with_cicd": apps_with_cicd,
+        "apps_with_custom_user": apps_with_custom_user,
+        "apps_public_repo": apps_public_repo,
+        "apps_all_tests_passing": apps_all_tests_passing,
+        # Lists
+        "favorite_apps": favorite_apps,
+        "recent_apps": recent_apps,
+        "testing_level_counts": testing_level_counts,
+        "lfs_usage": lfs_usage,
+        "projects_overview": projects_overview,
+        "hosts_by_environment": hosts_by_environment,
+        # Repository type counts
+        "template_repos": template_repos,
+        "archive_repos": archive_repos,
+        "official_repos": official_repos,
+        "simple_example_apps": simple_example_apps,
+    }
+
+    return render(request, "app_tracker/dashboard.html", context)
 
 
 def home(request):

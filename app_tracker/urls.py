@@ -11,6 +11,11 @@ urlpatterns = [
         views.home,
         name="home",
     ),
+    path(
+        "dashboard/",
+        views.dashboard,
+        name="dashboard",
+    ),
     path("applications/", views.ApplicationListView.as_view(), name="application_list"),
     path(
         "applications/<int:pk>/",

@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ the_site_name }} - {{ page_title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">{{ page_title }}</h1>
+
+    <!-- Summary Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body text-center">
+                    <h2 class="card-title">{{ total_applications }}</h2>
+                    <p class="card-text">Total Applications</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'app_tracker:application_list' %}" class="text-white">View All →</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body text-center">
+                    <h2 class="card-title">{{ total_projects }}</h2>
+                    <p class="card-text">Total Projects</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'app_tracker:project_list' %}" class="text-white">View All →</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-info h-100">
+                <div class="card-body text-center">
+                    <h2 class="card-title">{{ total_hosts }}</h2>
+                    <p class="card-text">Total Hosts</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'app_tracker:host_list' %}" class="text-white">View All →</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-secondary h-100">
+                <div class="card-body text-center">
+                    <h2 class="card-title">{{ total_lfs }}</h2>
+                    <p class="card-text">Languages/Frameworks</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'app_tracker:lfs_list' %}" class="text-white">View All →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Features Overview -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📊 Application Features Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 mb-2">
+                            <span class="badge bg-success me-2">{{ apps_with_production }}</span>
+                            🚀 Production Deployment
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-2">
+                            <span class="badge bg-primary me-2">{{ apps_with_cicd }}</span>
+                            🔄 CI/CD Enabled
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-2">
+                            <span class="badge bg-info me-2">{{ apps_with_custom_user }}</span>
+                            👤 Custom User Model
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-2">
+                            <span class="badge bg-warning text-dark me-2">{{ apps_public_repo }}</span>
+                            🌐 Public Repository
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-2">
+                            <span class="badge bg-success me-2">{{ apps_all_tests_passing }}</span>
+                            ✅ All Tests Passing
+                        </div>
+                        <div class="col-md-4 col-sm-6 mb-2">
+                            <span class="badge bg-secondary me-2">{{ simple_example_apps }}</span>
+                            📝 Simple Examples
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Repository Types -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📁 Repository Types</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <h3 class="text-primary">{{ template_repos }}</h3>
+                            <p>📋 Template Repositories</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h3 class="text-warning">{{ archive_repos }}</h3>
+                            <p>📦 Archive Repositories</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h3 class="text-info">{{ official_repos }}</h3>
+                            <p>🏢 Official Repositories</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Favorite Applications -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">⭐ Favorite Applications</h5>
+                </div>
+                <div class="card-body">
+                    {% if favorite_apps %}
+                        <ul class="list-group list-group-flush">
+                            {% for app in favorite_apps %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'app_tracker:application_detail' app.pk %}">{{ app.name }}</a>
+                                    <div>
+                                        {% if app.has_prod_deployment %}<span class="badge bg-success" title="Production">🚀</span>{% endif %}
+                                        {% if app.has_cicd %}<span class="badge bg-primary" title="CI/CD">🔄</span>{% endif %}
+                                        {% if app.repository_is_public %}<span class="badge bg-info" title="Public">🌐</span>{% endif %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No favorite applications yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Applications -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">🕐 Recently Added Applications</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_apps %}
+                        <ul class="list-group list-group-flush">
+                            {% for app in recent_apps %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'app_tracker:application_detail' app.pk %}">{{ app.name }}</a>
+                                    <small class="text-muted">{{ app.created|date:"M d, Y" }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No applications yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Testing Level Distribution -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">🧪 Testing Level Distribution</h5>
+                </div>
+                <div class="card-body">
+                    {% if testing_level_counts %}
+                        <ul class="list-group list-group-flush">
+                            {% for level in testing_level_counts %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        {% if level.testing_level == "high" %}
+                                            🟢 High
+                                        {% elif level.testing_level == "medium" %}
+                                            🟡 Medium
+                                        {% elif level.testing_level == "low" %}
+                                            🟠 Low
+                                        {% elif level.testing_level == "none" %}
+                                            🔴 None
+                                        {% else %}
+                                            {{ level.testing_level|title }}
+                                        {% endif %}
+                                    </span>
+                                    <span class="badge bg-primary rounded-pill">{{ level.count }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No testing level data available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Languages/Frameworks/Systems -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">💻 Top Languages/Frameworks/Systems</h5>
+                </div>
+                <div class="card-body">
+                    {% if lfs_usage %}
+                        <ul class="list-group list-group-flush">
+                            {% for lfs in lfs_usage %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'app_tracker:lfs_detail' lfs.pk %}">{{ lfs.name }}</a>
+                                    <span class="badge bg-success rounded-pill">{{ lfs.app_count }} apps</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No languages/frameworks/systems yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Projects Overview -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">📂 Projects Overview</h5>
+                </div>
+                <div class="card-body">
+                    {% if projects_overview %}
+                        <ul class="list-group list-group-flush">
+                            {% for project in projects_overview %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'app_tracker:project_detail' project.pk %}">{{ project.name }}</a>
+                                    <span class="badge bg-primary rounded-pill">{{ project.app_count }} apps</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No projects yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Hosts by Environment -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">🖥️ Hosts by Environment</h5>
+                </div>
+                <div class="card-body">
+                    {% if hosts_by_environment %}
+                        <ul class="list-group list-group-flush">
+                            {% for env in hosts_by_environment %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        {% if env.environment == "production" %}
+                                            🟢 Production
+                                        {% elif env.environment == "staging" %}
+                                            🟡 Staging
+                                        {% elif env.environment == "test" %}
+                                            🟠 Test
+                                        {% elif env.environment == "development" %}
+                                            🔵 Development
+                                        {% else %}
+                                            {{ env.environment|title }}
+                                        {% endif %}
+                                    </span>
+                                    <span class="badge bg-secondary rounded-pill">{{ env.count }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No host environment data available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">⚡ Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{% url 'app_tracker:application_create' %}" class="btn btn-primary">➕ Add Application</a>
+                        <a href="{% url 'app_tracker:project_create' %}" class="btn btn-success">➕ Add Project</a>
+                        <a href="{% url 'app_tracker:host_create' %}" class="btn btn-info">➕ Add Host</a>
+                        <a href="{% url 'app_tracker:lfs_create' %}" class="btn btn-secondary">➕ Add Language/Framework</a>
+                        <a href="{% url 'app_tracker:application_list' %}" class="btn btn-outline-primary">📋 All Applications</a>
+                        <a href="{% url 'app_tracker:home' %}" class="btn btn-outline-secondary">🏠 App Tracker Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
