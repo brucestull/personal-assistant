@@ -276,7 +276,7 @@ class Host(CreatedUpdatedBase):
         null=True,
     )
     form_factor = models.CharField(
-        max_length=15, choices=FORM_FACTOR_CHOICES, blank=True, null=True
+        max_length=20, choices=FORM_FACTOR_CHOICES, blank=True, null=True
     )
 
     ip_address = models.GenericIPAddressField(
