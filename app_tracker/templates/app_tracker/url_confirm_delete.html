@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Delete Application{% endblock %}
+{% block title %}Delete URL{% endblock %}
 
 {% block content %}
 <div class="container py-4">
   <nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'app_tracker:dashboard' %}">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'app_tracker:application_list' %}">Applications</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Delete Application</li>
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:url_list' %}">URLs</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Delete URL</li>
     </ol>
   </nav>
 
@@ -16,30 +16,32 @@
     <div class="col-lg-6">
       <div class="card border-danger">
         <div class="card-header bg-danger text-white">
-          <h5 class="mb-0">⚠️ Delete Application</h5>
+          <h5 class="mb-0">⚠️ Delete URL</h5>
         </div>
         <div class="card-body">
-          <p class="mb-3">Are you sure you want to delete the following application?</p>
+          <p class="mb-3">Are you sure you want to delete the following URL?</p>
           
           <div class="alert alert-secondary">
-            <strong>{{ object.name }}</strong>
-            {% if object.description %}
+            <strong>{{ object.label }}</strong>
+            <br>
+            <small class="text-muted">{{ object.url }}</small>
+            {% if object.application %}
               <br>
-              <small class="text-muted">{{ object.description|truncatewords:20 }}</small>
+              <small class="text-muted">Application: {{ object.application.name }}</small>
             {% endif %}
           </div>
           
           <p class="text-danger mb-4">
-            <strong>⚠️ This action cannot be undone.</strong> All associated URLs and notes will also be deleted.
+            <strong>⚠️ This action cannot be undone.</strong>
           </p>
 
           <form method="post">
             {% csrf_token %}
             <div class="d-flex gap-2">
               <button type="submit" class="btn btn-danger">
-                ❌ Yes, Delete Application
+                ❌ Yes, Delete URL
               </button>
-              <a href="{% url 'app_tracker:application_detail' object.pk %}" class="btn btn-outline-secondary">
+              <a href="{% url 'app_tracker:url_detail' object.pk %}" class="btn btn-outline-secondary">
                 Cancel
               </a>
             </div>

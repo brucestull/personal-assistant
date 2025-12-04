@@ -13,6 +13,7 @@ from app_tracker.models import (
     Project,
     OperatingSystem,
     Host,
+    URL,
 )
 
 
@@ -528,6 +529,60 @@ class HostAdmin(admin.ModelAdmin):
                     "environment",
                     "notes",
                     "applications",
+                )
+            },
+        ),
+    )
+
+
+@admin.register(URL)
+class URLAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for the URL model.
+    """
+
+    list_display = (
+        "label",
+        "url_type",
+        "application",
+        "url",
+        "created",
+    )
+    ordering = ("-created",)
+    list_filter = (
+        "url_type",
+        "application",
+        "created",
+    )
+    search_fields = (
+        "label",
+        "url",
+        "description",
+        "application__name",
+    )
+    readonly_fields = (
+        "created",
+        "updated",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "label",
+                    "url",
+                    "url_type",
+                    "description",
+                    "application",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
                 )
             },
         ),

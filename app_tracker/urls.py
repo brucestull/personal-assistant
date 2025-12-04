@@ -184,4 +184,26 @@ urlpatterns = [
         views.HostDeleteView.as_view(),
         name="host_delete",
     ),
+    # URL routes
+    path("urls/", views.URLListView.as_view(), name="url_list"),
+    path(
+        "urls/<int:pk>/",
+        views.URLDetailView.as_view(),
+        name="url_detail",
+    ),
+    path(
+        "urls/create/",
+        views.URLCreateView.as_view(),
+        name="url_create",
+    ),
+    path(
+        "urls/<int:pk>/update/",
+        views.URLUpdateView.as_view(),
+        name="url_update",
+    ),
+    path(
+        "urls/<int:pk>/delete/",
+        views.URLDeleteView.as_view(),
+        name="url_delete",
+    ),
 ]
