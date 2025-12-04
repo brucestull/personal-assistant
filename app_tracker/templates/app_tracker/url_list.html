@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}URLs{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">🔗 URLs</h1>
+    <a href="{% url 'app_tracker:url_create' %}" class="btn btn-primary">
+      ➕ Create New URL
+    </a>
+  </div>
+
+  {% if object_list %}
+    <div class="card">
+      <div class="card-header bg-dark text-white">
+        <div class="row fw-bold">
+          <div class="col-md-3">Label</div>
+          <div class="col-md-2">Type</div>
+          <div class="col-md-3">Application</div>
+          <div class="col-md-2">URL</div>
+          <div class="col-md-2">Actions</div>
+        </div>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for url in object_list %}
+          <li class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-md-3">
+                <a href="{% url 'app_tracker:url_detail' url.pk %}" class="fw-bold text-decoration-none">
+                  {{ url.label }}
+                </a>
+              </div>
+              <div class="col-md-2">
+                <span class="badge bg-secondary">{{ url.get_url_type_display }}</span>
+              </div>
+              <div class="col-md-3">
+                {% if url.application %}
+                  <a href="{% url 'app_tracker:application_detail' url.application.pk %}" class="text-decoration-none">
+                    {{ url.application.name }}
+                  </a>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </div>
+              <div class="col-md-2">
+                <a href="{{ url.url }}" target="_blank" class="text-truncate d-inline-block" style="max-width: 150px;" title="{{ url.url }}">
+                  🔗 Open
+                </a>
+              </div>
+              <div class="col-md-2">
+                <a href="{% url 'app_tracker:url_detail' url.pk %}" class="btn btn-sm btn-outline-primary me-1" title="View">
+                  👁️
+                </a>
+                <a href="{% url 'app_tracker:url_update' url.pk %}" class="btn btn-sm btn-outline-secondary me-1" title="Edit">
+                  ✏️
+                </a>
+                <a href="{% url 'app_tracker:url_delete' url.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                  ❌
+                </a>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="mt-3 text-muted">
+      <small>Total: {{ object_list|length }} URL{{ object_list|length|pluralize }}</small>
+    </div>
+  {% else %}
+    <div class="card">
+      <div class="card-body text-center py-5">
+        <h4 class="text-muted mb-3">No URLs Found</h4>
+        <p class="text-muted">Get started by creating your first URL.</p>
+        <a href="{% url 'app_tracker:url_create' %}" class="btn btn-primary">
+          ➕ Create New URL
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="mt-4">
+    <a href="{% url 'app_tracker:dashboard' %}" class="btn btn-outline-secondary">
+      ⬅️ Back to Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}

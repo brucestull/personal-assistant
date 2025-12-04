@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.label }} - URL Details{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:url_list' %}">URLs</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ object.label }}</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">🔗 {{ object.label }}</h1>
+    <div>
+      <a href="{% url 'app_tracker:url_update' object.pk %}" class="btn btn-primary me-2">
+        ✏️ Edit
+      </a>
+      <a href="{% url 'app_tracker:url_delete' object.pk %}" class="btn btn-outline-danger">
+        ❌ Delete
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Main Info Card -->
+    <div class="col-lg-8 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">📋 URL Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Label:</strong>
+              <p class="mb-0">{{ object.label }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Type:</strong>
+              <p class="mb-0">
+                <span class="badge bg-secondary">{{ object.get_url_type_display }}</span>
+              </p>
+            </div>
+            <div class="col-12 mb-3">
+              <strong class="text-muted">URL:</strong>
+              <p class="mb-0">
+                <a href="{{ object.url }}" target="_blank" class="text-break">
+                  {{ object.url }} 🔗
+                </a>
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Application:</strong>
+              <p class="mb-0">
+                {% if object.application %}
+                  <a href="{% url 'app_tracker:application_detail' object.application.pk %}" class="text-decoration-none">
+                    {{ object.application.name }}
+                  </a>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+          {% if object.description %}
+            <hr>
+            <div class="mb-3">
+              <strong class="text-muted">Description:</strong>
+              <p class="mb-0">{{ object.description|linebreaks }}</p>
+            </div>
+          {% endif %}
+        </div>
+        <div class="card-footer text-muted">
+          <small>
+            Created: {{ object.created|date:"M d, Y H:i" }} |
+            Updated: {{ object.updated|date:"M d, Y H:i" }}
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Card -->
+    <div class="col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">⚡ Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <a href="{{ object.url }}" target="_blank" class="btn btn-outline-primary">
+              🔗 Open URL in New Tab
+            </a>
+            <a href="{% url 'app_tracker:url_update' object.pk %}" class="btn btn-outline-secondary">
+              ✏️ Edit URL
+            </a>
+            {% if object.application %}
+              <a href="{% url 'app_tracker:application_detail' object.application.pk %}" class="btn btn-outline-info">
+                📱 View Application
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="d-flex gap-2">
+    <a href="{% url 'app_tracker:url_list' %}" class="btn btn-outline-secondary">
+      ⬅️ Back to URLs
+    </a>
+    <a href="{% url 'app_tracker:url_update' object.pk %}" class="btn btn-primary">
+      ✏️ Edit URL
+    </a>
+    <a href="{% url 'app_tracker:url_delete' object.pk %}" class="btn btn-outline-danger">
+      ❌ Delete URL
+    </a>
+  </div>
+</div>
+{% endblock %}

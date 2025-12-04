@@ -3,7 +3,7 @@
 from django.db import models
 from django.urls import reverse
 
-from base.models import CreatedUpdatedBase
+from base.models import CreatedUpdatedBase, URL as BaseURL
 from config.settings import AUTH_USER_MODEL
 
 
@@ -192,6 +192,33 @@ class Note(CreatedUpdatedBase):
         with.
         """
         return f"{self.title} - {self.application.name if self.application else 'No Application'}"  # noqa: E501
+
+
+class URL(BaseURL):
+    """
+    A URL associated with an application in the app_tracker.
+
+    Inherits from the abstract URL base class and adds a relationship
+    to the Application model.
+    """
+
+    application = models.ForeignKey(
+        "Application",
+        verbose_name="Application",
+        help_text="The application that this URL is associated with.",
+        on_delete=models.CASCADE,
+        related_name="urls",
+        null=True,
+        blank=True,
+    )
+
+    def get_absolute_url(self):
+        return reverse("app_tracker:url_detail", kwargs={"pk": self.pk})
+
+    class Meta:
+        verbose_name = "URL"
+        verbose_name_plural = "URLs"
+        ordering = ["label"]
 
 
 class Host(CreatedUpdatedBase):

@@ -1,23 +1,306 @@
 {% extends "base.html" %}
+
+{% block title %}{{ object.name }} - Application Details{% endblock %}
+
 {% block content %}
-  <h1>{{ object.name }}</h1>
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:application_list' %}">Applications</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ object.name }}</li>
+    </ol>
+  </nav>
 
-  <p><strong>Description:</strong> {{ object.description }}</p>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">
+      {% if object.is_favorite %}⭐ {% endif %}📱 {{ object.name }}
+    </h1>
+    <div>
+      <a href="{% url 'app_tracker:application_update' object.pk %}" class="btn btn-primary me-2">
+        ✏️ Edit
+      </a>
+      <a href="{% url 'app_tracker:application_delete' object.pk %}" class="btn btn-outline-danger">
+        ❌ Delete
+      </a>
+    </div>
+  </div>
 
-  {% if object.production_url %}
-    <p><strong>Production URL:</strong> <a href="{{ object.production_url }}">{{ object.production_url }}</a></p>
-  {% endif %}
+  <div class="row">
+    <!-- Main Info Card -->
+    <div class="col-lg-8 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">📋 Application Information</h5>
+        </div>
+        <div class="card-body">
+          {% if object.description %}
+            <div class="mb-4">
+              <strong class="text-muted">Description:</strong>
+              <p class="mb-0">{{ object.description }}</p>
+            </div>
+          {% endif %}
 
-  {% if object.repository_url %}
-    <p><strong>Repository URL:</strong> <a href="{{ object.repository_url }}">{{ object.repository_url }}</a></p>
-  {% endif %}
+          <!-- URLs Section -->
+          <div class="mb-4">
+            <h6 class="text-muted border-bottom pb-2">🔗 Links</h6>
+            <div class="row">
+              {% if object.production_url %}
+                <div class="col-md-6 mb-2">
+                  <strong>Production:</strong>
+                  <a href="{{ object.production_url }}" target="_blank" class="d-block text-truncate">
+                    {{ object.production_url }} 🔗
+                  </a>
+                </div>
+              {% endif %}
+              {% if object.repository_url %}
+                <div class="col-md-6 mb-2">
+                  <strong>Repository:</strong>
+                  <a href="{{ object.repository_url }}" target="_blank" class="d-block text-truncate">
+                    {{ object.repository_url }} 🔗
+                  </a>
+                </div>
+              {% endif %}
+              {% if object.reference_url %}
+                <div class="col-md-6 mb-2">
+                  <strong>Reference:</strong>
+                  <a href="{{ object.reference_url }}" target="_blank" class="d-block text-truncate">
+                    {{ object.reference_url }} 🔗
+                  </a>
+                </div>
+              {% endif %}
+              {% if object.reference_repository_url %}
+                <div class="col-md-6 mb-2">
+                  <strong>Reference Repository:</strong>
+                  <a href="{{ object.reference_repository_url }}" target="_blank" class="d-block text-truncate">
+                    {{ object.reference_repository_url }} 🔗
+                  </a>
+                </div>
+              {% endif %}
+              {% if object.project_board_url %}
+                <div class="col-md-6 mb-2">
+                  <strong>Project Board:</strong>
+                  <a href="{{ object.project_board_url }}" target="_blank" class="d-block text-truncate">
+                    {{ object.project_board_url }} 🔗
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
 
-  <p><strong>Favorite:</strong> {{ object.is_favorite }}</p>
-  <p><strong>Production Deployment:</strong> {{ object.has_prod_deployment }}</p>
+          <!-- Status Badges -->
+          <div class="mb-4">
+            <h6 class="text-muted border-bottom pb-2">📊 Status</h6>
+            <div class="d-flex flex-wrap gap-2">
+              {% if object.has_prod_deployment %}
+                <span class="badge bg-success">🚀 Production Deployment</span>
+              {% endif %}
+              {% if object.has_cicd %}
+                <span class="badge bg-primary">🔄 CI/CD</span>
+              {% endif %}
+              {% if object.all_tests_passing %}
+                <span class="badge bg-success">✅ Tests Passing</span>
+              {% endif %}
+              {% if object.has_custom_user %}
+                <span class="badge bg-info">👤 Custom User</span>
+              {% endif %}
+              {% if object.has_sticky_footer %}
+                <span class="badge bg-secondary">📍 Sticky Footer</span>
+              {% endif %}
+              {% if object.has_email_sending %}
+                <span class="badge bg-warning text-dark">📧 Email</span>
+              {% endif %}
+              {% if object.repository_is_public %}
+                <span class="badge bg-success">🌐 Public Repo</span>
+              {% else %}
+                <span class="badge bg-secondary">🔒 Private Repo</span>
+              {% endif %}
+              {% if object.is_template_repository %}
+                <span class="badge bg-info">📋 Template</span>
+              {% endif %}
+              {% if object.is_simple_example %}
+                <span class="badge bg-light text-dark">📚 Simple Example</span>
+              {% endif %}
+              {% if object.is_official_repository %}
+                <span class="badge bg-primary">🏛️ Official</span>
+              {% endif %}
+              {% if object.is_adapted_repository %}
+                <span class="badge bg-secondary">🔀 Adapted</span>
+              {% endif %}
+              {% if object.is_archive_repository %}
+                <span class="badge bg-dark">📦 Archived</span>
+              {% endif %}
+              {% if object.testing_level %}
+                <span class="badge bg-{% if object.testing_level == 'high' %}success{% elif object.testing_level == 'medium' %}warning text-dark{% elif object.testing_level == 'low' %}danger{% else %}secondary{% endif %}">
+                  🧪 {{ object.get_testing_level_display }} Testing
+                </span>
+              {% endif %}
+            </div>
+          </div>
 
-  <p>
-    <a href="{% url 'app_tracker:application_update' object.pk %}">✏️ Edit</a> |
-    <a href="{% url 'app_tracker:application_delete' object.pk %}">❌ Delete</a> |
-    <a href="{% url 'app_tracker:application_list' %}">⬅️ Back to list</a>
-  </p>
+          <!-- Settings Info -->
+          <div class="mb-4">
+            <h6 class="text-muted border-bottom pb-2">⚙️ Settings Configuration</h6>
+            <div class="d-flex flex-wrap gap-2">
+              {% if object.settings_in_environment %}
+                <span class="badge bg-secondary">🌍 Environment Variables</span>
+              {% endif %}
+              {% if object.settings_in_dot_env_file %}
+                <span class="badge bg-secondary">📄 .env File</span>
+              {% endif %}
+              {% if object.settings_in_dot_yml_file %}
+                <span class="badge bg-secondary">📄 YAML File</span>
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer text-muted">
+          <small>
+            Created: {{ object.created|date:"M d, Y H:i" }} |
+            Updated: {{ object.updated|date:"M d, Y H:i" }}
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <!-- Projects Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">📁 Projects</h5>
+        </div>
+        <div class="card-body">
+          {% if object.project.all %}
+            <ul class="list-group list-group-flush">
+              {% for project in object.project.all %}
+                <li class="list-group-item px-0">
+                  <a href="{% url 'app_tracker:project_detail' project.pk %}" class="text-decoration-none">
+                    {{ project.name }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">No projects associated.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Languages/Frameworks Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">🛠️ Technologies</h5>
+        </div>
+        <div class="card-body">
+          {% if object.language_framework_systems.all %}
+            <div class="d-flex flex-wrap gap-2">
+              {% for lfs in object.language_framework_systems.all %}
+                <a href="{% url 'app_tracker:lfs_detail' lfs.pk %}" class="badge bg-secondary text-decoration-none">
+                  {{ lfs.name }}
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted mb-0">No technologies listed.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Related URLs Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">🔗 Related URLs</h5>
+          <a href="{% url 'app_tracker:url_create' %}" class="btn btn-sm btn-outline-dark">➕</a>
+        </div>
+        <div class="card-body">
+          {% if object.urls.all %}
+            <ul class="list-group list-group-flush">
+              {% for url in object.urls.all %}
+                <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                  <div>
+                    <a href="{% url 'app_tracker:url_detail' url.pk %}" class="text-decoration-none">
+                      {{ url.label }}
+                    </a>
+                    <br>
+                    <small class="text-muted">{{ url.get_url_type_display }}</small>
+                  </div>
+                  <a href="{{ url.url }}" target="_blank" class="btn btn-sm btn-outline-primary">🔗</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">No additional URLs.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Notes Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">📝 Notes</h5>
+          <a href="{% url 'app_tracker:note_create' %}" class="btn btn-sm btn-outline-light">➕</a>
+        </div>
+        <div class="card-body">
+          {% if object.notes.all %}
+            <ul class="list-group list-group-flush">
+              {% for note in object.notes.all %}
+                <li class="list-group-item px-0">
+                  <a href="{% url 'app_tracker:note_detail' note.pk %}" class="text-decoration-none">
+                    {{ note.title }}
+                  </a>
+                  <br>
+                  <small class="text-muted">{{ note.content|truncatewords:10 }}</small>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">No notes.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Hosts Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">🖥️ Hosts</h5>
+        </div>
+        <div class="card-body">
+          {% if object.hosts.all %}
+            <ul class="list-group list-group-flush">
+              {% for host in object.hosts.all %}
+                <li class="list-group-item px-0">
+                  <a href="{% url 'app_tracker:host_detail' host.pk %}" class="text-decoration-none">
+                    {{ host.host_name|default:host.name }}
+                  </a>
+                  {% if host.environment %}
+                    <span class="badge bg-{% if host.environment == 'production' %}success{% elif host.environment == 'staging' %}warning text-dark{% else %}secondary{% endif %} ms-2">
+                      {{ host.environment|title }}
+                    </span>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">No hosts assigned.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="d-flex gap-2">
+    <a href="{% url 'app_tracker:application_list' %}" class="btn btn-outline-secondary">
+      ⬅️ Back to Applications
+    </a>
+    <a href="{% url 'app_tracker:application_update' object.pk %}" class="btn btn-primary">
+      ✏️ Edit Application
+    </a>
+    <a href="{% url 'app_tracker:application_delete' object.pk %}" class="btn btn-outline-danger">
+      ❌ Delete Application
+    </a>
+  </div>
+</div>
 {% endblock %}
