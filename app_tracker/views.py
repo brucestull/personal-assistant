@@ -20,6 +20,7 @@ from app_tracker.models import (
     OrganizationalConcept,
     Project,
     Host,
+    URL,
 )
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
@@ -356,3 +357,29 @@ class HostUpdateView(RegistrationAcceptedMixin, UpdateView):
 class HostDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = Host
     success_url = reverse_lazy("app_tracker:host_list")
+
+
+# URL views
+class URLListView(RegistrationAcceptedMixin, ListView):
+    model = URL
+
+
+class URLDetailView(RegistrationAcceptedMixin, DetailView):
+    model = URL
+
+
+class URLCreateView(RegistrationAcceptedMixin, CreateView):
+    model = URL
+    fields = "__all__"
+    success_url = reverse_lazy("app_tracker:url_list")
+
+
+class URLUpdateView(RegistrationAcceptedMixin, UpdateView):
+    model = URL
+    fields = "__all__"
+    success_url = reverse_lazy("app_tracker:url_list")
+
+
+class URLDeleteView(RegistrationAcceptedMixin, DeleteView):
+    model = URL
+    success_url = reverse_lazy("app_tracker:url_list")
