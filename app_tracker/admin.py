@@ -3,25 +3,56 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from app_tracker.models import (
-    Application,
-    DjangoModel,
-    Label,
-    LanguageFrameworkSystem,
-    Note,
-    OrganizationalConcept,
-    Project,
-    OperatingSystem,
-    Host,
-    URL,
-)
+from app_tracker import models
 
 
-@admin.register(OrganizationalConcept)
+# ---------------------------------------------------------------------------
+# Inlines
+# ---------------------------------------------------------------------------
+
+
+class DjangoModelInline(admin.TabularInline):
+    """
+    Inline for DjangoModel on the Application admin.
+    """
+
+    model = models.DjangoModel
+    extra = 1
+    fields = ("name", "is_current_model")
+    show_change_link = True
+
+
+class NoteInline(admin.TabularInline):
+    """
+    Inline for Note on the Application admin.
+    """
+
+    model = models.Note
+    extra = 1
+    fields = ("title", "content")
+    show_change_link = True
+
+
+class URLInline(admin.TabularInline):
+    """
+    Inline for URL on the Application admin.
+    """
+
+    model = models.URL
+    extra = 1
+    fields = ("label", "url", "url_type")
+    show_change_link = True
+
+
+# ---------------------------------------------------------------------------
+# Admin classes
+# ---------------------------------------------------------------------------
+
+
+@admin.register(models.OrganizationalConcept)
 class OrganizationalConceptAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel
-    for the `OrganizationalConcept` model.
+    Admin configuration for OrganizationalConcept.
     """
 
     list_display = (
@@ -32,14 +63,17 @@ class OrganizationalConceptAdmin(admin.ModelAdmin):
     )
     ordering = ("-created",)
     list_filter = ("created",)
+    date_hierarchy = "created"
     search_fields = (
         "name",
         "description",
+        "applications__name",
     )
     readonly_fields = (
         "created",
         "updated",
     )
+    filter_horizontal = ("applications",)
     fieldsets = (
         (
             None,
@@ -64,23 +98,18 @@ class OrganizationalConceptAdmin(admin.ModelAdmin):
 
     def applications_list(self, obj):
         """
-        Return a list of the `Application` objects associated with the
-        `OrganizationalConcept` object.
-
-        :param obj: The `OrganizationalConcept` object.
-        :return: A queryset of the `Application` objects associated with the
-        `OrganizationalConcept` object.
+        Return a comma-separated list of associated Applications.
         """
-        return list(obj.applications.all())
+        names = obj.applications.values_list("name", flat=True)
+        return ", ".join(names) if names else "—"
 
     applications_list.short_description = "Application(s)"
 
 
-@admin.register(LanguageFrameworkSystem)
+@admin.register(models.LanguageFrameworkSystem)
 class LanguageFrameworkSystemAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
-    the `LanguageFrameworkSystem` model.
+    Admin configuration for LanguageFrameworkSystem.
     """
 
     list_display = (
@@ -89,6 +118,7 @@ class LanguageFrameworkSystemAdmin(admin.ModelAdmin):
     )
     ordering = ("-created",)
     list_filter = ("created",)
+    date_hierarchy = "created"
     search_fields = ("name",)
     readonly_fields = (
         "created",
@@ -111,11 +141,10 @@ class LanguageFrameworkSystemAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Project)
+@admin.register(models.Project)
 class ProjectAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
-    the `Project` model.
+    Admin configuration for Project.
     """
 
     list_display = (
@@ -129,15 +158,18 @@ class ProjectAdmin(admin.ModelAdmin):
         "owner__username",
         "created",
     )
+    date_hierarchy = "created"
     search_fields = (
         "name",
         "owner__username",
         "description",
+        "applications__name",
     )
     readonly_fields = (
         "created",
         "updated",
     )
+    filter_horizontal = ("owner", "applications")
     fieldsets = (
         (
             None,
@@ -145,6 +177,7 @@ class ProjectAdmin(admin.ModelAdmin):
                 "fields": (
                     "name",
                     "owner",
+                    "applications",
                     "description",
                 )
             },
@@ -162,60 +195,39 @@ class ProjectAdmin(admin.ModelAdmin):
 
     def application_list(self, obj):
         """
-        Return a list of the `Application` objects associated with the
-        `Project` object.
-
-        :param obj: The `Project` object.
-        :return: A queryset of the `Application` objects associated with
-        the `Project` object.
+        Return a comma-separated list of Applications on this Project.
         """
-        return list(obj.applications.all())
+        names = obj.applications.values_list("name", flat=True)
+        return ", ".join(names) if names else "—"
 
-    # Set the `short_description` attribute of the `application_list` method
-    # to "Applications" so that the `Applications` column in the admin panel
-    # will display "Applications" instead of "Application List".
     application_list.short_description = "Application(s)"
 
     def owner_list(self, obj):
         """
-        Return a list of the `CustomUser` objects associated with the
-        `Project` object.
-
-        :param obj: The `Project` object.
-        :return: A queryset of the `CustomUser` objects associated with the
-        `Project` object.
+        Return a comma-separated list of Owners on this Project.
         """
-        return list(obj.owner.all())
+        names = [str(owner) for owner in obj.owner.all()]
+        return ", ".join(names) if names else "—"
 
-    # Set the `short_description` attribute of the `owner_list` method
-    # to "Owners" so that the `Owners` column in the admin panel
-    # will display "Owners" instead of "Owner List".
     owner_list.short_description = "Owner(s)"
 
 
-@admin.register(Application)
+@admin.register(models.Application)
 class ApplicationAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel
-    for the `Application` model.
+    Admin configuration for Application.
     """
 
-    # Items in the `list_display` attribute will be displayed as columns
-    # in the admin panel.
     list_display = (
         "name",
-        # We can use the `language_framework_systems_list` method, defined
-        # below, to display the `LanguageFrameworkSystem` objects associated
-        # with the `Application` object.
         "language_framework_systems_list",
-        "all_tests_passing",
         "testing_level",
+        "all_tests_passing",
         "has_prod_deployment",
+        "has_cicd",
+        "is_favorite",
     )
-    # The `ordering` attribute will order the `Application` objects in the
-    # admin panel.
     ordering = ("-created",)
-    # The `list_filter` attribute will display filters in the admin panel.
     list_filter = (
         "is_favorite",
         "language_framework_systems",
@@ -234,24 +246,17 @@ class ApplicationAdmin(admin.ModelAdmin):
         "settings_in_dot_env_file",
         "settings_in_dot_yml_file",
     )
-    # The `search_fields` attribute will display a search bar in the admin
-    # panel.
-    # It will allow searching for `Application` objects by the `name` and
-    # `language_framework_systems__name` fields.
     search_fields = (
         "name",
         "language_framework_systems__name",
+        "project__name",
     )
-    # The `readonly_fields` attribute will make the `created` and `updated`
-    # fields read-only in the admin panel.
     readonly_fields = (
         "created",
         "updated",
     )
-    # The `fieldsets` attribute will group fields in the admin panel.
-    # The first item in the tuple is the title of the fieldset.
-    # The second item in the tuple is a dictionary of the fields in the
-    # fieldset.
+    filter_horizontal = ("project", "language_framework_systems")
+    date_hierarchy = "created"
     fieldsets = (
         (
             _("General"),
@@ -317,7 +322,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "settings_in_dot_yml_file",
                 ),
                 "classes": ("wide", "extrapretty", "collapse"),
-                # "classes": ("wide", "extrapretty"),
             },
         ),
         (
@@ -331,31 +335,22 @@ class ApplicationAdmin(admin.ModelAdmin):
             },
         ),
     )
+    inlines = [DjangoModelInline, NoteInline, URLInline]
 
     def language_framework_systems_list(self, obj):
         """
-        Return a list of the `LanguageFrameworkSystem` objects associated
-        with the `Application` object.
-
-        :param obj: The `Application` object.
-        :return: A queryset of the `LanguageFrameworkSystem` objects
-        associated with the `Application` object.
+        Return a comma-separated list of Language/Framework/Systems.
         """
-        return list(obj.language_framework_systems.all())
+        names = obj.language_framework_systems.values_list("name", flat=True)
+        return ", ".join(names) if names else "—"
 
-    # Set the `short_description` attribute of the
-    # `language_framework_systems_list` method to "Language Framework Systems"
-    # so that the `Language Framework Systems` column in the admin panel will
-    # display "Language Framework Systems" instead of
-    # "Language Framework Systems List".
-    language_framework_systems_list.short_description = "Languages-Frameworks-Systems"
+    language_framework_systems_list.short_description = "Languages/Frameworks/Systems"
 
 
-@admin.register(Label)
+@admin.register(models.Label)
 class LabelAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
-    the `Label` model.
+    Admin configuration for Label.
     """
 
     list_display = (
@@ -369,11 +364,17 @@ class LabelAdmin(admin.ModelAdmin):
         "application",
         "created",
     )
-    search_fields = ("label__name",)
+    date_hierarchy = "created"
+    search_fields = (
+        "name",
+        "description",
+        "application__name",
+    )
     readonly_fields = (
         "created",
         "updated",
     )
+    filter_horizontal = ("application",)
     fieldsets = (
         (
             None,
@@ -398,17 +399,16 @@ class LabelAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Note)
+@admin.register(models.Note)
 class NoteAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
-    the `Note` model.
+    Admin configuration for Note.
     """
 
     list_display = (
         "title",
         "application",
-        "content",
+        "short_content",
         "created",
     )
     ordering = ("-created",)
@@ -416,11 +416,18 @@ class NoteAdmin(admin.ModelAdmin):
         "application",
         "created",
     )
-    search_fields = ("application__name",)
+    date_hierarchy = "created"
+    search_fields = (
+        "title",
+        "content",
+        "application__name",
+    )
     readonly_fields = (
         "created",
         "updated",
     )
+    autocomplete_fields = ("application",)
+    list_select_related = ("application",)
     fieldsets = (
         (
             None,
@@ -443,29 +450,47 @@ class NoteAdmin(admin.ModelAdmin):
         ),
     )
 
+    def short_content(self, obj):
+        """
+        Truncated note content for list display.
+        """
+        if not obj.content:
+            return ""
+        return (obj.content[:75] + "…") if len(obj.content) > 75 else obj.content
 
-@admin.register(DjangoModel)
+    short_content.short_description = "Content"
+
+
+@admin.register(models.DjangoModel)
 class DjangoModelAdmin(admin.ModelAdmin):
     """
-    Inherit from `admin.ModelAdmin` so we can customize the admin panel for
-    the `DjangoModel` model.
+    Admin configuration for DjangoModel.
     """
 
     list_display = (
         "name",
-        "is_current_model",
         "application",
+        "is_current_model",
+        "created",
     )
     ordering = ("-created",)
     list_filter = (
         "application",
+        "is_current_model",
         "created",
     )
-    search_fields = ("application__name",)
+    date_hierarchy = "created"
+    search_fields = (
+        "name",
+        "description",
+        "application__name",
+    )
     readonly_fields = (
         "created",
         "updated",
     )
+    autocomplete_fields = ("application",)
+    list_select_related = ("application",)
     fieldsets = (
         (
             None,
@@ -490,15 +515,23 @@ class DjangoModelAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(OperatingSystem)
+@admin.register(models.OperatingSystem)
 class OperatingSystemAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
+    """
+    Admin configuration for OperatingSystem.
+    """
+
+    search_fields = ["name", "code_name"]
     list_display = ["name", "code_name"]
     ordering = ["name"]
 
 
-@admin.register(Host)
+@admin.register(models.Host)
 class HostAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Host.
+    """
+
     list_display = [
         "host_name",
         "name",
@@ -507,12 +540,16 @@ class HostAdmin(admin.ModelAdmin):
         "form_factor",
         "ram",
         "environment",
+        "created",
     ]
-    list_filter = ["environment", "operating_system"]
-    search_fields = ["host_name", "ip_address", "notes"]
+    list_filter = ["environment", "operating_system", "form_factor"]
+    date_hierarchy = "created"
+    search_fields = ["host_name", "ip_address", "notes", "name"]
     ordering = ["host_name"]
     autocomplete_fields = ["operating_system", "applications"]
     filter_horizontal = ["applications"]
+    readonly_fields = ("created", "updated")
+    list_select_related = ("operating_system",)
     fieldsets = (
         (
             None,
@@ -532,10 +569,17 @@ class HostAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        (
+            "Dates",
+            {
+                "fields": ("created", "updated"),
+                "classes": ("collapse",),
+            },
+        ),
     )
 
 
-@admin.register(URL)
+@admin.register(models.URL)
 class URLAdmin(admin.ModelAdmin):
     """
     Admin configuration for the URL model.
@@ -554,6 +598,7 @@ class URLAdmin(admin.ModelAdmin):
         "application",
         "created",
     )
+    date_hierarchy = "created"
     search_fields = (
         "label",
         "url",
@@ -564,6 +609,8 @@ class URLAdmin(admin.ModelAdmin):
         "created",
         "updated",
     )
+    autocomplete_fields = ("application",)
+    list_select_related = ("application",)
     fieldsets = (
         (
             None,

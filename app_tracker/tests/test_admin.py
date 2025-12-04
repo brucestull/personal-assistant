@@ -5,11 +5,19 @@ from django.test import RequestFactory, TestCase
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import CustomUser
-from app_tracker.admin import (ApplicationAdmin, LabelAdmin,
-                               LanguageFrameworkSystemAdmin,
-                               OrganizationalConceptAdmin, ProjectAdmin)
-from app_tracker.models import (Application, LanguageFrameworkSystem,
-                                OrganizationalConcept, Project)
+from app_tracker.admin import (
+    ApplicationAdmin,
+    LabelAdmin,
+    LanguageFrameworkSystemAdmin,
+    OrganizationalConceptAdmin,
+    ProjectAdmin,
+)
+from app_tracker.models import (
+    Application,
+    LanguageFrameworkSystem,
+    OrganizationalConcept,
+    Project,
+)
 
 
 class OrganizationalConceptAdminTest(TestCase):
@@ -37,12 +45,16 @@ class OrganizationalConceptAdminTest(TestCase):
             ("created",),
         )
 
+    def test_date_hierarchy(self):
+        self.assertEqual(OrganizationalConceptAdmin.date_hierarchy, "created")
+
     def test_search_fields(self):
         self.assertEqual(
             OrganizationalConceptAdmin.search_fields,
             (
                 "name",
                 "description",
+                "applications__name",
             ),
         )
 
@@ -53,6 +65,12 @@ class OrganizationalConceptAdminTest(TestCase):
                 "created",
                 "updated",
             ),
+        )
+
+    def test_filter_horizontal(self):
+        self.assertEqual(
+            OrganizationalConceptAdmin.filter_horizontal,
+            ("applications",),
         )
 
     def test_fieldsets(self):
@@ -85,64 +103,66 @@ class OrganizationalConceptAdminTest(TestCase):
         """
         Tests for the 'applications_list' method using real objects.
         """
-        self.app_01 = Application.objects.create(
+        app_01 = Application.objects.create(
             name="App 01",
             description="Description 01",
         )
-        self.app_02 = Application.objects.create(
+        app_02 = Application.objects.create(
             name="App 02",
             description="Description 02",
         )
-        self.app_03 = Application.objects.create(
+        app_03 = Application.objects.create(
             name="App 03",
             description="Description 03",
         )
-        self.org_concept_01 = OrganizationalConcept.objects.create(
+        org_concept_01 = OrganizationalConcept.objects.create(
             name="Concept 01",
             description="Description 01",
         )
-        self.org_concept_01.applications.add(self.app_01, self.app_02)
-        self.org_concept_02 = OrganizationalConcept.objects.create(
+        org_concept_01.applications.add(app_01, app_02)
+        org_concept_02 = OrganizationalConcept.objects.create(
             name="Concept 02",
             description="Description 02",
         )
-        self.org_concept_02.applications.add(self.app_03)
+        org_concept_02.applications.add(app_03)
         admin_instance = OrganizationalConceptAdmin(
             model=OrganizationalConcept, admin_site=None
         )
-        result_01 = admin_instance.applications_list(obj=self.org_concept_01)
-        self.assertEqual(len(result_01), 2)
-        self.assertIn(self.app_01, result_01)
-        self.assertIn(self.app_02, result_01)
-        self.assertNotIn(self.app_03, result_01)
-        result_02 = admin_instance.applications_list(obj=self.org_concept_02)
-        self.assertEqual(len(result_02), 1)
-        self.assertIn(self.app_03, result_02)
-        self.assertNotIn(self.app_01, result_02)
+
+        result_01 = admin_instance.applications_list(obj=org_concept_01)
+        self.assertIsInstance(result_01, str)
+        self.assertIn("App 01", result_01)
+        self.assertIn("App 02", result_01)
+        self.assertNotIn("App 03", result_01)
+
+        result_02 = admin_instance.applications_list(obj=org_concept_02)
+        self.assertIsInstance(result_02, str)
+        self.assertIn("App 03", result_02)
+        self.assertNotIn("App 01", result_02)
+        self.assertNotIn("App 02", result_02)
 
     def test_applications_list_mock(self):
         """
         Tests for the 'applications_list' method using a mock.
         """
-        # Set up the mock
         mock_obj = Mock()
         mock_applications = Mock()
         type(mock_obj).applications = PropertyMock(
             return_value=mock_applications,
         )
 
-        # Define the fake applications list
-        fake_applications = ["app1", "app2", "app3"]
-        mock_applications.all.return_value = fake_applications
+        mock_applications.values_list.return_value = [
+            "App 1",
+            "App 2",
+            "App 3",
+        ]
 
-        # Initialize your admin class
         admin_instance = OrganizationalConceptAdmin(
             model=OrganizationalConcept, admin_site=None
         )
 
-        # Call the method and check the result
         result = admin_instance.applications_list(obj=mock_obj)
-        self.assertEqual(result, fake_applications)
+        self.assertEqual(result, "App 1, App 2, App 3")
 
 
 class LanguageFrameworkSystemAdminTest(TestCase):
@@ -178,6 +198,9 @@ class LanguageFrameworkSystemAdminTest(TestCase):
             self.admin.list_filter,
             ("created",),
         )
+
+    def test_date_hierarchy(self):
+        self.assertEqual(self.admin.date_hierarchy, "created")
 
     def test_search_fields(self):
         self.assertEqual(
@@ -242,6 +265,9 @@ class ProjectAdminTest(TestCase):
             ),
         )
 
+    def test_date_hierarchy(self):
+        self.assertEqual(ProjectAdmin.date_hierarchy, "created")
+
     def test_search_fields(self):
         self.assertEqual(
             ProjectAdmin.search_fields,
@@ -249,6 +275,7 @@ class ProjectAdminTest(TestCase):
                 "name",
                 "owner__username",
                 "description",
+                "applications__name",
             ),
         )
 
@@ -261,6 +288,12 @@ class ProjectAdminTest(TestCase):
             ),
         )
 
+    def test_filter_horizontal(self):
+        self.assertEqual(
+            ProjectAdmin.filter_horizontal,
+            ("owner", "applications"),
+        )
+
     def test_fieldsets(self):
         self.assertEqual(
             ProjectAdmin.fieldsets,
@@ -271,6 +304,7 @@ class ProjectAdminTest(TestCase):
                         "fields": (
                             "name",
                             "owner",
+                            "applications",
                             "description",
                         ),
                     },
@@ -291,103 +325,102 @@ class ProjectAdminTest(TestCase):
         """
         Tests for the 'application_list' method using real objects.
         """
-        self.app_01 = Application.objects.create(
+        app_01 = Application.objects.create(
             name="App 01",
             description="Description 01",
         )
-        self.app_02 = Application.objects.create(
+        app_02 = Application.objects.create(
             name="App 02",
             description="Description 02",
         )
-        self.app_03 = Application.objects.create(
+        app_03 = Application.objects.create(
             name="App 03",
             description="Description 03",
         )
-        self.project_01 = Project.objects.create(
+        project_01 = Project.objects.create(
             name="Project 01",
             description="Description 01",
         )
-        self.project_01.applications.add(self.app_01, self.app_02)
-        self.project_02 = Project.objects.create(
+        project_01.applications.add(app_01, app_02)
+        project_02 = Project.objects.create(
             name="Project 02",
             description="Description 02",
         )
-        # Either of these two lines to relate project to application will work.
-        # self.project_02.applications.add(self.app_03)
-        # self.app_03.project.add(self.project_02)
-        self.project_02.applications.add(self.app_03)
+        project_02.applications.add(app_03)
+
         admin_instance = ProjectAdmin(model=Project, admin_site=None)
-        result_01 = admin_instance.application_list(obj=self.project_01)
-        self.assertEqual(len(result_01), 2)
-        self.assertIn(self.app_01, result_01)
-        self.assertIn(self.app_02, result_01)
-        self.assertNotIn(self.app_03, result_01)
-        result_02 = admin_instance.application_list(obj=self.project_02)
-        self.assertEqual(len(result_02), 1)
-        self.assertIn(self.app_03, result_02)
-        self.assertNotIn(self.app_01, result_02)
+
+        result_01 = admin_instance.application_list(obj=project_01)
+        self.assertIsInstance(result_01, str)
+        self.assertIn("App 01", result_01)
+        self.assertIn("App 02", result_01)
+        self.assertNotIn("App 03", result_01)
+
+        result_02 = admin_instance.application_list(obj=project_02)
+        self.assertIsInstance(result_02, str)
+        self.assertIn("App 03", result_02)
+        self.assertNotIn("App 01", result_02)
+        self.assertNotIn("App 02", result_02)
 
     def test_application_list_method_mock(self):
         """
         Tests for the 'application_list' method using a mock.
         """
-        # Set up the mock
         mock_obj = Mock()
         mock_applications = Mock()
         type(mock_obj).applications = PropertyMock(
             return_value=mock_applications,
         )
 
-        # Define the fake applications list
-        fake_applications = ["app1", "app2", "app3"]
-        mock_applications.all.return_value = fake_applications
+        mock_applications.values_list.return_value = ["app1", "app2", "app3"]
 
-        # Initialize your admin class
         admin_instance = ProjectAdmin(model=Project, admin_site=None)
 
-        # Call the method and check the result
         result = admin_instance.application_list(obj=mock_obj)
-        self.assertEqual(result, fake_applications)
+        self.assertEqual(result, "app1, app2, app3")
 
     def test_owner_list_method(self):
         """
         Tests for the 'owner_list' method using real objects.
         """
-        self.user_dezzi_kitten = CustomUser.objects.create_user(
+        user_dezzi_kitten = CustomUser.objects.create_user(
             username="DezziKitten",
             email="DezziKitten@purr.scratch",
             password="MeowMeow42",
         )
-        self.user_zeus = CustomUser.objects.create_user(
+        user_zeus = CustomUser.objects.create_user(
             username="Zeus",
             email="Zeus@purr.scratch",
             password="MeowMeow42",
         )
-        self.user_apollo = CustomUser.objects.create_user(
+        user_apollo = CustomUser.objects.create_user(
             username="Apollo",
             email="Apollo@purr.scratch",
             password="MeowMeow42",
         )
-        self.project_01 = Project.objects.create(
+        project_01 = Project.objects.create(
             name="Project 01",
             description="Description 01",
         )
-        self.project_01.owner.add(self.user_dezzi_kitten, self.user_zeus)
-        self.project_02 = Project.objects.create(
+        project_01.owner.add(user_dezzi_kitten, user_zeus)
+        project_02 = Project.objects.create(
             name="Project 02",
             description="Description 02",
         )
-        self.project_02.owner.add(self.user_apollo)
+        project_02.owner.add(user_apollo)
         admin_instance = ProjectAdmin(model=Project, admin_site=None)
-        result_01 = admin_instance.owner_list(obj=self.project_01)
-        self.assertEqual(len(result_01), 2)
-        self.assertIn(self.user_dezzi_kitten, result_01)
-        self.assertIn(self.user_zeus, result_01)
-        self.assertNotIn(self.user_apollo, result_01)
-        result_02 = admin_instance.owner_list(obj=self.project_02)
-        self.assertEqual(len(result_02), 1)
-        self.assertIn(self.user_apollo, result_02)
-        self.assertNotIn(self.user_dezzi_kitten, result_02)
+
+        result_01 = admin_instance.owner_list(obj=project_01)
+        self.assertIsInstance(result_01, str)
+        self.assertIn("DezziKitten", result_01)
+        self.assertIn("Zeus", result_01)
+        self.assertNotIn("Apollo", result_01)
+
+        result_02 = admin_instance.owner_list(obj=project_02)
+        self.assertIsInstance(result_02, str)
+        self.assertIn("Apollo", result_02)
+        self.assertNotIn("DezziKitten", result_02)
+        self.assertNotIn("Zeus", result_02)
 
 
 class ApplicationAdminTest(TestCase):
@@ -398,11 +431,9 @@ class ApplicationAdminTest(TestCase):
             email="testuser@email.app",
             password="testpass",
         )
-        self.application_01 = (
-            Application.objects.create(
-                name="Big Django App",
-                description="A big Django app.",
-            ),
+        self.application_01 = Application.objects.create(
+            name="Big Django App",
+            description="A big Django app.",
         )
         self.admin = ApplicationAdmin(Application, admin.site)
 
@@ -412,9 +443,11 @@ class ApplicationAdminTest(TestCase):
             (
                 "name",
                 "language_framework_systems_list",
-                "all_tests_passing",
                 "testing_level",
+                "all_tests_passing",
                 "has_prod_deployment",
+                "has_cicd",
+                "is_favorite",
             ),
         )
 
@@ -450,6 +483,7 @@ class ApplicationAdminTest(TestCase):
             (
                 "name",
                 "language_framework_systems__name",
+                "project__name",
             ),
         )
 
@@ -458,6 +492,15 @@ class ApplicationAdminTest(TestCase):
             self.admin.readonly_fields,
             ("created", "updated"),
         )
+
+    def test_filter_horizontal(self):
+        self.assertEqual(
+            self.admin.filter_horizontal,
+            ("project", "language_framework_systems"),
+        )
+
+    def test_date_hierarchy(self):
+        self.assertEqual(self.admin.date_hierarchy, "created")
 
     def test_fieldsets(self):
         self.assertEqual(
@@ -547,63 +590,59 @@ class ApplicationAdminTest(TestCase):
         Tests for the 'language_framework_systems_list' method using real
         objects.
         """
-        self.lfs_01 = LanguageFrameworkSystem.objects.create(
+        lfs_01 = LanguageFrameworkSystem.objects.create(
             name="Python",
         )
-        self.lfs_02 = LanguageFrameworkSystem.objects.create(
+        lfs_02 = LanguageFrameworkSystem.objects.create(
             name="Django",
         )
-        self.lfs_03 = LanguageFrameworkSystem.objects.create(
+        lfs_03 = LanguageFrameworkSystem.objects.create(
             name="PostgreSQL",
         )
-        self.app_01 = Application.objects.create(
+        app_01 = Application.objects.create(
             name="App 01",
             description="Description 01",
         )
-        self.app_01.language_framework_systems.add(self.lfs_01, self.lfs_02)
-        self.app_02 = Application.objects.create(
+        app_01.language_framework_systems.add(lfs_01, lfs_02)
+        app_02 = Application.objects.create(
             name="App 02",
             description="Description 02",
         )
-        self.app_02.language_framework_systems.add(self.lfs_03)
+        app_02.language_framework_systems.add(lfs_03)
         admin_instance = ApplicationAdmin(model=Application, admin_site=None)
-        result_01 = admin_instance.language_framework_systems_list(
-            obj=self.app_01,
-        )
-        self.assertEqual(len(result_01), 2)
-        self.assertIn(self.lfs_01, result_01)
-        self.assertIn(self.lfs_02, result_01)
-        self.assertNotIn(self.lfs_03, result_01)
-        result_02 = admin_instance.language_framework_systems_list(
-            obj=self.app_02,
-        )
-        self.assertEqual(len(result_02), 1)
-        self.assertIn(self.lfs_03, result_02)
-        self.assertNotIn(self.lfs_01, result_02)
+
+        result_01 = admin_instance.language_framework_systems_list(obj=app_01)
+        self.assertIsInstance(result_01, str)
+        self.assertIn("Python", result_01)
+        self.assertIn("Django", result_01)
+        self.assertNotIn("PostgreSQL", result_01)
+
+        result_02 = admin_instance.language_framework_systems_list(obj=app_02)
+        self.assertIsInstance(result_02, str)
+        self.assertIn("PostgreSQL", result_02)
+        self.assertNotIn("Python", result_02)
+        self.assertNotIn("Django", result_02)
 
     def test_language_framework_systems_list_method_mock(self):
         """
         Tests for the 'language_framework_systems_list' method using a mock.
         """
-        # Set up the mock
         mock_obj = Mock()
         mock_language_framework_systems = Mock()
         type(mock_obj).language_framework_systems = PropertyMock(
             return_value=mock_language_framework_systems,
         )
 
-        # Define the fake language_framework_systems list
-        fake_language_framework_systems = ["lfs1", "lfs2", "lfs3"]
-        mock_language_framework_systems.all.return_value = (
-            fake_language_framework_systems
-        )
+        mock_language_framework_systems.values_list.return_value = [
+            "lfs1",
+            "lfs2",
+            "lfs3",
+        ]
 
-        # Initialize your admin class
         admin_instance = ApplicationAdmin(model=Application, admin_site=None)
 
-        # Call the method and check the result
         result = admin_instance.language_framework_systems_list(obj=mock_obj)
-        self.assertEqual(result, fake_language_framework_systems)
+        self.assertEqual(result, "lfs1, lfs2, lfs3")
 
 
 class LabelAdminTest(TestCase):
@@ -630,10 +669,17 @@ class LabelAdminTest(TestCase):
             ),
         )
 
+    def test_date_hierarchy(self):
+        self.assertEqual(LabelAdmin.date_hierarchy, "created")
+
     def test_search_fields(self):
         self.assertEqual(
             LabelAdmin.search_fields,
-            ("label__name",),
+            (
+                "name",
+                "description",
+                "application__name",
+            ),
         )
 
     def test_readonly_fields(self):
@@ -643,6 +689,12 @@ class LabelAdminTest(TestCase):
                 "created",
                 "updated",
             ),
+        )
+
+    def test_filter_horizontal(self):
+        self.assertEqual(
+            LabelAdmin.filter_horizontal,
+            ("application",),
         )
 
     def test_fieldsets(self):
