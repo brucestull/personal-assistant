@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container py-3">
+  <div class="mb-3">
+    <a class="btn btn-outline-secondary" href="{% url 'kanban_cabinet:location_list' %}">&larr; Back to Locations</a>
+  </div>
+
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h3">{{ object.name }}</h1>
     <div>
