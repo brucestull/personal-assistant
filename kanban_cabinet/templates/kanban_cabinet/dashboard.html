@@ -3,6 +3,11 @@
 <div class="container py-3">
   <h1 class="mb-4">Kanban Cabinet Dashboard</h1>
 
+  <div class="mb-3">
+    <a class="btn btn-outline-primary me-2" href="{% url 'kanban_cabinet:stockitem_list' %}">Stock Items</a>
+    <a class="btn btn-outline-primary" href="{% url 'kanban_cabinet:location_list' %}">Locations</a>
+  </div>
+
   <div class="row mb-4">
     <div class="col-md-4 mb-3">
       <div class="card text-center">
