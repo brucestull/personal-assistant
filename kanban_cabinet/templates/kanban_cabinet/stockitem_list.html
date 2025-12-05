@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">Stock items</h1>
+    <a class="btn btn-primary" href="{% url 'kanban_cabinet:stockitem_create' %}">Add item</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>On hand</th>
+          <th>Target</th>
+          <th>To restock</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in object_list %}
+          <tr>
+            <td>
+              <a href="{% url 'kanban_cabinet:stockitem_detail' item.pk %}">
+                {{ item.name }}
+              </a>
+            </td>
+            <td>{{ item.location|default:"—" }}</td>
+            <td>{{ item.quantity_on_hand }} {{ item.unit_name }}</td>
+            <td>{{ item.target_quantity }} {{ item.unit_name }}</td>
+            <td>
+              {% if item.quantity_to_restock > 0 %}
+                <span class="badge bg-warning text-dark">{{ item.quantity_to_restock }} {{ item.unit_name }}</span>
+              {% else %}
+                <span class="badge bg-success">OK</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="text-muted">No items yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

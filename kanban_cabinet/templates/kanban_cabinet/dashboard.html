@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-3">
+  <h1 class="mb-4">Kanban Cabinet Dashboard</h1>
+
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="card text-center">
+        <div class="card-header">Tracked items</div>
+        <div class="card-body">
+          <p class="display-6 mb-0">{{ summary.total_items|default:0 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card text-center">
+        <div class="card-header">Needs restock</div>
+        <div class="card-body">
+          <p class="display-6 mb-0">{{ summary.total_needing_restock|default:0 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card text-center">
+        <div class="card-header">Units to acquire</div>
+        <div class="card-body">
+          <p class="display-6 mb-0">{{ summary.total_units_to_order|default:0 }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="h4 mt-4">Items needing restock</h2>
+  <div class="table-responsive mb-4">
+    <table class="table table-sm table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>On hand</th>
+          <th>Target</th>
+          <th>To restock</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items_needing_restock %}
+          <tr class="table-warning">
+            <td>{{ item.name }}</td>
+            <td>{{ item.location|default:"—" }}</td>
+            <td>{{ item.quantity_on_hand }} {{ item.unit_name }}</td>
+            <td>{{ item.target_quantity }} {{ item.unit_name }}</td>
+            <td>{{ item.quantity_to_restock }} {{ item.unit_name }}</td>
+            <td>
+              <a class="btn btn-sm btn-outline-primary"
+                 href="{% url 'kanban_cabinet:stockitem_detail' item.pk %}">View</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" class="text-muted">Nothing needs restocking. Nice!</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="h4 mt-4">All items</h2>
+  <div class="table-responsive mb-4">
+    <table class="table table-sm table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>On hand</th>
+          <th>Target</th>
+          <th>To restock</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+          <tr>
+            <td>
+              <a href="{% url 'kanban_cabinet:stockitem_detail' item.pk %}">
+                {{ item.name }}
+              </a>
+            </td>
+            <td>{{ item.location|default:"—" }}</td>
+            <td>{{ item.quantity_on_hand }} {{ item.unit_name }}</td>
+            <td>{{ item.target_quantity }} {{ item.unit_name }}</td>
+            <td>
+              {% if item.quantity_to_restock > 0 %}
+                <span class="badge bg-warning text-dark">{{ item.quantity_to_restock }} {{ item.unit_name }}</span>
+              {% else %}
+                <span class="badge bg-success">OK</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="text-muted">No items yet. Add your first one.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

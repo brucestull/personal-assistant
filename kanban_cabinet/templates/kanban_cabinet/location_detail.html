@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">{{ object.name }}</h1>
+    <div>
+      <a class="btn btn-sm btn-outline-secondary"
+         href="{% url 'kanban_cabinet:location_update' object.pk %}">Edit</a>
+      <a class="btn btn-sm btn-outline-danger"
+         href="{% url 'kanban_cabinet:location_delete' object.pk %}">Delete</a>
+    </div>
+  </div>
+
+  <p class="mb-3">{{ object.description|default:"No description" }}</p>
+
+  <h2 class="h5 mt-4">Items in this location</h2>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>On hand</th>
+          <th>Target</th>
+          <th>To restock</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in object.items.all %}
+          <tr>
+            <td>
+              <a href="{% url 'kanban_cabinet:stockitem_detail' item.pk %}">
+                {{ item.name }}
+              </a>
+            </td>
+            <td>{{ item.quantity_on_hand }} {{ item.unit_name }}</td>
+            <td>{{ item.target_quantity }} {{ item.unit_name }}</td>
+            <td>
+              {% if item.quantity_to_restock > 0 %}
+                <span class="badge bg-warning text-dark">{{ item.quantity_to_restock }} {{ item.unit_name }}</span>
+              {% else %}
+                <span class="badge bg-success">OK</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4" class="text-muted">No items in this location.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
