@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">{{ object.name }}</h1>
+    <div>
+      <a class="btn btn-sm btn-outline-secondary"
+         href="{% url 'kanban_cabinet:stockitem_update' object.pk %}">Edit</a>
+      <a class="btn btn-sm btn-outline-danger"
+         href="{% url 'kanban_cabinet:stockitem_delete' object.pk %}">Delete</a>
+    </div>
+  </div>
+
+  <dl class="row">
+    <dt class="col-sm-3">Location</dt>
+    <dd class="col-sm-9">{{ object.location|default:"—" }}</dd>
+
+    <dt class="col-sm-3">On hand</dt>
+    <dd class="col-sm-9">{{ object.quantity_on_hand }} {{ object.unit_name }}</dd>
+
+    <dt class="col-sm-3">Target</dt>
+    <dd class="col-sm-9">{{ object.target_quantity }} {{ object.unit_name }}</dd>
+
+    <dt class="col-sm-3">To restock</dt>
+    <dd class="col-sm-9">
+      {% if object.quantity_to_restock > 0 %}
+        {{ object.quantity_to_restock }} {{ object.unit_name }}
+      {% else %}
+        <span class="badge bg-success">OK</span>
+      {% endif %}
+    </dd>
+
+    <dt class="col-sm-3">Physical?</dt>
+    <dd class="col-sm-9">
+      {% if object.is_physical %}Yes{% else %}No{% endif %}
+    </dd>
+
+    <dt class="col-sm-3">Description</dt>
+    <dd class="col-sm-9">{{ object.description|default:"—" }}</dd>
+  </dl>
+</div>
+{% endblock %}

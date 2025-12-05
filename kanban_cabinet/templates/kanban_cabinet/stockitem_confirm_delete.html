@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-3">
+  <h1 class="h3 mb-3">Delete item</h1>
+  <p>Are you sure you want to delete <strong>{{ object }}</strong>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <a class="btn btn-secondary" href="{% url 'kanban_cabinet:stockitem_detail' object.pk %}">Cancel</a>
+    <button class="btn btn-danger" type="submit">Delete</button>
+  </form>
+</div>
+{% endblock %}
