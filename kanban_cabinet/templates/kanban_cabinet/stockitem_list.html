@@ -6,6 +6,11 @@
     <a class="btn btn-primary" href="{% url 'kanban_cabinet:stockitem_create' %}">Add item</a>
   </div>
 
+  <div class="mb-3">
+    <a class="btn btn-outline-secondary me-2" href="{% url 'kanban_cabinet:dashboard' %}">Dashboard</a>
+    <a class="btn btn-outline-secondary" href="{% url 'kanban_cabinet:location_list' %}">Locations</a>
+  </div>
+
   <div class="table-responsive">
     <table class="table table-sm table-striped align-middle">
       <thead>
