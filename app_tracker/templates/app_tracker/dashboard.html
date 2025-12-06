@@ -174,6 +174,39 @@
         </div>
     </div>
 
+    <!-- Pending Deployment Applications -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">⏳ Pending Deployment</h5>
+                </div>
+                <div class="card-body">
+                    {% if pending_deployment_apps %}
+                        <p class="text-muted mb-3">
+                            Applications/packages that are yet to be implemented on a server for use by resources.
+                        </p>
+                        <ul class="list-group list-group-flush">
+                            {% for app in pending_deployment_apps %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'app_tracker:application_detail' app.pk %}">{{ app.name }}</a>
+                                    <div>
+                                        {% if app.description %}
+                                            <small class="text-muted me-2">{{ app.description|truncatewords:10 }}</small>
+                                        {% endif %}
+                                        <span class="badge bg-danger" title="Pending Deployment">⏳</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No applications pending deployment. All caught up! 🎉</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!-- Testing Level Distribution -->
         <div class="col-md-6 mb-4">
