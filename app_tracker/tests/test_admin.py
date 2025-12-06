@@ -448,6 +448,7 @@ class ApplicationAdminTest(TestCase):
                 "has_prod_deployment",
                 "has_cicd",
                 "is_favorite",
+                "is_pending_deployment",
             ),
         )
 
@@ -459,6 +460,7 @@ class ApplicationAdminTest(TestCase):
             self.admin.list_filter,
             (
                 "is_favorite",
+                "is_pending_deployment",
                 "language_framework_systems",
                 "testing_level",
                 "has_prod_deployment",
@@ -547,6 +549,7 @@ class ApplicationAdminTest(TestCase):
                             (
                                 "has_cicd",
                                 "is_simple_example",
+                                "is_pending_deployment",
                             ),
                             (
                                 "repository_is_public",
