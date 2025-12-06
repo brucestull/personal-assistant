@@ -533,6 +533,15 @@ class Application(CreatedUpdatedBase):
         ),
         default=False,
     )
+    is_pending_deployment = models.BooleanField(
+        verbose_name="Is Pending Deployment",
+        help_text=(
+            "Whether or not the application is pending deployment to a server "
+            "(e.g., packages like DuckDNS, Docker Engine, or Jenkins yet to be "
+            "implemented on a server)."
+        ),
+        default=False,
+    )
     # `TESTING_LEVEL_CHOICES` is a list of tuples that represent the
     # choices for the `testing_level` field.
     TESTING_LEVEL_CHOICES = [

@@ -723,6 +723,26 @@ class ApplicationModelTest(TestCase):
         default = application._meta.get_field("is_template_repository").default
         self.assertFalse(default)
 
+    def test_is_pending_deployment_verbose_name(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        field_label = application._meta.get_field("is_pending_deployment").verbose_name
+        self.assertEqual(field_label, "Is Pending Deployment")
+
+    def test_is_pending_deployment_help_text(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        help_text = application._meta.get_field("is_pending_deployment").help_text
+        self.assertEqual(
+            help_text,
+            "Whether or not the application is pending deployment to a server "
+            "(e.g., packages like DuckDNS, Docker Engine, or Jenkins yet to be "
+            "implemented on a server).",
+        )
+
+    def test_is_pending_deployment_default_false(self):
+        application = Application.objects.get(id=self.application_01.pk)
+        default = application._meta.get_field("is_pending_deployment").default
+        self.assertFalse(default)
+
     def test_testing_level_verbose_name(self):
         application = Application.objects.get(id=self.application_01.pk)
         field_label = application._meta.get_field("testing_level").verbose_name
