@@ -91,6 +91,9 @@ def dashboard(request):
     # Simple example applications
     simple_example_apps = all_applications.filter(is_simple_example=True).count()
 
+    # Pending deployment applications
+    pending_deployment_apps = all_applications.filter(is_pending_deployment=True)
+
     context = {
         "the_site_name": THE_SITE_NAME,
         "page_title": "App Tracker Dashboard",
@@ -117,6 +120,8 @@ def dashboard(request):
         "archive_repos": archive_repos,
         "official_repos": official_repos,
         "simple_example_apps": simple_example_apps,
+        # Pending deployment
+        "pending_deployment_apps": pending_deployment_apps,
     }
 
     return render(request, "app_tracker/dashboard.html", context)

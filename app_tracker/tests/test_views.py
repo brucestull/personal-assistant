@@ -136,6 +136,7 @@ class DashboardViewTest(TestCase):
         self.assertIn("lfs_usage", response.context)
         self.assertIn("projects_overview", response.context)
         self.assertIn("hosts_by_environment", response.context)
+        self.assertIn("pending_deployment_apps", response.context)
 
     def test_dashboard_displays_correct_counts(self):
         """
@@ -181,3 +182,30 @@ class DashboardViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["favorite_apps"]), 1)
         self.assertEqual(response.context["favorite_apps"][0].name, "Favorite App")
+
+    def test_dashboard_displays_pending_deployment_apps(self):
+        """
+        Test that the dashboard displays applications pending deployment.
+        """
+        # Create an application pending deployment
+        app = Application.objects.create(
+            name="Docker Engine",
+            description="Container runtime engine",
+            is_pending_deployment=True,
+        )
+        app.language_framework_systems.add(self.lfs)
+
+        # Create a non-pending application
+        app2 = Application.objects.create(
+            name="Deployed App",
+            is_pending_deployment=False,
+        )
+        app2.language_framework_systems.add(self.lfs)
+
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(reverse("app_tracker:dashboard"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["pending_deployment_apps"]), 1)
+        self.assertEqual(
+            response.context["pending_deployment_apps"][0].name, "Docker Engine"
+        )
