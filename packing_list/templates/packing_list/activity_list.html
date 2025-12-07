@@ -8,6 +8,8 @@
 
 {% block content %}
 <a href="{% url 'packing_list:activity_create' %}" class="btn btn-primary mb-3">Add Activity</a>
+<a href="{% url 'packing_list:item_list' %}" class="btn btn-secondary mb-3">View Items</a>
+<a href="{% url 'packing_list:task_list' %}" class="btn btn-secondary mb-3">View Tasks</a>
 <table class="table table-bordered">
     <thead>
         <tr>
