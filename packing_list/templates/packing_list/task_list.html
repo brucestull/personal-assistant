@@ -7,9 +7,9 @@
 {% endblock title %}
 
 {% block content %}
+<a href="{% url 'packing_list:task_create' %}" class="btn btn-primary mb-3">Add Task</a>
 <a href="{% url 'packing_list:activity_list' %}" class="btn btn-secondary mb-3">View Activities</a>
 <a href="{% url 'packing_list:item_list' %}" class="btn btn-secondary mb-3">View Items</a>
-<a href="{% url 'packing_list:task_create' %}" class="btn btn-primary mb-3">Add Task</a>
 <table class="table table-bordered">
     <thead>
         <tr>
