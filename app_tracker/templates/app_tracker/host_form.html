@@ -116,8 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       
       // If the current value is not in the filtered list, select the first option
-      if (currentValue && !osSelect.querySelector(`option[value="${currentValue}"]`)) {
-        osSelect.selectedIndex = 0;
+      if (currentValue) {
+        const hasValue = Array.from(osSelect.options).some(opt => opt.value === currentValue);
+        if (!hasValue) {
+          osSelect.selectedIndex = 0;
+        }
       }
     });
   }
