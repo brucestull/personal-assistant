@@ -339,6 +339,17 @@ class ProjectDeleteView(RegistrationAcceptedMixin, DeleteView):
 
 
 # Host views
+class HostFormMixin:
+    """Mixin to provide sorted OperatingSystem queryset for Host forms."""
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["operating_system"].queryset = OperatingSystem.objects.order_by(
+            "name"
+        )
+        return form
+
+
 class HostListView(RegistrationAcceptedMixin, ListView):
     model = Host
 
@@ -347,13 +358,13 @@ class HostDetailView(RegistrationAcceptedMixin, DetailView):
     model = Host
 
 
-class HostCreateView(RegistrationAcceptedMixin, CreateView):
+class HostCreateView(HostFormMixin, RegistrationAcceptedMixin, CreateView):
     model = Host
     fields = "__all__"
     success_url = reverse_lazy("app_tracker:host_list")
 
 
-class HostUpdateView(RegistrationAcceptedMixin, UpdateView):
+class HostUpdateView(HostFormMixin, RegistrationAcceptedMixin, UpdateView):
     model = Host
     fields = "__all__"
     success_url = reverse_lazy("app_tracker:host_list")
