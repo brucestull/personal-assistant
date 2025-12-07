@@ -352,11 +352,25 @@ class HostCreateView(RegistrationAcceptedMixin, CreateView):
     fields = "__all__"
     success_url = reverse_lazy("app_tracker:host_list")
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["operating_system"].queryset = OperatingSystem.objects.order_by(
+            "name"
+        )
+        return form
+
 
 class HostUpdateView(RegistrationAcceptedMixin, UpdateView):
     model = Host
     fields = "__all__"
     success_url = reverse_lazy("app_tracker:host_list")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["operating_system"].queryset = OperatingSystem.objects.order_by(
+            "name"
+        )
+        return form
 
 
 class HostDeleteView(RegistrationAcceptedMixin, DeleteView):

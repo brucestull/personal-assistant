@@ -29,6 +29,9 @@
                   {{ field.label }}
                   {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
                 </label>
+                {% if field.name == "operating_system" %}
+                  <input type="text" id="os-search" class="form-control mb-2" placeholder="Search operating systems..." autocomplete="off">
+                {% endif %}
                 {{ field }}
                 {% if field.help_text %}
                   <div class="form-text text-muted">{{ field.help_text }}</div>
@@ -77,4 +80,48 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('os-search');
+  const osSelect = document.getElementById('id_operating_system');
+  
+  if (searchInput && osSelect) {
+    // Store all options
+    const allOptions = Array.from(osSelect.options);
+    
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      
+      // Clear current options except the first one (empty option)
+      while (osSelect.options.length > 0) {
+        osSelect.remove(0);
+      }
+      
+      // Filter and add matching options
+      allOptions.forEach(option => {
+        if (option.text.toLowerCase().includes(searchTerm) || option.value === '') {
+          osSelect.add(option.cloneNode(true));
+        }
+      });
+      
+      // Restore the selected value if it still exists
+      const selectedValue = osSelect.dataset.selectedValue;
+      if (selectedValue) {
+        osSelect.value = selectedValue;
+      }
+    });
+    
+    // Store the initial selected value
+    if (osSelect.value) {
+      osSelect.dataset.selectedValue = osSelect.value;
+    }
+    
+    // Update the stored selected value when changed
+    osSelect.addEventListener('change', function() {
+      this.dataset.selectedValue = this.value;
+    });
+  }
+});
+</script>
 {% endblock %}
