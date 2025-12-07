@@ -87,39 +87,38 @@ document.addEventListener('DOMContentLoaded', function() {
   const osSelect = document.getElementById('id_operating_system');
   
   if (searchInput && osSelect) {
-    // Store all options
-    const allOptions = Array.from(osSelect.options);
+    // Store all options with their selected state
+    const allOptions = Array.from(osSelect.options).map(opt => ({
+      value: opt.value,
+      text: opt.text,
+      selected: opt.selected
+    }));
     
     searchInput.addEventListener('input', function() {
       const searchTerm = this.value.toLowerCase();
+      const currentValue = osSelect.value;
       
-      // Clear current options except the first one (empty option)
-      while (osSelect.options.length > 0) {
-        osSelect.remove(0);
-      }
+      // Clear all options efficiently
+      osSelect.innerHTML = '';
       
       // Filter and add matching options
-      allOptions.forEach(option => {
-        if (option.text.toLowerCase().includes(searchTerm) || option.value === '') {
-          osSelect.add(option.cloneNode(true));
+      allOptions.forEach(optData => {
+        if (optData.text.toLowerCase().includes(searchTerm) || optData.value === '') {
+          const option = document.createElement('option');
+          option.value = optData.value;
+          option.text = optData.text;
+          // Restore selection if this was the previously selected value
+          if (optData.value === currentValue) {
+            option.selected = true;
+          }
+          osSelect.add(option);
         }
       });
       
-      // Restore the selected value if it still exists
-      const selectedValue = osSelect.dataset.selectedValue;
-      if (selectedValue) {
-        osSelect.value = selectedValue;
+      // If the current value is not in the filtered list, select the first option
+      if (currentValue && !osSelect.querySelector(`option[value="${currentValue}"]`)) {
+        osSelect.selectedIndex = 0;
       }
-    });
-    
-    // Store the initial selected value
-    if (osSelect.value) {
-      osSelect.dataset.selectedValue = osSelect.value;
-    }
-    
-    // Update the stored selected value when changed
-    osSelect.addEventListener('change', function() {
-      this.dataset.selectedValue = this.value;
     });
   }
 });
