@@ -209,3 +209,117 @@ class DashboardViewTest(TestCase):
         self.assertEqual(
             response.context["pending_deployment_apps"][0].name, "Docker Engine"
         )
+
+
+class HostUpdateViewTest(TestCase):
+    """
+    Test the HostUpdateView.
+    """
+
+    def setUp(self):
+        """
+        Set up test data.
+        """
+        from app_tracker.models import Host, OperatingSystem
+
+        # Create a test user with registration_accepted=True
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            password="testpass123",
+            registration_accepted=True,
+        )
+
+        # Create operating systems in non-alphabetical order
+        self.os_ubuntu = OperatingSystem.objects.create(name="Ubuntu 22.04")
+        self.os_debian = OperatingSystem.objects.create(name="Debian 11")
+        self.os_centos = OperatingSystem.objects.create(name="CentOS 7")
+        self.os_alpine = OperatingSystem.objects.create(name="Alpine Linux")
+
+        # Create a test host
+        self.host = Host.objects.create(
+            name="Test Host",
+            host_name="test-host",
+            operating_system=self.os_ubuntu,
+        )
+
+    def test_host_update_view_operating_system_sorted(self):
+        """
+        Test that the operating system field is sorted by name.
+        """
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(
+            reverse("app_tracker:host_update", kwargs={"pk": self.host.pk})
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Get the form from the response
+        form = response.context["form"]
+        os_field = form.fields["operating_system"]
+
+        # Get the queryset and convert to list
+        os_list = list(os_field.queryset.values_list("name", flat=True))
+
+        # Check that the list is sorted alphabetically
+        self.assertEqual(
+            os_list,
+            ["Alpine Linux", "CentOS 7", "Debian 11", "Ubuntu 22.04"],
+        )
+
+    def test_host_update_view_template_has_search_input(self):
+        """
+        Test that the template includes a search input for operating system.
+        """
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(
+            reverse("app_tracker:host_update", kwargs={"pk": self.host.pk})
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Check that the search input is in the rendered HTML
+        self.assertContains(response, 'id="os-search"')
+        self.assertContains(response, "Search operating systems...")
+
+
+class HostCreateViewTest(TestCase):
+    """
+    Test the HostCreateView.
+    """
+
+    def setUp(self):
+        """
+        Set up test data.
+        """
+        from app_tracker.models import OperatingSystem
+
+        # Create a test user with registration_accepted=True
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            password="testpass123",
+            registration_accepted=True,
+        )
+
+        # Create operating systems in non-alphabetical order
+        self.os_ubuntu = OperatingSystem.objects.create(name="Ubuntu 22.04")
+        self.os_debian = OperatingSystem.objects.create(name="Debian 11")
+        self.os_centos = OperatingSystem.objects.create(name="CentOS 7")
+
+    def test_host_create_view_operating_system_sorted(self):
+        """
+        Test that the operating system field is sorted by name in create view.
+        """
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(reverse("app_tracker:host_create"))
+        self.assertEqual(response.status_code, 200)
+
+        # Get the form from the response
+        form = response.context["form"]
+        os_field = form.fields["operating_system"]
+
+        # Get the queryset and convert to list
+        os_list = list(os_field.queryset.values_list("name", flat=True))
+
+        # Check that the list is sorted alphabetically
+        self.assertEqual(
+            os_list,
+            ["CentOS 7", "Debian 11", "Ubuntu 22.04"],
+        )

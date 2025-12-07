@@ -29,6 +29,9 @@
                   {{ field.label }}
                   {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
                 </label>
+                {% if field.name == "operating_system" %}
+                  <input type="text" id="os-search" class="form-control mb-2" placeholder="Search operating systems..." autocomplete="off">
+                {% endif %}
                 {{ field }}
                 {% if field.help_text %}
                   <div class="form-text text-muted">{{ field.help_text }}</div>
@@ -77,4 +80,50 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('os-search');
+  const osSelect = document.getElementById('id_operating_system');
+  
+  if (searchInput && osSelect) {
+    // Store all options with their selected state
+    const allOptions = Array.from(osSelect.options).map(opt => ({
+      value: opt.value,
+      text: opt.text,
+      selected: opt.selected
+    }));
+    
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const currentValue = osSelect.value;
+      
+      // Clear all options efficiently
+      osSelect.innerHTML = '';
+      
+      // Filter and add matching options
+      allOptions.forEach(optData => {
+        if (optData.text.toLowerCase().includes(searchTerm) || optData.value === '') {
+          const option = document.createElement('option');
+          option.value = optData.value;
+          option.text = optData.text;
+          // Restore selection if this was the previously selected value
+          if (optData.value === currentValue) {
+            option.selected = true;
+          }
+          osSelect.add(option);
+        }
+      });
+      
+      // If the current value is not in the filtered list, select the first option
+      if (currentValue) {
+        const hasValue = Array.from(osSelect.options).some(opt => opt.value === currentValue);
+        if (!hasValue) {
+          osSelect.selectedIndex = 0;
+        }
+      }
+    });
+  }
+});
+</script>
 {% endblock %}
