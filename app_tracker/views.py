@@ -43,7 +43,9 @@ def dashboard(request):
     # Get hosts based on query parameter
     include_paused = request.GET.get("include_paused", "0") == "1"
     if include_paused:
-        hosts = Host.objects.filter(status__in=["ACTIVE", "PAUSED"])
+        hosts = Host.objects.filter(
+            status__in=[Host.HostStatus.ACTIVE, Host.HostStatus.PAUSED]
+        )
     else:
         hosts = Host.objects.visible_on_dashboard()
 
