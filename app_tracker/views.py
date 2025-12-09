@@ -12,15 +12,15 @@ from django.views.generic import (
 )
 
 from app_tracker.models import (
+    URL,
     Application,
+    Host,
     Label,
     LanguageFrameworkSystem,
     Note,
     OperatingSystem,
     OrganizationalConcept,
     Project,
-    Host,
-    URL,
 )
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
@@ -39,7 +39,17 @@ def dashboard(request):
     # Basic counts
     total_applications = all_applications.count()
     total_projects = Project.objects.count()
-    total_hosts = Host.objects.count()
+
+    # Get hosts based on query parameter
+    include_paused = request.GET.get("include_paused", "0") == "1"
+    if include_paused:
+        hosts = Host.objects.filter(
+            status__in=[Host.HostStatus.ACTIVE, Host.HostStatus.PAUSED]
+        )
+    else:
+        hosts = Host.objects.visible_on_dashboard()
+
+    total_hosts = hosts.count()
     total_lfs = LanguageFrameworkSystem.objects.count()
 
     # Applications with specific features
@@ -76,7 +86,7 @@ def dashboard(request):
 
     # Hosts by environment
     hosts_by_environment = (
-        Host.objects.exclude(environment__isnull=True)
+        hosts.exclude(environment__isnull=True)
         .exclude(environment="")
         .values("environment")
         .annotate(count=Count("id"))
@@ -102,6 +112,8 @@ def dashboard(request):
         "total_projects": total_projects,
         "total_hosts": total_hosts,
         "total_lfs": total_lfs,
+        # Host filtering
+        "include_paused": include_paused,
         # Feature counts
         "apps_with_production": apps_with_production,
         "apps_with_cicd": apps_with_cicd,
@@ -352,6 +364,42 @@ class HostFormMixin:
 
 class HostListView(RegistrationAcceptedMixin, ListView):
     model = Host
+
+    def get_queryset(self):
+        """
+        Filter hosts based on status query parameter.
+        """
+        queryset = super().get_queryset()
+        status_filter = self.request.GET.get("status", "")
+
+        if status_filter == "active":
+            queryset = queryset.filter(status=Host.HostStatus.ACTIVE)
+        elif status_filter == "paused":
+            queryset = queryset.filter(status=Host.HostStatus.PAUSED)
+        elif status_filter == "retired":
+            queryset = queryset.filter(status=Host.HostStatus.RETIRED)
+        elif status_filter == "all":
+            # Show all hosts
+            pass
+        else:
+            # Default: show active and paused hosts (exclude retired)
+            queryset = queryset.exclude(status=Host.HostStatus.RETIRED)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        """
+        Add status filter to context.
+        """
+        context = super().get_context_data(**kwargs)
+        context["status_filter"] = self.request.GET.get("status", "")
+        context["status_counts"] = {
+            "active": Host.objects.filter(status=Host.HostStatus.ACTIVE).count(),
+            "paused": Host.objects.filter(status=Host.HostStatus.PAUSED).count(),
+            "retired": Host.objects.filter(status=Host.HostStatus.RETIRED).count(),
+            "all": Host.objects.count(),
+        }
+        return context
 
 
 class HostDetailView(RegistrationAcceptedMixin, DetailView):

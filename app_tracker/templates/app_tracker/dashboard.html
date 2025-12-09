@@ -36,10 +36,21 @@
             <div class="card text-white bg-info h-100">
                 <div class="card-body text-center">
                     <h2 class="card-title">{{ total_hosts }}</h2>
-                    <p class="card-text">Total Hosts</p>
+                    <p class="card-text">
+                        {% if include_paused %}
+                            Active & Paused Hosts
+                        {% else %}
+                            Active Hosts
+                        {% endif %}
+                    </p>
                 </div>
                 <div class="card-footer">
                     <a href="{% url 'app_tracker:host_list' %}" class="text-white">View All →</a>
+                    {% if include_paused %}
+                        <br><a href="{% url 'app_tracker:dashboard' %}" class="text-white"><small>Show Active Only</small></a>
+                    {% else %}
+                        <br><a href="{% url 'app_tracker:dashboard' %}?include_paused=1" class="text-white"><small>Include Paused</small></a>
+                    {% endif %}
                 </div>
             </div>
         </div>
