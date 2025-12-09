@@ -4,6 +4,7 @@ from django.urls import reverse
 from accounts.models import CustomUser
 from app_tracker.models import (
     Application,
+    Host,
     LanguageFrameworkSystem,
 )
 
@@ -209,6 +210,122 @@ class DashboardViewTest(TestCase):
         self.assertEqual(
             response.context["pending_deployment_apps"][0].name, "Docker Engine"
         )
+
+    def test_dashboard_shows_only_active_hosts_by_default(self):
+        """
+        Test that the dashboard shows only ACTIVE hosts by default.
+        """
+        # Create hosts with different statuses
+        Host.objects.create(
+            name="Active Host 1",
+            host_name="active-host-1",
+            ip_address="192.168.1.10",
+            status=Host.HostStatus.ACTIVE,
+        )
+        Host.objects.create(
+            name="Active Host 2",
+            host_name="active-host-2",
+            ip_address="192.168.1.11",
+            status=Host.HostStatus.ACTIVE,
+        )
+        Host.objects.create(
+            name="Paused Host",
+            host_name="paused-host",
+            ip_address="192.168.1.20",
+            status=Host.HostStatus.PAUSED,
+        )
+        Host.objects.create(
+            name="Retired Host",
+            host_name="retired-host",
+            ip_address="192.168.1.30",
+            status=Host.HostStatus.RETIRED,
+        )
+
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(reverse("app_tracker:dashboard"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["total_hosts"], 2)
+        self.assertFalse(response.context["include_paused"])
+
+    def test_dashboard_includes_paused_hosts_with_query_param(self):
+        """
+        Test that the dashboard includes PAUSED hosts when include_paused=1.
+        """
+        # Create hosts with different statuses
+        Host.objects.create(
+            name="Active Host",
+            host_name="active-host",
+            ip_address="192.168.1.10",
+            status=Host.HostStatus.ACTIVE,
+        )
+        Host.objects.create(
+            name="Paused Host",
+            host_name="paused-host",
+            ip_address="192.168.1.20",
+            status=Host.HostStatus.PAUSED,
+        )
+        Host.objects.create(
+            name="Retired Host",
+            host_name="retired-host",
+            ip_address="192.168.1.30",
+            status=Host.HostStatus.RETIRED,
+        )
+
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(
+            reverse("app_tracker:dashboard") + "?include_paused=1"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["total_hosts"], 2)  # Active + Paused
+        self.assertTrue(response.context["include_paused"])
+
+    def test_dashboard_excludes_retired_hosts_always(self):
+        """
+        Test that the dashboard never includes RETIRED hosts.
+        """
+        # Create hosts with different statuses
+        Host.objects.create(
+            name="Active Host",
+            host_name="active-host",
+            ip_address="192.168.1.10",
+            status=Host.HostStatus.ACTIVE,
+        )
+        Host.objects.create(
+            name="Retired Host",
+            host_name="retired-host",
+            ip_address="192.168.1.30",
+            status=Host.HostStatus.RETIRED,
+        )
+
+        self.client.login(username="testuser", password="testpass123")
+
+        # Test without query param
+        response = self.client.get(reverse("app_tracker:dashboard"))
+        self.assertEqual(response.context["total_hosts"], 1)
+
+        # Test with include_paused=1 (should still exclude retired)
+        response = self.client.get(
+            reverse("app_tracker:dashboard") + "?include_paused=1"
+        )
+        self.assertEqual(response.context["total_hosts"], 1)
+
+    def test_dashboard_context_includes_include_paused_flag(self):
+        """
+        Test that the dashboard context includes the include_paused flag.
+        """
+        self.client.login(username="testuser", password="testpass123")
+
+        # Test without query param
+        response = self.client.get(reverse("app_tracker:dashboard"))
+        self.assertIn("include_paused", response.context)
+        self.assertFalse(response.context["include_paused"])
+
+        # Test with include_paused=1
+        response = self.client.get(
+            reverse("app_tracker:dashboard") + "?include_paused=1"
+        )
+        self.assertIn("include_paused", response.context)
+        self.assertTrue(response.context["include_paused"])
 
 
 class HostUpdateViewTest(TestCase):

@@ -3,7 +3,8 @@
 from django.db import models
 from django.urls import reverse
 
-from base.models import CreatedUpdatedBase, URL as BaseURL
+from base.models import URL as BaseURL
+from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
 
 
@@ -221,10 +222,31 @@ class URL(BaseURL):
         ordering = ["label"]
 
 
+class HostQuerySet(models.QuerySet):
+    """
+    Custom queryset for Host model with filtering methods.
+    """
+
+    def visible_on_dashboard(self):
+        """
+        Returns only hosts with ACTIVE status that should be visible on the dashboard.
+        """
+        return self.filter(status="ACTIVE")
+
+
 class Host(CreatedUpdatedBase):
     """
     Represents a physical or virtual host where applications are hosted.
     """
+
+    class HostStatus(models.TextChoices):
+        """
+        Status choices for Host visibility and lifecycle management.
+        """
+
+        ACTIVE = "ACTIVE", "Active"
+        PAUSED = "PAUSED", "Paused"
+        RETIRED = "RETIRED", "Retired"
 
     FORM_FACTOR_CHOICES = [
         # Raspberry Pi 5 variants
@@ -339,6 +361,22 @@ class Host(CreatedUpdatedBase):
         related_name="hosts",
         blank=True,
     )
+    status = models.CharField(
+        verbose_name="Status",
+        help_text="The current status of the host (Active, Paused, or Retired).",
+        max_length=10,
+        choices=HostStatus.choices,
+        default=HostStatus.ACTIVE,
+    )
+    archived_at = models.DateTimeField(
+        verbose_name="Archived At",
+        help_text="The date and time when the host was paused or retired.",
+        null=True,
+        blank=True,
+    )
+
+    # Attach custom queryset as the default manager
+    objects = HostQuerySet.as_manager()
 
     def __str__(self):
         return f"{self.host_name} ({self.ip_address or 'no IP'})"
