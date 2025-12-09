@@ -298,11 +298,11 @@ class DashboardViewTest(TestCase):
         )
 
         self.client.login(username="testuser", password="testpass123")
-        
+
         # Test without query param
         response = self.client.get(reverse("app_tracker:dashboard"))
         self.assertEqual(response.context["total_hosts"], 1)
-        
+
         # Test with include_paused=1 (should still exclude retired)
         response = self.client.get(
             reverse("app_tracker:dashboard") + "?include_paused=1"
@@ -314,12 +314,12 @@ class DashboardViewTest(TestCase):
         Test that the dashboard context includes the include_paused flag.
         """
         self.client.login(username="testuser", password="testpass123")
-        
+
         # Test without query param
         response = self.client.get(reverse("app_tracker:dashboard"))
         self.assertIn("include_paused", response.context)
         self.assertFalse(response.context["include_paused"])
-        
+
         # Test with include_paused=1
         response = self.client.get(
             reverse("app_tracker:dashboard") + "?include_paused=1"

@@ -12,15 +12,15 @@ from django.views.generic import (
 )
 
 from app_tracker.models import (
+    URL,
     Application,
+    Host,
     Label,
     LanguageFrameworkSystem,
     Note,
     OperatingSystem,
     OrganizationalConcept,
     Project,
-    Host,
-    URL,
 )
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
@@ -39,14 +39,14 @@ def dashboard(request):
     # Basic counts
     total_applications = all_applications.count()
     total_projects = Project.objects.count()
-    
+
     # Get hosts based on query parameter
     include_paused = request.GET.get("include_paused", "0") == "1"
     if include_paused:
         hosts = Host.objects.filter(status__in=["ACTIVE", "PAUSED"])
     else:
         hosts = Host.objects.visible_on_dashboard()
-    
+
     total_hosts = hosts.count()
     total_lfs = LanguageFrameworkSystem.objects.count()
 

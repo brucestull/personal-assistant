@@ -2,9 +2,16 @@ from django.db import models as d_db_models
 from django.test import TestCase
 
 from accounts.models import CustomUser
-from app_tracker.models import (Application, DjangoModel, Host, Label,
-                                LanguageFrameworkSystem, Note,
-                                OrganizationalConcept, Project)
+from app_tracker.models import (
+    Application,
+    DjangoModel,
+    Host,
+    Label,
+    LanguageFrameworkSystem,
+    Note,
+    OrganizationalConcept,
+    Project,
+)
 
 
 class OrganizationalConceptModelTest(TestCase):

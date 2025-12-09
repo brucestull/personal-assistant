@@ -1,26 +1,26 @@
 # app_tracker/tests/test_full_coverage.py
 
-import django
-from django.test import TestCase, Client, RequestFactory
-from django.urls import reverse
-from django.contrib.auth import get_user_model
-from django.template.exceptions import TemplateDoesNotExist
-
 # Ensure settings are loaded if run standalone
 import os
+
+import django
+from django.contrib.auth import get_user_model
+from django.template.exceptions import TemplateDoesNotExist
+from django.test import Client, RequestFactory, TestCase
+from django.urls import reverse
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from app_tracker.models import (  # noqa: E402
     Application,
+    Host,
     Label,
     LanguageFrameworkSystem,
     Note,
     OperatingSystem,
     OrganizationalConcept,
     Project,
-    Host,
 )
 
 User = get_user_model()

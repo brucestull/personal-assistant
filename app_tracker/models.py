@@ -3,7 +3,8 @@
 from django.db import models
 from django.urls import reverse
 
-from base.models import CreatedUpdatedBase, URL as BaseURL
+from base.models import URL as BaseURL
+from base.models import CreatedUpdatedBase
 from config.settings import AUTH_USER_MODEL
 
 
