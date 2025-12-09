@@ -365,6 +365,42 @@ class HostFormMixin:
 class HostListView(RegistrationAcceptedMixin, ListView):
     model = Host
 
+    def get_queryset(self):
+        """
+        Filter hosts based on status query parameter.
+        """
+        queryset = super().get_queryset()
+        status_filter = self.request.GET.get("status", "")
+
+        if status_filter == "active":
+            queryset = queryset.filter(status=Host.HostStatus.ACTIVE)
+        elif status_filter == "paused":
+            queryset = queryset.filter(status=Host.HostStatus.PAUSED)
+        elif status_filter == "retired":
+            queryset = queryset.filter(status=Host.HostStatus.RETIRED)
+        elif status_filter == "all":
+            # Show all hosts
+            pass
+        else:
+            # Default: show active and paused hosts (exclude retired)
+            queryset = queryset.exclude(status=Host.HostStatus.RETIRED)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        """
+        Add status filter to context.
+        """
+        context = super().get_context_data(**kwargs)
+        context["status_filter"] = self.request.GET.get("status", "")
+        context["status_counts"] = {
+            "active": Host.objects.filter(status=Host.HostStatus.ACTIVE).count(),
+            "paused": Host.objects.filter(status=Host.HostStatus.PAUSED).count(),
+            "retired": Host.objects.filter(status=Host.HostStatus.RETIRED).count(),
+            "all": Host.objects.count(),
+        }
+        return context
+
 
 class HostDetailView(RegistrationAcceptedMixin, DetailView):
     model = Host

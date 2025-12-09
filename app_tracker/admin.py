@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 
 from app_tracker import models
 
-
 # ---------------------------------------------------------------------------
 # Inlines
 # ---------------------------------------------------------------------------
@@ -539,13 +538,14 @@ class HostAdmin(admin.ModelAdmin):
         "host_name",
         "name",
         "ip_address",
+        "status",
         "operating_system",
         "form_factor",
         "ram",
         "environment",
         "created",
     ]
-    list_filter = ["environment", "operating_system", "form_factor"]
+    list_filter = ["status", "environment", "operating_system", "form_factor"]
     date_hierarchy = "created"
     search_fields = ["host_name", "ip_address", "notes", "name"]
     ordering = ["host_name"]
@@ -553,6 +553,7 @@ class HostAdmin(admin.ModelAdmin):
     filter_horizontal = ["applications"]
     readonly_fields = ("created", "updated")
     list_select_related = ("operating_system",)
+    actions = ["mark_as_active", "mark_as_paused", "mark_as_retired"]
     fieldsets = (
         (
             None,
@@ -573,6 +574,12 @@ class HostAdmin(admin.ModelAdmin):
             },
         ),
         (
+            "Status",
+            {
+                "fields": ("status", "archived_at"),
+            },
+        ),
+        (
             "Dates",
             {
                 "fields": ("created", "updated"),
@@ -580,6 +587,49 @@ class HostAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    @admin.action(description="Mark selected hosts as Active")
+    def mark_as_active(self, request, queryset):
+        """
+        Bulk action to mark hosts as ACTIVE.
+        """
+        updated = queryset.update(
+            status=models.Host.HostStatus.ACTIVE, archived_at=None
+        )
+        self.message_user(
+            request,
+            f"{updated} host(s) marked as Active.",
+        )
+
+    @admin.action(description="Mark selected hosts as Paused")
+    def mark_as_paused(self, request, queryset):
+        """
+        Bulk action to mark hosts as PAUSED.
+        """
+        from django.utils import timezone
+
+        updated = queryset.update(
+            status=models.Host.HostStatus.PAUSED, archived_at=timezone.now()
+        )
+        self.message_user(
+            request,
+            f"{updated} host(s) marked as Paused.",
+        )
+
+    @admin.action(description="Mark selected hosts as Retired")
+    def mark_as_retired(self, request, queryset):
+        """
+        Bulk action to mark hosts as RETIRED.
+        """
+        from django.utils import timezone
+
+        updated = queryset.update(
+            status=models.Host.HostStatus.RETIRED, archived_at=timezone.now()
+        )
+        self.message_user(
+            request,
+            f"{updated} host(s) marked as Retired.",
+        )
 
 
 @admin.register(models.URL)
