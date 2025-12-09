@@ -323,6 +323,7 @@ class ViewTestCase(TestCase):
                 "form_factor": "PiZero",
                 "mac_address": "DE:AD:BE:EF:00:01",
                 "ram": "2GB",
+                "status": Host.HostStatus.ACTIVE,
             },
         )
 
