@@ -231,7 +231,7 @@ class HostQuerySet(models.QuerySet):
         """
         Returns only hosts with ACTIVE status that should be visible on the dashboard.
         """
-        return self.filter(status=Host.HostStatus.ACTIVE)
+        return self.filter(status="ACTIVE")
 
 
 class Host(CreatedUpdatedBase):
