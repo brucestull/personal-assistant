@@ -39,7 +39,15 @@ def dashboard(request):
     # Basic counts
     total_applications = all_applications.count()
     total_projects = Project.objects.count()
-    total_hosts = Host.objects.count()
+    
+    # Get hosts based on query parameter
+    include_paused = request.GET.get("include_paused", "0") == "1"
+    if include_paused:
+        hosts = Host.objects.filter(status__in=["ACTIVE", "PAUSED"])
+    else:
+        hosts = Host.objects.visible_on_dashboard()
+    
+    total_hosts = hosts.count()
     total_lfs = LanguageFrameworkSystem.objects.count()
 
     # Applications with specific features
@@ -76,7 +84,7 @@ def dashboard(request):
 
     # Hosts by environment
     hosts_by_environment = (
-        Host.objects.exclude(environment__isnull=True)
+        hosts.exclude(environment__isnull=True)
         .exclude(environment="")
         .values("environment")
         .annotate(count=Count("id"))
@@ -102,6 +110,8 @@ def dashboard(request):
         "total_projects": total_projects,
         "total_hosts": total_hosts,
         "total_lfs": total_lfs,
+        # Host filtering
+        "include_paused": include_paused,
         # Feature counts
         "apps_with_production": apps_with_production,
         "apps_with_cicd": apps_with_cicd,
