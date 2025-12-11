@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from boosts.models import Inspirational
-from boosts.models import InspirationalSent
+from boosts.models import Inspirational, InspirationalSent, RandomInspirationalEmailSend
 
 
 @admin.register(Inspirational)
@@ -35,4 +34,24 @@ class InspirationalSentAdmin(admin.ModelAdmin):
     list_filter = (
         "sender",
         "beastie",
+    )
+
+
+@admin.register(RandomInspirationalEmailSend)
+class RandomInspirationalEmailSendAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "status",
+        "created",
+        "sent_at",
+    )
+
+    readonly_fields = (
+        "created",
+        "sent_at",
+    )
+
+    list_filter = (
+        "user",
+        "status",
     )
