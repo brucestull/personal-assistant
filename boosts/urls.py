@@ -32,4 +32,30 @@ urlpatterns = [
         views.send_random_inspirational_to_self,
         name="send_random_inspirational",
     ),
+    # Random Inspirational Email Send CRUD URLs
+    path(
+        "random-send/",
+        views.RandomInspirationalEmailSendListView.as_view(),
+        name="random-send-list",
+    ),
+    path(
+        "random-send/<int:pk>/",
+        views.RandomInspirationalEmailSendDetailView.as_view(),
+        name="random-send-detail",
+    ),
+    path(
+        "random-send/create/",
+        views.RandomInspirationalEmailSendCreateView.as_view(),
+        name="random-send-create",
+    ),
+    path(
+        "random-send/<int:pk>/update/",
+        views.RandomInspirationalEmailSendUpdateView.as_view(),
+        name="random-send-update",
+    ),
+    path(
+        "random-send/<int:pk>/delete/",
+        views.RandomInspirationalEmailSendDeleteView.as_view(),
+        name="random-send-delete",
+    ),
 ]

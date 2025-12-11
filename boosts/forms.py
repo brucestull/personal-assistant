@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from boosts.models import Inspirational
+from boosts.models import Inspirational, RandomInspirationalEmailSend
 
 
 class InspirationalForm(ModelForm):
@@ -23,3 +23,13 @@ class InspirationalForm(ModelForm):
         labels = {
             "body": "Inspirational Statement",
         }
+
+
+class RandomInspirationalEmailSendForm(ModelForm):
+    """
+    ModelForm for the RandomInspirationalEmailSend model.
+    Users don't need to fill any fields - just click to send.
+    """
+    class Meta:
+        model = RandomInspirationalEmailSend
+        fields = []  # No fields - automatic send on creation

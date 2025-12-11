@@ -61,3 +61,50 @@ class InspirationalSent(models.Model):
 
     class Meta:
         verbose_name_plural = "Inspirationals Sent"
+
+
+class RandomInspirationalEmailSend(models.Model):
+    """
+    Model for tracking random inspirational email send requests.
+    Users can create these to trigger sending a random inspirational to themselves.
+    """
+
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="random_inspirational_sends",
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("pending", "Pending"),
+            ("sent", "Sent"),
+            ("failed", "Failed"),
+        ],
+        default="pending",
+    )
+    created = models.DateTimeField(
+        auto_now_add=True,
+    )
+    sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+    inspirational_sent = models.ForeignKey(
+        InspirationalSent,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="random_send_requests",
+    )
+    error_message = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    def __str__(self):
+        return f"Random send for {self.user.username} - {self.status} ({self.created})"
+
+    class Meta:
+        verbose_name_plural = "Random Inspirational Email Sends"
+        ordering = ["-created"]
