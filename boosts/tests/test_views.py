@@ -537,3 +537,216 @@ class SendRandomInspirationalToSelfViewTest(TestCase):
         self.assertIn(expected_date, sent_email.body)
         self.assertIn(self.user.username, sent_email.body)
         self.assertIn(self.inspirational.body, sent_email.body)
+
+
+class RandomInspirationalEmailSendListViewTest(TestCase):
+    """
+    Test the RandomInspirationalEmailSendListView.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Create test data.
+        """
+        from boosts.models import RandomInspirationalEmailSend
+
+        cls.user = CustomUser.objects.create_user(
+            username="TestUser",
+            password="a_test_password",
+            email="test@example.com",
+            registration_accepted=True,
+        )
+        cls.other_user = CustomUser.objects.create_user(
+            username="OtherUser",
+            password="a_test_password",
+            email="other@example.com",
+            registration_accepted=True,
+        )
+        # Create some send records for the test user
+        for i in range(3):
+            RandomInspirationalEmailSend.objects.create(
+                user=cls.user,
+                status="sent" if i % 2 == 0 else "pending",
+            )
+        # Create a send record for another user (should not appear in list)
+        RandomInspirationalEmailSend.objects.create(
+            user=cls.other_user,
+            status="sent",
+        )
+
+    def test_view_redirects_to_login_if_user_is_not_authenticated(self):
+        """
+        View should redirect user to login view if user is not authenticated.
+        """
+        response = self.client.get("/boosts/random-send/")
+        self.assertRedirects(
+            response, "/accounts/login/?next=/boosts/random-send/"
+        )
+
+    def test_view_returns_200_if_user_is_authenticated(self):
+        """
+        View should return 200 if user is authenticated.
+        """
+        self.client.login(username="TestUser", password="a_test_password")
+        response = self.client.get("/boosts/random-send/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """
+        View should use the correct template.
+        """
+        self.client.login(username="TestUser", password="a_test_password")
+        response = self.client.get("/boosts/random-send/")
+        self.assertTemplateUsed(
+            response, "boosts/randominspirationalemailsend_list.html"
+        )
+
+    def test_view_shows_only_user_records(self):
+        """
+        View should show only the current user's send records.
+        """
+        self.client.login(username="TestUser", password="a_test_password")
+        response = self.client.get("/boosts/random-send/")
+        self.assertEqual(response.status_code, 200)
+        # Should show 3 records for TestUser
+        self.assertEqual(len(response.context["object_list"]), 3)
+        # All records should belong to the logged-in user
+        for send in response.context["object_list"]:
+            self.assertEqual(send.user, self.user)
+
+
+class RandomInspirationalEmailSendCreateViewTest(TestCase):
+    """
+    Test the RandomInspirationalEmailSendCreateView.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Create test data.
+        """
+        cls.user = CustomUser.objects.create_user(
+            username="TestUser",
+            password="a_test_password",
+            email="test@example.com",
+            registration_accepted=True,
+        )
+        # Create an inspirational for the user
+        Inspirational.objects.create(
+            author=cls.user,
+            body="Test inspirational body",
+        )
+
+    def test_view_redirects_to_login_if_user_is_not_authenticated(self):
+        """
+        View should redirect user to login view if user is not authenticated.
+        """
+        response = self.client.get("/boosts/random-send/create/")
+        self.assertRedirects(
+            response, "/accounts/login/?next=/boosts/random-send/create/"
+        )
+
+    def test_view_returns_200_if_user_is_authenticated(self):
+        """
+        View should return 200 if user is authenticated.
+        """
+        self.client.login(username="TestUser", password="a_test_password")
+        response = self.client.get("/boosts/random-send/create/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """
+        View should use the correct template.
+        """
+        self.client.login(username="TestUser", password="a_test_password")
+        response = self.client.get("/boosts/random-send/create/")
+        self.assertTemplateUsed(
+            response, "boosts/randominspirationalemailsend_form.html"
+        )
+
+    def test_post_creates_send_record(self):
+        """
+        POST request should create a RandomInspirationalEmailSend record.
+        """
+        from unittest.mock import patch
+        from boosts.models import RandomInspirationalEmailSend
+
+        self.client.login(username="TestUser", password="a_test_password")
+        initial_count = RandomInspirationalEmailSend.objects.filter(
+            user=self.user
+        ).count()
+
+        # Mock the Celery task to avoid Redis connection issues in tests
+        with patch("boosts.views.send_random_inspirational_email.delay"):
+            response = self.client.post("/boosts/random-send/create/", {})
+        # Should redirect to list view
+        self.assertRedirects(response, "/boosts/random-send/")
+
+        # Should have created one more record
+        new_count = RandomInspirationalEmailSend.objects.filter(
+            user=self.user
+        ).count()
+        self.assertEqual(new_count, initial_count + 1)
+
+
+class RandomInspirationalEmailSendDetailViewTest(TestCase):
+    """
+    Test the RandomInspirationalEmailSendDetailView.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Create test data.
+        """
+        from boosts.models import RandomInspirationalEmailSend
+
+        cls.user = CustomUser.objects.create_user(
+            username="TestUser",
+            password="a_test_password",
+            email="test@example.com",
+            registration_accepted=True,
+        )
+        cls.other_user = CustomUser.objects.create_user(
+            username="OtherUser",
+            password="a_test_password",
+            email="other@example.com",
+            registration_accepted=True,
+        )
+        cls.send_record = RandomInspirationalEmailSend.objects.create(
+            user=cls.user,
+            status="sent",
+        )
+        cls.other_send_record = RandomInspirationalEmailSend.objects.create(
+            user=cls.other_user,
+            status="sent",
+        )
+
+    def test_view_returns_200_for_own_record(self):
+        """
+        View should return 200 when viewing own send record.
+        """
+        self.client.login(username="TestUser", password="a_test_password")
+        response = self.client.get(f"/boosts/random-send/{self.send_record.pk}/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_returns_404_for_other_user_record(self):
+        """
+        View should return 404 when trying to view another user's record.
+        """
+        self.client.login(username="TestUser", password="a_test_password")
+        response = self.client.get(
+            f"/boosts/random-send/{self.other_send_record.pk}/"
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_view_uses_correct_template(self):
+        """
+        View should use the correct template.
+        """
+        self.client.login(username="TestUser", password="a_test_password")
+        response = self.client.get(f"/boosts/random-send/{self.send_record.pk}/")
+        self.assertTemplateUsed(
+            response, "boosts/randominspirationalemailsend_detail.html"
+        )
