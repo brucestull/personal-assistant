@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ the_site_name }}
+-
+{{ page_title }}
+{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h1>Delete Email Send Record?</h1>
+
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Warning</h4>
+        <p>Are you sure you want to delete this email send record?</p>
+        <hr>
+        <p><strong>Created:</strong> {{ object.created|date:"Y-m-d H:i:s" }}</p>
+        <p><strong>Status:</strong> {{ object.get_status_display }}</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete</button>
+        <a href="{% url 'boosts:random-send-detail' object.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+{% endblock content %}
