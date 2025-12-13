@@ -84,22 +84,43 @@ RETRY_KW = dict(
 
 
 @shared_task(**RETRY_KW)
-def send_random_inspirational_email(self, user_id: int) -> dict:
+def send_random_inspirational_email(
+    self, user_id: int, random_send_id: Optional[int] = None
+) -> dict:
     """
     Pick a random Inspirational authored by `user_id` and email it to that user.
     Also records an InspirationalSent with sender=user and beastie=user.
+    If random_send_id is provided, updates the RandomInspirationalEmailSend record.
     """
+    from django.utils import timezone
     User = get_user_model()
+
+    # Get the RandomInspirationalEmailSend record if provided
+    random_send = None
+    if random_send_id:
+        from .models import RandomInspirationalEmailSend
+        try:
+            random_send = RandomInspirationalEmailSend.objects.get(pk=random_send_id)
+        except RandomInspirationalEmailSend.DoesNotExist:
+            logger.warning("RandomInspirationalEmailSend %s not found", random_send_id)
 
     try:
         user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
         logger.warning("send_random_inspirational_email: user %s not found", user_id)
+        if random_send:
+            random_send.status = "failed"
+            random_send.error_message = "User not found"
+            random_send.save()
         return {"ok": False, "reason": "user_not_found"}
 
     qs = Inspirational.objects.filter(author=user)
     if not qs.exists():
         logger.info("No Inspirational objects for user %s", user_id)
+        if random_send:
+            random_send.status = "failed"
+            random_send.error_message = "No inspirationals found for user"
+            random_send.save()
         return {"ok": False, "reason": "no_inspirationals"}
 
     # Random pick without ORDER BY ? (more efficient, still simple)
@@ -127,14 +148,25 @@ def send_random_inspirational_email(self, user_id: int) -> dict:
         logger.warning(
             "SMTP error while sending random inspirational — will retry: %s", exc
         )
+        if random_send:
+            random_send.status = "failed"
+            random_send.error_message = str(exc)
+            random_send.save()
         raise  # <- triggers Celery autoretry_for
 
-    InspirationalSent.objects.create(
+    inspirational_sent = InspirationalSent.objects.create(
         inspirational=inspirational,
         inspirational_text=inspirational.body,
         sender=user,
         beastie=user,
     )
+
+    # Update the RandomInspirationalEmailSend record if provided
+    if random_send:
+        random_send.status = "sent"
+        random_send.sent_at = timezone.now()
+        random_send.inspirational_sent = inspirational_sent
+        random_send.save()
 
     logger.info(
         "Sent random Inspirational %s to user %s (%s)",

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ the_site_name }}
+-
+{{ page_title }}
+{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h1>{{ page_title }}</h1>
+
+    {% if object %}
+    {# Update view #}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{% url 'boosts:random-send-detail' object.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>
+    {% else %}
+    {# Create view - no fields needed, just confirm #}
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Send Random Inspirational Email</h4>
+        <p>Click the button below to send a random inspirational quote from your collection to your email address.</p>
+        <hr>
+        <p class="mb-0">This will queue an email to be sent to you with a random inspirational from your collection.</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success btn-lg">Send Random Inspirational Email</button>
+        <a href="{% url 'boosts:random-send-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+    {% endif %}
+</div>
+
+{% endblock content %}

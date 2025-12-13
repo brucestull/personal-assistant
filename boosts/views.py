@@ -11,15 +11,15 @@ from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
-from django.views.generic import ListView
+from django.views.generic import DeleteView, DetailView, ListView, UpdateView
 from django.views.generic.edit import CreateView
 
 from accounts.models import CustomUser
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
-from boosts.forms import InspirationalForm
-from boosts.models import Inspirational, InspirationalSent
-from boosts.tasks import send_inspirational_to_beastie
+from boosts.forms import InspirationalForm, RandomInspirationalEmailSendForm
+from boosts.models import Inspirational, InspirationalSent, RandomInspirationalEmailSend
+from boosts.tasks import send_inspirational_to_beastie, send_random_inspirational_email
 from config.settings import THE_SITE_NAME
 
 
@@ -274,3 +274,126 @@ def landing_view(request):
         return InspirationalListView.as_view()(request)
     else:
         return BretBeastieInspirationalListView.as_view()(request)
+
+
+# --- RandomInspirationalEmailSend CRUD Views ---
+
+
+class RandomInspirationalEmailSendListView(RegistrationAcceptedMixin, ListView):
+    """
+    ListView for RandomInspirationalEmailSend model.
+    Shows all random inspirational email send requests for the current user.
+    """
+
+    model = RandomInspirationalEmailSend
+    paginate_by = 10
+
+    def get_queryset(self):
+        """Only show the current user's send requests."""
+        if self.request.user.is_authenticated:
+            return RandomInspirationalEmailSend.objects.filter(
+                user=self.request.user
+            ).order_by("-created")
+        return RandomInspirationalEmailSend.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Random Inspirational Email Sends"
+        context["the_site_name"] = THE_SITE_NAME
+        return context
+
+
+class RandomInspirationalEmailSendDetailView(RegistrationAcceptedMixin, DetailView):
+    """
+    DetailView for RandomInspirationalEmailSend model.
+    Shows details of a specific send request.
+    """
+
+    model = RandomInspirationalEmailSend
+
+    def get_queryset(self):
+        """Only allow users to view their own send requests."""
+        return RandomInspirationalEmailSend.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Email Send Details"
+        context["the_site_name"] = THE_SITE_NAME
+        return context
+
+
+class RandomInspirationalEmailSendCreateView(RegistrationAcceptedMixin, CreateView):
+    """
+    CreateView for RandomInspirationalEmailSend model.
+    Creates a new send request and triggers the Celery task.
+    """
+
+    model = RandomInspirationalEmailSend
+    form_class = RandomInspirationalEmailSendForm
+    success_url = reverse_lazy("boosts:random-send-list")
+
+    def form_valid(self, form):
+        """Set the user and trigger the Celery task to send the email."""
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+
+        # Trigger the Celery task to send the random inspirational email
+        # Pass the RandomInspirationalEmailSend ID so the task can update it
+        send_random_inspirational_email.delay(
+            self.request.user.id,
+            random_send_id=self.object.id
+        )
+
+        messages.success(
+            self.request,
+            "Your random inspirational email send has been queued! "
+            "Check your email inbox soon.",
+        )
+        return response
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Send Random Inspirational Email"
+        context["the_site_name"] = THE_SITE_NAME
+        return context
+
+
+class RandomInspirationalEmailSendUpdateView(RegistrationAcceptedMixin, UpdateView):
+    """
+    UpdateView for RandomInspirationalEmailSend model.
+    Allows updating the status or error message of a send request.
+    """
+
+    model = RandomInspirationalEmailSend
+    fields = ["status", "error_message"]
+    success_url = reverse_lazy("boosts:random-send-list")
+
+    def get_queryset(self):
+        """Only allow users to update their own send requests."""
+        return RandomInspirationalEmailSend.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Update Email Send"
+        context["the_site_name"] = THE_SITE_NAME
+        return context
+
+
+class RandomInspirationalEmailSendDeleteView(RegistrationAcceptedMixin, DeleteView):
+    """
+    DeleteView for RandomInspirationalEmailSend model.
+    Allows deleting a send request record.
+    """
+
+    model = RandomInspirationalEmailSend
+    success_url = reverse_lazy("boosts:random-send-list")
+
+    def get_queryset(self):
+        """Only allow users to delete their own send requests."""
+        return RandomInspirationalEmailSend.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Delete Email Send"
+        context["the_site_name"] = THE_SITE_NAME
+        return context
