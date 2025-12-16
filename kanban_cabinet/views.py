@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Case, Count, F, IntegerField, Q, Sum, When
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
     ListView,
+    RedirectView,
     TemplateView,
     UpdateView,
 )
@@ -50,6 +52,8 @@ class StockItemListView(OwnerQuerySetMixin, ListView):
 
 class StockItemDetailView(OwnerQuerySetMixin, DetailView):
     model = StockItem
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
 
 
 class StockItemCreateView(LoginRequiredMixin, OwnerFormValidMixin, CreateView):
@@ -66,11 +70,15 @@ class StockItemCreateView(LoginRequiredMixin, OwnerFormValidMixin, CreateView):
     ]
 
     def get_success_url(self):
-        return reverse_lazy("kanban_cabinet:stockitem_detail", args=[self.object.pk])
+        return reverse_lazy(
+            "kanban_cabinet:stockitem_detail", kwargs={"slug": self.object.slug}
+        )
 
 
 class StockItemUpdateView(OwnerQuerySetMixin, OwnerFormValidMixin, UpdateView):
     model = StockItem
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
     fields = [
         "name",
         "location",
@@ -83,12 +91,32 @@ class StockItemUpdateView(OwnerQuerySetMixin, OwnerFormValidMixin, UpdateView):
     ]
 
     def get_success_url(self):
-        return reverse_lazy("kanban_cabinet:stockitem_detail", args=[self.object.pk])
+        return reverse_lazy(
+            "kanban_cabinet:stockitem_detail", kwargs={"slug": self.object.slug}
+        )
 
 
 class StockItemDeleteView(OwnerQuerySetMixin, DeleteView):
     model = StockItem
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
     success_url = reverse_lazy("kanban_cabinet:stockitem_list")
+
+
+class StockItemRedirectView(OwnerQuerySetMixin, RedirectView):
+    """
+    Redirect old pk-based URLs to new slug-based URLs.
+    """
+    permanent = True
+
+    def get_redirect_url(self, *args, **kwargs):
+        pk = kwargs.get("pk")
+        item = get_object_or_404(
+            StockItem.objects.filter(owner=self.request.user), pk=pk
+        )
+        return reverse_lazy(
+            "kanban_cabinet:stockitem_detail", kwargs={"slug": item.slug}
+        )
 
 
 # ---------------------------------------------------------------------------
