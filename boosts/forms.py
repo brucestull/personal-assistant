@@ -8,6 +8,7 @@ class InspirationalForm(ModelForm):
     """
     ModelForm for the Inspirational model. This form uses bootstrap.
     """
+
     class Meta:
         model = Inspirational
         fields = ["body"]
@@ -30,6 +31,7 @@ class RandomInspirationalEmailSendForm(ModelForm):
     ModelForm for the RandomInspirationalEmailSend model.
     Users don't need to fill any fields - just click to send.
     """
+
     class Meta:
         model = RandomInspirationalEmailSend
         fields = []  # No fields - automatic send on creation

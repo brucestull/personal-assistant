@@ -149,9 +149,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         )
 
         ctx["items"] = qs.order_by("-quantity_to_restock_annotated", "name")
-        ctx["items_needing_restock"] = qs.filter(
-            quantity_to_restock_annotated__gt=0
-        )
+        ctx["items_needing_restock"] = qs.filter(quantity_to_restock_annotated__gt=0)
         ctx["summary"] = qs.aggregate(
             total_items=Count("id"),
             total_needing_restock=Count(

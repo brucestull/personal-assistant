@@ -22,9 +22,9 @@ reportlab = "*"
 
 [dev-packages]
 ruff = "*"
-coverage = "==7.2.6"
-pytest-cov = "==4.1.0"
-flake8 = "==6.1.0"
+coverage = "*"
+pytest-cov = "*"
+flake8 = "*"
 isort = "*"
 black = "*"
 factory-boy = "*"
