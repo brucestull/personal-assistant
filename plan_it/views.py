@@ -28,9 +28,15 @@ def dashboard(request):
 
     all_activities = (
         Activity.objects.filter(user=request.user)
-        .select_related("activity_location", "target_item")
+        .select_related("activity_location", "target_item", "type")
         .order_by("due_date")
     )
+
+    # Count activities by status
+    overdue_count = sum(1 for a in all_activities if a.due_status() == "overdue")
+    today_count = sum(1 for a in all_activities if a.due_status() == "today")
+    upcoming_count = sum(1 for a in all_activities if a.due_status() == "upcoming")
+    no_due_date_count = sum(1 for a in all_activities if a.due_status() == "none")
 
     grouped_activities = defaultdict(list)
     for activity in all_activities:
@@ -49,6 +55,13 @@ def dashboard(request):
         "-completed_at"
     )[:5]
 
+    # Count summary statistics
+    total_items = Item.objects.filter(user=request.user).count()
+    total_storage_locations = StorageLocation.objects.filter(user=request.user).count()
+    total_activity_locations = ActivityLocation.objects.filter(user=request.user).count()
+    total_activity_types = ActivityType.objects.filter(user=request.user).count()
+    total_completions = ActivityInstance.objects.filter(user=request.user).count()
+
     return render(
         request,
         "plan_it/dashboard.html",
@@ -60,6 +73,15 @@ def dashboard(request):
             "today": today,
             "page_title": "Plan It Dashboard",
             "the_site_name": THE_SITE_NAME,
+            "overdue_count": overdue_count,
+            "today_count": today_count,
+            "upcoming_count": upcoming_count,
+            "no_due_date_count": no_due_date_count,
+            "total_items": total_items,
+            "total_storage_locations": total_storage_locations,
+            "total_activity_locations": total_activity_locations,
+            "total_activity_types": total_activity_types,
+            "total_completions": total_completions,
         },
     )
 
