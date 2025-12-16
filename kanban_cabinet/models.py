@@ -53,7 +53,6 @@ class StockItem(models.Model):
     slug = models.SlugField(
         max_length=255,
         unique=True,
-        db_index=True,
         blank=True,
         help_text="Auto-generated URL-friendly identifier from name.",
     )

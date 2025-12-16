@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Case, Count, F, IntegerField, Q, Sum, When
-from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -99,20 +98,16 @@ class StockItemDeleteView(OwnerQuerySetMixin, DeleteView):
     success_url = reverse_lazy("kanban_cabinet:stockitem_list")
 
 
-class StockItemPkRedirectView(OwnerQuerySetMixin, RedirectView):
+class StockItemPkRedirectView(LoginRequiredMixin, RedirectView):
     """
     Redirect view for backwards compatibility.
     Redirects old pk-based URLs to new slug-based URLs.
     """
     permanent = True
     query_string = True
-    model = StockItem
 
     def get_redirect_url(self, *args, **kwargs):
-        item = get_object_or_404(
-            StockItem.objects.filter(owner=self.request.user),
-            pk=kwargs["pk"]
-        )
+        item = StockItem.objects.filter(owner=self.request.user).get(pk=kwargs["pk"])
         return reverse("kanban_cabinet:stockitem_detail", kwargs={"slug": item.slug})
 
 
