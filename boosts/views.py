@@ -340,8 +340,7 @@ class RandomInspirationalEmailSendCreateView(RegistrationAcceptedMixin, CreateVi
         # Trigger the Celery task to send the random inspirational email
         # Pass the RandomInspirationalEmailSend ID so the task can update it
         send_random_inspirational_email.delay(
-            self.request.user.id,
-            random_send_id=self.object.id
+            self.request.user.id, random_send_id=self.object.id
         )
 
         messages.success(

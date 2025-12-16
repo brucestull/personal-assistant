@@ -139,6 +139,7 @@ class URL(CreatedUpdatedBase):
         abstract = True
         ordering = ["label"]
 
+
 class WorkspaceOwnedBase(CreatedUpdatedBase):
     workspace = models.ForeignKey(
         "core.Workspace", on_delete=models.CASCADE, related_name="%(class)ss"

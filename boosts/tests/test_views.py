@@ -580,9 +580,7 @@ class RandomInspirationalEmailSendListViewTest(TestCase):
         View should redirect user to login view if user is not authenticated.
         """
         response = self.client.get("/boosts/random-send/")
-        self.assertRedirects(
-            response, "/accounts/login/?next=/boosts/random-send/"
-        )
+        self.assertRedirects(response, "/accounts/login/?next=/boosts/random-send/")
 
     def test_view_returns_200_if_user_is_authenticated(self):
         """
@@ -684,9 +682,7 @@ class RandomInspirationalEmailSendCreateViewTest(TestCase):
         self.assertRedirects(response, "/boosts/random-send/")
 
         # Should have created one more record
-        new_count = RandomInspirationalEmailSend.objects.filter(
-            user=self.user
-        ).count()
+        new_count = RandomInspirationalEmailSend.objects.filter(user=self.user).count()
         self.assertEqual(new_count, initial_count + 1)
 
 
@@ -736,9 +732,7 @@ class RandomInspirationalEmailSendDetailViewTest(TestCase):
         View should return 404 when trying to view another user's record.
         """
         self.client.login(username="TestUser", password="a_test_password")
-        response = self.client.get(
-            f"/boosts/random-send/{self.other_send_record.pk}/"
-        )
+        response = self.client.get(f"/boosts/random-send/{self.other_send_record.pk}/")
         self.assertEqual(response.status_code, 404)
 
     def test_view_uses_correct_template(self):

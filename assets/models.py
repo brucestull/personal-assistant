@@ -40,7 +40,9 @@ class Application(models.Model):
 
 
 class Project(models.Model):
-    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, related_name="projects")
+    workspace = models.ForeignKey(
+        Workspace, on_delete=models.CASCADE, related_name="projects"
+    )  # noqa: E501
 
     STATUS = [
         ("inbox", "Inbox"),
@@ -68,12 +70,15 @@ class Project(models.Model):
 
     # nice for hierarchies (Homelab > Bird Cam > Classifier)
     parent = models.ForeignKey(
-        "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="subprojects"
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="subprojects",  # noqa: E501
     )
 
     class Meta:
         unique_together = [("workspace", "slug")]
-
 
 
 class Asset(models.Model):
@@ -81,7 +86,11 @@ class Asset(models.Model):
         Workspace, on_delete=models.CASCADE, related_name="assets"
     )
     primary_project = models.ForeignKey(
-        Project, null=True, blank=True, on_delete=models.SET_NULL, related_name="primary_assets"
+        Project,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="primary_assets",  # noqa: E501
     )
     projects = models.ManyToManyField(Project, blank=True, related_name="assets")
     KIND_CHOICES = [("PI", "Raspberry Pi"), ("SRV", "Server"), ("LAP", "Laptop")]

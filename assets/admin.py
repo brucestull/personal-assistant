@@ -62,7 +62,7 @@ class AssetAdmin(admin.ModelAdmin):
         "form_factor",
         "os",
         "applications",
-        "projects",          # M2M filter is fine
+        "projects",  # M2M filter is fine
         "location",
         "purchase_date",
         "warranty_expires",
@@ -73,7 +73,7 @@ class AssetAdmin(admin.ModelAdmin):
         "notes",
         "workspace__name",
         "primary_project__name",
-        "projects__name",    # M2M search
+        "projects__name",  # M2M search
     )
     autocomplete_fields = (
         "workspace",
@@ -100,7 +100,9 @@ class AssetAdmin(admin.ModelAdmin):
 
     def get_search_results(self, request, queryset, search_term):
         # because projects__name can introduce duplicate rows
-        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        queryset, use_distinct = super().get_search_results(
+            request, queryset, search_term
+        )  # noqa: E501
         return queryset, True
 
     # --- Status "chips" -----------------------------------------------------

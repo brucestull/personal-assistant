@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.test import RequestFactory, TestCase
 
 from accounts.models import CustomUser
-from vitals.admin import (BodyWeightAdmin, PulseAdmin, TemperatureAdmin,
-                          VitalsAdmin)
+from vitals.admin import BodyWeightAdmin, PulseAdmin, TemperatureAdmin, VitalsAdmin
 from vitals.models import BloodPressure, BodyWeight, Pulse, Temperature
 
 

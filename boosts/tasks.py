@@ -93,12 +93,14 @@ def send_random_inspirational_email(
     If random_send_id is provided, updates the RandomInspirationalEmailSend record.
     """
     from django.utils import timezone
+
     User = get_user_model()
 
     # Get the RandomInspirationalEmailSend record if provided
     random_send = None
     if random_send_id:
         from .models import RandomInspirationalEmailSend
+
         try:
             random_send = RandomInspirationalEmailSend.objects.get(pk=random_send_id)
         except RandomInspirationalEmailSend.DoesNotExist:
