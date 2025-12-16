@@ -145,7 +145,7 @@ class StockItemModelTests(TestCase):
             quantity_on_hand=1,
             target_quantity=2,
         )
-        
+
         # Try to create another item with the same slug manually
         with self.assertRaises(IntegrityError):
             with transaction.atomic():

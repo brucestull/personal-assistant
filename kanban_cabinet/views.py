@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Case, Count, F, IntegerField, Q, Sum, When
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -70,7 +70,9 @@ class StockItemCreateView(LoginRequiredMixin, OwnerFormValidMixin, CreateView):
     ]
 
     def get_success_url(self):
-        return reverse_lazy("kanban_cabinet:stockitem_detail", kwargs={"slug": self.object.slug})
+        return reverse_lazy(
+            "kanban_cabinet:stockitem_detail", kwargs={"slug": self.object.slug}
+        )
 
 
 class StockItemUpdateView(OwnerQuerySetMixin, OwnerFormValidMixin, UpdateView):
@@ -89,7 +91,9 @@ class StockItemUpdateView(OwnerQuerySetMixin, OwnerFormValidMixin, UpdateView):
     ]
 
     def get_success_url(self):
-        return reverse_lazy("kanban_cabinet:stockitem_detail", kwargs={"slug": self.object.slug})
+        return reverse_lazy(
+            "kanban_cabinet:stockitem_detail", kwargs={"slug": self.object.slug}
+        )
 
 
 class StockItemDeleteView(OwnerQuerySetMixin, DeleteView):
@@ -107,8 +111,12 @@ class StockItemRedirectView(OwnerQuerySetMixin, RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         pk = kwargs.get("pk")
-        item = get_object_or_404(StockItem.objects.filter(owner=self.request.user), pk=pk)
-        return reverse_lazy("kanban_cabinet:stockitem_detail", kwargs={"slug": item.slug})
+        item = get_object_or_404(
+            StockItem.objects.filter(owner=self.request.user), pk=pk
+        )
+        return reverse_lazy(
+            "kanban_cabinet:stockitem_detail", kwargs={"slug": item.slug}
+        )
 
 
 # ---------------------------------------------------------------------------

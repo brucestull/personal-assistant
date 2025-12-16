@@ -35,6 +35,7 @@ class LocationAdmin(admin.ModelAdmin):
 class StockItemAdmin(admin.ModelAdmin):
     list_display = (
         "name",
+        "slug",
         "owner",
         "location",
         "quantity_on_hand",
@@ -45,9 +46,14 @@ class StockItemAdmin(admin.ModelAdmin):
         "is_active",
     )
     list_filter = ("is_physical", "is_active", "location")
-    search_fields = ("name", "location__name", "owner__username")
+    search_fields = ("name", "slug", "location__name", "owner__username")
     autocomplete_fields = ("owner", "location")
-    readonly_fields = ("created_at", "updated_at", "quantity_to_restock_display")
+    readonly_fields = (
+        "slug",
+        "created_at",
+        "updated_at",
+        "quantity_to_restock_display",
+    )
 
     def quantity_to_restock_display(self, obj):
         return obj.quantity_to_restock
