@@ -7,27 +7,148 @@
 {% endblock title %}
 
 {% block dashboard %}
-    <div class="mb-4">
-        <h5 class="fw-bold">Legend</h5>
-        <ul class="list-unstyled">
-            <li>🔴 <span class="text-danger fw-bold">Overdue</span>: Past due date</li>
-            <li>🟡 <span class="text-warning fw-bold">Due Today</span>: Due today</li>
-            <li>🟢 <span class="text-success fw-bold">Upcoming</span>: Due later</li>
-        </ul>
-    </div>
-
     <div class="container py-4">
         <h1 class="mb-4">{{ page_title }}</h1>
 
+        <!-- Quick Actions Section -->
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">⚡ Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <a href="{% url 'plan_it:activity_add' %}" class="btn btn-success w-100">
+                            ➕ New Activity
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'plan_it:item_add' %}" class="btn btn-info w-100">
+                            📦 New Item
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'plan_it:activity_location_add' %}" class="btn btn-warning w-100">
+                            📍 New Location
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'plan_it:activity_type_add' %}" class="btn btn-secondary w-100">
+                            🏷️ New Type
+                        </a>
+                    </div>
+                </div>
+                <div class="row g-3 mt-2">
+                    <div class="col-md-3">
+                        <a href="{% url 'plan_it:storage_location_add' %}" class="btn btn-outline-secondary w-100">
+                            🗄️ New Storage
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'plan_it:activity_list' %}" class="btn btn-outline-primary w-100">
+                            📋 All Activities
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'plan_it:item_list' %}" class="btn btn-outline-info w-100">
+                            📦 All Items
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'plan_it:activity_location_list' %}" class="btn btn-outline-warning w-100">
+                            📍 All Locations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Summary -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center border-danger">
+                    <div class="card-body">
+                        <h3 class="text-danger">{{ overdue_count }}</h3>
+                        <p class="mb-0">🔴 Overdue</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-warning">
+                    <div class="card-body">
+                        <h3 class="text-warning">{{ today_count }}</h3>
+                        <p class="mb-0">🟡 Due Today</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-success">
+                    <div class="card-body">
+                        <h3 class="text-success">{{ upcoming_count }}</h3>
+                        <p class="mb-0">🟢 Upcoming</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-secondary">
+                    <div class="card-body">
+                        <h3 class="text-secondary">{{ no_due_date_count }}</h3>
+                        <p class="mb-0">⚪ No Due Date</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Stats -->
+        <div class="card mb-4 border-info">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">📊 Summary</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Items:</strong> {{ total_items }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Storage Locations:</strong> {{ total_storage_locations }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Activity Locations:</strong> {{ total_activity_locations }}
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Types:</strong> {{ total_activity_types }}
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Completions:</strong> {{ total_completions }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="alert alert-light mb-4">
+            <h6 class="fw-bold mb-2">📖 Legend</h6>
+            <span class="me-3">🔴 <span class="text-danger fw-bold">Overdue</span>: Past due date</span>
+            <span class="me-3">🟡 <span class="text-warning fw-bold">Due Today</span>: Due today</span>
+            <span class="me-3">🟢 <span class="text-success fw-bold">Upcoming</span>: Due later</span>
+            <span>⚪ <span class="text-secondary fw-bold">No Due Date</span>: Not scheduled</span>
+        </div>
+
         <!-- 🗂 Activities by ActivityLocation hierarchy -->
+        <h2 class="mt-4 mb-3">🗂️ Activities by Location</h2>
         {% for location in top_locations %}
             {% include "plan_it/_activity_location_group.html" with location=location grouped_activities=grouped_activities %}
+        {% empty %}
+            <div class="alert alert-info">
+                No activity locations found. 
+                <a href="{% url 'plan_it:activity_location_add' %}" class="alert-link">Create one now</a>.
+            </div>
         {% endfor %}
 
         <!-- Render Uncategorized -->
         {% with grouped_activities|get_item:None as uncategorized %}
             {% if uncategorized %}
-                <div class="card mt-5 border-dark">
+                <div class="card mt-4 border-dark">
                     <div class="card-header bg-dark text-white">
                         📂 Uncategorized Activities ({{ uncategorized|length }})
                     </div>
@@ -43,6 +164,7 @@
                                         {% if activity.due_status == "overdue" %}🔴{% elif activity.due_status == "today" %}🟡{% else %}🟢{% endif %}
                                         {{ activity.name }}
                                     </strong><br>
+                                    {% if activity.type %}🏷️ Type: {{ activity.type }}<br>{% endif %}
                                     {% if activity.due_date %}
                                         📅 Due:
                                         {% if activity.due_status == "today" %}
@@ -70,39 +192,54 @@
 
         <!-- ✅ Recently Completed -->
         <h2 class="mt-5">✅ Recently Completed</h2>
-        <ul class="list-group mb-4">
-            {% for instance in recent_completions %}
-                <li class="list-group-item">
-                    {{ instance.name_snapshot }} @ {{ instance.completed_at|date:"Y-m-d H:i" }}
-                </li>
-            {% empty %}
-                <li class="list-group-item text-muted">No completions yet.</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <!-- 📦 Items by Storage Location -->
-    <div class="card border-secondary mt-5">
-        <div class="card-header bg-secondary text-white">
-            📦 Items by Storage Location
-        </div>
-        <div class="card-body">
-            {% if items %}
-                {% regroup items by storage_location as location_groups %}
-                {% for group in location_groups %}
-                    <h5 class="mt-3">{{ group.grouper }}</h5>
-                    <ul class="list-group mb-3">
-                        {% for item in group.list %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ item.name }}
-                                <a href="{% url 'plan_it:item_edit' item.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+        <div class="card mb-4">
+            <ul class="list-group list-group-flush">
+                {% for instance in recent_completions %}
+                    <li class="list-group-item">
+                        <strong>{{ instance.name_snapshot }}</strong>
+                        <span class="text-muted">@ {{ instance.completed_at|date:"Y-m-d H:i" }}</span>
+                        {% if instance.type_name_snapshot %}
+                            <span class="badge bg-secondary">{{ instance.type_name_snapshot }}</span>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No completions yet.</li>
                 {% endfor %}
-            {% else %}
-                <p class="text-muted">No items found.</p>
-            {% endif %}
+            </ul>
+        </div>
+
+        <!-- 📦 Items by Storage Location -->
+        <div class="card border-secondary mt-4">
+            <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                <span>📦 Recent Items by Storage Location</span>
+                <a href="{% url 'plan_it:item_list' %}" class="btn btn-sm btn-light">View All</a>
+            </div>
+            <div class="card-body">
+                {% if items %}
+                    {% regroup items by storage_location as location_groups %}
+                    {% for group in location_groups %}
+                        <h5 class="mt-3">{{ group.grouper }}</h5>
+                        <ul class="list-group mb-3">
+                            {% for item in group.list %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        {{ item.name }}
+                                        {% if item.description %}
+                                            <br><small class="text-muted">{{ item.description|truncatewords:10 }}</small>
+                                        {% endif %}
+                                    </span>
+                                    <a href="{% url 'plan_it:item_edit' item.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">
+                        No items found. 
+                        <a href="{% url 'plan_it:item_add' %}" class="alert-link">Create one now</a>.
+                    </p>
+                {% endif %}
+            </div>
         </div>
     </div>
 

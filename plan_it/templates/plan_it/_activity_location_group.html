@@ -29,7 +29,7 @@
                                             {% if activity.due_status == "overdue" %}🔴{% elif activity.due_status == "today" %}🟡{% else %}🟢{% endif %}
                                             {{ activity.name }}
                                         </strong><br>
-
+                                        {% if activity.type %}🏷️ Type: {{ activity.type }}<br>{% endif %}
                                         {% if activity.due_date %}
                                             📅 Due:
                                             {% if activity.due_status == "today" %}

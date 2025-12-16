@@ -28,12 +28,20 @@ def dashboard(request):
 
     all_activities = (
         Activity.objects.filter(user=request.user)
-        .select_related("activity_location", "target_item")
+        .select_related("activity_location", "target_item", "type")
         .order_by("due_date")
     )
 
+    # Count activities by status and group by location in single iteration
+    status_counts = {"overdue": 0, "today": 0, "upcoming": 0, "none": 0}
     grouped_activities = defaultdict(list)
+
     for activity in all_activities:
+        # Count status
+        status = activity.due_status()
+        status_counts[status] += 1
+
+        # Group by location
         loc = activity.activity_location
         grouped_activities[loc].append(activity)
 
@@ -49,6 +57,17 @@ def dashboard(request):
         "-completed_at"
     )[:5]
 
+    # Count summary statistics - using count() is efficient for these
+    total_items = Item.objects.filter(user=request.user).count()
+    total_storage_locations = StorageLocation.objects.filter(
+        user=request.user
+    ).count()
+    total_activity_locations = ActivityLocation.objects.filter(
+        user=request.user
+    ).count()
+    total_activity_types = ActivityType.objects.filter(user=request.user).count()
+    total_completions = ActivityInstance.objects.filter(user=request.user).count()
+
     return render(
         request,
         "plan_it/dashboard.html",
@@ -60,6 +79,15 @@ def dashboard(request):
             "today": today,
             "page_title": "Plan It Dashboard",
             "the_site_name": THE_SITE_NAME,
+            "overdue_count": status_counts["overdue"],
+            "today_count": status_counts["today"],
+            "upcoming_count": status_counts["upcoming"],
+            "no_due_date_count": status_counts["none"],
+            "total_items": total_items,
+            "total_storage_locations": total_storage_locations,
+            "total_activity_locations": total_activity_locations,
+            "total_activity_types": total_activity_types,
+            "total_completions": total_completions,
         },
     )
 
