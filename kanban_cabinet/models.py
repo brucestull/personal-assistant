@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 
 
 class Location(models.Model):
@@ -49,6 +50,7 @@ class StockItem(models.Model):
         help_text="Where this item normally lives.",
     )
     name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True)
     description = models.TextField(blank=True)
     is_physical = models.BooleanField(
         default=True,
@@ -91,3 +93,18 @@ class StockItem(models.Model):
     @property
     def needs_restock(self) -> bool:
         return self.quantity_to_restock > 0
+
+    def save(self, *args, **kwargs):
+        """
+        Auto-generate slug from name if not set.
+        Handle collisions by appending -2, -3, etc.
+        """
+        if not self.slug:
+            base_slug = slugify(self.name)
+            slug = base_slug
+            counter = 2
+            while StockItem.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)

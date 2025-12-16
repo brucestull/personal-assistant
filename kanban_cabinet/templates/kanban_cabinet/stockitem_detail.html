@@ -9,9 +9,9 @@
     <h1 class="h3">{{ object.name }}</h1>
     <div>
       <a class="btn btn-sm btn-outline-secondary"
-         href="{% url 'kanban_cabinet:stockitem_update' object.pk %}">Edit</a>
+         href="{% url 'kanban_cabinet:stockitem_update' object.slug %}">Edit</a>
       <a class="btn btn-sm btn-outline-danger"
-         href="{% url 'kanban_cabinet:stockitem_delete' object.pk %}">Delete</a>
+         href="{% url 'kanban_cabinet:stockitem_delete' object.slug %}">Delete</a>
     </div>
   </div>
 

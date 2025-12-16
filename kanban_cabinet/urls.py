@@ -10,19 +10,25 @@ urlpatterns = [
     path("items/", views.StockItemListView.as_view(), name="stockitem_list"),
     path("items/add/", views.StockItemCreateView.as_view(), name="stockitem_create"),
     path(
-        "items/<int:pk>/",
+        "items/<slug:slug>/",
         views.StockItemDetailView.as_view(),
         name="stockitem_detail",
     ),
     path(
-        "items/<int:pk>/edit/",
+        "items/<slug:slug>/edit/",
         views.StockItemUpdateView.as_view(),
         name="stockitem_update",
     ),
     path(
-        "items/<int:pk>/delete/",
+        "items/<slug:slug>/delete/",
         views.StockItemDeleteView.as_view(),
         name="stockitem_delete",
+    ),
+    # Redirect old pk-based URLs to slug-based URLs
+    path(
+        "items/pk/<int:pk>/",
+        views.StockItemRedirectView.as_view(),
+        name="stockitem_redirect",
     ),
     # Locations
     path("locations/", views.LocationListView.as_view(), name="location_list"),
