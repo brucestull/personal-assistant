@@ -110,7 +110,12 @@ def test_asset_admin_configuration_matches_current_code():
     )  # :contentReference[oaicite:8]{index=8}
 
     assert ma.date_hierarchy == "purchase_date"
-    assert ma.list_select_related == ("workspace", "primary_project", "form_factor", "os")
+    assert ma.list_select_related == (
+        "workspace",
+        "primary_project",
+        "form_factor",
+        "os",
+    )  # noqa E501
     assert ma.ordering == ("workspace", "name")
 
     assert WorkOrderInline in ma.inlines
@@ -121,10 +126,18 @@ def test_asset_admin_configuration_matches_current_code():
 def test_projects_summary_variants(workspace):
     ma = AssetAdmin(Asset, dj_admin.site)
 
-    p1 = Project.objects.create(workspace=workspace, name="P1", description="", slug="p1")
-    p2 = Project.objects.create(workspace=workspace, name="P2", description="", slug="p2")
-    p3 = Project.objects.create(workspace=workspace, name="P3", description="", slug="p3")
-    p4 = Project.objects.create(workspace=workspace, name="P4", description="", slug="p4")
+    p1 = Project.objects.create(
+        workspace=workspace, name="P1", description="", slug="p1"
+    )  # noqa E501
+    p2 = Project.objects.create(
+        workspace=workspace, name="P2", description="", slug="p2"
+    )  # noqa E501
+    p3 = Project.objects.create(
+        workspace=workspace, name="P3", description="", slug="p3"
+    )  # noqa E501
+    p4 = Project.objects.create(
+        workspace=workspace, name="P4", description="", slug="p4"
+    )  # noqa E501
 
     asset = Asset.objects.create(workspace=workspace, name="A", kind="PI")
 
@@ -145,7 +158,7 @@ def test_projects_summary_variants(workspace):
 @pytest.mark.django_db
 def test_get_search_results_forces_distinct(workspace):
     """
-    AssetAdmin.get_search_results always returns use_distinct=True. :contentReference[oaicite:10]{index=10}
+    AssetAdmin.get_search_results always returns use_distinct=True. :contentReference[oaicite:10]{index=10}  # noqa E501
     """
     ma = AssetAdmin(Asset, dj_admin.site)
     rf = RequestFactory()
@@ -162,7 +175,7 @@ def test_get_search_results_forces_distinct(workspace):
 @pytest.mark.django_db
 def test_warranty_status_variants(monkeypatch, workspace):
     """
-    warranty_status branches: n/a, Expired, Expiring soon, Active. :contentReference[oaicite:11]{index=11}
+    warranty_status branches: n/a, Expired, Expiring soon, Active. :contentReference[oaicite:11]{index=11}  # noqa E501
     """
     fixed_now = datetime(2025, 1, 1, 10, 0, tzinfo=timezone.get_current_timezone())
     monkeypatch.setattr("assets.admin.timezone.now", lambda: fixed_now)
@@ -200,14 +213,16 @@ def test_warranty_status_variants(monkeypatch, workspace):
 @pytest.mark.django_db
 def test_next_due_status_variants(monkeypatch, workspace):
     """
-    next_due_status branches: No open work, Overdue, Due today, Due soon, Scheduled. :contentReference[oaicite:12]{index=12}
+    next_due_status branches: No open work, Overdue, Due today, Due soon, Scheduled. :contentReference[oaicite:12]{index=12}  # noqa E501
     """
     fixed_now = datetime(2025, 1, 1, 10, 0, tzinfo=timezone.get_current_timezone())
     monkeypatch.setattr("assets.admin.timezone.now", lambda: fixed_now)
 
     ma = AssetAdmin(Asset, dj_admin.site)
     asset = Asset.objects.create(workspace=workspace, name="Asset", kind="PI")
-    task = MaintenanceTask.objects.create(workspace=workspace, name="Task", cadence="monthly")
+    task = MaintenanceTask.objects.create(
+        workspace=workspace, name="Task", cadence="monthly"
+    )  # noqa E501
 
     assert ma.next_due_status(asset) == "No open work"
 

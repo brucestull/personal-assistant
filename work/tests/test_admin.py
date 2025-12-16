@@ -79,7 +79,9 @@ def test_work_order_admin_configuration():
 @pytest.mark.django_db
 def test_mark_actions(workspace, user):
     asset = Asset.objects.create(workspace=workspace, name="A", kind="PI")
-    task = MaintenanceTask.objects.create(workspace=workspace, name="T", cadence="weekly")
+    task = MaintenanceTask.objects.create(
+        workspace=workspace, name="T", cadence="weekly"
+    )  # noqa E501
 
     wo = WorkOrder.objects.create(
         workspace=workspace,
@@ -108,14 +110,24 @@ def test_mark_actions(workspace, user):
 @pytest.mark.django_db
 def test_due_window_filter_querysets(workspace):
     asset = Asset.objects.create(workspace=workspace, name="A", kind="PI")
-    task = MaintenanceTask.objects.create(workspace=workspace, name="T", cadence="weekly")
+    task = MaintenanceTask.objects.create(
+        workspace=workspace, name="T", cadence="weekly"
+    )
 
     now = timezone.now()
 
-    overdue = WorkOrder.objects.create(workspace=workspace, asset=asset, task=task, due=now - timedelta(days=1))
-    next_7 = WorkOrder.objects.create(workspace=workspace, asset=asset, task=task, due=now + timedelta(days=3))
-    next_30 = WorkOrder.objects.create(workspace=workspace, asset=asset, task=task, due=now + timedelta(days=15))
-    future = WorkOrder.objects.create(workspace=workspace, asset=asset, task=task, due=now + timedelta(days=40))
+    overdue = WorkOrder.objects.create(
+        workspace=workspace, asset=asset, task=task, due=now - timedelta(days=1)
+    )  # noqa E501
+    next_7 = WorkOrder.objects.create(
+        workspace=workspace, asset=asset, task=task, due=now + timedelta(days=3)
+    )  # noqa E501
+    next_30 = WorkOrder.objects.create(
+        workspace=workspace, asset=asset, task=task, due=now + timedelta(days=15)
+    )  # noqa E501
+    future = WorkOrder.objects.create(
+        workspace=workspace, asset=asset, task=task, due=now + timedelta(days=40)
+    )  # noqa E501
 
     rf = RequestFactory()
     base_qs = WorkOrder.objects.all()
@@ -140,4 +152,9 @@ def test_due_window_filter_querysets(workspace):
 def test_activity_instance_admin_configuration():
     ma = ActivityInstanceAdmin(ActivityInstance, dj_admin.site)
     assert "id" in ma.readonly_fields
-    assert ma.autocomplete_fields == ("workspace", "asset", "work_order", "performed_by")
+    assert ma.autocomplete_fields == (
+        "workspace",
+        "asset",
+        "work_order",
+        "performed_by",
+    )  # noqa E501
