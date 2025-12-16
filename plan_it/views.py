@@ -57,8 +57,12 @@ def dashboard(request):
 
     # Count summary statistics
     total_items = Item.objects.filter(user=request.user).count()
-    total_storage_locations = StorageLocation.objects.filter(user=request.user).count()
-    total_activity_locations = ActivityLocation.objects.filter(user=request.user).count()
+    total_storage_locations = StorageLocation.objects.filter(
+        user=request.user
+    ).count()
+    total_activity_locations = ActivityLocation.objects.filter(
+        user=request.user
+    ).count()
     total_activity_types = ActivityType.objects.filter(user=request.user).count()
     total_completions = ActivityInstance.objects.filter(user=request.user).count()
 

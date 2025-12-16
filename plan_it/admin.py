@@ -50,7 +50,8 @@ class ItemAdmin(admin.ModelAdmin):
 
     def description_preview(self, obj):
         if obj.description:
-            return obj.description[:50] + "..." if len(obj.description) > 50 else obj.description
+            preview = obj.description[:50]
+            return preview + "..." if len(obj.description) > 50 else preview
         return "-"
 
     description_preview.short_description = "Description"
@@ -133,7 +134,12 @@ class ActivityAdmin(admin.ModelAdmin):
             "fields": ("activity_location", "target_item")
         }),
         ("Schedule", {
-            "fields": ("due_date", "is_recurring", "last_completed", "due_status_display")
+            "fields": (
+                "due_date",
+                "is_recurring",
+                "last_completed",
+                "due_status_display",
+            )
         }),
     )
 

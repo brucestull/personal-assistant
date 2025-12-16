@@ -185,7 +185,10 @@ class ActivityLocationViewTests(TestCase):
     def test_activity_location_delete(self):
         """Test deleting an activity location"""
         response = self.client.post(
-            reverse("plan_it:activity_location_delete", args=[self.activity_location.id])
+            reverse(
+                "plan_it:activity_location_delete",
+                args=[self.activity_location.id],
+            )
         )
         self.assertEqual(response.status_code, 302)
         self.assertFalse(
