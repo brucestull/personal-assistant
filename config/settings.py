@@ -88,6 +88,9 @@ INSTALLED_APPS = [
     "assets.apps.AssetsConfig",
     "core.apps.CoreConfig",
     "work.apps.WorkConfig",
+    "inbox.apps.InboxConfig",
+    "knowledge.apps.KnowledgeConfig",
+    "projects.apps.ProjectsConfig",
 ]
 
 MIDDLEWARE = [
