@@ -58,7 +58,7 @@
             <td>{{ item.quantity_to_restock }} {{ item.unit_name }}</td>
             <td>
               <a class="btn btn-sm btn-outline-primary"
-                 href="{% url 'kanban_cabinet:stockitem_detail' item.pk %}">View</a>
+                 href="{% url 'kanban_cabinet:stockitem_detail' item.slug %}">View</a>
             </td>
           </tr>
         {% empty %}
@@ -86,7 +86,7 @@
         {% for item in items %}
           <tr>
             <td>
-              <a href="{% url 'kanban_cabinet:stockitem_detail' item.pk %}">
+              <a href="{% url 'kanban_cabinet:stockitem_detail' item.slug %}">
                 {{ item.name }}
               </a>
             </td>

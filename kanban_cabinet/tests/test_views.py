@@ -77,16 +77,29 @@ class StockItemListAndDetailViewTests(BaseViewTests):
         self.assertIn(self.item, object_list)
         self.assertNotIn(self.other_item, object_list)
 
-    def test_stockitem_detail_for_owner(self):
-        url = reverse("kanban_cabinet:stockitem_detail", args=[self.item.pk])
+    def test_stockitem_detail_for_owner_by_slug(self):
+        url = reverse("kanban_cabinet:stockitem_detail", kwargs={"slug": self.item.slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["object"], self.item)
 
-    def test_stockitem_detail_404_for_non_owner(self):
-        url = reverse("kanban_cabinet:stockitem_detail", args=[self.other_item.pk])
+    def test_stockitem_detail_404_for_non_owner_by_slug(self):
+        url = reverse("kanban_cabinet:stockitem_detail", kwargs={"slug": self.other_item.slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
+    def test_stockitem_detail_backwards_compat_redirect(self):
+        # Test that old pk-based URL redirects to slug-based URL
+        url = reverse("kanban_cabinet:stockitem_detail_by_pk", kwargs={"pk": self.item.pk})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 301)  # Permanent redirect
+        expected_url = reverse("kanban_cabinet:stockitem_detail", kwargs={"slug": self.item.slug})
+        self.assertRedirects(
+            response, 
+            expected_url, 
+            status_code=301, 
+            fetch_redirect_response=False
+        )
 
 
 class StockItemCreateUpdateDeleteViewTests(BaseViewTests):
@@ -112,7 +125,7 @@ class StockItemCreateUpdateDeleteViewTests(BaseViewTests):
         self.assertEqual(item.target_quantity, 4)
 
     def test_update_stockitem_uses_owner_mixin_but_does_not_change_owner(self):
-        url = reverse("kanban_cabinet:stockitem_update", args=[self.item.pk])
+        url = reverse("kanban_cabinet:stockitem_update", kwargs={"slug": self.item.slug})
         data = {
             "name": "Shampoo (Updated)",
             "location": self.location.pk,
@@ -133,13 +146,13 @@ class StockItemCreateUpdateDeleteViewTests(BaseViewTests):
         self.assertEqual(self.item.owner, self.user)
 
     def test_delete_stockitem(self):
-        url = reverse("kanban_cabinet:stockitem_delete", args=[self.item.pk])
+        url = reverse("kanban_cabinet:stockitem_delete", kwargs={"slug": self.item.slug})
         response = self.client.post(url)
         self.assertEqual(response.status_code, 302)
         self.assertFalse(StockItem.objects.filter(pk=self.item.pk).exists())
 
     def test_delete_stockitem_of_other_user_404(self):
-        url = reverse("kanban_cabinet:stockitem_delete", args=[self.other_item.pk])
+        url = reverse("kanban_cabinet:stockitem_delete", kwargs={"slug": self.other_item.slug})
         response = self.client.post(url)
         self.assertEqual(response.status_code, 404)
 

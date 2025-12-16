@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 
 
 class Location(models.Model):
@@ -49,6 +50,13 @@ class StockItem(models.Model):
         help_text="Where this item normally lives.",
     )
     name = models.CharField(max_length=200)
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        db_index=True,
+        blank=True,
+        help_text="Auto-generated URL-friendly identifier from name.",
+    )
     description = models.TextField(blank=True)
     is_physical = models.BooleanField(
         default=True,
@@ -91,3 +99,29 @@ class StockItem(models.Model):
     @property
     def needs_restock(self) -> bool:
         return self.quantity_to_restock > 0
+
+    def _generate_unique_slug(self) -> str:
+        """
+        Generate a unique slug from the item name.
+        Appends -2, -3, etc. on collision.
+        """
+        base_slug = slugify(self.name)
+        if not base_slug:
+            base_slug = "item"
+
+        slug = base_slug
+        counter = 2
+        # Check for collision, excluding self if updating
+        while StockItem.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+        return slug
+
+    def save(self, *args, **kwargs):
+        """
+        Override save to auto-generate slug if not set.
+        Only regenerate if slug is blank to keep slugs stable.
+        """
+        if not self.slug:
+            self.slug = self._generate_unique_slug()
+        super().save(*args, **kwargs)

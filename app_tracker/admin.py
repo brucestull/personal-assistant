@@ -168,7 +168,7 @@ class ProjectAdmin(admin.ModelAdmin):
         "created",
         "updated",
     )
-    filter_horizontal = ("owner", "applications")
+    filter_horizontal = ("owner",)
     fieldsets = (
         (
             None,
