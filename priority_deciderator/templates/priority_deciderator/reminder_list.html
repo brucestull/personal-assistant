@@ -1,0 +1,95 @@
+{% extends 'priority_deciderator/base.html' %}
+
+{% block title %}All Reminders{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8">
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h1 class="text-3xl font-bold text-gray-900">All Reminders</h1>
+            <p class="mt-2 text-sm text-gray-700">
+                A list of all your reminders
+            </p>
+        </div>
+        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+            <a href="{% url 'priority_deciderator:reminder_create' %}"
+               class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+                New Reminder
+            </a>
+        </div>
+    </div>
+
+    <div class="mt-8 flex flex-col">
+        {% if reminders %}
+            <div class="bg-white shadow overflow-hidden sm:rounded-md">
+                <ul role="list" class="divide-y divide-gray-200">
+                    {% for reminder in reminders %}
+                        <li>
+                            <a href="{% url 'priority_deciderator:reminder_detail' reminder.pk %}" 
+                               class="block hover:bg-gray-50">
+                                <div class="px-4 py-4 sm:px-6">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-lg font-medium text-indigo-600 truncate">
+                                            {{ reminder.name }}
+                                        </p>
+                                        {% if reminder.is_active %}
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        {% else %}
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                                Inactive
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    {% if reminder.description %}
+                                        <div class="mt-2">
+                                            <p class="text-sm text-gray-500">
+                                                {{ reminder.description|truncatewords:30 }}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    <div class="mt-2 text-sm text-gray-500">
+                                        Created {{ reminder.created|date:"M j, Y, g:i a" }}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if is_paginated %}
+                <div class="mt-4 flex justify-center space-x-2">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" 
+                           class="px-3 py-1 bg-indigo-200 rounded hover:bg-indigo-300">
+                            Previous
+                        </a>
+                    {% endif %}
+                    <span class="px-3 py-1">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" 
+                           class="px-3 py-1 bg-indigo-200 rounded hover:bg-indigo-300">
+                            Next
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-12 bg-white rounded-lg shadow">
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No reminders</h3>
+                <p class="mt-1 text-sm text-gray-500">Get started by creating a new reminder.</p>
+                <div class="mt-6">
+                    <a href="{% url 'priority_deciderator:reminder_create' %}"
+                       class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                        Create Reminder
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

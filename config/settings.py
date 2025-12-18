@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     "inbox.apps.InboxConfig",
     "knowledge.apps.KnowledgeConfig",
     "projects.apps.ProjectsConfig",
+    "priority_deciderator.apps.PriorityDecideratorConfig",
 ]
 
 MIDDLEWARE = [

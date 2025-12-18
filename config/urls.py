@@ -58,4 +58,5 @@ urlpatterns = [
     path("tasks/", include("tasks.urls")),
     path("warcrafting/", include("warcrafting.urls", namespace="warcrafting")),
     path("kanban/", include("kanban_cabinet.urls")),
+    path("priority-deciderator/", include("priority_deciderator.urls")),
 ]
