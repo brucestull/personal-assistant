@@ -51,6 +51,7 @@ class StockItem(models.Model):
     )
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
+
     description = models.TextField(blank=True)
     is_physical = models.BooleanField(
         default=True,
