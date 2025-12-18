@@ -1,8 +1,9 @@
+import json
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
-import json
 
 from base.models import CreatedUpdatedBase
 
@@ -124,7 +125,7 @@ class ReminderSchedule(CreatedUpdatedBase):
         Override save to create/update the periodic task in django-celery-beat.
         """
         super().save(*args, **kwargs)
-        
+
         # Only create/update periodic task if schedule is active
         if self.is_active and self.reminder.is_active:
             self._update_periodic_task()
@@ -139,19 +140,21 @@ class ReminderSchedule(CreatedUpdatedBase):
         """
         # Create crontab schedule based on frequency
         crontab = self._get_crontab_schedule()
-        
+
         # Create or update periodic task
         task_name = f"reminder_{self.reminder.id}_schedule_{self.id}"
-        
+
         if self.periodic_task:
             # Update existing task
             self.periodic_task.name = task_name
             self.periodic_task.crontab = crontab
             self.periodic_task.enabled = self.is_active and self.reminder.is_active
-            self.periodic_task.kwargs = json.dumps({
-                "reminder_id": self.reminder.id,
-                "schedule_id": self.id,
-            })
+            self.periodic_task.kwargs = json.dumps(
+                {
+                    "reminder_id": self.reminder.id,
+                    "schedule_id": self.id,
+                }
+            )
             self.periodic_task.save()
         else:
             # Create new task
@@ -160,10 +163,12 @@ class ReminderSchedule(CreatedUpdatedBase):
                 task="priority_deciderator.tasks.send_reminder_email",
                 crontab=crontab,
                 enabled=self.is_active and self.reminder.is_active,
-                kwargs=json.dumps({
-                    "reminder_id": self.reminder.id,
-                    "schedule_id": self.id,
-                }),
+                kwargs=json.dumps(
+                    {
+                        "reminder_id": self.reminder.id,
+                        "schedule_id": self.id,
+                    }
+                ),
             )
             # Save again to update the foreign key
             super().save(update_fields=["periodic_task"])
@@ -174,7 +179,7 @@ class ReminderSchedule(CreatedUpdatedBase):
         """
         hour = self.time.hour
         minute = self.time.minute
-        
+
         if self.frequency == "daily":
             crontab, _ = CrontabSchedule.objects.get_or_create(
                 minute=str(minute),
@@ -209,7 +214,7 @@ class ReminderSchedule(CreatedUpdatedBase):
                 day_of_month="*",
                 month_of_year="*",
             )
-        
+
         return crontab
 
     def delete(self, *args, **kwargs):

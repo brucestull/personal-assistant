@@ -1,4 +1,5 @@
 import smtplib
+
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.conf import settings
@@ -24,58 +25,62 @@ RETRY_KW = dict(
 def send_reminder_email(self, reminder_id: int, schedule_id: int = None) -> dict:
     """
     Send a reminder email to the user.
-    
+
     Args:
         reminder_id: ID of the Reminder to send
         schedule_id: Optional ID of the ReminderSchedule that triggered this
-        
+
     Returns:
         dict with status information
     """
     from .models import Reminder
-    
+
     try:
         reminder = Reminder.objects.select_related("user").get(pk=reminder_id)
     except Reminder.DoesNotExist:
         logger.warning("send_reminder_email: Reminder %s not found", reminder_id)
         return {"ok": False, "reason": "reminder_not_found"}
-    
+
     # Check if reminder is active
     if not reminder.is_active:
         logger.info("Reminder %s is inactive, skipping email", reminder_id)
         return {"ok": False, "reason": "reminder_inactive"}
-    
+
     user = reminder.user
-    
+
     # Check if user has email
     if not user.email:
         logger.warning("User %s has no email address", user.id)
         return {"ok": False, "reason": "user_no_email"}
-    
+
     # Prepare email content
     site_name = getattr(settings, "THE_SITE_NAME", "Personal Assistant")
     subject = f"{site_name} — Reminder: {reminder.name}"
-    
+
     message_lines = [
         f"Hello {user.username},",
         "",
         f"This is your reminder: {reminder.name}",
         "",
     ]
-    
+
     if reminder.description:
-        message_lines.extend([
-            "Details:",
-            reminder.description,
-            "",
-        ])
-    
-    message_lines.extend([
-        f"— {site_name}",
-    ])
-    
+        message_lines.extend(
+            [
+                "Details:",
+                reminder.description,
+                "",
+            ]
+        )
+
+    message_lines.extend(
+        [
+            f"— {site_name}",
+        ]
+    )
+
     message = "\n".join(message_lines)
-    
+
     # Send email
     try:
         send_mail(

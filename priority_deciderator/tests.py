@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
-from django_celery_beat.models import CrontabSchedule, PeriodicTask
+from django_celery_beat.models import PeriodicTask
 
 from .models import Reminder, ReminderSchedule
 
@@ -50,7 +50,9 @@ class ReminderModelTest(TestCase):
             name="Test Reminder",
             user=self.user,
         )
-        expected_url = reverse("priority_deciderator:reminder_detail", kwargs={"pk": reminder.pk})
+        expected_url = reverse(
+            "priority_deciderator:reminder_detail", kwargs={"pk": reminder.pk}
+        )
         self.assertEqual(reminder.get_absolute_url(), expected_url)
 
 
@@ -136,7 +138,7 @@ class ReminderScheduleModelTest(TestCase):
         )
         periodic_task_id = schedule.periodic_task.id
         schedule.delete()
-        
+
         # Check that periodic task is also deleted
         with self.assertRaises(PeriodicTask.DoesNotExist):
             PeriodicTask.objects.get(id=periodic_task_id)
@@ -181,7 +183,7 @@ class ReminderViewTest(TestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)  # Redirect after success
-        
+
         # Check reminder was created
         reminder = Reminder.objects.get(name="New Reminder")
         self.assertEqual(reminder.user, self.user)
@@ -193,7 +195,9 @@ class ReminderViewTest(TestCase):
             name="Test Reminder",
             user=self.user,
         )
-        url = reverse("priority_deciderator:reminder_detail", kwargs={"pk": reminder.pk})
+        url = reverse(
+            "priority_deciderator:reminder_detail", kwargs={"pk": reminder.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "priority_deciderator/reminder_detail.html")
@@ -205,7 +209,9 @@ class ReminderViewTest(TestCase):
             name="Test Reminder",
             user=self.user,
         )
-        url = reverse("priority_deciderator:reminder_update", kwargs={"pk": reminder.pk})
+        url = reverse(
+            "priority_deciderator:reminder_update", kwargs={"pk": reminder.pk}
+        )
         data = {
             "name": "Updated Reminder",
             "description": "Updated description",
@@ -213,7 +219,7 @@ class ReminderViewTest(TestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
-        
+
         # Check reminder was updated
         reminder.refresh_from_db()
         self.assertEqual(reminder.name, "Updated Reminder")
@@ -225,10 +231,12 @@ class ReminderViewTest(TestCase):
             name="Test Reminder",
             user=self.user,
         )
-        url = reverse("priority_deciderator:reminder_delete", kwargs={"pk": reminder.pk})
+        url = reverse(
+            "priority_deciderator:reminder_delete", kwargs={"pk": reminder.pk}
+        )
         response = self.client.post(url)
         self.assertEqual(response.status_code, 302)
-        
+
         # Check reminder was deleted
         with self.assertRaises(Reminder.DoesNotExist):
             Reminder.objects.get(pk=reminder.pk)
@@ -248,9 +256,11 @@ class ReminderViewTest(TestCase):
             name="Other's Reminder",
             user=other_user,
         )
-        
+
         # Try to access other user's reminder
-        url = reverse("priority_deciderator:reminder_detail", kwargs={"pk": other_reminder.pk})
+        url = reverse(
+            "priority_deciderator:reminder_detail", kwargs={"pk": other_reminder.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
@@ -277,7 +287,10 @@ class ScheduleViewTest(TestCase):
 
     def test_schedule_create_view(self):
         """Test schedule create view."""
-        url = reverse("priority_deciderator:schedule_create", kwargs={"reminder_pk": self.reminder.pk})
+        url = reverse(
+            "priority_deciderator:schedule_create",
+            kwargs={"reminder_pk": self.reminder.pk},
+        )
         data = {
             "frequency": "daily",
             "time": "09:00:00",
@@ -285,7 +298,7 @@ class ScheduleViewTest(TestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
-        
+
         # Check schedule was created
         schedule = ReminderSchedule.objects.get(reminder=self.reminder)
         self.assertEqual(schedule.frequency, "daily")
@@ -293,12 +306,15 @@ class ScheduleViewTest(TestCase):
     def test_schedule_update_view(self):
         """Test schedule update view."""
         from datetime import time
+
         schedule = ReminderSchedule.objects.create(
             reminder=self.reminder,
             frequency="daily",
             time=time(9, 0),
         )
-        url = reverse("priority_deciderator:schedule_update", kwargs={"pk": schedule.pk})
+        url = reverse(
+            "priority_deciderator:schedule_update", kwargs={"pk": schedule.pk}
+        )
         data = {
             "frequency": "weekly",
             "time": "10:00:00",
@@ -307,7 +323,7 @@ class ScheduleViewTest(TestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
-        
+
         # Check schedule was updated
         schedule.refresh_from_db()
         self.assertEqual(schedule.frequency, "weekly")
@@ -316,16 +332,18 @@ class ScheduleViewTest(TestCase):
     def test_schedule_delete_view(self):
         """Test schedule delete view."""
         from datetime import time
+
         schedule = ReminderSchedule.objects.create(
             reminder=self.reminder,
             frequency="daily",
             time=time(9, 0),
         )
-        url = reverse("priority_deciderator:schedule_delete", kwargs={"pk": schedule.pk})
+        url = reverse(
+            "priority_deciderator:schedule_delete", kwargs={"pk": schedule.pk}
+        )
         response = self.client.post(url)
         self.assertEqual(response.status_code, 302)
-        
+
         # Check schedule was deleted
         with self.assertRaises(ReminderSchedule.DoesNotExist):
             ReminderSchedule.objects.get(pk=schedule.pk)
-
