@@ -1,12 +1,11 @@
 # plan_it/tests/test_views_factories.py
 
 import pytest
-from django.urls import reverse
 from datetime import timedelta, date
+from django.urls import reverse
 
 from plan_it.models import Activity
 from plan_it.tests.factories import (
-    UserFactory,
     StorageLocationFactory,
     ActivityLocationFactory,
     ItemFactory,
@@ -14,46 +13,46 @@ from plan_it.tests.factories import (
     ActivityFactory,
 )
 
-
-@pytest.fixture
-def user():
-    return UserFactory()
+pytestmark = pytest.mark.django_db
 
 
 @pytest.fixture
-def client_logged_in(client, user):
-    client.login(username=user.username, password="testpass")
+def client_logged_in(client, accepted_user):
+    client.force_login(accepted_user)
     return client
 
 
 @pytest.fixture
-def setup_data(user):
-    storage_location = StorageLocationFactory(user=user)
-    activity_location = ActivityLocationFactory(user=user)
-    item = ItemFactory(user=user, storage_location=storage_location)
-    activity_type = ActivityTypeFactory(user=user)
+def setup_data(accepted_user):
+    storage_location = StorageLocationFactory(user=accepted_user)
+    activity_location = ActivityLocationFactory(user=accepted_user)
+    item = ItemFactory(user=accepted_user, storage_location=storage_location)
+    activity_type = ActivityTypeFactory(user=accepted_user)
 
-    # Activities
     overdue = ActivityFactory(
-        user=user,
+        user=accepted_user,
         type=activity_type,
+        target_item=item,
         activity_location=activity_location,
         due_date=date.today() - timedelta(days=2),
     )
     today = ActivityFactory(
-        user=user,
+        user=accepted_user,
         type=activity_type,
+        target_item=item,
         activity_location=activity_location,
         due_date=date.today(),
     )
     upcoming = ActivityFactory(
-        user=user,
+        user=accepted_user,
         type=activity_type,
+        target_item=item,
         activity_location=activity_location,
         due_date=date.today() + timedelta(days=2),
     )
 
     return {
+        "user": accepted_user,
         "storage_location": storage_location,
         "activity_location": activity_location,
         "item": item,
@@ -77,6 +76,7 @@ def test_dashboard(client_logged_in, setup_data):
 def test_activity_create(client_logged_in, setup_data):
     activity_type = setup_data["activity_type"]
     activity_location = setup_data["activity_location"]
+    user = setup_data["user"]
 
     response = client_logged_in.post(
         reverse("plan_it:activity_add"),
@@ -87,14 +87,13 @@ def test_activity_create(client_logged_in, setup_data):
             "due_date": date.today(),
         },
     )
+
     assert response.status_code == 302
-    assert Activity.objects.filter(name="Factory Created Task").exists()
+    assert Activity.objects.filter(user=user, name="Factory Created Task").exists()
 
 
 def test_dashboard_locations_displayed(client_logged_in, setup_data):
     response = client_logged_in.get(reverse("plan_it:dashboard"))
     content = response.content.decode()
 
-    # Check that the activity location appears on the page
-    activity_location_name = setup_data["activity_location"].name
-    assert activity_location_name in content
+    assert setup_data["activity_location"].name in content
