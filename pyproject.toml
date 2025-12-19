@@ -118,6 +118,7 @@ norecursedirs = [
   ".venv",
   "venv",
 ]
+addopts = "-ra --import-mode=importlib --ignore=.venv --ignore=venv"
 
 [tool.coverage.run]
 branch = true
