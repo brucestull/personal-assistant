@@ -1,14 +1,20 @@
-import pytest
-from datetime import date, timedelta
-from django.urls import reverse
+# plan_it/tests/test_views_pytest.py
 
-from plan_it.models import StorageLocation, Item, ActivityType, Activity
+from datetime import date, timedelta
+
+import pytest
+from django.urls import reverse
+from django.utils.html import escape
+
+from plan_it.models import Activity, ActivityType, Item, StorageLocation
 
 
 @pytest.fixture
 def user(django_user_model):
     return django_user_model.objects.create_user(
-        username="testuser", password="testpass"
+        username="testuser",
+        password="testpass",
+        registration_accepted=True,
     )
 
 
@@ -45,7 +51,8 @@ def test_dashboard(client_logged_in, setup_data):
     response = client_logged_in.get(reverse("plan_it:dashboard"))
     assert response.status_code == 200
     assert "Overdue Task" in response.content.decode()
-    assert "Today's Task" in response.content.decode()
+    # Using `escape` to match the html rendered apostrophe in "Today's Task"
+    assert escape("Today's Task") in response.content.decode()
     assert "Future Task" in response.content.decode()
     assert "Socket Set" in response.content.decode()
 
