@@ -54,21 +54,21 @@ jobs:
           command: |
             mkdir -p test-results
 
-            # Split tests across parallel containers (file-level split).
+            # Collect test files from repo, but EXCLUDE anything inside virtualenv folders.
             TEST_FILES=$(circleci tests glob \
               "**/tests/test_*.py" \
               "**/tests/*_tests.py" \
               "**/tests.py" \
               "tests/test_*.py" \
+              | grep -vE '(^|/)\.venv/|(^|/)venv/' \
               | circleci tests split --split-by=timings)
 
-            # Run *all* pytest + Django TestCase tests via pytest-django.
-            # coverage config comes from .coveragerc / pyproject.
             pipenv run coverage run -m pytest \
               --junitxml=test-results/pytest.xml \
               $TEST_FILES
 
             pipenv run coverage report
+
 
       - store_test_results:
           path: test-results
