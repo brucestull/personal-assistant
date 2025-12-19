@@ -1,4 +1,5 @@
 # vitals/models.py
+
 from datetime import date, timedelta
 from statistics import median
 
