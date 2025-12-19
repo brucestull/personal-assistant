@@ -1,4 +1,5 @@
 # vitals/tests/test_bp_summary.py
+
 import pytest
 from django.contrib.auth import get_user_model
 from vitals.models import BloodPressure
@@ -19,9 +20,9 @@ def test_bp_summary_roundtrip():
     assert s["systolic_max"] == 130
     assert s["diastolic_min"] == 80
     assert s["diastolic_max"] == 85
-    assert s["systolic_median"] in (
-        120,
-        130,
-    )  # with two values, median is their average; Python picks midpoint arithmetic.
-    assert s["diastolic_median"] in (80, 85)
+
+    # statistics.median() with two values returns their average
+    assert s["systolic_median"] == pytest.approx(125.0)
+    assert s["diastolic_median"] == pytest.approx(82.5)
+
     assert isinstance(s["systolic_average"], float)

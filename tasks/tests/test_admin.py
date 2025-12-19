@@ -39,9 +39,9 @@ class AdminConfigTests(TestCase):
 
     def test_task_admin_config(self):
         ma = TaskAdmin(Task, admin.site)
-        self.assertEqual(ma.list_display, ("name", "user", "priority", "display_tags"))
+        self.assertEqual(ma.list_display, ("completed", "name", "user", "priority", "display_tags"))
         self.assertEqual(ma.list_filter, ("priority", "tag", "user"))
         self.assertEqual(ma.list_select_related, ("priority", "user"))
         self.assertEqual(ma.filter_horizontal, ("tag",))
         self.assertEqual(ma.search_fields, ("name", "information"))
-        self.assertEqual(ma.ordering, ("priority__level", "-created"))
+        self.assertEqual(ma.ordering, ("completed", "priority__level", "-created"))

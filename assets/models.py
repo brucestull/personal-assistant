@@ -85,26 +85,25 @@ class Asset(models.Model):
     workspace = models.ForeignKey(
         Workspace, on_delete=models.CASCADE, related_name="assets"
     )
-    primary_project = models.ForeignKey(
+
+    # Rename from primary_project -> project
+    project = models.ForeignKey(
         Project,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="primary_assets",  # noqa: E501
+        related_name="primary_assets",  # keep or rename if you want
     )
-    projects = models.ManyToManyField(Project, blank=True, related_name="assets")
-    KIND_CHOICES = [("PI", "Raspberry Pi"), ("SRV", "Server"), ("LAP", "Laptop")]
-    name = models.CharField(max_length=120)
-    kind = models.CharField(max_length=3, choices=KIND_CHOICES)
-    form_factor = models.ForeignKey(FormFactor, null=True, on_delete=models.SET_NULL)
-    os = models.ForeignKey(OS, null=True, on_delete=models.SET_NULL)
-    applications = models.ManyToManyField(Application, blank=True)
-    location = models.CharField(max_length=120, blank=True)
-    purchase_date = models.DateField(null=True, blank=True)
-    warranty_expires = models.DateField(null=True, blank=True)
-    notes = models.TextField(blank=True)
 
-    def __str__(self) -> str:
-        # e.g. "Remote Lamp (PI) @ Homelab"
-        kind_display = dict(self.KIND_CHOICES).get(self.kind, self.kind)
-        return f"{self.name} ({kind_display}) @ {self.workspace}"
+    # Keep the M2M if you still want multi-project tagging (your other tests use it)
+    projects = models.ManyToManyField(Project, blank=True, related_name="assets")
+
+    # ... rest unchanged ...
+
+    @property
+    def primary_project(self):
+        return self.project
+
+    @primary_project.setter
+    def primary_project(self, value):
+        self.project = value

@@ -1,4 +1,4 @@
-# core/tests/test_models.py
+# work/core/tests/test_models.py
 
 import pytest
 from django.db import IntegrityError, transaction

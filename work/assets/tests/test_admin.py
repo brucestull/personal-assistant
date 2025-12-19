@@ -1,4 +1,4 @@
-# assets/tests/test_admin.py
+# work/assets/tests/test_admin.py
 
 from datetime import date, datetime, timedelta
 
