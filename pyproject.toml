@@ -101,7 +101,10 @@ python_files = [
   "test_*.py",
   "*_tests.py",
 ]
-addopts = "-ra"
+# Prevent "import file mismatch" when multiple apps share the same test module name.
+# Also ignore any local venv folders.
+addopts = "-ra --import-mode=importlib --ignore=.venv --ignore=venv"
+
 testpaths = ["."]
 norecursedirs = [
   ".*",
@@ -115,6 +118,7 @@ norecursedirs = [
   ".venv",
   "venv",
 ]
+
 
 [tool.coverage.run]
 branch = true
