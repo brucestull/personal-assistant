@@ -6,11 +6,24 @@ jobs:
       - image: cimg/python:3.11.5
     parallelism: 3
 
+    environment:
+      # Keep the venv inside the repo so CircleCI caching is easy.
+      PIPENV_VENV_IN_PROJECT: "true"
+      # Make settings deterministic in CI.
+      ENVIRONMENT: "test"
+      DJANGO_SETTINGS_MODULE: "config.settings"
+      CELERY_TASK_ALWAYS_EAGER: "true"
+
     working_directory: ~/repo
 
     steps:
       # Step 1: obtain repo from GitHub
       - checkout
+
+      - restore_cache:
+          keys:
+            - pipenv-v1-{{ checksum "Pipfile.lock" }}
+            - pipenv-v1-
 
       # Step 2: create virtual env and install dependencies
       - run:
@@ -19,7 +32,15 @@ jobs:
             # optional but nice: make sure pip/pipenv are up to date
             python -m pip install --upgrade pip
             pip install pipenv
-            pipenv install --dev
+
+            # Cache-friendly install (uses Pipfile.lock)
+            pipenv install --dev --deploy
+
+      - save_cache:
+          key: pipenv-v1-{{ checksum "Pipfile.lock" }}
+          paths:
+            - .venv
+            - ~/.cache/pip
 
       # Step 3: run linter
       - run:
@@ -31,8 +52,29 @@ jobs:
       - run:
           name: Run Tests and Coverage
           command: |
-            pipenv run coverage run --source='.' --omit="*/asgi.py,*/wsgi.py,*/manage.py,*/config/settings.py" ./manage.py test
+            mkdir -p test-results
+
+            # Split tests across parallel containers (file-level split).
+            TEST_FILES=$(circleci tests glob \
+              "**/tests/test_*.py" \
+              "**/tests/*_tests.py" \
+              "**/tests.py" \
+              "tests/test_*.py" \
+              | circleci tests split --split-by=timings)
+
+            # Run *all* pytest + Django TestCase tests via pytest-django.
+            # coverage config comes from .coveragerc / pyproject.
+            pipenv run coverage run -m pytest \
+              --junitxml=test-results/pytest.xml \
+              $TEST_FILES
+
             pipenv run coverage report
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: test-results
 
   deploy:
     docker:

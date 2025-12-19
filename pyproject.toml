@@ -101,7 +101,10 @@ python_files = [
   "test_*.py",
   "*_tests.py",
 ]
-addopts = "-ra"
+# Prevent "import file mismatch" errors when multiple apps have the same
+# test module name (e.g., inbox/tests/test_models.py and knowledge/tests/test_models.py).
+# This repo has that pattern.
+addopts = "-ra --import-mode=importlib"
 testpaths = ["."]
 norecursedirs = [
   ".*",

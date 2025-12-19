@@ -246,8 +246,12 @@ if ENVIRONMENT == "production":
     SECRET_KEY = os.environ.get("SECRET_KEY")
     STATIC_ROOT = BASE_DIR / "staticfiles"
 else:
-    # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    # In CI/tests we never want to talk to a real SMTP server.
+    if ENVIRONMENT == "test":
+        EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+    else:
+        # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+        EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     ALLOWED_HOSTS = [
         "localhost",
         "127.0.0.1",
