@@ -8,7 +8,7 @@ from core.models import Membership, Workspace
 
 @pytest.mark.django_db
 def test_workspace_str_returns_name(workspace):
-    assert str(workspace) == "Home Lab"
+    assert str(workspace) == "Main Workspace"
 
 
 @pytest.mark.django_db
