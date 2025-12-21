@@ -1,36 +1,53 @@
-# conftest.py
+"""Project-level pytest fixtures.
+
+Why imports are inside fixtures:
+Pytest imports conftest.py during collection. Importing Django models or factories
+at module import time can run before pytest-django initializes Django, causing
+AppRegistryNotReady/settings errors.
+"""
 
 import pytest
-from django.contrib.auth import get_user_model
-
-from core.models import Workspace
-
-
-@pytest.fixture
-def workspace(db):
-    return Workspace.objects.create(name="Main Workspace", slug="main-workspace")
-
-
-@pytest.fixture
-def another_workspace(db):
-    return Workspace.objects.create(name="Other Workspace", slug="other-workspace")
 
 
 @pytest.fixture
 def user(db):
+    """A default *accepted* user for permission/auth tests."""
+    from django.contrib.auth import get_user_model
+
     User = get_user_model()
     return User.objects.create_user(
         username="user1",
         email="user1@example.com",
         password="testpass123",
+        registration_accepted=True,
     )
 
 
 @pytest.fixture
 def another_user(db):
+    """A second accepted user."""
+    from django.contrib.auth import get_user_model
+
     User = get_user_model()
     return User.objects.create_user(
         username="user2",
         email="user2@example.com",
         password="testpass123",
+        registration_accepted=True,
     )
+
+
+@pytest.fixture
+def accepted_user(db):
+    """FactoryBoy user with registration accepted."""
+    from plan_it.tests.factories import UserFactory
+
+    return UserFactory(registration_accepted=True)
+
+
+@pytest.fixture
+def rejected_user(db):
+    """FactoryBoy user with registration NOT accepted."""
+    from plan_it.tests.factories import UserFactory
+
+    return UserFactory(registration_accepted=False)

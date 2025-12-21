@@ -1,5 +1,6 @@
 # packing_list/views.py
 import io
+from datetime import datetime
 
 from django.conf import settings  # noqa F401
 from django.http import HttpResponse
@@ -139,10 +140,11 @@ def activity_pdf(request, pk):
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
+    print_date = datetime.now().strftime("%B %d, %Y")
 
     # Title
     p.setFont("Helvetica-Bold", font_size)
-    p.drawString(left_box_x, height - 1 * inch, activity.name)
+    p.drawString(left_box_x, height - 1 * inch, f"{activity.name} - {print_date}")
 
     # switch back to body font
     p.setFont("Helvetica", font_size)
