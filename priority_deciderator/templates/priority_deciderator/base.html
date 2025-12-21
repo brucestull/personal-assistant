@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Priority Deciderator{% endblock %} - {{ the_site_name|default:"Personal Assistant" }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="bg-indigo-600 text-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <a href="{% url 'priority_deciderator:dashboard' %}" class="text-xl font-bold">
+                            Priority Deciderator
+                        </a>
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="{% url 'priority_deciderator:dashboard' %}" 
+                               class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                                Dashboard
+                            </a>
+                            <a href="{% url 'priority_deciderator:reminder_list' %}" 
+                               class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                                All Reminders
+                            </a>
+                            <a href="{% url 'priority_deciderator:reminder_create' %}" 
+                               class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                                New Reminder
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <a href="{% url 'home' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                            Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</body>
+</html>

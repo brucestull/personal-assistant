@@ -1,0 +1,139 @@
+{% extends 'priority_deciderator/base.html' %}
+
+{% block title %}{{ reminder.name }}{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h1 class="text-3xl font-bold text-gray-900">{{ reminder.name }}</h1>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4 space-x-2">
+            <a href="{% url 'priority_deciderator:reminder_update' reminder.pk %}"
+               class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                Edit
+            </a>
+            <a href="{% url 'priority_deciderator:reminder_delete' reminder.pk %}"
+               class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">
+                Delete
+            </a>
+        </div>
+    </div>
+
+    <!-- Reminder Details -->
+    <div class="mt-6 bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Reminder Details</h3>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Status</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {% if reminder.is_active %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Active
+                            </span>
+                        {% else %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                Inactive
+                            </span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Created</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ reminder.created|date:"M j, Y, g:i a" }}</dd>
+                </div>
+                <div class="sm:col-span-2">
+                    <dt class="text-sm font-medium text-gray-500">Description</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {{ reminder.description|default:"No description provided" }}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Schedules -->
+    <div class="mt-8">
+        <div class="sm:flex sm:items-center">
+            <div class="sm:flex-auto">
+                <h2 class="text-lg font-medium text-gray-900">Schedules</h2>
+                <p class="mt-1 text-sm text-gray-500">
+                    Configure when this reminder should be sent
+                </p>
+            </div>
+            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                <a href="{% url 'priority_deciderator:schedule_create' reminder.pk %}"
+                   class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+                    Add Schedule
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            {% if reminder.schedules.all %}
+                <div class="bg-white shadow overflow-hidden sm:rounded-md">
+                    <ul role="list" class="divide-y divide-gray-200">
+                        {% for schedule in reminder.schedules.all %}
+                            <li class="px-4 py-4 sm:px-6">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-900">
+                                            {{ schedule.get_frequency_display }} at {{ schedule.time|time:"g:i A" }}
+                                        </p>
+                                        {% if schedule.frequency == 'weekly' and schedule.day_of_week is not None %}
+                                            <p class="text-sm text-gray-500">
+                                                on {{ schedule.get_day_of_week_display }}
+                                            </p>
+                                        {% elif schedule.frequency == 'monthly' and schedule.day_of_month %}
+                                            <p class="text-sm text-gray-500">
+                                                on day {{ schedule.day_of_month }} of the month
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        {% if schedule.is_active %}
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        {% else %}
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                                Inactive
+                                            </span>
+                                        {% endif %}
+                                        <a href="{% url 'priority_deciderator:schedule_update' schedule.pk %}"
+                                           class="text-indigo-600 hover:text-indigo-900 text-sm">
+                                            Edit
+                                        </a>
+                                        <a href="{% url 'priority_deciderator:schedule_delete' schedule.pk %}"
+                                           class="text-red-600 hover:text-red-900 text-sm">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <div class="text-center py-12 bg-white rounded-lg shadow">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No schedules</h3>
+                    <p class="mt-1 text-sm text-gray-500">Get started by adding a schedule for this reminder.</p>
+                    <div class="mt-6">
+                        <a href="{% url 'priority_deciderator:schedule_create' reminder.pk %}"
+                           class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                            Add Schedule
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
