@@ -16,7 +16,9 @@ from django.views.generic import CreateView, ListView, TemplateView
 
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
-from config.settings import THE_SITE_NAME
+from django.conf import settings
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 from vitals.forms import BloodPressureForm, BodyWeightForm
 from vitals.models import BloodPressure, BodyWeight
 

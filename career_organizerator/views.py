@@ -6,7 +6,9 @@ from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
 from base.decorators import registration_accepted_required
-from config.settings import THE_SITE_NAME
+from django.conf import settings
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 from .forms import (
     BehavioralInterviewQuestionForm,

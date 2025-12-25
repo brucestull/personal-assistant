@@ -9,7 +9,7 @@ from django.template.exceptions import TemplateDoesNotExist
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.test")
 django.setup()
 
 from app_tracker.models import (  # noqa: E402

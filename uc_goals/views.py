@@ -5,7 +5,9 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
-from config.settings import THE_SITE_NAME
+from django.conf import settings
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 from uc_goals.models import Goal
 
 from .forms import GoalForm

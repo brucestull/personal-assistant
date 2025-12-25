@@ -7,7 +7,9 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
 from base.mixins import RegistrationAcceptedMixin
-from config.settings import THE_SITE_NAME
+from django.conf import settings
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 from .forms import UnimportantNoteForm
 from .models import NoteTag, UnimportantNote

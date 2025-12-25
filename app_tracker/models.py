@@ -1,11 +1,13 @@
 # app_tracker/models.py
 
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
 from base.models import URL as BaseURL
 from base.models import CreatedUpdatedBase
-from config.settings import AUTH_USER_MODEL
+
+AUTH_USER_MODEL = settings.AUTH_USER_MODEL
 
 
 class OperatingSystem(models.Model):
