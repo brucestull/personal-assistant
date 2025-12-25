@@ -51,7 +51,7 @@ def postgres_from_database_url(database_url: str):
             "ENGINE": "django.db.backends.postgresql",
             "NAME": database_config_variables["DATABASE_NAME"],
             "HOST": database_config_variables["DATABASE_HOST"],
-            "PORT": database_config_variables.get("DATABASE_PORT") or "5432",
+            "PORT": database_config_variables.get("DATABASE_PORT", "5432"),
             "USER": database_config_variables["DATABASE_USER"],
             "PASSWORD": database_config_variables["DATABASE_PASSWORD"],
         }
