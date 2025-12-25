@@ -13,7 +13,9 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfgen import canvas
 
 from base.decorators import registration_accepted_required
-from config.settings import THE_SITE_NAME
+from django.conf import settings
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 from .forms import ActivityForm, ItemForm, TaskForm
 from .models import Activity, Item, Task

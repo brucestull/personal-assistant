@@ -8,7 +8,9 @@ from django.views.generic.edit import CreateView, UpdateView
 from base.mixins import RegistrationAcceptedMixin
 from accounts.forms import CustomUserChangeForm, CustomUserCreationForm
 from accounts.models import CustomUser
-from config.settings import THE_SITE_NAME
+from django.conf import settings
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 
 class ForbiddenView(TemplateView):
