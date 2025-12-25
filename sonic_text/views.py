@@ -11,10 +11,11 @@ from django.views.generic import (
 from base.mixins import RegistrationAcceptedMixin
 from django.conf import settings
 
-THE_SITE_NAME = settings.THE_SITE_NAME
-
 from .forms import AudioFileForm
 from .models import AudioFile
+
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 
 class AudioFileListView(RegistrationAcceptedMixin, ListView):

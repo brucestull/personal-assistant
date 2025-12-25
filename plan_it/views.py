@@ -12,8 +12,6 @@ from base.decorators import registration_accepted_required
 from base.mixins import UserQuerySetMixin, UserAssignMixin, RegistrationAcceptedMixin
 from django.conf import settings
 
-THE_SITE_NAME = settings.THE_SITE_NAME
-
 from .models import (
     Activity,
     ActivityInstance,
@@ -22,6 +20,8 @@ from .models import (
     Item,
     StorageLocation,
 )
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 
 @registration_accepted_required

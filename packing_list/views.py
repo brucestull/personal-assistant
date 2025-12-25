@@ -2,7 +2,7 @@
 import io
 from datetime import datetime
 
-from django.conf import settings  # noqa F401
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
@@ -13,12 +13,11 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfgen import canvas
 
 from base.decorators import registration_accepted_required
-from django.conf import settings
-
-THE_SITE_NAME = settings.THE_SITE_NAME
 
 from .forms import ActivityForm, ItemForm, TaskForm
 from .models import Activity, Item, Task
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 # ---------- Activity Views ----------
 

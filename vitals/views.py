@@ -18,9 +18,11 @@ from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
 from django.conf import settings
 
-THE_SITE_NAME = settings.THE_SITE_NAME
 from vitals.forms import BloodPressureForm, BodyWeightForm
 from vitals.models import BloodPressure, BodyWeight
+
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 
 def home(request):

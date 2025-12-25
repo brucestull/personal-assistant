@@ -54,9 +54,7 @@ class TestUtils(TestCase):
         """
         # password is "p@ss:word"
         test_url = "postgres://user:p%40ss%3Aword@localhost:5432/mydatabase"
-
         result = get_database_config_variables(test_url)
-        
         self.assertEqual(result["DATABASE_USER"], "user")
         self.assertEqual(result["DATABASE_PASSWORD"], "p@ss:word")
         self.assertEqual(result["DATABASE_HOST"], "localhost")
@@ -69,9 +67,7 @@ class TestUtils(TestCase):
         like ?sslmode=require.
         """
         test_url = "postgres://user:pass@localhost:5432/mydatabase?sslmode=require"
-
         result = get_database_config_variables(test_url)
-        
         self.assertEqual(result["DATABASE_USER"], "user")
         self.assertEqual(result["DATABASE_PASSWORD"], "pass")
         self.assertEqual(result["DATABASE_HOST"], "localhost")
@@ -86,9 +82,7 @@ class TestUtils(TestCase):
         when not specified.
         """
         test_url = "postgres://username:password@localhost/mydatabase"
-
         result = get_database_config_variables(test_url)
-        
         self.assertEqual(result["DATABASE_PORT"], "5432")
 
     def test_get_database_config_variables_empty_url(self):
@@ -98,7 +92,6 @@ class TestUtils(TestCase):
         """
         with self.assertRaises(ValueError) as cm:
             get_database_config_variables("")
-        
         self.assertIn("database_url is required", str(cm.exception))
 
     def test_get_database_config_variables_invalid_scheme(self):
@@ -107,10 +100,8 @@ class TestUtils(TestCase):
         for unsupported database schemes.
         """
         test_url = "mysql://username:password@localhost:3306/mydatabase"
-
         with self.assertRaises(ValueError) as cm:
             get_database_config_variables(test_url)
-        
         self.assertIn("Unsupported database scheme", str(cm.exception))
 
     def test_get_database_config_variables_missing_dbname(self):
@@ -119,10 +110,8 @@ class TestUtils(TestCase):
         when database name is missing.
         """
         test_url = "postgres://username:password@localhost:5432/"
-
         with self.assertRaises(ValueError) as cm:
             get_database_config_variables(test_url)
-        
         self.assertIn("missing database name", str(cm.exception))
 
     # Add more edge cases or invalid inputs here

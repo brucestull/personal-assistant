@@ -7,10 +7,12 @@ from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
 from django.conf import settings
 
-THE_SITE_NAME = settings.THE_SITE_NAME
 from uc_goals.models import Goal
 
 from .forms import GoalForm
+
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 
 class GoalCreateView(RegistrationAcceptedMixin, CreateView):

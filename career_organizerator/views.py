@@ -1,14 +1,12 @@
+from django.conf import settings
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
-from base.mixins import RegistrationAcceptedMixin
 from base.decorators import registration_accepted_required
-from django.conf import settings
-
-THE_SITE_NAME = settings.THE_SITE_NAME
+from base.mixins import RegistrationAcceptedMixin
 
 from .forms import (
     BehavioralInterviewQuestionForm,
@@ -24,6 +22,8 @@ from .models import (
     QuestionResponse,
     Skill,
 )
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 
 def home(request):

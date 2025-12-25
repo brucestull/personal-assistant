@@ -20,7 +20,6 @@ from base.mixins import RegistrationAcceptedMixin
 from boosts.forms import InspirationalForm, RandomInspirationalEmailSendForm
 from boosts.models import Inspirational, InspirationalSent, RandomInspirationalEmailSend
 from boosts.tasks import send_inspirational_to_beastie, send_random_inspirational_email
-from django.conf import settings
 
 THE_SITE_NAME = settings.THE_SITE_NAME
 

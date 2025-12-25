@@ -9,10 +9,11 @@ from django.views.generic.edit import CreateView, FormMixin, UpdateView
 from base.mixins import RegistrationAcceptedMixin
 from django.conf import settings
 
-THE_SITE_NAME = settings.THE_SITE_NAME
-
 from .forms import UnimportantNoteForm
 from .models import NoteTag, UnimportantNote
+
+
+THE_SITE_NAME = settings.THE_SITE_NAME
 
 
 class NoteTagDetailView(RegistrationAcceptedMixin, UserPassesTestMixin, DetailView):
