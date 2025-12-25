@@ -26,7 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", "CHANGE_ME_IN_DEV_ONLY")
 DEBUG = False
 
-ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h.strip()]
+ALLOWED_HOSTS = [
+    h.strip() for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h.strip()
+]
 
 THE_SITE_NAME = "Personal Assistant"
 
@@ -35,6 +37,7 @@ MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE", "off") == "on"
 # -----------------------------------------------------------------------------
 # Database helper (shared)
 # -----------------------------------------------------------------------------
+
 
 def postgres_from_database_url(database_url: str):
     """
@@ -54,6 +57,7 @@ def postgres_from_database_url(database_url: str):
         }
     }
 
+
 # -----------------------------------------------------------------------------
 # Application definition
 # -----------------------------------------------------------------------------
@@ -61,7 +65,6 @@ def postgres_from_database_url(database_url: str):
 INSTALLED_APPS = [
     # Put accounts first so its templates override admin defaults
     "accounts.apps.AccountsConfig",
-
     # Django contrib
     "django.contrib.admin",
     "django.contrib.auth",
@@ -70,12 +73,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.admindocs",
-
     # Third-party
     "rest_framework",
     "storages",
     "django_celery_beat",
-
     # Local apps
     "base",
     "app_tracker.apps.AppTrackerConfig",
@@ -101,15 +102,12 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-
     # Your custom maintenance middleware (needs request.user, so after auth)
     "config.middleware.SuperuserMaintenanceMiddleware",
-
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -139,10 +137,15 @@ WSGI_APPLICATION = "config.wsgi.application"
 # -----------------------------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": (
+            "django.contrib.auth.password_validation"
+            ".UserAttributeSimilarityValidator"
+        )
+    },
+    {"NAME": ("django.contrib.auth.password_validation.MinimumLengthValidator")},
+    {"NAME": ("django.contrib.auth.password_validation.CommonPasswordValidator")},
+    {"NAME": ("django.contrib.auth.password_validation.NumericPasswordValidator")},
 ]
 
 LANGUAGE_CODE = "en-us"
@@ -219,10 +222,16 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_ENABLE_UTC = False
 
 # Prefer Heroku REDIS_URL; fall back to REDISCLOUD_URL; then local dev default
-CELERY_BROKER_URL = os.getenv("REDIS_URL") or os.getenv("REDISCLOUD_URL", "redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.getenv("REDIS_URL") or os.getenv("REDISCLOUD_URL", "redis://localhost:6379/0")
+CELERY_BROKER_URL = os.getenv("REDIS_URL") or os.getenv(
+    "REDISCLOUD_URL", "redis://localhost:6379/0"
+)
+CELERY_RESULT_BACKEND = os.getenv("REDIS_URL") or os.getenv(
+    "REDISCLOUD_URL", "redis://localhost:6379/0"
+)
 
-CELERY_TASK_ALWAYS_EAGER = (os.getenv("CELERY_TASK_ALWAYS_EAGER", "False").lower() == "true")
+CELERY_TASK_ALWAYS_EAGER = (
+    os.getenv("CELERY_TASK_ALWAYS_EAGER", "False").lower() == "true"
+)
 
 # -----------------------------------------------------------------------------
 # Logging (minimal console)

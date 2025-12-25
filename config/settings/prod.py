@@ -23,7 +23,9 @@ if not ALLOWED_HOSTS:  # noqa: F405
 # Database: require DATABASE_URL in prod
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
-    raise RuntimeError("DATABASE_URL is required in prod; refusing to start without Postgres.")
+    raise RuntimeError(
+        "DATABASE_URL is required in prod; refusing to start without Postgres."
+    )
 
 DATABASES = postgres_from_database_url(database_url)  # noqa: F405
 

@@ -28,7 +28,8 @@ def get_database_config_variables(database_url: str) -> dict[str, Any]:
     if parsed.scheme not in {"postgres", "postgresql"}:
         raise ValueError(f"Unsupported database scheme: {parsed.scheme!r}")
 
-    # urlparse splits these safely even if user/pass contain special chars (when encoded)
+    # urlparse splits these safely even if user/pass contain
+    # special chars (when encoded)
     user = unquote(parsed.username or "")
     password = unquote(parsed.password or "")
     host = parsed.hostname or ""
