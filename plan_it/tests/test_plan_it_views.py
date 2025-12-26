@@ -32,7 +32,7 @@ class PlanItViewTests(TestCase):
         self.item = Item.objects.create(
             user=self.user, name="Socket Set", storage_location=self.location
         )
-        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")
+        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")  # noqa E501
 
         self.overdue_activity = Activity.objects.create(
             user=self.user,
@@ -219,7 +219,7 @@ class ActivityCompletionTests(TestCase):
             username="testuser", password="testpass", registration_accepted=True
         )
         self.client.login(username="testuser", password="testpass")
-        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")
+        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")  # noqa E501
         self.activity = Activity.objects.create(
             user=self.user,
             name="Clean Kitchen",
@@ -300,7 +300,7 @@ class ActivityStatusTests(TestCase):
         self.user = User.objects.create_user(
             username="testuser", password="testpass", registration_accepted=True
         )
-        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")
+        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")  # noqa E501
 
     def test_overdue_status(self):
         """Test activity overdue status"""
