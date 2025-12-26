@@ -1,8 +1,11 @@
-from datetime import date, timedelta
+# plan_it/tests/test_plan_it_views.py
 
+from datetime import timedelta
+
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from plan_it.models import (
     StorageLocation,
@@ -13,12 +16,13 @@ from plan_it.models import (
     ActivityInstance,
 )
 
-
 User = get_user_model()
 
 
 class PlanItViewTests(TestCase):
     def setUp(self):
+        self.today = timezone.localdate()
+
         self.user = User.objects.create_user(
             username="testuser", password="testpass", registration_accepted=True
         )
@@ -28,27 +32,25 @@ class PlanItViewTests(TestCase):
         self.item = Item.objects.create(
             user=self.user, name="Socket Set", storage_location=self.location
         )
-        self.activity_type = ActivityType.objects.create(
-            user=self.user, name="Cleaning"
-        )
+        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")
 
         self.overdue_activity = Activity.objects.create(
             user=self.user,
             name="Overdue Task",
             type=self.activity_type,
-            due_date=date.today() - timedelta(days=2),
+            due_date=self.today - timedelta(days=2),
         )
         self.today_activity = Activity.objects.create(
             user=self.user,
             name="Today's Task",
             type=self.activity_type,
-            due_date=date.today(),
+            due_date=self.today,
         )
         self.upcoming_activity = Activity.objects.create(
             user=self.user,
             name="Future Task",
             type=self.activity_type,
-            due_date=date.today() + timedelta(days=2),
+            due_date=self.today + timedelta(days=2),
         )
 
     def test_dashboard_view(self):
@@ -135,7 +137,7 @@ class PlanItViewTests(TestCase):
             {
                 "name": "Test Task",
                 "type": self.activity_type.id,
-                "due_date": date.today(),
+                "due_date": self.today,
             },
         )
         self.assertEqual(response.status_code, 302)
@@ -211,18 +213,18 @@ class ActivityCompletionTests(TestCase):
     """Test activity completion functionality"""
 
     def setUp(self):
+        self.today = timezone.localdate()
+
         self.user = User.objects.create_user(
             username="testuser", password="testpass", registration_accepted=True
         )
         self.client.login(username="testuser", password="testpass")
-        self.activity_type = ActivityType.objects.create(
-            user=self.user, name="Cleaning"
-        )
+        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")
         self.activity = Activity.objects.create(
             user=self.user,
             name="Clean Kitchen",
             type=self.activity_type,
-            due_date=date.today(),
+            due_date=self.today,
         )
 
     def test_mark_activity_completed(self):
@@ -238,7 +240,7 @@ class ActivityCompletionTests(TestCase):
         # Check activity was updated
         self.activity.refresh_from_db()
         self.assertIsNotNone(self.activity.last_completed)
-        self.assertEqual(self.activity.last_completed, date.today())
+        self.assertEqual(self.activity.last_completed, self.today)
 
         # Check instance was created
         self.assertEqual(ActivityInstance.objects.count(), 1)
@@ -293,12 +295,12 @@ class ActivityStatusTests(TestCase):
     """Test activity due status functionality"""
 
     def setUp(self):
+        self.today = timezone.localdate()
+
         self.user = User.objects.create_user(
             username="testuser", password="testpass", registration_accepted=True
         )
-        self.activity_type = ActivityType.objects.create(
-            user=self.user, name="Cleaning"
-        )
+        self.activity_type = ActivityType.objects.create(user=self.user, name="Cleaning")
 
     def test_overdue_status(self):
         """Test activity overdue status"""
@@ -306,7 +308,7 @@ class ActivityStatusTests(TestCase):
             user=self.user,
             name="Overdue Task",
             type=self.activity_type,
-            due_date=date.today() - timedelta(days=1),
+            due_date=self.today - timedelta(days=1),
         )
         self.assertEqual(activity.due_status(), "overdue")
 
@@ -316,7 +318,7 @@ class ActivityStatusTests(TestCase):
             user=self.user,
             name="Today Task",
             type=self.activity_type,
-            due_date=date.today(),
+            due_date=self.today,
         )
         self.assertEqual(activity.due_status(), "today")
 
@@ -326,7 +328,7 @@ class ActivityStatusTests(TestCase):
             user=self.user,
             name="Future Task",
             type=self.activity_type,
-            due_date=date.today() + timedelta(days=1),
+            due_date=self.today + timedelta(days=1),
         )
         self.assertEqual(activity.due_status(), "upcoming")
 

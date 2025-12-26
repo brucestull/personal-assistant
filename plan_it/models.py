@@ -1,6 +1,7 @@
 # plan_it/models.py
 
 from datetime import date
+from django.utils import timezone
 
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -128,21 +129,26 @@ class Activity(models.Model):
             return "upcoming"
 
     def record_completion(self, user):
-        from .models import ActivityInstance  # avoid circular import
+        """
+        Record a completion snapshot and update last_completed using the
+        project's configured timezone (NOT UTC date, NOT system-local date).
+        """
+        today = timezone.localdate()
 
         instance = ActivityInstance.objects.create(
             user=user,
             activity=self,
+            completed_at=timezone.now(),  # DateTimeField -> timezone-aware
             name_snapshot=self.name,
-            type_name_snapshot=self.type.name,
-            target_item_name_snapshot=self.target_item.name if self.target_item else "",
-            activity_location_name_snapshot=(
-                self.activity_location.name if self.activity_location else ""
-            ),
+            type_name_snapshot=self.type.name if self.type else None,
+            target_item_name_snapshot=self.target_item.name if self.target_item else None,
+            activity_location_name_snapshot=self.activity_location.name if self.activity_location else None,
         )
-        self.last_completed = instance.completed_at.date()
+
+        self.last_completed = today
         self.save(update_fields=["last_completed"])
         return instance
+
 
     class Meta:
         verbose_name = "Activity"

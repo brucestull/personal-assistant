@@ -1,16 +1,16 @@
 # plan_it/views.py
 
 from collections import defaultdict
-from datetime import date
 
+from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import generic
 
 from base.decorators import registration_accepted_required
 from base.mixins import UserQuerySetMixin, UserAssignMixin, RegistrationAcceptedMixin
-from django.conf import settings
 
 from .models import (
     Activity,
@@ -26,7 +26,7 @@ THE_SITE_NAME = settings.THE_SITE_NAME
 
 @registration_accepted_required
 def dashboard(request):
-    today = date.today()
+    today = timezone.localdate()
 
     all_activities = (
         Activity.objects.filter(user=request.user)
@@ -61,12 +61,8 @@ def dashboard(request):
 
     # Count summary statistics - using count() is efficient for these
     total_items = Item.objects.filter(user=request.user).count()
-    total_storage_locations = StorageLocation.objects.filter(
-        user=request.user
-    ).count()
-    total_activity_locations = ActivityLocation.objects.filter(
-        user=request.user
-    ).count()
+    total_storage_locations = StorageLocation.objects.filter(user=request.user).count()
+    total_activity_locations = ActivityLocation.objects.filter(user=request.user).count()
     total_activity_types = ActivityType.objects.filter(user=request.user).count()
     total_completions = ActivityInstance.objects.filter(user=request.user).count()
 
@@ -293,12 +289,8 @@ class ActivityCreateView(
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["type"].queryset = ActivityType.objects.filter(
-            user=self.request.user
-        )
-        form.fields["target_item"].queryset = Item.objects.filter(
-            user=self.request.user
-        )
+        form.fields["type"].queryset = ActivityType.objects.filter(user=self.request.user)
+        form.fields["target_item"].queryset = Item.objects.filter(user=self.request.user)
         form.fields["activity_location"].queryset = ActivityLocation.objects.filter(
             user=self.request.user
         )
