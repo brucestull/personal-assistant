@@ -1,3 +1,13 @@
 # config/settings/__init__.py
-# Intentionally empty. Settings are loaded via DJANGO_SETTINGS_MODULE
-# e.g. config.settings.dev / config.settings.prod / config.settings.test
+from __future__ import annotations
+
+import os
+
+env = os.getenv("ENVIRONMENT", "dev").lower().strip()
+
+if env in {"prod", "production"}:
+    from .prod import *  # noqa: F401,F403
+elif env in {"test", "ci"}:
+    from .test import *  # noqa: F401,F403
+else:
+    from .dev import *  # noqa: F401,F403
