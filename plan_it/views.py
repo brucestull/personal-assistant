@@ -62,7 +62,7 @@ def dashboard(request):
     # Count summary statistics - using count() is efficient for these
     total_items = Item.objects.filter(user=request.user).count()
     total_storage_locations = StorageLocation.objects.filter(user=request.user).count()
-    total_activity_locations = ActivityLocation.objects.filter(user=request.user).count()
+    total_activity_locations = ActivityLocation.objects.filter(user=request.user).count()  # noqa E501
     total_activity_types = ActivityType.objects.filter(user=request.user).count()
     total_completions = ActivityInstance.objects.filter(user=request.user).count()
 
@@ -289,8 +289,8 @@ class ActivityCreateView(
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["type"].queryset = ActivityType.objects.filter(user=self.request.user)
-        form.fields["target_item"].queryset = Item.objects.filter(user=self.request.user)
+        form.fields["type"].queryset = ActivityType.objects.filter(user=self.request.user)  # noqa E501
+        form.fields["target_item"].queryset = Item.objects.filter(user=self.request.user)  # noqa E501
         form.fields["activity_location"].queryset = ActivityLocation.objects.filter(
             user=self.request.user
         )

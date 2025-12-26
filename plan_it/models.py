@@ -141,14 +141,13 @@ class Activity(models.Model):
             completed_at=timezone.now(),  # DateTimeField -> timezone-aware
             name_snapshot=self.name,
             type_name_snapshot=self.type.name if self.type else None,
-            target_item_name_snapshot=self.target_item.name if self.target_item else None,
-            activity_location_name_snapshot=self.activity_location.name if self.activity_location else None,
+            target_item_name_snapshot=self.target_item.name if self.target_item else None,  # noqa E501
+            activity_location_name_snapshot=self.activity_location.name if self.activity_location else None,  # noqa E501
         )
 
         self.last_completed = today
         self.save(update_fields=["last_completed"])
         return instance
-
 
     class Meta:
         verbose_name = "Activity"
