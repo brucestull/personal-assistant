@@ -167,14 +167,6 @@ class ViewTestCase(TestCase):
         self.project_obj = Project.objects.create(name="TestProj", description="Desc")
         self.project_obj.owner.add(self.user)
 
-    def test_home_view_render(self):
-        """
-        The home() view should return 200 and contain "App Tracker Home" in the HTML.
-        """
-        response = self.client.get(reverse("app_tracker:home"))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "App Tracker Home")
-
     def _test_crud_views_for_model(self, model, instance, url_prefix, create_data):
         """
         Tests List, Detail, Create, Update, and Delete views for a model.
@@ -332,7 +324,6 @@ class URLTests(TestCase):
     def test_reverse_list_and_create_urls(self):
         # We only assert that reverse() ends with the expected suffix,
         # so it works even if your app is mounted at /app-tracker/...
-        self.assertTrue(reverse("app_tracker:home").endswith("/"))
         self.assertTrue(
             reverse("app_tracker:application_list").endswith("/applications/")
         )

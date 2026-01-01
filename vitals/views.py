@@ -21,20 +21,6 @@ from vitals.forms import BloodPressureForm, BodyWeightForm
 from vitals.models import BloodPressure, BodyWeight
 
 
-def home(request):
-    """
-    View function for the home page of the `vitals` app.
-    """
-    return render(
-        request,
-        "vitals/home.html",
-        {
-            "the_site_name": THE_SITE_NAME,
-            "page_title": "Vitals Home",
-        },
-    )
-
-
 class BloodPressureListView(
     SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, ListView
 ):

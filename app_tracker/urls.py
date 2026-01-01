@@ -7,11 +7,6 @@ from app_tracker import views
 app_name = "app_tracker"
 urlpatterns = [
     path(
-        "",
-        views.home,
-        name="home",
-    ),
-    path(
         "dashboard/",
         views.dashboard,
         name="dashboard",
