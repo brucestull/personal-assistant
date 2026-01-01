@@ -4,14 +4,14 @@
     <li><a href="{% url 'home' %}">Personal Assistant</a></li>
     <li><a href={% url 'unimportant_notes:note_list' %}>Unimportant Notes</a></li>
     <li>
-        <a href={% url "app_tracker:home" %}>App Tracker</a>
+        <a href="{% url 'app_tracker:dashboard' %}">App Tracker</a>
         |
-        <a href="{% url 'app_tracker:organizational-concepts' %}">
+        <a href="{% url 'app_tracker:oc_list' %}">
             Organizational Concepts
         </a>
     </li>
     <li>
-        <a href={% url "career_organizerator:home" %}>Career Organizerator</a>
+        <a href={% url 'career_organizerator:skill-list' %}>Career Organizerator</a>
         |
         <a href={% url 'career_organizerator:skill-list' %}>Skills</a>
         |

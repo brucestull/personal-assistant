@@ -24,23 +24,6 @@ from .models import (
 )
 
 
-def home(request):
-    """
-    View function for the home page of the `career_organizerator` app.
-    """
-    return render(
-        # Pass the `request` argument to the `render` function.
-        request,
-        # Specify the template to use.
-        "career_organizerator/home.html",
-        {
-            # Specify some context variables to pass to the template.
-            "the_site_name": THE_SITE_NAME,
-            "page_title": "Career Organizerator Home",
-        },
-    )
-
-
 class PurposeListView(FormMixin, RegistrationAcceptedMixin, ListView):
     """
     `ListView` for the `Purpose` model.

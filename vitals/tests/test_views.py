@@ -12,8 +12,6 @@ PASSWORD_FOR_TESTING = "a_test_password"
 
 THE_SITE_NAME = "Personal Assistant"
 
-HOME_URL = "/"
-
 BLOOD_PRESSURE_LIST_URL = "/vitals/bloodpressures/"
 BLOOD_PRESSURE_LIST_VIEW_NAME = "vitals:bloodpressure-list"
 BLOOD_PRESSURE_LIST_PAGE_TITLE = "Blood Pressures"
@@ -30,43 +28,6 @@ BLOOD_PRESSURE_SYSTOLIC_MAX = 120
 BLOOD_PRESSURE_SYSTOLIC_MIN = 110
 BLOOD_PRESSURE_DIASTOLIC_MAX = 80
 BLOOD_PRESSURE_DIASTOLIC_MIN = 70
-
-
-class HomeViewTest(TestCase):
-    """
-    Test the `home` view.
-    """
-
-    def test_home_view_url_exists_at_desired_location(self):
-        """
-        Test that the `home` view is rendered at the desired location.
-        """
-        response = self.client.get(HOME_URL)
-        self.assertEqual(response.status_code, 200)
-
-    def test_home_view_url_accessible_by_name(self):
-        """
-        Test that the `home` view is rendered at the desired location by name.
-        """
-        response = self.client.get(reverse("vitals:home"))
-        self.assertEqual(response.status_code, 200)
-
-    def test_home_view_uses_correct_template(self):
-        """
-        Test that the `home` view uses the correct template.
-        """
-        response = self.client.get(reverse("vitals:home"))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "vitals/home.html")
-
-    def test_home_view_uses_correct_context(self):
-        """
-        Test that the `home` view uses the correct context.
-        """
-        response = self.client.get(reverse("vitals:home"))
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["the_site_name"], THE_SITE_NAME)
-        self.assertEqual(response.context["page_title"], "Vitals Home")
 
 
 class BloodPressureListViewTest(TestCase):

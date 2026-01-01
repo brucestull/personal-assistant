@@ -6,35 +6,6 @@ from career_organizerator.forms import PurposeForm
 from career_organizerator.models import Purpose
 
 
-class HomeViewTests(TestCase):
-    """
-    Tests for the `home` view.
-    """
-
-    def test_home_view(self):
-        """
-        Test that the `home` view returns a response with an HTTP status code
-        of 200.
-        """
-        response = self.client.get(reverse_lazy("career_organizerator:home"))
-        self.assertEqual(response.status_code, 200)
-
-    def test_home_view_template(self):
-        """
-        Test that the `home` view uses the correct template.
-        """
-        response = self.client.get(reverse_lazy("career_organizerator:home"))
-        self.assertTemplateUsed(response, "career_organizerator/home.html")
-
-    def test_home_view_context(self):
-        """
-        Test that the `home` view passes the correct context to the template.
-        """
-        response = self.client.get(reverse_lazy("career_organizerator:home"))
-        self.assertEqual(response.context["the_site_name"], "Personal Assistant")
-        self.assertEqual(response.context["page_title"], "Career Organizerator Home")
-
-
 class PurposeListViewTests(TestCase):
     """
     Tests for the `PurposeListView` view.
