@@ -16,23 +16,8 @@ from django.views.generic import CreateView, ListView, TemplateView
 
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
-from config.settings import THE_SITE_NAME
 from vitals.forms import BloodPressureForm, BodyWeightForm
 from vitals.models import BloodPressure, BodyWeight
-
-
-def home(request):
-    """
-    View function for the home page of the `vitals` app.
-    """
-    return render(
-        request,
-        "vitals/home.html",
-        {
-            "the_site_name": THE_SITE_NAME,
-            "page_title": "Vitals Home",
-        },
-    )
 
 
 class BloodPressureListView(

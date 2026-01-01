@@ -8,7 +8,6 @@ from .views import (
     QuestionResponseListView,
     QuestionResponseUpdateView,
     SkillListView,
-    home,
     skill_delete,
     skill_move_down,
     skill_move_up,
@@ -16,7 +15,6 @@ from .views import (
 
 app_name = "career_organizerator"
 urlpatterns = [
-    path("", home, name="home"),
     path("purposes/", PurposeListView.as_view(), name="purpose-list"),
     path("skills/", SkillListView.as_view(), name="skill-list"),
     path("skills/<int:skill_id>/move-up/", skill_move_up, name="skill_move_up"),

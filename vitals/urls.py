@@ -7,11 +7,6 @@ from vitals import views
 app_name = "vitals"
 urlpatterns = [
     path(
-        "",
-        views.home,
-        name="home",
-    ),
-    path(
         "bloodpressures/",
         views.BloodPressureListView.as_view(),
         name="bloodpressure-list",
