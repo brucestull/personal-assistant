@@ -172,6 +172,8 @@ THE_SITE_NAME = "Personal Assistant"
 
 ########################################################################
 # Optional DRF config:
+# NOTE: AllowAny is set for development. For production, change to
+# IsAuthenticated or implement endpoint-specific permissions.
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
