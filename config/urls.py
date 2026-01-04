@@ -58,4 +58,7 @@ urlpatterns = [
     path("tasks/", include("tasks.urls")),
     path("warcrafting/", include("warcrafting.urls", namespace="warcrafting")),
     path("kanban/", include("kanban_cabinet.urls")),
+    # API routes
+    path("api/v1/app-tracker/", include("app_tracker.api.urls")),
+    path("api-auth/", include("rest_framework.urls")),
 ]
