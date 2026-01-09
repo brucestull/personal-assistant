@@ -19,6 +19,7 @@ boto3 = "==1.28.43"
 redis = "==5.2.1"
 celery = "==5.4.0"
 reportlab = "*"
+setuptools = "*"
 
 [dev-packages]
 ruff = "*"
