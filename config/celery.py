@@ -1,4 +1,5 @@
 # config/celery.py
+
 import os
 
 # import django
