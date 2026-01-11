@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ the_site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1>All Successes</h1>
+  <a href="{% url 'successes:success_create' %}" class="btn btn-success mb-3">+ Log Success</a>
+  <a href="{% url 'successes:dashboard' %}" class="btn btn-outline-secondary mb-3">Back to Dashboard</a>
+  
+  {% if object_list %}
+    <ul class="list-group">
+      {% for success in object_list %}
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <small class="text-muted">{{ success.created|date:"F d, Y - g:i A" }}</small>
+              <p class="mb-0 mt-2">{{ success.text }}</p>
+            </div>
+            <div class="btn-group ms-3" role="group">
+              <a href="{% url 'successes:success_detail' success.pk %}" class="btn btn-sm btn-info">View</a>
+              <a href="{% url 'successes:success_update' success.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+              <a href="{% url 'successes:success_delete' success.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert alert-info">
+      <p>No successes logged yet. Every positive moment counts - start logging your successes today!</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

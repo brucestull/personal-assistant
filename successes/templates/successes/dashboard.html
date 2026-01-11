@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ the_site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1>Daily Successes Dashboard</h1>
+  <p class="lead">Track your successes and practice gratitude with the "What Went Well" exercise.</p>
+
+  <!-- Daily Goal Progress -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card {% if daily_goal_met %}border-success{% endif %}">
+        <div class="card-body">
+          <h5 class="card-title">Today's "What Went Well" Progress</h5>
+          {% if daily_goal_met %}
+            <p class="text-success"><strong>🎉 Congratulations! You've completed your daily reflection!</strong></p>
+            <p>You've recorded {{ wwws_today }} things that went well today. Keep up the positive mindset!</p>
+          {% else %}
+            <p>You've recorded <strong>{{ wwws_today }}</strong> out of <strong>3</strong> recommended daily reflections.</p>
+            <p>
+              {% if wwws_remaining == 3 %}
+                Start your day by reflecting on what's going well!
+              {% elif wwws_remaining == 2 %}
+                Great start! Add 2 more reflections when you can.
+              {% elif wwws_remaining == 1 %}
+                Almost there! Just 1 more reflection to reach your daily goal.
+              {% endif %}
+            </p>
+            <a href="{% url 'successes:whatwentwell_create' %}" class="btn btn-primary">+ Add What Went Well</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h2>{{ total_successes }}</h2>
+          <p class="text-muted">Total Successes</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h2>{{ total_wwws }}</h2>
+          <p class="text-muted">Total Reflections</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h2>{{ successes_this_week }}</h2>
+          <p class="text-muted">This Week's Successes</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h2>{{ wwws_this_week }}</h2>
+          <p class="text-muted">This Week's Reflections</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Quick Success</h5>
+          <p class="card-text">Log something positive that happened, no matter how small.</p>
+          <a href="{% url 'successes:success_create' %}" class="btn btn-success">+ Log Success</a>
+          <a href="{% url 'successes:success_list' %}" class="btn btn-outline-secondary">View All</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">What Went Well</h5>
+          <p class="card-text">Reflect on what went well and how you made it happen.</p>
+          <a href="{% url 'successes:whatwentwell_create' %}" class="btn btn-primary">+ Add Reflection</a>
+          <a href="{% url 'successes:whatwentwell_list' %}" class="btn btn-outline-secondary">View All</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Entries -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5>Recent Successes</h5>
+        </div>
+        <div class="card-body">
+          {% if recent_successes %}
+            <ul class="list-group list-group-flush">
+              {% for success in recent_successes %}
+                <li class="list-group-item">
+                  <small class="text-muted">{{ success.created|date:"M d, Y" }}</small>
+                  <p class="mb-0">{{ success.text|truncatewords:20 }}</p>
+                  <a href="{% url 'successes:success_detail' success.pk %}" class="btn btn-sm btn-link">View</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted">No successes logged yet. Start by adding one!</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5>Recent What Went Wells</h5>
+        </div>
+        <div class="card-body">
+          {% if recent_wwws %}
+            <ul class="list-group list-group-flush">
+              {% for www in recent_wwws %}
+                <li class="list-group-item">
+                  <small class="text-muted">{{ www.created|date:"M d, Y" }}</small>
+                  <p class="mb-0"><strong>What:</strong> {{ www.what_went_well|truncatewords:15 }}</p>
+                  <p class="mb-0 text-muted"><small><strong>How:</strong> {{ www.how_i_made_it_happen|truncatewords:15 }}</small></p>
+                  <a href="{% url 'successes:whatwentwell_detail' www.pk %}" class="btn btn-sm btn-link">View</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted">No reflections yet. Start your daily practice!</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card bg-light">
+        <div class="card-body">
+          <h5 class="card-title">About This Practice</h5>
+          <p class="card-text">
+            The "What Went Well" exercise is based on research in Positive Psychology by Martin Seligman and Angela Duckworth. 
+            By identifying three good things each day and reflecting on your role in making them happen, you:
+          </p>
+          <ul>
+            <li>Cultivate awareness of positive experiences</li>
+            <li>Recognize your personal agency and autonomy</li>
+            <li>Build a growth mindset by connecting your actions to positive outcomes</li>
+            <li>Develop resilience and optimism</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

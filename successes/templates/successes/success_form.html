@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ the_site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1>{{ page_title }}</h1>
+  <a href="{% url 'successes:success_list' %}" class="btn btn-outline-secondary mb-3">Cancel</a>
+  
+  <div class="card">
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          {{ form.text.label_tag }}
+          <textarea name="text" class="form-control" rows="5" required>{{ form.text.value|default:'' }}</textarea>
+          {% if form.text.help_text %}
+            <small class="form-text text-muted">{{ form.text.help_text }}</small>
+          {% endif %}
+          {% if form.text.errors %}
+            <div class="text-danger">{{ form.text.errors }}</div>
+          {% endif %}
+        </div>
+        <button type="submit" class="btn btn-success">Save Success</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

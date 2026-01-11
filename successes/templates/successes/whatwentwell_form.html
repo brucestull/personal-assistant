@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ the_site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1>{{ page_title }}</h1>
+  <a href="{% url 'successes:whatwentwell_list' %}" class="btn btn-outline-secondary mb-3">Cancel</a>
+  
+  <div class="card">
+    <div class="card-body">
+      <p class="alert alert-info">
+        <strong>Tip:</strong> Think about something positive that happened today. It can be big or small - what matters is recognizing your role in making it happen.
+      </p>
+      
+      <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+          {{ form.what_went_well.label_tag }}
+          <textarea name="what_went_well" class="form-control" rows="4" required placeholder="E.g., I had a productive meeting with my team...">{{ form.what_went_well.value|default:'' }}</textarea>
+          {% if form.what_went_well.help_text %}
+            <small class="form-text text-muted">{{ form.what_went_well.help_text }}</small>
+          {% endif %}
+          {% if form.what_went_well.errors %}
+            <div class="text-danger">{{ form.what_went_well.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="mb-3">
+          {{ form.how_i_made_it_happen.label_tag }}
+          <textarea name="how_i_made_it_happen" class="form-control" rows="4" required placeholder="E.g., I prepared an agenda ahead of time, listened actively, and asked clarifying questions...">{{ form.how_i_made_it_happen.value|default:'' }}</textarea>
+          {% if form.how_i_made_it_happen.help_text %}
+            <small class="form-text text-muted">{{ form.how_i_made_it_happen.help_text }}</small>
+          {% endif %}
+          {% if form.how_i_made_it_happen.errors %}
+            <div class="text-danger">{{ form.how_i_made_it_happen.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save Reflection</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

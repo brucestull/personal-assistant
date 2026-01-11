@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ the_site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1>What Went Well Entries</h1>
+  <a href="{% url 'successes:whatwentwell_create' %}" class="btn btn-primary mb-3">+ Add What Went Well</a>
+  <a href="{% url 'successes:dashboard' %}" class="btn btn-outline-secondary mb-3">Back to Dashboard</a>
+  
+  {% if object_list %}
+    <ul class="list-group">
+      {% for www in object_list %}
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <small class="text-muted">{{ www.created|date:"F d, Y - g:i A" }}</small>
+              <p class="mb-1 mt-2"><strong>What went well:</strong> {{ www.what_went_well|truncatewords:30 }}</p>
+              <p class="mb-0 text-muted"><small><strong>How I made it happen:</strong> {{ www.how_i_made_it_happen|truncatewords:30 }}</small></p>
+            </div>
+            <div class="btn-group ms-3" role="group">
+              <a href="{% url 'successes:whatwentwell_detail' www.pk %}" class="btn btn-sm btn-info">View</a>
+              <a href="{% url 'successes:whatwentwell_update' www.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+              <a href="{% url 'successes:whatwentwell_delete' www.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert alert-info">
+      <h5>Start Your Daily Practice</h5>
+      <p>The "What Went Well" exercise is a powerful tool from Positive Psychology. Each day, identify three things that went well and reflect on your role in making them happen.</p>
+      <p class="mb-0">This practice helps you recognize your personal agency and builds resilience and optimism.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

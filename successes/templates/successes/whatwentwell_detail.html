@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ the_site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1>What Went Well Detail</h1>
+  <a href="{% url 'successes:whatwentwell_list' %}" class="btn btn-outline-secondary mb-3">Back to List</a>
+  
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Reflection from {{ object.created|date:"F d, Y" }}</h5>
+      
+      <div class="mb-4">
+        <h6 class="text-primary">What Went Well:</h6>
+        <p>{{ object.what_went_well }}</p>
+      </div>
+      
+      <div class="mb-4">
+        <h6 class="text-success">How I Made It Happen:</h6>
+        <p>{{ object.how_i_made_it_happen }}</p>
+      </div>
+      
+      <hr>
+      
+      <p class="text-muted mb-0">
+        <small>Created: {{ object.created|date:"F d, Y - g:i A" }}</small><br>
+        <small>Last updated: {{ object.updated|date:"F d, Y - g:i A" }}</small>
+      </p>
+      
+      <div class="mt-3">
+        <a href="{% url 'successes:whatwentwell_update' object.pk %}" class="btn btn-secondary">Edit</a>
+        <a href="{% url 'successes:whatwentwell_delete' object.pk %}" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
