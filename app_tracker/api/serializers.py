@@ -48,7 +48,7 @@ class LabelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Label
-        fields = ["id", "name", "hue", "description", "application", "created", "updated"]
+        fields = ["id", "name", "hue", "description", "application", "created", "updated"]  # noqa E501
 
 
 class NoteSerializer(serializers.ModelSerializer):

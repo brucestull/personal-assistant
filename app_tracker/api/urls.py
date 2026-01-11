@@ -17,9 +17,9 @@ from app_tracker.api.viewsets import (
 )
 
 router = DefaultRouter()
-router.register(r"operating-systems", OperatingSystemViewSet, basename="operating-system")
-router.register(r"language-framework-systems", LanguageFrameworkSystemViewSet, basename="language-framework-system")
-router.register(r"organizational-concepts", OrganizationalConceptViewSet, basename="organizational-concept")
+router.register(r"operating-systems", OperatingSystemViewSet, basename="operating-system")  # noqa E501
+router.register(r"language-framework-systems", LanguageFrameworkSystemViewSet, basename="language-framework-system")  # noqa E501
+router.register(r"organizational-concepts", OrganizationalConceptViewSet, basename="organizational-concept")  # noqa E501
 router.register(r"labels", LabelViewSet, basename="label")
 router.register(r"notes", NoteViewSet, basename="note")
 router.register(r"urls", URLViewSet, basename="url")
