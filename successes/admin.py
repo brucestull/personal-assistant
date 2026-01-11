@@ -23,21 +23,22 @@ class SuccessAdmin(admin.ModelAdmin):
     )
     ordering = ("-created",)
     readonly_fields = ("created", "updated")
-    
+
     fieldsets = (
-        (None, {
-            "fields": ("user", "text")
-        }),
-        ("Timestamps", {
-            "fields": ("created", "updated"),
-            "classes": ("collapse",),
-        }),
+        (None, {"fields": ("user", "text")}),
+        (
+            "Timestamps",
+            {
+                "fields": ("created", "updated"),
+                "classes": ("collapse",),
+            },
+        ),
     )
 
     def display_text(self, obj):
         """Display truncated text in admin list."""
         return obj.text[:75] + ("..." if len(obj.text) > 75 else "")
-    
+
     display_text.short_description = "Success"
 
 
@@ -60,19 +61,20 @@ class WhatWentWellAdmin(admin.ModelAdmin):
     )
     ordering = ("-created",)
     readonly_fields = ("created", "updated")
-    
+
     fieldsets = (
-        (None, {
-            "fields": ("user", "what_went_well", "how_i_made_it_happen")
-        }),
-        ("Timestamps", {
-            "fields": ("created", "updated"),
-            "classes": ("collapse",),
-        }),
+        (None, {"fields": ("user", "what_went_well", "how_i_made_it_happen")}),
+        (
+            "Timestamps",
+            {
+                "fields": ("created", "updated"),
+                "classes": ("collapse",),
+            },
+        ),
     )
 
     def display_what_went_well(self, obj):
         """Display truncated what went well text in admin list."""
         return obj.what_went_well[:75] + ("..." if len(obj.what_went_well) > 75 else "")
-    
+
     display_what_went_well.short_description = "What Went Well"

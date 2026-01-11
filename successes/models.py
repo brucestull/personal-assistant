@@ -64,7 +64,10 @@ class WhatWentWell(CreatedUpdatedBase):
     )
     how_i_made_it_happen = models.TextField(
         "How I Made It Happen",
-        help_text="Reflect on what YOU did to make this happen or contribute to this positive outcome.",
+        help_text=(
+            "Reflect on what YOU did to make this happen or contribute "
+            "to this positive outcome."
+        ),
     )
     user = models.ForeignKey(
         AUTH_USER_MODEL,
@@ -78,7 +81,7 @@ class WhatWentWell(CreatedUpdatedBase):
         verbose_name_plural = "What Went Wells"
 
     def __str__(self):
-        return (
-            f"{self.what_went_well[:50]}{'...' if len(self.what_went_well) > 50 else ''}"
-            f" ({self.created.strftime('%Y-%m-%d')})"
-        )
+        what_text = self.what_went_well[:50]
+        ellipsis = "..." if len(self.what_went_well) > 50 else ""
+        date_str = self.created.strftime("%Y-%m-%d")
+        return f"{what_text}{ellipsis} ({date_str})"
