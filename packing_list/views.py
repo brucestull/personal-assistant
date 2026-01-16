@@ -189,7 +189,8 @@ def activity_pdf(request, pk):
     p.save()
     buffer.seek(0)
 
-    filename = f"{slugify(activity.name)}.pdf"
+    date_today_dashed = datetime.now().strftime("%Y-%m-%d")
+    filename = f"{slugify(activity.name)}_{date_today_dashed}.pdf"
     response = HttpResponse(buffer, content_type="application/pdf")
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response
