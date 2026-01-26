@@ -233,3 +233,97 @@ class NoteTagListViewTest(TestCase):
         response = self.client.get(reverse("unimportant_notes:tag_list"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["object_list"]), 0)
+
+
+class UnimportantNoteCreateViewTest(TestCase):
+    """
+    Tests for the `UnimportantNoteCreateView`.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up the test data for the `UnimportantNoteCreateView` tests.
+        """
+        cls.user_dezzi = CustomUser.objects.create_user(
+            username="DezziKitten",
+            email="DezziKitten@purr.scratch",
+            password="PurrMachine1234",
+        )
+        # Update `registration_accepted` to `True`.
+        cls.user_dezzi.registration_accepted = True
+        cls.user_dezzi.save()
+        # Create some tags
+        cls.tag1 = NoteTag.objects.create(
+            name="Active Directory (AD)",
+            author=cls.user_dezzi,
+        )
+        cls.tag2 = NoteTag.objects.create(
+            name="Adafruit",
+            author=cls.user_dezzi,
+        )
+        cls.tag3 = NoteTag.objects.create(
+            name="Application Idea",
+            author=cls.user_dezzi,
+        )
+
+    def test_note_create_view_url_exists_at_desired_location(self):
+        """
+        Test that the `UnimportantNoteCreateView` is rendered at "/unimportant-notes/create/".
+        """
+        # Log in the user.
+        login = self.client.login(username="DezziKitten", password="PurrMachine1234")
+        self.assertTrue(login)
+        response = self.client.get("/unimportant-notes/create/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_note_create_view_url_accessible_by_name(self):
+        """
+        Test that the `UnimportantNoteCreateView` is rendered at the desired location by
+        "unimportant_notes:note_create".
+        """
+        # Log in the user.
+        login = self.client.login(username="DezziKitten", password="PurrMachine1234")
+        self.assertTrue(login)
+        response = self.client.get(reverse("unimportant_notes:note_create"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_note_create_view_uses_correct_template(self):
+        """
+        Test that the `UnimportantNoteCreateView` uses the correct template
+        "unimportant_notes/unimportantnote_form.html".
+        """
+        # Log in the user.
+        login = self.client.login(username="DezziKitten", password="PurrMachine1234")
+        self.assertTrue(login)
+        response = self.client.get(reverse("unimportant_notes:note_create"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response, "unimportant_notes/unimportantnote_form.html"
+        )
+
+    def test_note_create_view_contains_tag_search_input(self):
+        """
+        Test that the `UnimportantNoteCreateView` contains a tag search input field.
+        """
+        # Log in the user.
+        login = self.client.login(username="DezziKitten", password="PurrMachine1234")
+        self.assertTrue(login)
+        response = self.client.get(reverse("unimportant_notes:note_create"))
+        self.assertEqual(response.status_code, 200)
+        # Check that the response contains the tag search input
+        self.assertContains(response, 'id="tag-search"')
+        self.assertContains(response, 'placeholder="Search tags..."')
+
+    def test_note_create_view_redirects_for_unauthenticated_user(self):
+        """
+        Test that the `UnimportantNoteCreateView` redirects an unauthenticated user to the
+        login page.
+        """
+        response = self.client.get(reverse("unimportant_notes:note_create"))
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/unimportant-notes/create/",
+            status_code=302,
+            target_status_code=200,
+        )

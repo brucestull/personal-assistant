@@ -10,7 +10,21 @@
     <h1>{{ page_title }}</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }}
+                {% if field.help_text %}
+                    <span class="helptext">{{ field.help_text }}</span>
+                {% endif %}
+                {% if field.name == "tag" %}
+                    <input type="text" id="tag-search" class="form-control mb-2" placeholder="Search tags..." autocomplete="off" style="margin-top: 5px;">
+                {% endif %}
+                {{ field }}
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
+            </p>
+        {% endfor %}
         <button type="submit">
             {% if mode == "create" %}
                 Create New Unimportant Note
@@ -28,4 +42,42 @@
             Cancel
         </a>
     {% endif %}
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('tag-search');
+      const tagSelect = document.getElementById('id_tag');
+      
+      if (searchInput && tagSelect) {
+        // Store all options with their selected state
+        const allOptions = Array.from(tagSelect.options).map(opt => ({
+          value: opt.value,
+          text: opt.text,
+          selected: opt.selected
+        }));
+        
+        searchInput.addEventListener('input', function() {
+          const searchTerm = this.value.toLowerCase();
+          const currentValues = Array.from(tagSelect.selectedOptions).map(opt => opt.value);
+          
+          // Clear all options efficiently
+          tagSelect.innerHTML = '';
+          
+          // Filter and add matching options
+          allOptions.forEach(optData => {
+            if (optData.text.toLowerCase().includes(searchTerm) || optData.value === '') {
+              const option = document.createElement('option');
+              option.value = optData.value;
+              option.text = optData.text;
+              // Restore selection if this was a previously selected value
+              if (currentValues.includes(optData.value)) {
+                option.selected = true;
+              }
+              tagSelect.add(option);
+            }
+          });
+        });
+      }
+    });
+    </script>
 {% endblock content %}
