@@ -125,3 +125,106 @@ def send_random_unimportant_note_email(
         "user_id": user.id,
         "tag_id": tag_id,
     }
+
+
+@shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, max_retries=3)
+def send_unimportant_note_email(
+    self,
+    user_id: int,
+    unimportant_note_id: int,
+) -> dict:
+    """
+    Send a specific UnimportantNote (by ID) to a specific user (by ID).
+    This is meant for scheduled/triggered sends using kwargs.
+    """
+    User = get_user_model()
+
+    # ---- User lookup ----
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        logger.warning("send_unimportant_note_email: user %s not found", user_id)
+        return {"ok": False, "reason": "user_not_found"}
+
+    # ---- Note lookup ----
+    try:
+        note = UnimportantNote.objects.get(pk=unimportant_note_id, author=user)
+    except UnimportantNote.DoesNotExist:
+        logger.warning(
+            "send_unimportant_note_email: note %s not found for user %s",
+            unimportant_note_id,
+            user_id,
+        )
+        return {"ok": False, "reason": "note_not_found_for_user"}
+
+    # ---- Build email content ----
+    title = getattr(note, "title", f"Note #{note.id}")
+
+    text = (
+        getattr(note, "content", None)
+        or getattr(note, "body", None)
+        or getattr(note, "text", None)
+        or ""
+    )
+
+    tag_names = ", ".join(note.tag.values_list("name", flat=True))
+
+    subject = (
+        f"{getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')} — "
+        "Unimportant Note"
+    )
+
+    body_lines = [
+        f"Hey {user.username},",
+        "",
+        "Here is your scheduled unimportant note:",
+        "",
+        f"Title: {title}",
+    ]
+
+    if text:
+        body_lines += [
+            "",
+            "Content:",
+            text,
+        ]
+
+    if tag_names:
+        body_lines += ["", f"Tags: {tag_names}"]
+
+    # Include a relative link if available
+    try:
+        body_lines += ["", f"Open in app: {note.get_absolute_url()}"]
+    except Exception:
+        pass
+
+    # NOTE: explicitly do NOT send image content right now
+    if getattr(note, "main_image", None):
+        body_lines += [
+            "",
+            "(Note: This email does not include the note image yet, "
+            "but we can add image support in the future.)",
+        ]
+
+    body_lines += ["", f"— {getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')}"]
+    body = "\n".join(body_lines)
+
+    send_mail(
+        subject=subject,
+        message=body,
+        from_email=getattr(settings, "EMAIL_HOST_USER", None),
+        recipient_list=[user.email],
+        fail_silently=False,
+    )
+
+    logger.info(
+        "Sent specific UnimportantNote %s to user %s (%s)",
+        note.id,
+        user.id,
+        user.email,
+    )
+    return {
+        "ok": True,
+        "note_id": note.id,
+        "user_id": user.id,
+    }
