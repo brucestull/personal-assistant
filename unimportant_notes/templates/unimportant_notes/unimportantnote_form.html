@@ -65,7 +65,7 @@
           
           // Filter and add matching options
           allOptions.forEach(optData => {
-            if (optData.text.toLowerCase().includes(searchTerm) || optData.value === '') {
+            if (optData.text.toLowerCase().includes(searchTerm)) {
               const option = document.createElement('option');
               option.value = optData.value;
               option.text = optData.text;
