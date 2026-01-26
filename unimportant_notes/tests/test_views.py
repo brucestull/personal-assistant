@@ -247,7 +247,7 @@ class UnimportantNoteCreateViewTest(TestCase):
         """
         cls.user_dezzi = CustomUser.objects.create_user(
             username="DezziKitten",
-            email="DezziKitten@purr.scratch",
+            email="dezzi.kitten@purr.scratch",
             password="PurrMachine1234",
         )
         # Update `registration_accepted` to `True`.
