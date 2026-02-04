@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     "tasks.apps.TasksConfig",
     "warcrafting.apps.WarcraftingConfig",
     "kanban_cabinet.apps.KanbanCabinetConfig",
+    "true_north.apps.TrueNorthConfig",
 ]
 
 MIDDLEWARE = [
