@@ -14,12 +14,16 @@ from base.models import CreatedUpdatedBase
 class UserOwnedBase(CreatedUpdatedBase):
     """
     Abstract base: ties objects to a user (CustomUser via AUTH_USER_MODEL).
+
+    IMPORTANT:
+    related_name includes app_label to avoid collisions with other apps
+    that have models with the same class names (e.g. a separate `tasks` app).
     """
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="%(class)ss",
+        related_name="%(app_label)s_%(class)ss",
     )
 
     class Meta:
@@ -107,6 +111,7 @@ class Goal(UserOwnedBase, OrderableMixin):
         if not self.slug:
             self.slug = slugify(self.title)[: self._meta.get_field("slug").max_length]
 
+        # NOTE: This makes duplicates raise ValidationError (not IntegrityError)
         self.full_clean()
         super().save(*args, **kwargs)
 
@@ -155,6 +160,7 @@ class Milestone(UserOwnedBase, OrderableMixin):
         if not self.slug:
             self.slug = slugify(self.description)[: self._meta.get_field("slug").max_length]
 
+        # NOTE: This makes duplicates raise ValidationError (not IntegrityError)
         self.full_clean()
         super().save(*args, **kwargs)
 
@@ -183,11 +189,6 @@ class TaskStatus(models.TextChoices):
 
 
 class Task(UserOwnedBase, OrderableMixin):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="true_north_tasks",
-    )
     milestone = models.ForeignKey(
         Milestone,
         on_delete=models.CASCADE,
