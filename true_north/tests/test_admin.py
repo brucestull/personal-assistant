@@ -45,7 +45,14 @@ def test_corevalue_admin_configuration():
     site = StubAdminSite()
     model_admin = CoreValueAdmin(CoreValue, site)
 
-    assert model_admin.list_display == ("name", "user", "is_active", "order", "created", "updated")
+    assert model_admin.list_display == (
+        "name",
+        "user",
+        "is_active",
+        "order",
+        "created",
+        "updated",
+    )
     assert model_admin.list_filter == ("is_active", "user")
     assert model_admin.search_fields == ("name", "definition", "slug", "user__username")
     assert model_admin.ordering == ("order", "name")
@@ -59,9 +66,24 @@ def test_goal_admin_configuration():
     site = StubAdminSite()
     model_admin = GoalAdmin(Goal, site)
 
-    assert model_admin.list_display == ("title", "user", "value", "status", "is_active", "order", "target_date", "created")
+    assert model_admin.list_display == (
+        "title",
+        "user",
+        "value",
+        "status",
+        "is_active",
+        "order",
+        "target_date",
+        "created",
+    )
     assert model_admin.list_filter == ("status", "is_active", "user", "value")
-    assert model_admin.search_fields == ("title", "description", "slug", "value__name", "user__username")
+    assert model_admin.search_fields == (
+        "title",
+        "description",
+        "slug",
+        "value__name",
+        "user__username",
+    )
     assert model_admin.ordering == ("order", "title")
     assert model_admin.readonly_fields == ("created", "updated")
     assert model_admin.prepopulated_fields == {"slug": ("title",)}
@@ -73,9 +95,23 @@ def test_milestone_admin_configuration():
     site = StubAdminSite()
     model_admin = MilestoneAdmin(Milestone, site)
 
-    assert model_admin.list_display == ("description", "user", "goal", "due_date", "is_completed", "order", "created")
+    assert model_admin.list_display == (
+        "description",
+        "user",
+        "goal",
+        "due_date",
+        "is_completed",
+        "order",
+        "created",
+    )
     assert model_admin.list_filter == ("is_completed", "user", "goal")
-    assert model_admin.search_fields == ("description", "slug", "notes", "goal__title", "user__username")
+    assert model_admin.search_fields == (
+        "description",
+        "slug",
+        "notes",
+        "goal__title",
+        "user__username",
+    )
     assert model_admin.ordering == ("order", "description")
     assert model_admin.readonly_fields == ("created", "updated")
     assert model_admin.prepopulated_fields == {"slug": ("description",)}
@@ -87,9 +123,23 @@ def test_task_admin_configuration():
     site = StubAdminSite()
     model_admin = TaskAdmin(Task, site)
 
-    assert model_admin.list_display == ("__str__", "user", "milestone", "status", "is_completed", "due_date", "order", "created")
+    assert model_admin.list_display == (
+        "__str__",
+        "user",
+        "milestone",
+        "status",
+        "is_completed",
+        "due_date",
+        "order",
+        "created",
+    )
     assert model_admin.list_filter == ("status", "is_completed", "user")
-    assert model_admin.search_fields == ("content", "milestone__description", "milestone__goal__title", "user__username")
+    assert model_admin.search_fields == (
+        "content",
+        "milestone__description",
+        "milestone__goal__title",
+        "user__username",
+    )
     assert model_admin.ordering == ("order", "id")
     assert model_admin.readonly_fields == ("created", "updated")
     assert model_admin.autocomplete_fields == ("user", "milestone")
@@ -97,19 +147,38 @@ def test_task_admin_configuration():
 
 def test_inlines_point_to_expected_models_and_fields():
     assert GoalInline.model is Goal
-    assert GoalInline.fields == ("order", "title", "slug", "status", "is_active", "target_date")
+    assert GoalInline.fields == (
+        "order",
+        "title",
+        "slug",
+        "status",
+        "is_active",
+        "target_date",
+    )
     assert GoalInline.extra == 0
     assert GoalInline.show_change_link is True
     assert GoalInline.ordering == ("order", "title")
 
     assert MilestoneInline.model is Milestone
-    assert MilestoneInline.fields == ("order", "description", "slug", "due_date", "is_completed")
+    assert MilestoneInline.fields == (
+        "order",
+        "description",
+        "slug",
+        "due_date",
+        "is_completed",
+    )
     assert MilestoneInline.extra == 0
     assert MilestoneInline.show_change_link is True
     assert MilestoneInline.ordering == ("order", "description")
 
     assert TaskInline.model is Task
-    assert TaskInline.fields == ("order", "status", "is_completed", "due_date", "content")
+    assert TaskInline.fields == (
+        "order",
+        "status",
+        "is_completed",
+        "due_date",
+        "content",
+    )
     assert TaskInline.extra == 0
     assert TaskInline.ordering == ("order", "id")
 

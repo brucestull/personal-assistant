@@ -36,7 +36,16 @@ class MilestoneInline(admin.TabularInline):
 
 @admin.register(Goal)
 class GoalAdmin(admin.ModelAdmin):
-    list_display = ("title", "user", "value", "status", "is_active", "order", "target_date", "created")
+    list_display = (
+        "title",
+        "user",
+        "value",
+        "status",
+        "is_active",
+        "order",
+        "target_date",
+        "created",
+    )  # noqa E501
     list_filter = ("status", "is_active", "user", "value")
     search_fields = ("title", "description", "slug", "value__name", "user__username")
     ordering = ("order", "title")
@@ -56,7 +65,15 @@ class TaskInline(admin.TabularInline):
 
 @admin.register(Milestone)
 class MilestoneAdmin(admin.ModelAdmin):
-    list_display = ("description", "user", "goal", "due_date", "is_completed", "order", "created")
+    list_display = (
+        "description",
+        "user",
+        "goal",
+        "due_date",
+        "is_completed",
+        "order",
+        "created",
+    )  # noqa E501
     list_filter = ("is_completed", "user", "goal")
     search_fields = ("description", "slug", "notes", "goal__title", "user__username")
     ordering = ("order", "description")
@@ -69,9 +86,23 @@ class MilestoneAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "user", "milestone", "status", "is_completed", "due_date", "order", "created")
+    list_display = (
+        "__str__",
+        "user",
+        "milestone",
+        "status",
+        "is_completed",
+        "due_date",
+        "order",
+        "created",
+    )  # noqa E501
     list_filter = ("status", "is_completed", "user")
-    search_fields = ("content", "milestone__description", "milestone__goal__title", "user__username")
+    search_fields = (
+        "content",
+        "milestone__description",
+        "milestone__goal__title",
+        "user__username",
+    )
     ordering = ("order", "id")
     readonly_fields = ("created", "updated")
 

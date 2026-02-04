@@ -158,7 +158,9 @@ class Milestone(UserOwnedBase, OrderableMixin):
             self.user = self.goal.user
 
         if not self.slug:
-            self.slug = slugify(self.description)[: self._meta.get_field("slug").max_length]
+            self.slug = slugify(self.description)[
+                : self._meta.get_field("slug").max_length
+            ]
 
         # NOTE: This makes duplicates raise ValidationError (not IntegrityError)
         self.full_clean()
@@ -210,8 +212,14 @@ class Task(UserOwnedBase, OrderableMixin):
     order = models.PositiveIntegerField(default=0)
 
     def clean(self):
-        if self.milestone_id and self.user_id and self.milestone.user_id != self.user_id:
-            raise ValidationError({"milestone": "Milestone belongs to a different user."})
+        if (
+            self.milestone_id
+            and self.user_id
+            and self.milestone.user_id != self.user_id
+        ):
+            raise ValidationError(
+                {"milestone": "Milestone belongs to a different user."}
+            )
 
     def save(self, *args, **kwargs):
         if self.milestone_id and not self.user_id:

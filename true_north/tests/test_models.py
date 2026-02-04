@@ -22,6 +22,7 @@ pytestmark = pytest.mark.django_db
 # CoreValue
 # -------------------------
 
+
 def test_corevalue_slug_autogenerates_when_blank():
     tiny_user = CustomUserFactory()
     grits_and_gravy = CoreValue(user=tiny_user, name="Deep Integrity", slug="")
@@ -68,6 +69,7 @@ def test_corevalue_meta_ordering_is_order_then_name():
 # -------------------------
 # Goal
 # -------------------------
+
 
 def test_goal_defaults_status_active():
     goal = GoalFactory()
@@ -133,6 +135,7 @@ def test_goal_meta_ordering_is_order_then_title():
 # Milestone
 # -------------------------
 
+
 def test_milestone_syncs_user_from_goal_if_user_missing_and_autoslugs():
     goal = GoalFactory()
     milestone = Milestone(goal=goal, description="First checkpoint", slug="")
@@ -149,7 +152,9 @@ def test_milestone_cross_user_linking_raises_validationerror():
     value_a = CoreValueFactory(user=user_a)
     goal_a = GoalFactory(user=user_a, value=value_a)
 
-    milestone = Milestone(user=user_b, goal=goal_a, description="Mismatch", slug="mismatch")
+    milestone = Milestone(
+        user=user_b, goal=goal_a, description="Mismatch", slug="mismatch"
+    )
 
     with pytest.raises(ValidationError) as exc:
         milestone.save()
@@ -157,7 +162,7 @@ def test_milestone_cross_user_linking_raises_validationerror():
     assert "goal" in exc.value.message_dict
 
 
-def test_milestone_unique_slug_per_goal_per_user_enforced_via_full_clean_validationerror():
+def test_milestone_unique_slug_per_goal_per_user_enforced_via_full_clean_validationerror():  # noqa E501
     """
     Because Milestone.save() calls full_clean(), duplicates are caught before DB write,
     so we get ValidationError instead of IntegrityError.
@@ -191,6 +196,7 @@ def test_milestone_meta_ordering_is_order_then_description():
 # -------------------------
 # Task
 # -------------------------
+
 
 def test_task_defaults_status_todo():
     task = TaskFactory()

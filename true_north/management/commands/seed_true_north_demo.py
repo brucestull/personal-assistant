@@ -1,7 +1,8 @@
+# true_north/management/commands/seed_true_north_demo.py
+
 from __future__ import annotations
 
 from datetime import timedelta
-from typing import Iterable
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
@@ -39,7 +40,7 @@ class Command(BaseCommand):
             user = User.objects.get(username=username)
         except User.DoesNotExist as exc:
             raise CommandError(
-                f"User '{username}' does not exist. Create it first (e.g. createsuperuser)."
+                f"User '{username}' does not exist. Create it first (e.g. createsuperuser)."  # noqa E501
             ) from exc
 
         if purge:
@@ -82,15 +83,27 @@ class Command(BaseCommand):
         goals_spec = [
             # Integrity (3)
             (core_values[0], "Keep promises (small + big)", GoalStatus.ACTIVE),
-            (core_values[0], "Reduce avoidance: do the hard thing first", GoalStatus.ACTIVE),
+            (
+                core_values[0],
+                "Reduce avoidance: do the hard thing first",
+                GoalStatus.ACTIVE,
+            ),
             (core_values[0], "Build a weekly review habit", GoalStatus.PAUSED),
             # Growth (3)
-            (core_values[1], "Ship a small Django feature every week", GoalStatus.ACTIVE),
+            (
+                core_values[1],
+                "Ship a small Django feature every week",
+                GoalStatus.ACTIVE,
+            ),
             (core_values[1], "Improve testing: pytest + factories", GoalStatus.ACTIVE),
             (core_values[1], "Learn one new concept per month", GoalStatus.DRAFT),
             # Care (2)
             (core_values[2], "Support Mom with reliable routines", GoalStatus.ACTIVE),
-            (core_values[2], "Strengthen relationships with consistent check-ins", GoalStatus.ACTIVE),
+            (
+                core_values[2],
+                "Strengthen relationships with consistent check-ins",
+                GoalStatus.ACTIVE,
+            ),
         ]
 
         goals: list[Goal] = []
@@ -117,12 +130,12 @@ class Command(BaseCommand):
             for j in range(1, 3):  # 2 milestones each
                 milestone_counter += 1
                 desc = f"Milestone {j} for Goal {goal_index}: {goal.title}"
-                is_completed = (milestone_counter % 5 == 0)  # some completed
+                is_completed = milestone_counter % 5 == 0  # some completed
                 ms = Milestone.objects.create(
                     user=user,
                     goal=goal,
                     description=desc,
-                    slug=f"{DEMO_PREFIX}ms-{milestone_counter}-{_slug_piece(desc)[:60]}",
+                    slug=f"{DEMO_PREFIX}ms-{milestone_counter}-{_slug_piece(desc)[:60]}",  # noqa E501
                     notes="Demo milestone notes.",
                     due_date=today + timedelta(days=7 * j),
                     is_completed=is_completed,
@@ -145,8 +158,12 @@ class Command(BaseCommand):
             for k, template in enumerate(task_templates, start=1):
                 tasks_created += 1
                 content = f"[{ms_index}.{k}] {template}"
-                completed = (tasks_created % 7 == 0)  # some completed
-                status = TaskStatus.DONE if completed else (TaskStatus.DOING if k == 2 else TaskStatus.TODO)
+                completed = tasks_created % 7 == 0  # some completed
+                status = (
+                    TaskStatus.DONE
+                    if completed
+                    else (TaskStatus.DOING if k == 2 else TaskStatus.TODO)
+                )
 
                 Task.objects.create(
                     user=user,
@@ -160,13 +177,15 @@ class Command(BaseCommand):
                 )
 
         # --- Summary ---
-        self.stdout.write(self.style.SUCCESS("Seeded True North demo data for user: %s" % username))
+        self.stdout.write(
+            self.style.SUCCESS("Seeded True North demo data for user: %s" % username)
+        )
         self.stdout.write(
             "Created: "
-            f"{CoreValue.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} CoreValues, "
-            f"{Goal.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} Goals, "
-            f"{Milestone.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} Milestones, "
-            f"{Task.objects.filter(user=user).filter(milestone__slug__startswith=DEMO_PREFIX).count()} Tasks"
+            f"{CoreValue.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} CoreValues, "  # noqa E501
+            f"{Goal.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} Goals, "  # noqa E501
+            f"{Milestone.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} Milestones, "  # noqa E501
+            f"{Task.objects.filter(user=user).filter(milestone__slug__startswith=DEMO_PREFIX).count()} Tasks"  # noqa E501
         )
 
     def _purge_demo(self, user):
@@ -180,7 +199,11 @@ class Command(BaseCommand):
         Goal.objects.filter(user=user, slug__startswith=DEMO_PREFIX).delete()
         CoreValue.objects.filter(user=user, slug__startswith=DEMO_PREFIX).delete()
 
-        self.stdout.write(self.style.WARNING("Purged existing demo data for user '%s'." % user.username))
+        self.stdout.write(
+            self.style.WARNING(
+                "Purged existing demo data for user '%s'." % user.username
+            )
+        )
 
 
 def _slug_piece(text: str) -> str:
