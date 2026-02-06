@@ -77,10 +77,21 @@ class GoalStatus(models.TextChoices):
 
 
 class Goal(UserOwnedBase, OrderableMixin):
+    """
+    A user-owned goal. A goal may optionally be linked to a CoreValue.
+
+    Why optional?
+    - Allows "draft goals" to be created first, then later either:
+      - assigned to a CoreValue, or
+      - archived/deleted if not relevant.
+    """
+
     value = models.ForeignKey(
         CoreValue,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="goals",
+        null=True,
+        blank=True,
     )
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, help_text="Auto from title.")
@@ -99,12 +110,12 @@ class Goal(UserOwnedBase, OrderableMixin):
     order = models.PositiveIntegerField(default=0)
 
     def clean(self):
-        # Prevent cross-user linking (Goal.user must match CoreValue.user)
+        # If a CoreValue is set, it must belong to the same user.
         if self.value_id and self.user_id and self.value.user_id != self.user_id:
             raise ValidationError({"value": "CoreValue belongs to a different user."})
 
     def save(self, *args, **kwargs):
-        # Sync ownership down the chain by default
+        # If user not set, but value is set, infer user from value.
         if self.value_id and not self.user_id:
             self.user = self.value.user
 
