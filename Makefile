@@ -1,4 +1,4 @@
-.PHONY: clean test coverage makemigrations migrate makemigrate runserver createuser shell loaddata resetdb
+.PHONY: clean test djtest pytest djcoverage coverage makemigrations migrate makemigrate runserver createuser shell loaddata resetdb
 
 # Clean python, pytest, and coverage files
 clean:
@@ -13,9 +13,23 @@ clean:
 test:
 	python manage.py test
 
-# Run pytest with coverage
-coverage:
+# Django test runner (unittest)
+djtest:
+	python manage.py test
+
+# Pytest (pytest-django)
+pytest:
+	pytest
+
+# Coverage while running Django's test runner
+djcoverage:
 	coverage run manage.py test && \
+	coverage report && \
+	coverage html
+
+# Coverage while running pytest
+coverage:
+	coverage run -m pytest && \
 	coverage report && \
 	coverage html
 
