@@ -55,7 +55,6 @@ urlpatterns = [
     path("story-line/", include("story_line.urls")),
     path("pack-it/", include("packing_list.urls")),
     path("decide/", include("decide.urls")),
-    path("tasks/", include("tasks.urls")),
     path("warcrafting/", include("warcrafting.urls", namespace="warcrafting")),
     path("kanban/", include("kanban_cabinet.urls")),
 ]

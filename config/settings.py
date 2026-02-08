@@ -82,7 +82,6 @@ INSTALLED_APPS = [
     "story_line.apps.StoryLineConfig",
     "packing_list.apps.PackingListConfig",
     "decide.apps.DecideConfig",
-    "tasks.apps.TasksConfig",
     "warcrafting.apps.WarcraftingConfig",
     "kanban_cabinet.apps.KanbanCabinetConfig",
     "true_north.apps.TrueNorthConfig",
