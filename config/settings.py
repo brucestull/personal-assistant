@@ -71,7 +71,6 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "base",
     "app_tracker.apps.AppTrackerConfig",
-    "career_organizerator.apps.CareerOrganizeratorConfig",
     "vitals.apps.VitalsConfig",
     "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
