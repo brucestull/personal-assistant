@@ -36,7 +36,6 @@ Each app is self-contained with its own models, views, templates, and tests:
 - `decide` - Decision-making tools
 - `notes` - Note-taking functionality
 - `packing_list` - Packing list management
-- `plan_it` - Planning tools
 - `pomodo` - Pomodoro timer functionality
 - `sonic_text` - Text utilities
 - `story_line` - Story/timeline management
