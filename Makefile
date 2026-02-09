@@ -68,12 +68,6 @@ resetdb:
 	make makemigrate
 	make createuser
 
-# Load demo fixture data
-seed:
-	python manage.py makemigrations
-	python manage.py migrate
-	python manage.py loaddata plan_it/fixtures/demo_data.json && echo "Database seeded with demo data."
-
 # Show this help
 help:
 	@echo "Available targets:"

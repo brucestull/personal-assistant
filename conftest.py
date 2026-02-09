@@ -40,14 +40,14 @@ def another_user(db):
 @pytest.fixture
 def accepted_user(db):
     """FactoryBoy user with registration accepted."""
-    from plan_it.tests.factories import UserFactory
+    from true_north.tests.factories import CustomUserFactory
 
-    return UserFactory(registration_accepted=True)
+    return CustomUserFactory(registration_accepted=True)
 
 
 @pytest.fixture
 def rejected_user(db):
     """FactoryBoy user with registration NOT accepted."""
-    from plan_it.tests.factories import UserFactory
+    from true_north.tests.factories import CustomUserFactory
 
-    return UserFactory(registration_accepted=False)
+    return CustomUserFactory(registration_accepted=False)
