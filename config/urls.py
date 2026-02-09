@@ -45,7 +45,6 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("vitals/", include("vitals.urls")),
     path("app-tracker/", include("app_tracker.urls")),
-    path("career-organizerator/", include("career_organizerator.urls")),
     path("unimportant-notes/", include("unimportant_notes.urls")),
     path("uc-goals/", include("uc_goals.urls")),
     path("sonic-text/", include("sonic_text.urls")),
