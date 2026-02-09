@@ -63,4 +63,3 @@ Your contact information or that of the project maintainer for users to reach ou
 - [Configuring Django Settings for Production](https://thinkster.io/tutorials/configuring-django-settings-for-production)
 - [Django Debug Toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/)
 - [Continuous Integration With Python: An Introduction - realpython.com](https://realpython.com/python-continuous-integration/)
-
