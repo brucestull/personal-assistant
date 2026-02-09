@@ -28,8 +28,14 @@ class DashboardView(
         task_status_filter = self.request.GET.get("task_status", "todo")
         show_completed_milestones = self.request.GET.get("show_completed", "false") == "true"
 
-        # Base querysets for the user
-        core_values = CoreValue.objects.filter(user=user, is_active=True).order_by("order", "name")
+        # Base querysets for the user with optimized prefetching
+        core_values = CoreValue.objects.filter(
+            user=user, is_active=True
+        ).prefetch_related(
+            "goals",
+            "goals__milestones",
+            "goals__milestones__tasks"
+        ).order_by("order", "name")
         
         # Filter goals based on selected status
         goals_qs = Goal.objects.filter(user=user, is_active=True)
@@ -78,23 +84,21 @@ class DashboardView(
         # Build hierarchical structure for the dashboard
         core_values_data = []
         for cv in core_values:
-            cv_goals = goals.filter(value=cv).annotate(
-                milestone_count=Count('milestones', filter=Q(milestones__is_completed=False))
-            )
+            cv_goals = goals.filter(value=cv)
             
             goals_data = []
             for goal in cv_goals:
-                goal_milestones = milestones.filter(goal=goal).annotate(
-                    task_count=Count('tasks', filter=Q(tasks__is_completed=False))
-                )
+                goal_milestones = milestones.filter(goal=goal)
                 
                 milestones_data = []
                 for milestone in goal_milestones:
                     milestone_tasks = tasks.filter(milestone=milestone)
+                    # Get count before slicing to avoid double evaluation
+                    total_tasks = milestone_tasks.count()
                     milestones_data.append({
                         "milestone": milestone,
                         "tasks": milestone_tasks[:5],  # Show first 5 tasks
-                        "total_tasks": milestone_tasks.count(),
+                        "total_tasks": total_tasks,
                     })
                 
                 goals_data.append({
