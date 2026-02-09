@@ -76,7 +76,6 @@ INSTALLED_APPS = [
     "unimportant_notes.apps.UnimportantNotesConfig",
     "sonic_text.apps.SonicTextConfig",
     "boosts.apps.BoostsConfig",
-    "plan_it.apps.PlanItConfig",
     "pomodo.apps.PomodoConfig",
     "story_line.apps.StoryLineConfig",
     "packing_list.apps.PackingListConfig",

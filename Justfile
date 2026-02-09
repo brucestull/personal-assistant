@@ -6,7 +6,6 @@ set dotenv-load := true
 
 PYTHON := "python"
 MANAGE := PYTHON + " manage.py"
-FIXTURE := "plan_it/fixtures/demo_data.json"
 
 # ------------------------------------------------------------
 # Core helper: run any manage.py command
@@ -70,10 +69,6 @@ delete_db:
 
 resetdb: delete_db makemigrate createuser
   echo "Database reset, migrated, and superuser created."
-
-seed: makemigrate
-  {{MANAGE}} loaddata {{FIXTURE}}
-  echo "Database seeded with demo data."
 
 # ------------------------------------------------------------
 # Dev server / shell / users
