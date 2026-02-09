@@ -1,7 +1,6 @@
 # true_north/views.py
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count, Q
 from django.views.generic import TemplateView
 
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
@@ -26,7 +25,9 @@ class DashboardView(
         # Get filter parameters
         goal_status_filter = self.request.GET.get("goal_status", "active")
         task_status_filter = self.request.GET.get("task_status", "todo")
-        show_completed_milestones = self.request.GET.get("show_completed", "false") == "true"
+        show_completed_milestones = (
+            self.request.GET.get("show_completed", "false") == "true"
+        )
 
         # Base querysets for the user with optimized prefetching
         core_values = CoreValue.objects.filter(
@@ -36,7 +37,7 @@ class DashboardView(
             "goals__milestones",
             "goals__milestones__tasks"
         ).order_by("order", "name")
-        
+
         # Filter goals based on selected status
         goals_qs = Goal.objects.filter(user=user, is_active=True)
         if goal_status_filter and goal_status_filter != "all":
@@ -85,11 +86,11 @@ class DashboardView(
         core_values_data = []
         for cv in core_values:
             cv_goals = goals.filter(value=cv)
-            
+
             goals_data = []
             for goal in cv_goals:
                 goal_milestones = milestones.filter(goal=goal)
-                
+
                 milestones_data = []
                 for milestone in goal_milestones:
                     milestone_tasks = tasks.filter(milestone=milestone)
@@ -100,12 +101,12 @@ class DashboardView(
                         "tasks": milestone_tasks[:5],  # Show first 5 tasks
                         "total_tasks": total_tasks,
                     })
-                
+
                 goals_data.append({
                     "goal": goal,
                     "milestones": milestones_data,
                 })
-            
+
             core_values_data.append({
                 "core_value": cv,
                 "goals": goals_data,
