@@ -54,4 +54,5 @@ urlpatterns = [
     path("decide/", include("decide.urls")),
     path("warcrafting/", include("warcrafting.urls", namespace="warcrafting")),
     path("kanban/", include("kanban_cabinet.urls")),
+    path("true-north/", include("true_north.urls")),
 ]
