@@ -37,7 +37,6 @@ Each app is self-contained with its own models, views, templates, and tests:
 - `notes` - Note-taking functionality
 - `packing_list` - Packing list management
 - `pomodo` - Pomodoro timer functionality
-- `sonic_text` - Text utilities
 - `story_line` - Story/timeline management
 - `tasks` - Task management
 - `uc_goals` - Goal tracking

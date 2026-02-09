@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     "vitals.apps.VitalsConfig",
     "uc_goals.apps.UCGoalsConfig",
     "unimportant_notes.apps.UnimportantNotesConfig",
-    "sonic_text.apps.SonicTextConfig",
     "boosts.apps.BoostsConfig",
     "pomodo.apps.PomodoConfig",
     "story_line.apps.StoryLineConfig",
