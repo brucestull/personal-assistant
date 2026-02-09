@@ -47,7 +47,6 @@ urlpatterns = [
     path("app-tracker/", include("app_tracker.urls")),
     path("unimportant-notes/", include("unimportant_notes.urls")),
     path("uc-goals/", include("uc_goals.urls")),
-    path("sonic-text/", include("sonic_text.urls")),
     path("boosts/", include("boosts.urls")),
     path("pomodo/", include("pomodo.urls")),
     path("story-line/", include("story_line.urls")),
