@@ -6,13 +6,13 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 
-from true_north.models import CoreValue, Goal, Milestone, Task, GoalStatus, TaskStatus
+from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
 from true_north.tests.factories import (
     CustomUserFactory,
     CoreValueFactory,
     GoalFactory,
     MilestoneFactory,
-    TaskFactory,
+    ValueActionFactory,
 )
 
 pytestmark = pytest.mark.django_db
@@ -194,13 +194,13 @@ def test_milestone_meta_ordering_is_order_then_description():
 
 
 # -------------------------
-# Task
+# ValueAction
 # -------------------------
 
 
 def test_task_defaults_status_todo():
-    task = TaskFactory()
-    assert task.status == TaskStatus.TODO
+    task = ValueActionFactory()
+    assert task.status == ValueActionStatus.TODO
 
 
 def test_task_cross_user_linking_raises_validationerror():
@@ -211,7 +211,7 @@ def test_task_cross_user_linking_raises_validationerror():
     goal_a = GoalFactory(user=user_a, value=value_a)
     milestone_a = MilestoneFactory(user=user_a, goal=goal_a)
 
-    task = Task(user=user_b, milestone=milestone_a, content="Mismatch content")
+    task = ValueAction(user=user_b, milestone=milestone_a, content="Mismatch content")
 
     with pytest.raises(ValidationError) as exc:
         task.save()
@@ -221,7 +221,7 @@ def test_task_cross_user_linking_raises_validationerror():
 
 def test_task_syncs_user_from_milestone_if_user_missing():
     milestone = MilestoneFactory()
-    task = Task(milestone=milestone, user=None, content="Do it")
+    task = ValueAction(milestone=milestone, user=None, content="Do it")
     task.save()
 
     assert task.user_id == milestone.user_id
@@ -230,7 +230,7 @@ def test_task_syncs_user_from_milestone_if_user_missing():
 def test_task_str_truncates_long_content():
     milestone = MilestoneFactory()
     long_text = "x" * 200
-    task = Task(milestone=milestone, user=milestone.user, content=long_text)
+    task = ValueAction(milestone=milestone, user=milestone.user, content=long_text)
     task.save()
 
     s = str(task)
@@ -239,15 +239,15 @@ def test_task_str_truncates_long_content():
 
 
 def test_task_str_short_content_no_ellipsis():
-    task = TaskFactory(content="Short line")
+    task = ValueActionFactory(content="Short line")
     assert str(task) == "Short line"
 
 
 def test_task_meta_ordering_is_order_then_id():
     milestone = MilestoneFactory()
-    t1 = TaskFactory(milestone=milestone, user=milestone.user, order=5)
-    t2 = TaskFactory(milestone=milestone, user=milestone.user, order=5)
-    t3 = TaskFactory(milestone=milestone, user=milestone.user, order=1)
+    t1 = ValueActionFactory(milestone=milestone, user=milestone.user, order=5)
+    t2 = ValueActionFactory(milestone=milestone, user=milestone.user, order=5)
+    t3 = ValueActionFactory(milestone=milestone, user=milestone.user, order=1)
 
-    qs = Task.objects.filter(milestone=milestone).values_list("id", flat=True)
+    qs = ValueAction.objects.filter(milestone=milestone).values_list("id", flat=True)
     assert list(qs) == [t3.id, t1.id, t2.id]

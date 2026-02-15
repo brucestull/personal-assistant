@@ -194,14 +194,14 @@ class Milestone(UserOwnedBase, OrderableMixin):
         ]
 
 
-class TaskStatus(models.TextChoices):
+class ValueActionStatus(models.TextChoices):
     TODO = "todo", "To do"
     DOING = "doing", "In progress"
     DONE = "done", "Done"
     SKIPPED = "skipped", "Skipped"
 
 
-class Task(UserOwnedBase, OrderableMixin):
+class ValueAction(UserOwnedBase, OrderableMixin):
     milestone = models.ForeignKey(
         Milestone,
         on_delete=models.CASCADE,
@@ -211,8 +211,8 @@ class Task(UserOwnedBase, OrderableMixin):
 
     status = models.CharField(
         max_length=20,
-        choices=TaskStatus.choices,
-        default=TaskStatus.TODO,
+        choices=ValueActionStatus.choices,
+        default=ValueActionStatus.TODO,
     )
 
     due_date = models.DateField(blank=True, null=True)

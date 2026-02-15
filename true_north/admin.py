@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from .models import CoreValue, Goal, Milestone, Task
+from .models import CoreValue, Goal, Milestone, ValueAction
 
 
 class GoalInline(admin.TabularInline):
@@ -56,8 +56,8 @@ class GoalAdmin(admin.ModelAdmin):
     inlines = [MilestoneInline]
 
 
-class TaskInline(admin.TabularInline):
-    model = Task
+class ValueActionInline(admin.TabularInline):
+    model = ValueAction
     extra = 0
     fields = ("order", "status", "is_completed", "due_date", "content")
     ordering = ("order", "id")
@@ -81,11 +81,11 @@ class MilestoneAdmin(admin.ModelAdmin):
 
     autocomplete_fields = ("user", "goal")
     prepopulated_fields = {"slug": ("description",)}
-    inlines = [TaskInline]
+    inlines = [ValueActionInline]
 
 
-@admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
+@admin.register(ValueAction)
+class ValueActionAdmin(admin.ModelAdmin):
     list_display = (
         "__str__",
         "user",

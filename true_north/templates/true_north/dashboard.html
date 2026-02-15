@@ -50,7 +50,7 @@
       <div class="col-sm-6 col-lg-3">
         <div class="card h-100 border-warning">
           <div class="card-body">
-            <h5 class="card-title text-warning">Tasks</h5>
+            <h5 class="card-title text-warning">Value Actions</h5>
             <p class="card-text mb-0 fs-2">{{ stats.todo_tasks }}</p>
             <small class="text-muted">{{ stats.doing_tasks }} in progress, {{ stats.done_tasks }} done</small>
           </div>
@@ -73,9 +73,9 @@
             </select>
           </div>
           <div class="col-md-4">
-            <label for="taskStatusFilter" class="form-label">Task Status</label>
+            <label for="taskStatusFilter" class="form-label">Value Action Status</label>
             <select id="taskStatusFilter" name="task_status" class="form-select" onchange="this.form.submit()">
-              <option value="all" {% if task_status_filter == "all" %}selected{% endif %}>All Tasks</option>
+              <option value="all" {% if task_status_filter == "all" %}selected{% endif %}>All Value Actions</option>
               {% for value, label in task_status_choices %}
                 <option value="{{ value }}" {% if task_status_filter == value %}selected{% endif %}>{{ label }}</option>
               {% endfor %}
@@ -157,7 +157,7 @@
 
                             {% if milestone_data.tasks %}
                               <div class="ms-3 mt-3">
-                                <h6 class="text-muted mb-2"><small>Tasks (showing {{ milestone_data.tasks|length }} of {{ milestone_data.total_tasks }}):</small></h6>
+                                <h6 class="text-muted mb-2"><small>Value Actions (showing {{ milestone_data.tasks|length }} of {{ milestone_data.total_tasks }}):</small></h6>
                                 <ul class="list-group list-group-flush">
                                   {% for task in milestone_data.tasks %}
                                     <li class="list-group-item d-flex justify-content-between align-items-start px-0">
@@ -230,7 +230,7 @@
           <div class="col-md-6">
             <ul class="list-unstyled">
               <li><strong>Milestones:</strong> Checkpoints proving progress</li>
-              <li><strong>Tasks:</strong> Small, clear actions to take</li>
+              <li><strong>Value Actions:</strong> Small, clear actions to take</li>
             </ul>
           </div>
         </div>

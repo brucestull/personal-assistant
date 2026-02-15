@@ -5,7 +5,7 @@ from __future__ import annotations
 import factory
 
 from accounts.models import CustomUser
-from true_north.models import CoreValue, Goal, Milestone, Task, GoalStatus, TaskStatus
+from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
 
 
 class CustomUserFactory(factory.django.DjangoModelFactory):
@@ -80,16 +80,16 @@ class MilestoneFactory(factory.django.DjangoModelFactory):
     order = factory.Sequence(lambda n: n)
 
 
-class TaskFactory(factory.django.DjangoModelFactory):
+class ValueActionFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Task
+        model = ValueAction
         skip_postgeneration_save = True
 
     milestone = factory.SubFactory(MilestoneFactory)
-    user = None  # let model sync from milestone in Task.save()
+    user = None  # let model sync from milestone in ValueAction.save()
 
-    content = factory.Sequence(lambda n: f"Task content line {n}")
-    status = TaskStatus.TODO
+    content = factory.Sequence(lambda n: f"ValueAction content line {n}")
+    status = ValueActionStatus.TODO
     due_date = None
     is_completed = False
     completed_at = None
