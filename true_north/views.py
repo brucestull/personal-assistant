@@ -4,14 +4,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
-from true_north.models import CoreValue, Goal, GoalStatus, Milestone, Task, TaskStatus
+from true_north.models import CoreValue, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus
 
 
 class DashboardView(
     SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, TemplateView
 ):
     """
-    Dashboard view for True North app showing Core Values, Goals, Milestones, and Tasks.
+    Dashboard view for True North app showing Core Values, Goals, Milestones, and Value Actions.
     Includes filtering by status, completion, and active items.
     """
 
@@ -51,7 +51,7 @@ class DashboardView(
         milestones = milestones_qs.order_by("order", "description")
 
         # Filter tasks
-        tasks_qs = Task.objects.filter(user=user)
+        tasks_qs = ValueAction.objects.filter(user=user)
         if task_status_filter and task_status_filter != "all":
             tasks_qs = tasks_qs.filter(status=task_status_filter)
         tasks = tasks_qs.order_by("order", "id")
@@ -70,15 +70,15 @@ class DashboardView(
             "pending_milestones": Milestone.objects.filter(
                 user=user, is_completed=False
             ).count(),
-            "total_tasks": Task.objects.filter(user=user).count(),
-            "todo_tasks": Task.objects.filter(
-                user=user, status=TaskStatus.TODO
+            "total_tasks": ValueAction.objects.filter(user=user).count(),
+            "todo_tasks": ValueAction.objects.filter(
+                user=user, status=ValueActionStatus.TODO
             ).count(),
-            "doing_tasks": Task.objects.filter(
-                user=user, status=TaskStatus.DOING
+            "doing_tasks": ValueAction.objects.filter(
+                user=user, status=ValueActionStatus.DOING
             ).count(),
-            "done_tasks": Task.objects.filter(
-                user=user, status=TaskStatus.DONE
+            "done_tasks": ValueAction.objects.filter(
+                user=user, status=ValueActionStatus.DONE
             ).count(),
         }
 
@@ -120,7 +120,7 @@ class DashboardView(
             "task_status_filter": task_status_filter,
             "show_completed_milestones": show_completed_milestones,
             "goal_status_choices": GoalStatus.choices,
-            "task_status_choices": TaskStatus.choices,
+            "task_status_choices": ValueActionStatus.choices,
         })
 
         return ctx

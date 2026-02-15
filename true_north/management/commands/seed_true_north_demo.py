@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils import timezone
 
-from true_north.models import CoreValue, Goal, Milestone, Task, GoalStatus, TaskStatus
+from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus
 
 
 DEMO_PREFIX = "demo-"  # used for slugs so we can safely delete/reseed
@@ -144,7 +144,7 @@ class Command(BaseCommand):
                 )
                 milestones.append(ms)
 
-        # --- Tasks (64) => 4 per milestone ---
+        # --- Value Actions (64) => 4 per milestone ---
         # This yields exactly 16 * 4 = 64
         task_templates = [
             "Define what 'done' means for this milestone.",
@@ -160,12 +160,12 @@ class Command(BaseCommand):
                 content = f"[{ms_index}.{k}] {template}"
                 completed = tasks_created % 7 == 0  # some completed
                 status = (
-                    TaskStatus.DONE
+                    ValueActionStatus.DONE
                     if completed
-                    else (TaskStatus.DOING if k == 2 else TaskStatus.TODO)
+                    else (ValueActionStatus.DOING if k == 2 else ValueActionStatus.TODO)
                 )
 
-                Task.objects.create(
+                ValueAction.objects.create(
                     user=user,
                     milestone=ms,
                     content=content,
@@ -185,7 +185,7 @@ class Command(BaseCommand):
             f"{CoreValue.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} CoreValues, "  # noqa E501
             f"{Goal.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} Goals, "  # noqa E501
             f"{Milestone.objects.filter(user=user, slug__startswith=DEMO_PREFIX).count()} Milestones, "  # noqa E501
-            f"{Task.objects.filter(user=user).filter(milestone__slug__startswith=DEMO_PREFIX).count()} Tasks"  # noqa E501
+            f"{ValueAction.objects.filter(user=user).filter(milestone__slug__startswith=DEMO_PREFIX).count()} Value Actions"  # noqa E501
         )
 
     def _purge_demo(self, user):
@@ -194,7 +194,7 @@ class Command(BaseCommand):
         We identify demo data via DEMO_PREFIX in slugs.
         """
         # Delete leaf-to-root to avoid FK issues
-        Task.objects.filter(user=user, milestone__slug__startswith=DEMO_PREFIX).delete()
+        ValueAction.objects.filter(user=user, milestone__slug__startswith=DEMO_PREFIX).delete()
         Milestone.objects.filter(user=user, slug__startswith=DEMO_PREFIX).delete()
         Goal.objects.filter(user=user, slug__startswith=DEMO_PREFIX).delete()
         CoreValue.objects.filter(user=user, slug__startswith=DEMO_PREFIX).delete()

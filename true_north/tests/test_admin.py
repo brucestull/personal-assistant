@@ -11,12 +11,12 @@ from true_north.admin import (
     CoreValueAdmin,
     GoalAdmin,
     MilestoneAdmin,
-    TaskAdmin,
+    ValueActionAdmin,
     GoalInline,
     MilestoneInline,
-    TaskInline,
+    ValueActionInline,
 )
-from true_north.models import CoreValue, Goal, Milestone, Task
+from true_north.models import CoreValue, Goal, Milestone, ValueAction
 from true_north.tests.factories import CustomUserFactory
 
 pytestmark = pytest.mark.django_db
@@ -38,7 +38,7 @@ def test_models_are_registered_in_admin():
     assert CoreValue in admin.site._registry
     assert Goal in admin.site._registry
     assert Milestone in admin.site._registry
-    assert Task in admin.site._registry
+    assert ValueAction in admin.site._registry
 
 
 def test_corevalue_admin_configuration():
@@ -116,12 +116,12 @@ def test_milestone_admin_configuration():
     assert model_admin.readonly_fields == ("created", "updated")
     assert model_admin.prepopulated_fields == {"slug": ("description",)}
     assert model_admin.autocomplete_fields == ("user", "goal")
-    assert model_admin.inlines == [TaskInline]
+    assert model_admin.inlines == [ValueActionInline]
 
 
 def test_task_admin_configuration():
     site = StubAdminSite()
-    model_admin = TaskAdmin(Task, site)
+    model_admin = ValueActionAdmin(ValueAction, site)
 
     assert model_admin.list_display == (
         "__str__",
@@ -171,16 +171,16 @@ def test_inlines_point_to_expected_models_and_fields():
     assert MilestoneInline.show_change_link is True
     assert MilestoneInline.ordering == ("order", "description")
 
-    assert TaskInline.model is Task
-    assert TaskInline.fields == (
+    assert ValueActionInline.model is ValueAction
+    assert ValueActionInline.fields == (
         "order",
         "status",
         "is_completed",
         "due_date",
         "content",
     )
-    assert TaskInline.extra == 0
-    assert TaskInline.ordering == ("order", "id")
+    assert ValueActionInline.extra == 0
+    assert ValueActionInline.ordering == ("order", "id")
 
 
 def test_admin_forms_build_without_error_for_superuser():
@@ -194,7 +194,7 @@ def test_admin_forms_build_without_error_for_superuser():
     corevalue_admin = CoreValueAdmin(CoreValue, site)
     goal_admin = GoalAdmin(Goal, site)
     milestone_admin = MilestoneAdmin(Milestone, site)
-    task_admin = TaskAdmin(Task, site)
+    task_admin = ValueActionAdmin(ValueAction, site)
 
     assert corevalue_admin.get_form(request) is not None
     assert goal_admin.get_form(request) is not None
