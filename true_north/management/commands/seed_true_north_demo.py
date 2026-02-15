@@ -9,7 +9,14 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils import timezone
 
-from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus
+from true_north.models import (
+    CoreValue,
+    Goal,
+    Milestone,
+    ValueAction,
+    GoalStatus,
+    ValueActionStatus,
+)  # noqa E501
 
 
 DEMO_PREFIX = "demo-"  # used for slugs so we can safely delete/reseed
@@ -194,7 +201,9 @@ class Command(BaseCommand):
         We identify demo data via DEMO_PREFIX in slugs.
         """
         # Delete leaf-to-root to avoid FK issues
-        ValueAction.objects.filter(user=user, milestone__slug__startswith=DEMO_PREFIX).delete()
+        ValueAction.objects.filter(
+            user=user, milestone__slug__startswith=DEMO_PREFIX
+        ).delete()
         Milestone.objects.filter(user=user, slug__startswith=DEMO_PREFIX).delete()
         Goal.objects.filter(user=user, slug__startswith=DEMO_PREFIX).delete()
         CoreValue.objects.filter(user=user, slug__startswith=DEMO_PREFIX).delete()

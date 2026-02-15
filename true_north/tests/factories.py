@@ -5,7 +5,7 @@ from __future__ import annotations
 import factory
 
 from accounts.models import CustomUser
-from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus
+from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
 
 
 class CustomUserFactory(factory.django.DjangoModelFactory):

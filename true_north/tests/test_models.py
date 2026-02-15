@@ -6,7 +6,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 
-from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus
+from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
 from true_north.tests.factories import (
     CustomUserFactory,
     CoreValueFactory,

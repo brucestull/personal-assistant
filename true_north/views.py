@@ -4,14 +4,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
-from true_north.models import CoreValue, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus
+from true_north.models import CoreValue, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus  # noqa E501
 
 
 class DashboardView(
     SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, TemplateView
 ):
     """
-    Dashboard view for True North app showing Core Values, Goals, Milestones, and Value Actions.
+    Dashboard view for True North app showing Core Values, Goals, Milestones, and Value Actions.  # noqa E501
     Includes filtering by status, completion, and active items.
     """
 
