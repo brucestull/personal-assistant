@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <div>
+      <a href="{% url 'true_north:core-value-create' %}" class="btn btn-primary">
+        Add Core Value
+      </a>
+      <a href="{% url 'true_north:dashboard' %}" class="btn btn-outline-secondary ms-2">
+        Dashboard
+      </a>
+    </div>
+  </div>
+
+  {% if messages %}
+    <div role="alert" aria-live="polite">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if object_list %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle" aria-label="Core Values list">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Definition</th>
+            <th scope="col">Active</th>
+            <th scope="col">Order</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cv in object_list %}
+            <tr>
+              <td><strong>{{ cv.name }}</strong></td>
+              <td>{{ cv.definition|truncatewords:15|default:"—" }}</td>
+              <td>
+                {% if cv.is_active %}
+                  <span class="badge bg-success">Active</span>
+                {% else %}
+                  <span class="badge bg-secondary">Inactive</span>
+                {% endif %}
+              </td>
+              <td>{{ cv.order }}</td>
+              <td class="text-nowrap">
+                <a href="{% url 'true_north:core-value-update' cv.pk %}"
+                   class="btn btn-sm btn-outline-primary"
+                   aria-label="Edit {{ cv.name }}">Edit</a>
+                <a href="{% url 'true_north:core-value-delete' cv.pk %}"
+                   class="btn btn-sm btn-outline-danger ms-1"
+                   aria-label="Delete {{ cv.name }}">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if is_paginated %}
+      <nav aria-label="Core Values pagination">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% endif %}
+          {% for i in paginator.page_range %}
+            <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+              <a class="page-link" href="?page={{ i }}"
+                 {% if page_obj.number == i %}aria-current="page"{% endif %}>{{ i }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <div class="alert alert-info">
+      <p class="mb-0">You have no Core Values yet.
+        <a href="{% url 'true_north:core-value-create' %}">Create your first Core Value</a>.
+      </p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

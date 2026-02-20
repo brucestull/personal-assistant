@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <div>
+      <a href="{% url 'true_north:milestone-create' %}" class="btn btn-primary">
+        Add Milestone
+      </a>
+      <a href="{% url 'true_north:dashboard' %}" class="btn btn-outline-secondary ms-2">
+        Dashboard
+      </a>
+    </div>
+  </div>
+
+  {% if messages %}
+    <div role="alert" aria-live="polite">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if object_list %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle" aria-label="Milestones list">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Description</th>
+            <th scope="col">Goal</th>
+            <th scope="col">Status</th>
+            <th scope="col">Due Date</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for milestone in object_list %}
+            <tr>
+              <td>{{ milestone.description }}</td>
+              <td><small>{{ milestone.goal.title }}</small></td>
+              <td>
+                {% if milestone.is_completed %}
+                  <span class="badge bg-success">Completed</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">Pending</span>
+                {% endif %}
+              </td>
+              <td>{{ milestone.due_date|default:"—" }}</td>
+              <td class="text-nowrap">
+                <a href="{% url 'true_north:milestone-update' milestone.pk %}"
+                   class="btn btn-sm btn-outline-primary"
+                   aria-label="Edit milestone: {{ milestone.description }}">Edit</a>
+                <a href="{% url 'true_north:milestone-delete' milestone.pk %}"
+                   class="btn btn-sm btn-outline-danger ms-1"
+                   aria-label="Delete milestone: {{ milestone.description }}">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if is_paginated %}
+      <nav aria-label="Milestones pagination">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% endif %}
+          {% for i in paginator.page_range %}
+            <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+              <a class="page-link" href="?page={{ i }}"
+                 {% if page_obj.number == i %}aria-current="page"{% endif %}>{{ i }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <div class="alert alert-info">
+      <p class="mb-0">You have no Milestones yet.
+        <a href="{% url 'true_north:milestone-create' %}">Create your first Milestone</a>.
+      </p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

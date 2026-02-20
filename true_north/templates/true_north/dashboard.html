@@ -6,7 +6,7 @@
 <div class="container py-4">
   <div class="d-flex align-items-center justify-content-between mb-3">
     <h1 class="h3 mb-0">{{ page_title }}</h1>
-    <a class="btn btn-primary" href="/admin/true_north/corevalue/add/">
+    <a class="btn btn-primary" href="{% url 'true_north:core-value-create' %}">
       Add Core Value
     </a>
   </div>
@@ -23,36 +23,52 @@
       <div class="col-sm-6 col-lg-3">
         <div class="card h-100 border-primary">
           <div class="card-body">
-            <h5 class="card-title text-primary">Core Values</h5>
+            <h2 class="h5 card-title text-primary">Core Values</h2>
             <p class="card-text mb-0 fs-2">{{ stats.total_core_values }}</p>
             <small class="text-muted">Active values</small>
+            <div class="mt-2">
+              <a href="{% url 'true_north:core-value-list' %}" class="btn btn-sm btn-outline-primary me-1">View All</a>
+              <a href="{% url 'true_north:core-value-create' %}" class="btn btn-sm btn-primary">+ New</a>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-sm-6 col-lg-3">
         <div class="card h-100 border-success">
           <div class="card-body">
-            <h5 class="card-title text-success">Goals</h5>
+            <h2 class="h5 card-title text-success">Goals</h2>
             <p class="card-text mb-0 fs-2">{{ stats.active_goals }}</p>
             <small class="text-muted">of {{ stats.total_goals }} total</small>
+            <div class="mt-2">
+              <a href="{% url 'true_north:goal-list' %}" class="btn btn-sm btn-outline-success me-1">View All</a>
+              <a href="{% url 'true_north:goal-create' %}" class="btn btn-sm btn-success">+ New</a>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-sm-6 col-lg-3">
         <div class="card h-100 border-info">
           <div class="card-body">
-            <h5 class="card-title text-info">Milestones</h5>
+            <h2 class="h5 card-title text-info">Milestones</h2>
             <p class="card-text mb-0 fs-2">{{ stats.pending_milestones }}</p>
             <small class="text-muted">{{ stats.completed_milestones }} completed</small>
+            <div class="mt-2">
+              <a href="{% url 'true_north:milestone-list' %}" class="btn btn-sm btn-outline-info me-1">View All</a>
+              <a href="{% url 'true_north:milestone-create' %}" class="btn btn-sm btn-info">+ New</a>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-sm-6 col-lg-3">
         <div class="card h-100 border-warning">
           <div class="card-body">
-            <h5 class="card-title text-warning">Value Actions</h5>
+            <h2 class="h5 card-title text-warning">Value Actions</h2>
             <p class="card-text mb-0 fs-2">{{ stats.todo_tasks }}</p>
             <small class="text-muted">{{ stats.doing_tasks }} in progress, {{ stats.done_tasks }} done</small>
+            <div class="mt-2">
+              <a href="{% url 'true_north:value-action-list' %}" class="btn btn-sm btn-outline-warning me-1">View All</a>
+              <a href="{% url 'true_north:value-action-create' %}" class="btn btn-sm btn-warning">+ New</a>
+            </div>
           </div>
         </div>
       </div>
@@ -61,7 +77,7 @@
     {# Filters #}
     <div class="card mb-4">
       <div class="card-body">
-        <h5 class="card-title">Filters</h5>
+        <h2 class="h5 card-title">Filters</h2>
         <form method="get" class="row g-3">
           <div class="col-md-4">
             <label for="goalStatusFilter" class="form-label">Goal Status</label>
@@ -98,12 +114,17 @@
         <div class="card mb-4">
           <div class="card-header bg-primary text-white">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">
-                <i class="bi bi-star-fill"></i> {{ cv_data.core_value.name }}
-              </h4>
-              <a href="/admin/true_north/corevalue/{{ cv_data.core_value.id }}/change/" class="btn btn-sm btn-light">
-                Edit
-              </a>
+              <h3 class="h5 mb-0">
+                <i class="bi bi-star-fill" aria-hidden="true"></i> {{ cv_data.core_value.name }}
+              </h3>
+              <div>
+                <a href="{% url 'true_north:goal-create' %}"
+                   class="btn btn-sm btn-light me-1"
+                   aria-label="Add Goal to {{ cv_data.core_value.name }}">+ Goal</a>
+                <a href="{% url 'true_north:core-value-update' cv_data.core_value.id %}"
+                   class="btn btn-sm btn-light"
+                   aria-label="Edit {{ cv_data.core_value.name }}">Edit</a>
+              </div>
             </div>
             {% if cv_data.core_value.definition %}
               <p class="mb-0 mt-2"><small>{{ cv_data.core_value.definition }}</small></p>
@@ -115,17 +136,22 @@
                 <div class="mb-4">
                   <div class="d-flex justify-content-between align-items-start mb-2">
                     <div>
-                      <h5 class="text-success mb-1">
-                        <i class="bi bi-bullseye"></i> {{ goal_data.goal.title }}
-                      </h5>
+                      <h4 class="h6 text-success mb-1">
+                        <i class="bi bi-bullseye" aria-hidden="true"></i> {{ goal_data.goal.title }}
+                      </h4>
                       <span class="badge bg-{{ goal_data.goal.status }}">{{ goal_data.goal.get_status_display }}</span>
                       {% if goal_data.goal.target_date %}
                         <small class="text-muted ms-2">Target: {{ goal_data.goal.target_date }}</small>
                       {% endif %}
                     </div>
-                    <a href="/admin/true_north/goal/{{ goal_data.goal.id }}/change/" class="btn btn-sm btn-outline-secondary">
-                      Edit
-                    </a>
+                    <div>
+                      <a href="{% url 'true_north:milestone-create' %}"
+                         class="btn btn-sm btn-outline-info me-1"
+                         aria-label="Add Milestone to {{ goal_data.goal.title }}">+ Milestone</a>
+                      <a href="{% url 'true_north:goal-update' goal_data.goal.id %}"
+                         class="btn btn-sm btn-outline-secondary"
+                         aria-label="Edit {{ goal_data.goal.title }}">Edit</a>
+                    </div>
                   </div>
                   {% if goal_data.goal.description %}
                     <p class="text-muted mb-3"><small>{{ goal_data.goal.description }}</small></p>
@@ -138,27 +164,34 @@
                           <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                               <div>
-                                <h6 class="text-info mb-1">
+                                <h5 class="h6 text-info mb-1">
                                   {% if milestone_data.milestone.is_completed %}
-                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
                                   {% else %}
-                                    <i class="bi bi-circle"></i>
+                                    <i class="bi bi-circle" aria-hidden="true"></i>
                                   {% endif %}
                                   {{ milestone_data.milestone.description }}
-                                </h6>
+                                </h5>
                                 {% if milestone_data.milestone.due_date %}
                                   <small class="text-muted">Due: {{ milestone_data.milestone.due_date }}</small>
                                 {% endif %}
                               </div>
-                              <a href="/admin/true_north/milestone/{{ milestone_data.milestone.id }}/change/" class="btn btn-sm btn-outline-secondary">
-                                Edit
-                              </a>
+                              <div>
+                                <a href="{% url 'true_north:value-action-create' %}"
+                                   class="btn btn-sm btn-outline-warning me-1"
+                                   aria-label="Add Value Action to {{ milestone_data.milestone.description }}">+ Action</a>
+                                <a href="{% url 'true_north:milestone-update' milestone_data.milestone.id %}"
+                                   class="btn btn-sm btn-outline-secondary"
+                                   aria-label="Edit {{ milestone_data.milestone.description }}">Edit</a>
+                              </div>
                             </div>
 
                             {% if milestone_data.tasks %}
                               <div class="ms-3 mt-3">
-                                <h6 class="text-muted mb-2"><small>Value Actions (showing {{ milestone_data.tasks|length }} of {{ milestone_data.total_tasks }}):</small></h6>
-                                <ul class="list-group list-group-flush">
+                                <p class="text-muted mb-2">
+                                  <small>Value Actions (showing {{ milestone_data.tasks|length }} of {{ milestone_data.total_tasks }}):</small>
+                                </p>
+                                <ul class="list-group list-group-flush" aria-label="Value Actions for {{ milestone_data.milestone.description }}">
                                   {% for task in milestone_data.tasks %}
                                     <li class="list-group-item d-flex justify-content-between align-items-start px-0">
                                       <div class="flex-grow-1">
@@ -175,43 +208,55 @@
                                           {% endif %}
                                         </small>
                                       </div>
-                                      <a href="/admin/true_north/task/{{ task.id }}/change/" class="btn btn-sm btn-outline-secondary ms-2">
-                                        Edit
-                                      </a>
+                                      <a href="{% url 'true_north:value-action-update' task.id %}"
+                                         class="btn btn-sm btn-outline-secondary ms-2"
+                                         aria-label="Edit value action">Edit</a>
                                     </li>
                                   {% endfor %}
                                 </ul>
                                 {% if milestone_data.total_tasks > 5 %}
-                                  <a href="/admin/true_north/task/?milestone__id__exact={{ milestone_data.milestone.id }}" class="btn btn-sm btn-link">
-                                    View all {{ milestone_data.total_tasks }} tasks →
+                                  <a href="{% url 'true_north:value-action-list' %}" class="btn btn-sm btn-link">
+                                    View all {{ milestone_data.total_tasks }} actions →
                                   </a>
                                 {% endif %}
                               </div>
                             {% else %}
-                              <p class="text-muted ms-3 mb-0"><small><em>No tasks yet.</em></small></p>
+                              <p class="text-muted ms-3 mb-0">
+                                <small><em>No actions yet.
+                                  <a href="{% url 'true_north:value-action-create' %}">Add one</a>.
+                                </em></small>
+                              </p>
                             {% endif %}
                           </div>
                         </div>
                       {% endfor %}
                     </div>
                   {% else %}
-                    <p class="text-muted ms-4"><em>No milestones yet.</em></p>
+                    <p class="text-muted ms-4">
+                      <em>No milestones yet.
+                        <a href="{% url 'true_north:milestone-create' %}">Add one</a>.
+                      </em>
+                    </p>
                   {% endif %}
                 </div>
               {% endfor %}
             {% else %}
-              <p class="text-muted"><em>No goals for this core value yet.</em></p>
+              <p class="text-muted">
+                <em>No goals for this core value yet.
+                  <a href="{% url 'true_north:goal-create' %}">Add one</a>.
+                </em>
+              </p>
             {% endif %}
           </div>
         </div>
       {% endfor %}
     {% else %}
       <div class="alert alert-info">
-        <h4 class="alert-heading">Get Started with True North</h4>
+        <h2 class="h4 alert-heading">Get Started with True North</h2>
         <p>You haven't created any Core Values yet. Core Values are the foundation of your True North system.</p>
         <hr>
         <p class="mb-0">
-          <a href="/admin/true_north/corevalue/add/" class="btn btn-primary">Create Your First Core Value</a>
+          <a href="{% url 'true_north:core-value-create' %}" class="btn btn-primary">Create Your First Core Value</a>
         </p>
       </div>
     {% endif %}
@@ -219,7 +264,7 @@
     {# Quick Reference #}
     <div class="card mt-4">
       <div class="card-body">
-        <h5 class="card-title">Quick Reference</h5>
+        <h2 class="h5 card-title">Quick Reference</h2>
         <div class="row">
           <div class="col-md-6">
             <ul class="list-unstyled">
@@ -234,9 +279,6 @@
             </ul>
           </div>
         </div>
-        <p class="mb-0 mt-2">
-          <a href="/admin/true_north/" class="btn btn-sm btn-outline-primary">Go to Admin Panel</a>
-        </p>
       </div>
     </div>
   {% endif %}
