@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <div>
+      <a href="{% url 'true_north:goal-create' %}" class="btn btn-primary">
+        Add Goal
+      </a>
+      <a href="{% url 'true_north:dashboard' %}" class="btn btn-outline-secondary ms-2">
+        Dashboard
+      </a>
+    </div>
+  </div>
+
+  {% if messages %}
+    <div role="alert" aria-live="polite">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if object_list %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle" aria-label="Goals list">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Core Value</th>
+            <th scope="col">Status</th>
+            <th scope="col">Target Date</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for goal in object_list %}
+            <tr>
+              <td><strong>{{ goal.title }}</strong>
+                {% if goal.description %}
+                  <br><small class="text-muted">{{ goal.description|truncatewords:10 }}</small>
+                {% endif %}
+              </td>
+              <td>{{ goal.value|default:"—" }}</td>
+              <td>
+                <span class="badge status-badge-{{ goal.status }}">{{ goal.get_status_display }}</span>
+              </td>
+              <td>{{ goal.target_date|default:"—" }}</td>
+              <td class="text-nowrap">
+                <a href="{% url 'true_north:goal-update' goal.pk %}"
+                   class="btn btn-sm btn-outline-primary"
+                   aria-label="Edit {{ goal.title }}">Edit</a>
+                <a href="{% url 'true_north:goal-delete' goal.pk %}"
+                   class="btn btn-sm btn-outline-danger ms-1"
+                   aria-label="Delete {{ goal.title }}">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if is_paginated %}
+      <nav aria-label="Goals pagination">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% endif %}
+          {% for i in paginator.page_range %}
+            <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+              <a class="page-link" href="?page={{ i }}"
+                 {% if page_obj.number == i %}aria-current="page"{% endif %}>{{ i }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <div class="alert alert-info">
+      <p class="mb-0">You have no Goals yet.
+        <a href="{% url 'true_north:goal-create' %}">Create your first Goal</a>.
+      </p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .status-badge-draft { background-color: #6c757d; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-active { background-color: #198754; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-paused { background-color: #ffc107; color: #000; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-done { background-color: #0d6efd; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-archived { background-color: #6c757d; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+</style>
+{% endblock %}

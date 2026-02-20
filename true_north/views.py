@@ -1,9 +1,13 @@
 # true_north/views.py
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView, ListView, TemplateView, UpdateView
+from django.views.generic.edit import CreateView
 
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
+from true_north.forms import CoreValueForm, GoalForm, MilestoneForm, ValueActionForm
 from true_north.models import CoreValue, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus  # noqa E501
 
 
@@ -124,3 +128,259 @@ class DashboardView(
         })
 
         return ctx
+
+
+# ---------------------------------------------------------------------------
+# CoreValue CRUD
+# ---------------------------------------------------------------------------
+
+
+class CoreValueListView(SiteContextMixin, RegistrationAcceptedMixin, ListView):
+    model = CoreValue
+    template_name = "true_north/corevalue_list.html"
+    page_title = "Core Values"
+    paginate_by = 20
+
+    def get_queryset(self):
+        return CoreValue.objects.filter(user=self.request.user).order_by(
+            "order", "name"
+        )
+
+
+class CoreValueCreateView(SiteContextMixin, RegistrationAcceptedMixin, CreateView):
+    model = CoreValue
+    form_class = CoreValueForm
+    template_name = "true_north/corevalue_form.html"
+    success_url = reverse_lazy("true_north:core-value-list")
+    page_title = "Create Core Value"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        messages.success(self.request, "Core Value created successfully.")
+        return super().form_valid(form)
+
+
+class CoreValueUpdateView(SiteContextMixin, RegistrationAcceptedMixin, UpdateView):
+    model = CoreValue
+    form_class = CoreValueForm
+    template_name = "true_north/corevalue_form.html"
+    success_url = reverse_lazy("true_north:core-value-list")
+    page_title = "Update Core Value"
+
+    def get_queryset(self):
+        return CoreValue.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Core Value updated successfully.")
+        return super().form_valid(form)
+
+
+class CoreValueDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteView):
+    model = CoreValue
+    template_name = "true_north/corevalue_confirm_delete.html"
+    success_url = reverse_lazy("true_north:core-value-list")
+    page_title = "Delete Core Value"
+
+    def get_queryset(self):
+        return CoreValue.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Core Value deleted.")
+        return super().form_valid(form)
+# ---------------------------------------------------------------------------
+
+
+class GoalListView(SiteContextMixin, RegistrationAcceptedMixin, ListView):
+    model = Goal
+    template_name = "true_north/goal_list.html"
+    page_title = "Goals"
+    paginate_by = 20
+
+    def get_queryset(self):
+        return Goal.objects.filter(user=self.request.user).order_by("order", "title")
+
+
+class GoalCreateView(SiteContextMixin, RegistrationAcceptedMixin, CreateView):
+    model = Goal
+    form_class = GoalForm
+    template_name = "true_north/goal_form.html"
+    success_url = reverse_lazy("true_north:goal-list")
+    page_title = "Create Goal"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        messages.success(self.request, "Goal created successfully.")
+        return super().form_valid(form)
+
+
+class GoalUpdateView(SiteContextMixin, RegistrationAcceptedMixin, UpdateView):
+    model = Goal
+    form_class = GoalForm
+    template_name = "true_north/goal_form.html"
+    success_url = reverse_lazy("true_north:goal-list")
+    page_title = "Update Goal"
+
+    def get_queryset(self):
+        return Goal.objects.filter(user=self.request.user)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        messages.success(self.request, "Goal updated successfully.")
+        return super().form_valid(form)
+
+
+class GoalDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteView):
+    model = Goal
+    template_name = "true_north/goal_confirm_delete.html"
+    success_url = reverse_lazy("true_north:goal-list")
+    page_title = "Delete Goal"
+
+    def get_queryset(self):
+        return Goal.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Goal deleted.")
+        return super().form_valid(form)
+# ---------------------------------------------------------------------------
+
+
+class MilestoneListView(SiteContextMixin, RegistrationAcceptedMixin, ListView):
+    model = Milestone
+    template_name = "true_north/milestone_list.html"
+    page_title = "Milestones"
+    paginate_by = 20
+
+    def get_queryset(self):
+        return Milestone.objects.filter(user=self.request.user).order_by(
+            "order", "description"
+        )
+
+
+class MilestoneCreateView(SiteContextMixin, RegistrationAcceptedMixin, CreateView):
+    model = Milestone
+    form_class = MilestoneForm
+    template_name = "true_north/milestone_form.html"
+    success_url = reverse_lazy("true_north:milestone-list")
+    page_title = "Create Milestone"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        messages.success(self.request, "Milestone created successfully.")
+        return super().form_valid(form)
+
+
+class MilestoneUpdateView(SiteContextMixin, RegistrationAcceptedMixin, UpdateView):
+    model = Milestone
+    form_class = MilestoneForm
+    template_name = "true_north/milestone_form.html"
+    success_url = reverse_lazy("true_north:milestone-list")
+    page_title = "Update Milestone"
+
+    def get_queryset(self):
+        return Milestone.objects.filter(user=self.request.user)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        messages.success(self.request, "Milestone updated successfully.")
+        return super().form_valid(form)
+
+
+class MilestoneDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteView):
+    model = Milestone
+    template_name = "true_north/milestone_confirm_delete.html"
+    success_url = reverse_lazy("true_north:milestone-list")
+    page_title = "Delete Milestone"
+
+    def get_queryset(self):
+        return Milestone.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Milestone deleted.")
+        return super().form_valid(form)
+
+
+# ---------------------------------------------------------------------------
+# ValueAction CRUD
+# ---------------------------------------------------------------------------
+
+
+class ValueActionListView(SiteContextMixin, RegistrationAcceptedMixin, ListView):
+    model = ValueAction
+    template_name = "true_north/valueaction_list.html"
+    page_title = "Value Actions"
+    paginate_by = 20
+
+    def get_queryset(self):
+        return ValueAction.objects.filter(user=self.request.user).order_by(
+            "order", "id"
+        )
+
+
+class ValueActionCreateView(SiteContextMixin, RegistrationAcceptedMixin, CreateView):
+    model = ValueAction
+    form_class = ValueActionForm
+    template_name = "true_north/valueaction_form.html"
+    success_url = reverse_lazy("true_north:value-action-list")
+    page_title = "Create Value Action"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        messages.success(self.request, "Value Action created successfully.")
+        return super().form_valid(form)
+
+
+class ValueActionUpdateView(SiteContextMixin, RegistrationAcceptedMixin, UpdateView):
+    model = ValueAction
+    form_class = ValueActionForm
+    template_name = "true_north/valueaction_form.html"
+    success_url = reverse_lazy("true_north:value-action-list")
+    page_title = "Update Value Action"
+
+    def get_queryset(self):
+        return ValueAction.objects.filter(user=self.request.user)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        messages.success(self.request, "Value Action updated successfully.")
+        return super().form_valid(form)
+
+
+class ValueActionDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteView):
+    model = ValueAction
+    template_name = "true_north/valueaction_confirm_delete.html"
+    success_url = reverse_lazy("true_north:value-action-list")
+    page_title = "Delete Value Action"
+
+    def get_queryset(self):
+        return ValueAction.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Value Action deleted.")
+        return super().form_valid(form)
