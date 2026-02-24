@@ -1,0 +1,25 @@
+{# templates/warcrafting/characterprofession_confirm_delete.html #}
+{% extends "base.html" %}
+{% block title %}Remove Profession &mdash; {{ character.name }}{% endblock %}
+{% block content %}
+
+<h1>Remove Profession</h1>
+
+<div class="alert alert-warning">
+  <p>
+    Remove <strong>{{ object.profession_tier }}</strong> from
+    <strong>{{ character.name }}</strong>?
+  </p>
+  <p class="mb-0">
+    Current skill: {{ object.current_skill }}
+    {% if object.profession_tier.max_skill %}/{{ object.profession_tier.max_skill }}{% endif %}
+  </p>
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Yes, Remove</button>
+  <a href="{% url 'warcrafting:character_detail' character.pk %}" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+
+{% endblock %}
