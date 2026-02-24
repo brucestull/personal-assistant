@@ -91,12 +91,38 @@ class Character(TimeStampedModel):
         EVOKER = "evoker", "Evoker"
 
     class WowRace(models.TextChoices):
+        # Original races
         HUMAN = "human", "Human"
         ORC = "orc", "Orc"
         NIGHT_ELF = "night_elf", "Night Elf"
         UNDEAD = "undead", "Undead"
+        TAUREN = "tauren", "Tauren"
+        TROLL = "troll", "Troll"
+        GNOME = "gnome", "Gnome"
+        DWARF = "dwarf", "Dwarf"
+        # The Burning Crusade
+        BLOOD_ELF = "blood_elf", "Blood Elf"
+        DRAENEI = "draenei", "Draenei"
+        # Cataclysm
+        GOBLIN = "goblin", "Goblin"
+        WORGEN = "worgen", "Worgen"
+        # Mists of Pandaria
         PANDAREN = "pandaren", "Pandaren"
-        # Add more races here as needed
+        # Battle for Azeroth – Allied Races
+        VOID_ELF = "void_elf", "Void Elf"
+        LIGHTFORGED_DRAENEI = "lightforged_draenei", "Lightforged Draenei"
+        HIGHMOUNTAIN_TAUREN = "highmountain_tauren", "Highmountain Tauren"
+        NIGHTBORNE = "nightborne", "Nightborne"
+        DARK_IRON_DWARF = "dark_iron_dwarf", "Dark Iron Dwarf"
+        MAGHAR_ORC = "maghar_orc", "Mag'har Orc"
+        ZANDALARI_TROLL = "zandalari_troll", "Zandalari Troll"
+        KUL_TIRAN = "kul_tiran", "Kul Tiran"
+        MECHAGNOME = "mechagnome", "Mechagnome"
+        VULPERA = "vulpera", "Vulpera"
+        # Dragonflight
+        DRACTHYR = "dracthyr", "Dracthyr"
+        # The War Within
+        EARTHEN = "earthen", "Earthen"
 
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
