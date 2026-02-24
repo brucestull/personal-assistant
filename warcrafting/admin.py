@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from .models import Asset, Character, Profession, ProfessionTier
+from .models import Asset, Character, CharacterProfession, Profession, ProfessionTier
 
 
 @admin.register(Profession)
@@ -35,6 +35,34 @@ class ProfessionTierAdmin(admin.ModelAdmin):
     ordering = ("profession__name", "expansion_label")
 
 
+class CharacterProfessionInline(admin.TabularInline):
+    """Inline to manage a character's profession skill levels."""
+
+    model = CharacterProfession
+    extra = 1
+    fields = ("profession_tier", "current_skill")
+    autocomplete_fields = ("profession_tier",)
+
+
+@admin.register(CharacterProfession)
+class CharacterProfessionAdmin(admin.ModelAdmin):
+    list_display = ("character", "profession_tier", "current_skill", "skill_percentage")
+    list_filter = ("profession_tier__expansion_label", "profession_tier__profession")
+    search_fields = (
+        "character__name",
+        "character__owner__username",
+        "profession_tier__profession__name",
+    )
+    autocomplete_fields = ("character", "profession_tier")
+    ordering = ("character__owner__username", "character__name")
+
+    def skill_percentage(self, obj):
+        pct = obj.skill_percentage
+        return f"{pct}%" if pct is not None else "—"
+
+    skill_percentage.short_description = "Progress"
+
+
 @admin.register(Character)
 class CharacterAdmin(admin.ModelAdmin):
     list_display = (
@@ -56,8 +84,9 @@ class CharacterAdmin(admin.ModelAdmin):
         "owner__username",
         "owner__email",
     )
-    autocomplete_fields = ("owner", "professions")
+    autocomplete_fields = ("owner",)
     ordering = ("owner__username", "name")
+    inlines = [CharacterProfessionInline]
 
     def formatted_gold(self, obj: Character) -> str:
         total = obj.total_gold()

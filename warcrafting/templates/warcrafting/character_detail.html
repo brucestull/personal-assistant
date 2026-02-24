@@ -1,34 +1,77 @@
 {# templates/warcrafting/character_detail.html #}
 {% extends "base.html" %}
+{% block title %}{{ character.name|escape }}{% endblock %}
 {% block content %}
 
-<h1>{{ character.name }}</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>{{ character.name }}</h1>
+  <div>
+    <a href="{% url 'warcrafting:character_update' character.pk %}" class="btn btn-outline-secondary">Edit Character</a>
+    <a href="{% url 'warcrafting:character_delete' character.pk %}" class="btn btn-outline-danger ms-1">Delete</a>
+  </div>
+</div>
 
 <p><strong>Profile:</strong> {{ character.profile_line }}</p>
 <p><strong>Owner:</strong> {{ character.owner.username }}</p>
 <p><strong>Total Gold:</strong> {{ character.total_gold }} g</p>
 
-<h2>Professions</h2>
-{% if character.professions.all %}
-  <ul>
-    {% for tier in character.professions.all %}
-      <li>
-        {{ tier.expansion_label }} {{ tier.profession.name }}
-        {% if tier.max_skill %}
-          (Max: {{ tier.max_skill }})
-        {% endif %}
-      </li>
-    {% empty %}
-      <li>No professions tracked yet.</li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No professions tracked yet.</p>
-{% endif %}
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <h2>Professions</h2>
+  <a href="{% url 'warcrafting:characterprofession_create' character.pk %}" class="btn btn-sm btn-outline-primary">
+    + Add Profession
+  </a>
+</div>
+
+{% with profs=character.character_professions.all %}
+  {% if profs %}
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Skill</th>
+          <th>Max</th>
+          <th>Progress</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cp in profs %}
+          <tr>
+            <td>{{ cp.profession_tier }}</td>
+            <td>{{ cp.current_skill }}</td>
+            <td>{% if cp.profession_tier.max_skill %}{{ cp.profession_tier.max_skill }}{% else %}&mdash;{% endif %}</td>
+            <td>
+              {% if cp.skill_percentage is not None %}
+                <div class="progress" style="min-width:80px">
+                  <div class="progress-bar" role="progressbar"
+                       style="width:{{ cp.skill_percentage }}%"
+                       aria-valuenow="{{ cp.skill_percentage }}"
+                       aria-valuemin="0" aria-valuemax="100">
+                    {{ cp.skill_percentage }}%
+                  </div>
+                </div>
+              {% else %}
+                &mdash;
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'warcrafting:characterprofession_update' cp.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+              <a href="{% url 'warcrafting:characterprofession_delete' cp.pk %}" class="btn btn-sm btn-outline-danger">Remove</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted">No professions tracked yet.
+      <a href="{% url 'warcrafting:characterprofession_create' character.pk %}">Add one now!</a>
+    </p>
+  {% endif %}
+{% endwith %}
 
 <h2>Assets</h2>
 {% if character.assets.all %}
-  <table>
+  <table class="table table-sm">
     <thead>
       <tr>
         <th>Name</th>
@@ -56,6 +99,8 @@
 
 <p>
   <a href="{% url 'warcrafting:character_list' %}">Back to my characters</a>
+  &nbsp;|&nbsp;
+  <a href="{% url 'warcrafting:dashboard' %}">Dashboard</a>
 </p>
 
 {% endblock %}

@@ -1,0 +1,71 @@
+{# templates/warcrafting/dashboard.html #}
+{% extends "base.html" %}
+{% block title %}WoW Dashboard{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>WoW Dashboard</h1>
+  <a href="{% url 'warcrafting:character_create' %}" class="btn btn-primary">
+    + New Character
+  </a>
+</div>
+
+<p class="text-muted">You have {{ character_count }} character{{ character_count|pluralize }}.</p>
+
+{% if characters %}
+  {% for character in characters %}
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <strong>
+          <a href="{% url 'warcrafting:character_detail' character.pk %}">
+            {{ character.name }}
+          </a>
+        </strong>
+        <span class="text-muted">{{ character.profile_line }}</span>
+        <div>
+          <a href="{% url 'warcrafting:character_update' character.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+          <a href="{% url 'warcrafting:character_delete' character.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6>Professions</h6>
+            {% with profs=character.character_professions.all %}
+              {% if profs %}
+                <ul class="list-unstyled mb-0">
+                  {% for cp in profs %}
+                    <li class="mb-1">
+                      <span class="fw-semibold">{{ cp.profession_tier }}</span>
+                      &mdash; {{ cp.current_skill }}{% if cp.profession_tier.max_skill %}/{{ cp.profession_tier.max_skill }}{% endif %}
+                      {% if cp.skill_percentage is not None %}
+                        <span class="text-muted">({{ cp.skill_percentage }}%)</span>
+                      {% endif %}
+                      <a href="{% url 'warcrafting:characterprofession_update' cp.pk %}" class="btn btn-xs btn-outline-secondary btn-sm ms-1 py-0">Edit</a>
+                      <a href="{% url 'warcrafting:characterprofession_delete' cp.pk %}" class="btn btn-xs btn-outline-danger btn-sm py-0">Remove</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="text-muted mb-0">No professions tracked.</p>
+              {% endif %}
+            {% endwith %}
+            <a href="{% url 'warcrafting:characterprofession_create' character.pk %}" class="btn btn-sm btn-outline-primary mt-2">
+              + Add Profession
+            </a>
+          </div>
+          <div class="col-md-3">
+            <h6>Gold</h6>
+            <p class="mb-0">{{ character.total_gold }} g</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="alert alert-info">
+    No characters yet. <a href="{% url 'warcrafting:character_create' %}">Create your first character!</a>
+  </div>
+{% endif %}
+
+{% endblock %}
