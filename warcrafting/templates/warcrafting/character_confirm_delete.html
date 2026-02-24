@@ -1,0 +1,22 @@
+{# templates/warcrafting/character_confirm_delete.html #}
+{% extends "base.html" %}
+{% block title %}Delete {{ character.name }}{% endblock %}
+{% block content %}
+
+<h1>Delete Character</h1>
+
+<div class="alert alert-warning">
+  <p>
+    Are you sure you want to delete <strong>{{ character.name }}</strong>
+    ({{ character.profile_line }})?
+  </p>
+  <p class="mb-0">This will also remove all tracked professions and assets for this character.</p>
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Yes, Delete</button>
+  <a href="{% url 'warcrafting:character_detail' character.pk %}" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+
+{% endblock %}

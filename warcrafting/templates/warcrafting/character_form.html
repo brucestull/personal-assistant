@@ -1,0 +1,32 @@
+{# templates/warcrafting/character_form.html #}
+{% extends "base.html" %}
+{% block title %}{% if object %}Edit {{ object.name }}{% else %}New Character{% endif %}{% endblock %}
+{% block content %}
+
+<h1>{% if object %}Edit {{ object.name }}{% else %}New Character{% endif %}</h1>
+
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="mb-3">
+      <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}
+        <div class="text-danger small">
+          {% for error in field.errors %}{{ error }}{% endfor %}
+        </div>
+      {% endif %}
+      {% if field.help_text %}
+        <div class="form-text">{{ field.help_text }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">
+    {% if object %}Save Changes{% else %}Create Character{% endif %}
+  </button>
+  <a href="{% if object %}{% url 'warcrafting:character_detail' object.pk %}{% else %}{% url 'warcrafting:character_list' %}{% endif %}" class="btn btn-secondary ms-2">
+    Cancel
+  </a>
+</form>
+
+{% endblock %}
