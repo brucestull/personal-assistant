@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Delete Idea - {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <h2>Confirm Idea Deletion</h2>
+        <p>Are you sure you want to delete the idea: <strong>"{{ object }}"</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, delete</button>
+            <a href="{% url 'ideas:idea_detail' object.pk %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+        </form>
+    </div>
+{% endblock content %}
