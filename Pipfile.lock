@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "65e34c07dc099593bfbb0f37a2455f8079b8339a59979bd9857d55e9b509436a"
+            "sha256": "bd48b0b355fecaedf2a5c11e16f791d387d54c9b9a543739a787d560914ea1e0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -26,11 +26,11 @@
         },
         "asgiref": {
             "hashes": [
-                "sha256:13acff32519542a1736223fb79a715acdebe24286d98e8b164a73085f40da2c4",
-                "sha256:1db9021efadb0d9512ce8ffaf72fcef601c7b73a8807a1bb2ef143dc6b14846d"
+                "sha256:5f184dc43b7e763efe848065441eac62229c9f7b0475f41f80e207a114eda4ce",
+                "sha256:e8667a091e69529631969fd45dc268fa79b99c92c5fcdda727757e52146ec133"
             ],
             "markers": "python_version >= '3.9'",
-            "version": "==3.11.0"
+            "version": "==3.11.1"
         },
         "billiard": {
             "hashes": [
@@ -258,6 +258,10 @@
             ],
             "markers": "python_version >= '3.8' and python_version < '4.0'",
             "version": "==7.2.1"
+        },
+        "django-true-north": {
+            "editable": true,
+            "file": "packages/django-true-north"
         },
         "djangorestframework": {
             "hashes": [
