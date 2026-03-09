@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }} - {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ page_title }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">
+                {% if mode == "create" %}
+                    Create Idea
+                {% elif mode == "update" %}
+                    Save Changes
+                {% endif %}
+            </button>
+            {% if idea %}
+                <a href="{% url 'ideas:idea_detail' idea.pk %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+            {% else %}
+                <a href="{% url 'ideas:idea_list' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+            {% endif %}
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }} - {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ idea.name }}</h1>
+        <p>{{ idea.concept|linebreaks }}</p>
+        <p class="text-muted">By {{ idea.author }}</p>
+        <a href="{% url 'ideas:idea_update' idea.pk %}" class="btn btn-secondary me-1">Edit</a>
+        <a href="{% url 'ideas:idea_delete' idea.pk %}" class="btn btn-danger me-1">Delete</a>
+        <a href="{% url 'ideas:idea_list' %}" class="btn btn-outline-secondary">Back to Ideas</a>
+    </div>
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }} - {{ the_site_name }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+                <h1>Ideas</h1>
+            </div>
+            <div class="col text-end">
+                <a href="{% url 'ideas:idea_create' %}" class="btn btn-primary">Add Idea</a>
+            </div>
+        </div>
+        {% if object_list %}
+            <ul class="list-group">
+                {% for idea in object_list %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <a href="{% url 'ideas:idea_detail' idea.pk %}">
+                                    <strong>{{ idea.name }}</strong>
+                                </a>
+                                <p class="mb-0 text-muted">{{ idea.concept|truncatechars:150 }}</p>
+                            </div>
+                            <div class="ms-3 text-nowrap">
+                                <a href="{% url 'ideas:idea_update' idea.pk %}" class="btn btn-sm btn-secondary me-1">Edit</a>
+                                <a href="{% url 'ideas:idea_delete' idea.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No ideas yet. <a href="{% url 'ideas:idea_create' %}">Create your first idea!</a></p>
+        {% endif %}
+    </div>
+{% endblock content %}
