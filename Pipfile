@@ -20,6 +20,7 @@ redis = "==5.2.1"
 celery = "==5.4.0"
 reportlab = "*"
 setuptools = "*"
+django-true-north = {file = "packages/django-true-north", editable = true}
 
 [dev-packages]
 ruff = "*"

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-true-north"
+version = "0.1.0"
+description = "A Django app for tracking Core Values, Goals, Milestones, and Value Actions."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "django>=4.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["true_north*"]
+
+[tool.setuptools.package-data]
+true_north = [
+    "templates/**/*.html",
+    "migrations/*.py",
+]
