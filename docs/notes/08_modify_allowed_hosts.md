@@ -6,7 +6,7 @@
 
 ## Process
 
-1. Edit `ALLOWED_HOSTS` property in `production.py` ([production.py](../config/settings/production.py)) to include the heroku application root domain:  
+1. Edit `ALLOWED_HOSTS` property in `production.py` ([production.py](../../config/settings/production.py)) to include the heroku application root domain:  
     `ALLOWED_HOSTS = ['totally-new-heroku-app-name.herokuapp.com']`
 
 1. Git `add`, `commit`, and `push` to `origin` (the repository created earlier):  
@@ -43,4 +43,4 @@
 
 ## Repository Links
 
-[README.md](../README.md)
+[README.md](../../README.md)

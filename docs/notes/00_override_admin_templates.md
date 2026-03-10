@@ -4,7 +4,7 @@
 
 ## Use default admin templates
 
-* [`config/settings/common.py`](../config/settings/common.py):
+* [`config/settings/common.py`](../../config/settings/common.py):
   * List `django.contrib.admin` before `accounts.apps.AccountsConfig` in `INSTALLED_APPS`:
 
         ```python
@@ -28,7 +28,7 @@
 
 ## Override admin templates
 
-* [`config/settings/common.py`](../config/settings/common.py):
+* [`config/settings/common.py`](../../config/settings/common.py):
   * List `accounts.apps.AccountsConfig` before `django.contrib.admin` in `INSTALLED_APPS`:
 
         ```python
@@ -43,7 +43,7 @@
 * Uses our template [
       `accounts/templates/registration/password_change_form.html`
     ](
-      ../accounts/templates/registration/password_change_form.html
+      ../../accounts/templates/registration/password_change_form.html
     )
 
 * Browser Image:

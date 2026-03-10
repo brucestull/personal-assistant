@@ -33,7 +33,7 @@
 ## Command for This Project
 
 * `flake8 --exclude=migrations,common.py,wsgi.py,manage.py --ignore=F403,F405 --statistics`
-    * [`.circleci/config.yml`](../.circleci/config.yml)
+    * [`.circleci/config.yml`](../../.circleci/config.yml)
 
 * Codes to Ignore
     * `F403` - 'from module import *' used; unable to detect undefined names
