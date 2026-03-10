@@ -6,7 +6,7 @@ To add Celery Beat for handling periodic tasks in a Django application, we need 
     ```shell
     pipenv install django-celery-beat
     ```
-1. **Update [`config/celery.py`](../config/celery.py)**:
+1. **Update [`config/celery.py`](../../config/celery.py)**:
 
     Add the following lines to configure Celery Beat to use the Django database scheduler:
 
@@ -17,7 +17,7 @@ To add Celery Beat for handling periodic tasks in a Django application, we need 
     app.conf.beat_scheduler = "django_celery_beat.schedulers:DatabaseScheduler"
     # ...
     ```
-1. **Update [`Procfile`](../Procfile)**:
+1. **Update [`Procfile`](../../Procfile)**:
 
    Add a `beat` process to handle periodic tasks.
 
