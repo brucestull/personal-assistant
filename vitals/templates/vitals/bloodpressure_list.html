@@ -81,6 +81,7 @@
               <th scope="col">Systolic</th>
               <th scope="col">Diastolic</th>
               <th scope="col">Pulse</th>
+              <th scope="col">Note</th>
               <th scope="col">Recorded</th>
             </tr>
           </thead>
@@ -90,6 +91,7 @@
                 <td>{{ bp.systolic }}</td>
                 <td>{{ bp.diastolic }}</td>
                 <td>{{ bp.pulse }} bpm</td>
+                <td>{{ bp.note }}</td>
                 <td>{{ bp.created }}</td>
               </tr>
             {% endfor %}

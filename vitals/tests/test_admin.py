@@ -56,7 +56,7 @@ class VitalsAdminTest(TestCase):
                 (
                     None,
                     {
-                        "fields": ("user", "systolic", "diastolic", "pulse"),
+                        "fields": ("user", "systolic", "diastolic", "pulse", "note"),
                     },
                 ),
                 (

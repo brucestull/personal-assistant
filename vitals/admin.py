@@ -43,6 +43,7 @@ class VitalsAdmin(admin.ModelAdmin):
                     "systolic",
                     "diastolic",
                     "pulse",
+                    "note",
                 )
             },
         ),
