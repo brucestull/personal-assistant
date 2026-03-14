@@ -29,9 +29,10 @@ class BodyWeightForm(forms.ModelForm):
 class BloodPressureForm(forms.ModelForm):
     class Meta:
         model = BloodPressure
-        fields = ["systolic", "diastolic", "pulse"]
+        fields = ["systolic", "diastolic", "pulse", "note"]
         widgets = {
             "systolic": forms.NumberInput(attrs={"class": "form-control"}),
             "diastolic": forms.NumberInput(attrs={"class": "form-control"}),
             "pulse": forms.NumberInput(attrs={"class": "form-control"}),
+            "note": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }
