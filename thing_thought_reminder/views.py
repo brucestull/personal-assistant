@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import DetailView, ListView, TemplateView
@@ -309,8 +310,6 @@ class ReminderScheduleSendNowView(
         return self.get_object().user == self.request.user
 
     def post(self, request, *args, **kwargs):
-        from django.shortcuts import redirect
-
         schedule = self.get_object()
         # Dispatch Celery task for immediate send
         send_reminder_email.delay(schedule.pk)
@@ -320,4 +319,3 @@ class ReminderScheduleSendNowView(
         schedule.save(update_fields=["next_send", "last_sent"])
         messages.success(request, "Reminder email queued for sending.")
         return redirect("thing_thought_reminder:reminder-detail", pk=schedule.pk)
-

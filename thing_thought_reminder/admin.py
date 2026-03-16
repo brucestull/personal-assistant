@@ -64,4 +64,3 @@ class ReminderScheduleAdmin(admin.ModelAdmin):
     readonly_fields = ("created", "updated", "last_sent")
     autocomplete_fields = ("user",)
     actions = [admin_send_reminder_now]
-

@@ -1,9 +1,7 @@
-from unittest.mock import patch
-
 from django.test import TestCase, override_settings
 
 from accounts.models import CustomUser
-from thing_thought_reminder.models import ReminderSchedule, Thing, Thought
+from thing_thought_reminder.models import ReminderSchedule, Thing
 from thing_thought_reminder.tasks import process_due_reminders, send_reminder_email
 
 

@@ -33,7 +33,7 @@ class ThingViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_thing_list_only_shows_own_things(self):
-        other_thing = Thing.objects.create(
+        Thing.objects.create(
             user=self.other_user,
             name="Other Thing",
             content="content",

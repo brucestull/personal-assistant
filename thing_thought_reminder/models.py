@@ -153,7 +153,8 @@ class ReminderSchedule(CreatedUpdatedBase):
             )
         if self.thing and self.thought:
             raise ValidationError(
-                "A reminder schedule can reference either a Thing or a Thought, not both."
+                "A reminder schedule can reference either a Thing or a Thought,"
+                " not both."
             )
 
     def get_subject(self):
@@ -209,4 +210,3 @@ class ReminderSchedule(CreatedUpdatedBase):
         verbose_name = "Reminder Schedule"
         verbose_name_plural = "Reminder Schedules"
         ordering = ("-created",)
-

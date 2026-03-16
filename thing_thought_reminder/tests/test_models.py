@@ -157,8 +157,6 @@ class ReminderScheduleModelTest(TestCase):
         result = schedule.compute_next_send()
         self.assertGreater(result, before)
         # Should be roughly 1 day ahead
-        from datetime import timedelta
-
         self.assertAlmostEqual(
             (result - before).total_seconds(), 86400, delta=10
         )
@@ -167,8 +165,6 @@ class ReminderScheduleModelTest(TestCase):
         schedule = self._make_schedule(frequency=ReminderSchedule.FREQUENCY_WEEKLY)
         before = timezone.now()
         result = schedule.compute_next_send()
-        from datetime import timedelta
-
         self.assertAlmostEqual(
             (result - before).total_seconds(), 7 * 86400, delta=10
         )
@@ -177,8 +173,6 @@ class ReminderScheduleModelTest(TestCase):
         schedule = self._make_schedule(frequency=ReminderSchedule.FREQUENCY_MONTHLY)
         before = timezone.now()
         result = schedule.compute_next_send()
-        from datetime import timedelta
-
         self.assertAlmostEqual(
             (result - before).total_seconds(), 30 * 86400, delta=10
         )
