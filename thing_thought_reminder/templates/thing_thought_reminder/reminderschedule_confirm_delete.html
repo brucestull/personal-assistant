@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3 mb-4">{{ page_title }}</h1>
+  <div class="alert alert-warning">
+    <p>Are you sure you want to delete this reminder schedule?</p>
+    <ul class="mb-0">
+      <li><strong>Frequency:</strong> {{ object.get_frequency_display }}</li>
+      {% if object.thing %}<li><strong>Thing:</strong> {{ object.thing.name }}</li>{% endif %}
+      {% if object.thought %}<li><strong>Thought:</strong> {{ object.thought.name }}</li>{% endif %}
+    </ul>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'thing_thought_reminder:reminder-detail' object.pk %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+  </form>
+</div>
+{% endblock %}
