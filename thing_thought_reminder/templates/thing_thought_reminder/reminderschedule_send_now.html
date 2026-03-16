@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3 mb-4">{{ page_title }}</h1>
+  <div class="alert alert-info">
+    <p class="mb-0">
+      You are about to send an immediate reminder email for:
+      {% if object.thing %}<strong>{{ object.thing.name }}</strong>{% endif %}
+      {% if object.thought %}<strong>{{ object.thought.name }}</strong>{% endif %}
+    </p>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Send Now</button>
+    <a href="{% url 'thing_thought_reminder:reminder-detail' object.pk %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+  </form>
+</div>
+{% endblock %}
