@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     "kanban_cabinet.apps.KanbanCabinetConfig",
     "true_north.apps.TrueNorthConfig",
     "thoughts.apps.ThoughtsConfig",
+    "thing_thought_reminder.apps.ThingThoughtReminderConfig",
 ]
 
 MIDDLEWARE = [

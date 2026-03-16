@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3 mb-4">{{ page_title }}</h1>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h5 class="card-title">Things</h5>
+          <p class="display-6">{{ thing_count }}</p>
+          <a href="{% url 'thing_thought_reminder:thing-list' %}" class="btn btn-outline-primary btn-sm">View Things</a>
+          <a href="{% url 'thing_thought_reminder:thing-create' %}" class="btn btn-primary btn-sm ms-1">Add Thing</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h5 class="card-title">Thoughts</h5>
+          <p class="display-6">{{ thought_count }}</p>
+          <a href="{% url 'thing_thought_reminder:thought-list' %}" class="btn btn-outline-primary btn-sm">View Thoughts</a>
+          <a href="{% url 'thing_thought_reminder:thought-create' %}" class="btn btn-primary btn-sm ms-1">Add Thought</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h5 class="card-title">Reminder Schedules</h5>
+          <p class="display-6">{{ schedule_count }}</p>
+          <a href="{% url 'thing_thought_reminder:reminder-list' %}" class="btn btn-outline-primary btn-sm">View Schedules</a>
+          <a href="{% url 'thing_thought_reminder:reminder-create' %}" class="btn btn-primary btn-sm ms-1">Add Schedule</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Recent Things</div>
+        <ul class="list-group list-group-flush">
+          {% for thing in recent_things %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ thing.name }}</strong>
+                <span class="badge bg-secondary ms-1">{{ thing.type }}</span>
+              </div>
+              <a href="{% url 'thing_thought_reminder:thing-detail' thing.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+            </li>
+          {% empty %}
+            <li class="list-group-item text-muted">No things yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Recent Thoughts</div>
+        <ul class="list-group list-group-flush">
+          {% for thought in recent_thoughts %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ thought.name }}</strong>
+                <span class="badge bg-secondary ms-1">{{ thought.realm }}</span>
+              </div>
+              <a href="{% url 'thing_thought_reminder:thought-detail' thought.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+            </li>
+          {% empty %}
+            <li class="list-group-item text-muted">No thoughts yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -56,4 +56,5 @@ urlpatterns = [
     path("kanban/", include("kanban_cabinet.urls")),
     path("true-north/", include("true_north.urls")),
     path("thoughts/", include("thoughts.urls")),
+    path("thing-thought-reminder/", include("thing_thought_reminder.urls")),
 ]

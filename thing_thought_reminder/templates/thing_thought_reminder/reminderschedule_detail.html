@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - Reminder Detail{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">Reminder Schedule</h1>
+    <div>
+      <a href="{% url 'thing_thought_reminder:reminder-update' object.pk %}" class="btn btn-outline-primary me-1">Edit</a>
+      <a href="{% url 'thing_thought_reminder:reminder-delete' object.pk %}" class="btn btn-outline-danger me-1">Delete</a>
+      <a href="{% url 'thing_thought_reminder:reminder-list' %}" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+  </div>
+
+  {% if messages %}
+    <div role="alert" aria-live="polite">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <dl class="row mb-0">
+        <dt class="col-sm-3">Frequency</dt>
+        <dd class="col-sm-9">{{ object.get_frequency_display }}</dd>
+        <dt class="col-sm-3">Active</dt>
+        <dd class="col-sm-9">{% if object.is_active %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</dd>
+        {% if object.thing %}
+          <dt class="col-sm-3">Thing</dt>
+          <dd class="col-sm-9">
+            <a href="{% url 'thing_thought_reminder:thing-detail' object.thing.pk %}">{{ object.thing.name }}</a>
+            <span class="badge bg-secondary ms-1">{{ object.thing.type }}</span>
+          </dd>
+        {% elif object.thought %}
+          <dt class="col-sm-3">Thought</dt>
+          <dd class="col-sm-9">
+            <a href="{% url 'thing_thought_reminder:thought-detail' object.thought.pk %}">{{ object.thought.name }}</a>
+            <span class="badge bg-info ms-1">{{ object.thought.realm }}</span>
+          </dd>
+        {% endif %}
+        <dt class="col-sm-3">Next Send</dt>
+        <dd class="col-sm-9">{{ object.next_send|date:"N j, Y, g:i a"|default:"Not scheduled" }}</dd>
+        <dt class="col-sm-3">Last Sent</dt>
+        <dd class="col-sm-9">{{ object.last_sent|date:"N j, Y, g:i a"|default:"Never" }}</dd>
+        <dt class="col-sm-3">Created</dt>
+        <dd class="col-sm-9">{{ object.created|date:"N j, Y, g:i a" }}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <form method="post" action="{% url 'thing_thought_reminder:reminder-send-now' object.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Send Reminder Email Now</button>
+  </form>
+</div>
+{% endblock %}
