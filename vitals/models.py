@@ -122,6 +122,11 @@ class BloodPressure(CreatedUpdatedBase):
         help_text="The pulse rate in beats per minute.",
         validators=[MinValueValidator(20), MaxValueValidator(220)],
     )
+    note = models.TextField(
+        verbose_name="Note",
+        help_text="Optional notes related to this blood pressure measurement.",
+        blank=True,
+    )
 
     objects = BloodPressureManager()
 
