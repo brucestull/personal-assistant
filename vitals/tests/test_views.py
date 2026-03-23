@@ -17,6 +17,11 @@ BLOOD_PRESSURE_LIST_VIEW_NAME = "vitals:bloodpressure-list"
 BLOOD_PRESSURE_LIST_PAGE_TITLE = "Blood Pressures"
 BLOOD_PRESSURE_LIST_TEMPLATE = "vitals/bloodpressure_list.html"
 
+BLOOD_PRESSURE_REPORT_URL = "/vitals/bloodpressures/report/"
+BLOOD_PRESSURE_REPORT_VIEW_NAME = "vitals:bloodpressure-report"
+BLOOD_PRESSURE_REPORT_PAGE_TITLE = "Blood Pressure Report"
+BLOOD_PRESSURE_REPORT_TEMPLATE = "vitals/bloodpressure_report.html"
+
 BLOOD_PRESSURE_SYSTOLIC_1 = 120
 BLOOD_PRESSURE_DIASTOLIC_1 = 80
 BLOOD_PRESSURE_PULSE__1 = 72
@@ -249,3 +254,91 @@ class BloodPressureListViewTest(TestCase):
             target_status_code=200,
             fetch_redirect_response=True,
         )
+
+
+class BloodPressureReportViewTest(TestCase):
+    """
+    Test the `BloodPressureReportView` view.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Create `CustomUser` and `BloodPressure` objects for testing.
+        """
+        cls.user = CustomUser.objects.create_user(
+            username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
+            password=PASSWORD_FOR_TESTING,
+            registration_accepted=True,
+        )
+        cls.blood_pressure_with_note = BloodPressure.objects.create(
+            user=cls.user,
+            systolic=BLOOD_PRESSURE_SYSTOLIC_1,
+            diastolic=BLOOD_PRESSURE_DIASTOLIC_1,
+            pulse=BLOOD_PRESSURE_PULSE__1,
+            note="Test note for report view",
+        )
+
+    def test_url_exists_at_desired_location(self):
+        """
+        Test that the `BloodPressureReportView` view is rendered at the desired
+        location.
+        """
+        self.client.login(
+            username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
+            password=PASSWORD_FOR_TESTING,
+        )
+        response = self.client.get(BLOOD_PRESSURE_REPORT_URL)
+        self.assertEqual(response.status_code, 200)
+
+    def test_url_accessible_by_name(self):
+        """
+        Test that the `BloodPressureReportView` view is accessible by name.
+        """
+        self.client.login(
+            username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
+            password=PASSWORD_FOR_TESTING,
+        )
+        response = self.client.get(reverse(BLOOD_PRESSURE_REPORT_VIEW_NAME))
+        self.assertEqual(response.status_code, 200)
+
+    def test_uses_correct_template(self):
+        """
+        Test that the `BloodPressureReportView` view uses the correct template.
+        """
+        self.client.login(
+            username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
+            password=PASSWORD_FOR_TESTING,
+        )
+        response = self.client.get(reverse(BLOOD_PRESSURE_REPORT_VIEW_NAME))
+        self.assertTemplateUsed(response, BLOOD_PRESSURE_REPORT_TEMPLATE)
+
+    def test_note_field_displayed_in_report(self):
+        """
+        Test that the `note` field of `BloodPressure` is displayed in the
+        `BloodPressureReportView`.
+        """
+        self.client.login(
+            username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
+            password=PASSWORD_FOR_TESTING,
+        )
+        response = self.client.get(
+            reverse(BLOOD_PRESSURE_REPORT_VIEW_NAME) + "?period=all"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test note for report view")
+
+    def test_note_column_header_present(self):
+        """
+        Test that the Note column header is present in the
+        `BloodPressureReportView` table.
+        """
+        self.client.login(
+            username=USERNAME_REGISTRATION_ACCEPTED_TRUE,
+            password=PASSWORD_FOR_TESTING,
+        )
+        response = self.client.get(
+            reverse(BLOOD_PRESSURE_REPORT_VIEW_NAME) + "?period=all"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Note")
