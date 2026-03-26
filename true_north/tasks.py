@@ -1,0 +1,189 @@
+from __future__ import annotations
+
+import smtplib
+from typing import Optional
+
+from celery import shared_task
+from celery.utils.log import get_task_logger
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+
+logger = get_task_logger(__name__)
+
+DEFAULT_FROM_EMAIL = getattr(settings, "DEFAULT_FROM_EMAIL", None)
+
+RETRY_KW = dict(
+    bind=True,
+    autoretry_for=(smtplib.SMTPException, ConnectionError, TimeoutError),
+    retry_backoff=30,
+    retry_backoff_max=600,
+    retry_jitter=True,
+    max_retries=5,
+)
+
+_MODEL_REGISTRY = {
+    "CoreValue": ("true_north", "CoreValue"),
+    "Goal": ("true_north", "Goal"),
+    "Milestone": ("true_north", "Milestone"),
+    "ValueAction": ("true_north", "ValueAction"),
+}
+
+
+def _get_email_subject_and_body(obj) -> tuple[str, str]:
+    """Return (subject, body) for a True North model instance.
+
+    Supported types: CoreValue, Goal, Milestone, ValueAction.
+    For any other type, returns a generic subject and str(obj) as the body.
+    """
+    site_name = getattr(settings, "THE_SITE_NAME", "Personal Assistant")
+    class_name = obj.__class__.__name__
+
+    if class_name == "CoreValue":
+        subject = f"{site_name} — Core Value: {obj.name}"
+        body = (
+            f"Core Value: {obj.name}\n\n"
+            f"Definition: {obj.definition or 'N/A'}\n"
+            f"Active: {obj.is_active}\n"
+            f"Order: {obj.order}\n"
+        )
+    elif class_name == "Goal":
+        subject = f"{site_name} — Goal: {obj.title}"
+        body = (
+            f"Goal: {obj.title}\n\n"
+            f"Core Value: {obj.value or 'N/A'}\n"
+            f"Description: {obj.description or 'N/A'}\n"
+            f"Status: {obj.get_status_display()}\n"
+            f"Start Date: {obj.start_date or 'N/A'}\n"
+            f"Target Date: {obj.target_date or 'N/A'}\n"
+        )
+    elif class_name == "Milestone":
+        subject = f"{site_name} — Milestone: {str(obj.description)[:80]}"
+        body = (
+            f"Milestone: {obj.description}\n\n"
+            f"Goal: {obj.goal.title}\n"
+            f"Notes: {obj.notes or 'N/A'}\n"
+            f"Completed: {obj.is_completed}\n"
+            f"Due Date: {obj.due_date or 'N/A'}\n"
+        )
+    elif class_name == "ValueAction":
+        subject = f"{site_name} — Value Action: {str(obj.content)[:80]}"
+        body = (
+            f"Value Action: {obj.content}\n\n"
+            f"Milestone: {obj.milestone.description}\n"
+            f"Status: {obj.get_status_display()}\n"
+            f"Due Date: {obj.due_date or 'N/A'}\n"
+            f"Completed: {obj.is_completed}\n"
+        )
+    else:
+        subject = f"{site_name} — True North Item"
+        body = str(obj)
+
+    return subject, body
+
+
+def _send_email(
+    subject: str,
+    text_body: str,
+    to: list,
+    *,
+    from_email: Optional[str] = None,
+) -> None:
+    """Send a single plain-text email.
+
+    Args:
+        subject: Email subject line.
+        text_body: Plain-text email body.
+        to: List of recipient email address strings.
+        from_email: Sender address. Falls back to ``DEFAULT_FROM_EMAIL``
+            from settings when not provided.
+
+    Raises:
+        ValueError: If no sender address can be resolved.
+        smtplib.SMTPException: On SMTP-level errors (propagated to caller).
+    """
+    if not to:
+        logger.warning("Email not sent: empty recipient list.")
+        return
+
+    sender = from_email or DEFAULT_FROM_EMAIL
+    if not sender:
+        raise ValueError(
+            "No from_email could be resolved. "
+            "Set settings.DEFAULT_FROM_EMAIL or pass from_email explicitly."
+        )
+
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_body,
+        from_email=sender,
+        to=list(to),
+    )
+    msg.send(fail_silently=False)
+
+
+@shared_task(**RETRY_KW)
+def send_true_north_email(self, model_name: str, pk: int) -> dict:
+    """
+    Send an email containing the details of a True North model instance
+    to the owning user's email address.
+    """
+    from django.apps import apps
+
+    if model_name not in _MODEL_REGISTRY:
+        logger.warning("send_true_north_email: unknown model_name %r", model_name)
+        return {"ok": False, "reason": "unknown_model"}
+
+    app_label, model_class_name = _MODEL_REGISTRY[model_name]
+    ModelClass = apps.get_model(app_label, model_class_name)
+
+    try:
+        obj = ModelClass.objects.select_related("user").get(pk=pk)
+    except ModelClass.DoesNotExist:
+        logger.warning(
+            "send_true_north_email: %s pk=%s not found", model_name, pk
+        )
+        return {"ok": False, "reason": "object_not_found"}
+
+    user = obj.user
+    if not getattr(user, "email", None):
+        logger.warning(
+            "send_true_north_email: user %s has no email; skipping %s pk=%s",
+            user.pk,
+            model_name,
+            pk,
+        )
+        return {"ok": False, "reason": "no_user_email"}
+
+    subject, body_content = _get_email_subject_and_body(obj)
+    body = (
+        f"Hey {user.username},\n\n"
+        f"Here are the details for your {model_name}:\n\n"
+        f"{body_content}\n"
+        f"— {getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')}"
+    )
+
+    resolved_from = (
+        DEFAULT_FROM_EMAIL
+        or getattr(settings, "EMAIL_HOST_USER", None)
+        or user.email
+    )
+
+    try:
+        _send_email(subject, body, [user.email], from_email=resolved_from)
+    except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
+        logger.warning(
+            "send_true_north_email: SMTP error for %s pk=%s — will retry: %s",
+            model_name,
+            pk,
+            exc,
+        )
+        raise
+
+    logger.info(
+        "send_true_north_email: sent %s (pk=%s) to user %s (%s)",
+        model_name,
+        pk,
+        user.pk,
+        user.email,
+    )
+    return {"ok": True, "model_name": model_name, "pk": pk, "user_id": user.pk}

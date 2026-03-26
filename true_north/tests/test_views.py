@@ -348,3 +348,117 @@ def test_valueaction_delete(client):
     from true_north.models import ValueAction
 
     assert not ValueAction.objects.filter(pk=action.pk).exists()
+
+
+# ---------------------------------------------------------------------------
+# Send-Email views
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_corevalue_send_email_queues_task(client, mailoutbox):
+    user = CustomUserFactory(email="user@example.com")
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    url = reverse("true_north:core-value-send-email", kwargs={"pk": cv.pk})
+    response = client.post(url)
+    assert response.status_code == 302
+    assert response["Location"] == reverse("true_north:core-value-list")
+    # With CELERY_TASK_ALWAYS_EAGER the task runs synchronously; check email sent.
+    assert len(mailoutbox) == 1
+    assert cv.name in mailoutbox[0].subject
+
+
+@pytest.mark.django_db
+def test_corevalue_send_email_forbidden_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    url = reverse("true_north:core-value-send-email", kwargs={"pk": cv.pk})
+    response = client.post(url)
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_goal_send_email_queues_task(client, mailoutbox):
+    user = CustomUserFactory(email="user@example.com")
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    url = reverse("true_north:goal-send-email", kwargs={"pk": goal.pk})
+    response = client.post(url)
+    assert response.status_code == 302
+    assert response["Location"] == reverse("true_north:goal-list")
+    assert len(mailoutbox) == 1
+    assert goal.title in mailoutbox[0].subject
+
+
+@pytest.mark.django_db
+def test_goal_send_email_forbidden_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    goal = GoalFactory(value=cv, user=other)
+    url = reverse("true_north:goal-send-email", kwargs={"pk": goal.pk})
+    response = client.post(url)
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_milestone_send_email_queues_task(client, mailoutbox):
+    user = CustomUserFactory(email="user@example.com")
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+    url = reverse("true_north:milestone-send-email", kwargs={"pk": milestone.pk})
+    response = client.post(url)
+    assert response.status_code == 302
+    assert response["Location"] == reverse("true_north:milestone-list")
+    assert len(mailoutbox) == 1
+    assert milestone.description[:20] in mailoutbox[0].subject
+
+
+@pytest.mark.django_db
+def test_milestone_send_email_forbidden_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    goal = GoalFactory(value=cv, user=other)
+    milestone = MilestoneFactory(goal=goal, user=other)
+    url = reverse("true_north:milestone-send-email", kwargs={"pk": milestone.pk})
+    response = client.post(url)
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_valueaction_send_email_queues_task(client, mailoutbox):
+    user = CustomUserFactory(email="user@example.com")
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+    action = ValueActionFactory(milestone=milestone, user=user)
+    url = reverse("true_north:value-action-send-email", kwargs={"pk": action.pk})
+    response = client.post(url)
+    assert response.status_code == 302
+    assert response["Location"] == reverse("true_north:value-action-list")
+    assert len(mailoutbox) == 1
+    assert action.content[:20] in mailoutbox[0].subject
+
+
+@pytest.mark.django_db
+def test_valueaction_send_email_forbidden_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    goal = GoalFactory(value=cv, user=other)
+    milestone = MilestoneFactory(goal=goal, user=other)
+    action = ValueActionFactory(milestone=milestone, user=other)
+    url = reverse("true_north:value-action-send-email", kwargs={"pk": action.pk})
+    response = client.post(url)
+    assert response.status_code == 404

@@ -61,6 +61,16 @@
                 <a href="{% url 'true_north:value-action-delete' action.pk %}"
                    class="btn btn-sm btn-outline-danger ms-1"
                    aria-label="Delete value action">Delete</a>
+                <form method="post"
+                      action="{% url 'true_north:value-action-send-email' action.pk %}"
+                      class="d-inline ms-1">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="btn btn-sm btn-outline-secondary"
+                          aria-label="Send email for value action">
+                    Send Email
+                  </button>
+                </form>
               </td>
             </tr>
           {% endfor %}
