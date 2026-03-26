@@ -59,6 +59,16 @@
                 <a href="{% url 'true_north:milestone-delete' milestone.pk %}"
                    class="btn btn-sm btn-outline-danger ms-1"
                    aria-label="Delete milestone: {{ milestone.description }}">Delete</a>
+                <form method="post"
+                      action="{% url 'true_north:milestone-send-email' milestone.pk %}"
+                      class="d-inline ms-1">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="btn btn-sm btn-outline-secondary"
+                          aria-label="Send email for milestone: {{ milestone.description }}">
+                    Send Email
+                  </button>
+                </form>
               </td>
             </tr>
           {% endfor %}
