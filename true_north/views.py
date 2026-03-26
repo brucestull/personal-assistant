@@ -2,13 +2,21 @@
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, ListView, TemplateView, UpdateView
+from django.views.generic import (
+    DeleteView,
+    DetailView,
+    ListView,
+    TemplateView,
+    UpdateView,
+)
 from django.views.generic.edit import CreateView
 
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
 from true_north.forms import CoreValueForm, GoalForm, MilestoneForm, ValueActionForm
 from true_north.models import CoreValue, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus  # noqa E501
+from true_north.tasks import send_true_north_email
 
 
 class DashboardView(
@@ -384,3 +392,93 @@ class ValueActionDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteV
     def form_valid(self, form):
         messages.success(self.request, "Value Action deleted.")
         return super().form_valid(form)
+
+
+# ---------------------------------------------------------------------------
+# Send-Email views (POST only — one per model)
+# ---------------------------------------------------------------------------
+
+
+class CoreValueSendEmailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    """POST to queue an email containing this Core Value's details."""
+
+    model = CoreValue
+    http_method_names = ["post"]
+
+    def get_queryset(self):
+        return CoreValue.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        send_true_north_email.delay("CoreValue", obj.pk)
+        messages.success(
+            request,
+            f'Email for Core Value "{obj.name}" has been queued for sending.',
+        )
+        return redirect("true_north:core-value-list")
+
+
+class GoalSendEmailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    """POST to queue an email containing this Goal's details."""
+
+    model = Goal
+    http_method_names = ["post"]
+
+    def get_queryset(self):
+        return Goal.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        send_true_north_email.delay("Goal", obj.pk)
+        messages.success(
+            request,
+            f'Email for Goal "{obj.title}" has been queued for sending.',
+        )
+        return redirect("true_north:goal-list")
+
+
+class MilestoneSendEmailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    """POST to queue an email containing this Milestone's details."""
+
+    model = Milestone
+    http_method_names = ["post"]
+
+    def get_queryset(self):
+        return Milestone.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        send_true_north_email.delay("Milestone", obj.pk)
+        messages.success(
+            request,
+            f'Email for Milestone "{obj.description[:80]}" '
+            "has been queued for sending.",
+        )
+        return redirect("true_north:milestone-list")
+
+
+class ValueActionSendEmailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    """POST to queue an email containing this Value Action's details."""
+
+    model = ValueAction
+    http_method_names = ["post"]
+
+    def get_queryset(self):
+        return ValueAction.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        send_true_north_email.delay("ValueAction", obj.pk)
+        messages.success(
+            request,
+            f'Email for Value Action "{obj.content[:80]}" has been queued for sending.',
+        )
+        return redirect("true_north:value-action-list")

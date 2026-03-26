@@ -91,4 +91,25 @@ urlpatterns = [
         views.ValueActionDeleteView.as_view(),
         name="value-action-delete",
     ),
+    # Send-email actions
+    path(
+        "core-values/<int:pk>/send-email/",
+        views.CoreValueSendEmailView.as_view(),
+        name="core-value-send-email",
+    ),
+    path(
+        "goals/<int:pk>/send-email/",
+        views.GoalSendEmailView.as_view(),
+        name="goal-send-email",
+    ),
+    path(
+        "milestones/<int:pk>/send-email/",
+        views.MilestoneSendEmailView.as_view(),
+        name="milestone-send-email",
+    ),
+    path(
+        "value-actions/<int:pk>/send-email/",
+        views.ValueActionSendEmailView.as_view(),
+        name="value-action-send-email",
+    ),
 ]

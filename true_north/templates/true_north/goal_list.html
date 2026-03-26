@@ -59,6 +59,16 @@
                 <a href="{% url 'true_north:goal-delete' goal.pk %}"
                    class="btn btn-sm btn-outline-danger ms-1"
                    aria-label="Delete {{ goal.title }}">Delete</a>
+                <form method="post"
+                      action="{% url 'true_north:goal-send-email' goal.pk %}"
+                      class="d-inline ms-1">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="btn btn-sm btn-outline-secondary"
+                          aria-label="Send email for {{ goal.title }}">
+                    Send Email
+                  </button>
+                </form>
               </td>
             </tr>
           {% endfor %}
