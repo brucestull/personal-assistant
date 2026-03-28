@@ -55,8 +55,11 @@
               </td>
               <td>{{ action.due_date|default:"—" }}</td>
               <td class="text-nowrap">
+                <a href="{% url 'true_north:value-action-detail' action.pk %}"
+                   class="btn btn-sm btn-outline-info"
+                   aria-label="View value action">View</a>
                 <a href="{% url 'true_north:value-action-update' action.pk %}"
-                   class="btn btn-sm btn-outline-primary"
+                   class="btn btn-sm btn-outline-primary ms-1"
                    aria-label="Edit value action">Edit</a>
                 <a href="{% url 'true_north:value-action-delete' action.pk %}"
                    class="btn btn-sm btn-outline-danger ms-1"

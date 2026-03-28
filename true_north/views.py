@@ -155,6 +155,24 @@ class CoreValueListView(SiteContextMixin, RegistrationAcceptedMixin, ListView):
         )
 
 
+class CoreValueDetailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    model = CoreValue
+    template_name = "true_north/corevalue_detail.html"
+    page_title = "Core Value Detail"
+
+    def get_queryset(self):
+        return CoreValue.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["goals"] = self.object.goals.filter(
+            user=self.request.user
+        ).prefetch_related("milestones").order_by("order", "title")
+        return ctx
+
+
 class CoreValueCreateView(SiteContextMixin, RegistrationAcceptedMixin, CreateView):
     model = CoreValue
     form_class = CoreValueForm
@@ -206,6 +224,24 @@ class GoalListView(SiteContextMixin, RegistrationAcceptedMixin, ListView):
 
     def get_queryset(self):
         return Goal.objects.filter(user=self.request.user).order_by("order", "title")
+
+
+class GoalDetailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    model = Goal
+    template_name = "true_north/goal_detail.html"
+    page_title = "Goal Detail"
+
+    def get_queryset(self):
+        return Goal.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["milestones"] = self.object.milestones.filter(
+            user=self.request.user
+        ).prefetch_related("tasks").order_by("order", "description")
+        return ctx
 
 
 class GoalCreateView(SiteContextMixin, RegistrationAcceptedMixin, CreateView):
@@ -271,6 +307,24 @@ class MilestoneListView(SiteContextMixin, RegistrationAcceptedMixin, ListView):
         return Milestone.objects.filter(user=self.request.user).order_by(
             "order", "description"
         )
+
+
+class MilestoneDetailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    model = Milestone
+    template_name = "true_north/milestone_detail.html"
+    page_title = "Milestone Detail"
+
+    def get_queryset(self):
+        return Milestone.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["value_actions"] = self.object.tasks.filter(
+            user=self.request.user
+        ).order_by("order", "id")
+        return ctx
 
 
 class MilestoneCreateView(SiteContextMixin, RegistrationAcceptedMixin, CreateView):
@@ -340,6 +394,17 @@ class ValueActionListView(SiteContextMixin, RegistrationAcceptedMixin, ListView)
         return ValueAction.objects.filter(user=self.request.user).order_by(
             "order", "id"
         )
+
+
+class ValueActionDetailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    model = ValueAction
+    template_name = "true_north/valueaction_detail.html"
+    page_title = "Value Action Detail"
+
+    def get_queryset(self):
+        return ValueAction.objects.filter(user=self.request.user)
 
 
 class ValueActionCreateView(SiteContextMixin, RegistrationAcceptedMixin, CreateView):

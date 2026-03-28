@@ -351,6 +351,159 @@ def test_valueaction_delete(client):
 
 
 # ---------------------------------------------------------------------------
+# Detail views
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_corevalue_detail_requires_login(client):
+    user = CustomUserFactory()
+    cv = CoreValueFactory(user=user)
+    url = reverse("true_north:core-value-detail", kwargs={"pk": cv.pk})
+    response = client.get(url)
+    assert response.status_code in (302, 403)
+
+
+@pytest.mark.django_db
+def test_corevalue_detail_shows_value_and_goals(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    url = reverse("true_north:core-value-detail", kwargs={"pk": cv.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert cv.name.encode() in response.content
+    assert goal.title.encode() in response.content
+
+
+@pytest.mark.django_db
+def test_corevalue_detail_hidden_from_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    url = reverse("true_north:core-value-detail", kwargs={"pk": cv.pk})
+    response = client.get(url)
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_goal_detail_requires_login(client):
+    user = CustomUserFactory()
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    url = reverse("true_north:goal-detail", kwargs={"pk": goal.pk})
+    response = client.get(url)
+    assert response.status_code in (302, 403)
+
+
+@pytest.mark.django_db
+def test_goal_detail_shows_goal_and_milestones(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+    url = reverse("true_north:goal-detail", kwargs={"pk": goal.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert goal.title.encode() in response.content
+    assert milestone.description.encode() in response.content
+
+
+@pytest.mark.django_db
+def test_goal_detail_hidden_from_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    goal = GoalFactory(value=cv, user=other)
+    url = reverse("true_north:goal-detail", kwargs={"pk": goal.pk})
+    response = client.get(url)
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_milestone_detail_requires_login(client):
+    user = CustomUserFactory()
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+    url = reverse("true_north:milestone-detail", kwargs={"pk": milestone.pk})
+    response = client.get(url)
+    assert response.status_code in (302, 403)
+
+
+@pytest.mark.django_db
+def test_milestone_detail_shows_milestone_and_actions(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+    action = ValueActionFactory(milestone=milestone, user=user)
+    url = reverse("true_north:milestone-detail", kwargs={"pk": milestone.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert milestone.description.encode() in response.content
+    assert action.content[:20].encode() in response.content
+
+
+@pytest.mark.django_db
+def test_milestone_detail_hidden_from_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    goal = GoalFactory(value=cv, user=other)
+    milestone = MilestoneFactory(goal=goal, user=other)
+    url = reverse("true_north:milestone-detail", kwargs={"pk": milestone.pk})
+    response = client.get(url)
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_valueaction_detail_requires_login(client):
+    user = CustomUserFactory()
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+    action = ValueActionFactory(milestone=milestone, user=user)
+    url = reverse("true_north:value-action-detail", kwargs={"pk": action.pk})
+    response = client.get(url)
+    assert response.status_code in (302, 403)
+
+
+@pytest.mark.django_db
+def test_valueaction_detail_shows_action(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+    action = ValueActionFactory(milestone=milestone, user=user)
+    url = reverse("true_north:value-action-detail", kwargs={"pk": action.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert action.content.encode() in response.content
+
+
+@pytest.mark.django_db
+def test_valueaction_detail_hidden_from_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    goal = GoalFactory(value=cv, user=other)
+    milestone = MilestoneFactory(goal=goal, user=other)
+    action = ValueActionFactory(milestone=milestone, user=other)
+    url = reverse("true_north:value-action-detail", kwargs={"pk": action.pk})
+    response = client.get(url)
+    assert response.status_code == 404
+
+
+# ---------------------------------------------------------------------------
 # Send-Email views
 # ---------------------------------------------------------------------------
 

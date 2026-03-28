@@ -19,6 +19,11 @@ urlpatterns = [
         name="core-value-create",
     ),
     path(
+        "core-values/<int:pk>/",
+        views.CoreValueDetailView.as_view(),
+        name="core-value-detail",
+    ),
+    path(
         "core-values/<int:pk>/update/",
         views.CoreValueUpdateView.as_view(),
         name="core-value-update",
@@ -38,6 +43,11 @@ urlpatterns = [
         "goals/create/",
         views.GoalCreateView.as_view(),
         name="goal-create",
+    ),
+    path(
+        "goals/<int:pk>/",
+        views.GoalDetailView.as_view(),
+        name="goal-detail",
     ),
     path(
         "goals/<int:pk>/update/",
@@ -61,6 +71,11 @@ urlpatterns = [
         name="milestone-create",
     ),
     path(
+        "milestones/<int:pk>/",
+        views.MilestoneDetailView.as_view(),
+        name="milestone-detail",
+    ),
+    path(
         "milestones/<int:pk>/update/",
         views.MilestoneUpdateView.as_view(),
         name="milestone-update",
@@ -80,6 +95,11 @@ urlpatterns = [
         "value-actions/create/",
         views.ValueActionCreateView.as_view(),
         name="value-action-create",
+    ),
+    path(
+        "value-actions/<int:pk>/",
+        views.ValueActionDetailView.as_view(),
+        name="value-action-detail",
     ),
     path(
         "value-actions/<int:pk>/update/",

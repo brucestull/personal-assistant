@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+{% block title %}{{ the_site_name }} - {{ object.name }}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
   <div class="d-flex align-items-center justify-content-between mb-3">
-    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <h1 class="h3 mb-0">{{ object.name }}</h1>
     <div>
-      <a href="{% url 'true_north:goal-create' %}" class="btn btn-primary">
-        Add Goal
-      </a>
-      <a href="{% url 'true_north:dashboard' %}" class="btn btn-outline-secondary ms-2">
-        Dashboard
-      </a>
+      <a href="{% url 'true_north:core-value-update' object.pk %}"
+         class="btn btn-outline-primary">Edit</a>
+      <a href="{% url 'true_north:core-value-list' %}"
+         class="btn btn-outline-secondary ms-2">Back to Core Values</a>
     </div>
   </div>
 
@@ -27,31 +25,66 @@
     </div>
   {% endif %}
 
-  {% if object_list %}
+  <div class="card mb-4">
+    <div class="card-body">
+      <dl class="row mb-0">
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9">{{ object.name }}</dd>
+
+        <dt class="col-sm-3">Definition</dt>
+        <dd class="col-sm-9">{{ object.definition|default:"—" }}</dd>
+
+        <dt class="col-sm-3">Active</dt>
+        <dd class="col-sm-9">
+          {% if object.is_active %}
+            <span class="badge bg-success">Active</span>
+          {% else %}
+            <span class="badge bg-secondary">Inactive</span>
+          {% endif %}
+        </dd>
+
+        <dt class="col-sm-3">Order</dt>
+        <dd class="col-sm-9">{{ object.order }}</dd>
+
+        <dt class="col-sm-3">Created</dt>
+        <dd class="col-sm-9">{{ object.created }}</dd>
+
+        <dt class="col-sm-3">Updated</dt>
+        <dd class="col-sm-9">{{ object.updated }}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h2 class="h5 mb-3">Associated Goals</h2>
+
+  {% if goals %}
     <div class="table-responsive">
-      <table class="table table-hover align-middle" aria-label="Goals list">
+      <table class="table table-hover align-middle" aria-label="Goals for {{ object.name }}">
         <thead class="table-light">
           <tr>
             <th scope="col">Title</th>
-            <th scope="col">Core Value</th>
             <th scope="col">Status</th>
             <th scope="col">Target Date</th>
+            <th scope="col">Milestones</th>
             <th scope="col"><span class="visually-hidden">Actions</span></th>
           </tr>
         </thead>
         <tbody>
-          {% for goal in object_list %}
+          {% for goal in goals %}
             <tr>
-              <td><strong>{{ goal.title }}</strong>
+              <td>
+                <a href="{% url 'true_north:goal-detail' goal.pk %}">
+                  <strong>{{ goal.title }}</strong>
+                </a>
                 {% if goal.description %}
                   <br><small class="text-muted">{{ goal.description|truncatewords:10 }}</small>
                 {% endif %}
               </td>
-              <td>{{ goal.value|default:"—" }}</td>
               <td>
                 <span class="badge status-badge-{{ goal.status }}">{{ goal.get_status_display }}</span>
               </td>
               <td>{{ goal.target_date|default:"—" }}</td>
+              <td>{{ goal.milestones.count }}</td>
               <td class="text-nowrap">
                 <a href="{% url 'true_north:goal-detail' goal.pk %}"
                    class="btn btn-sm btn-outline-info"
@@ -59,52 +92,16 @@
                 <a href="{% url 'true_north:goal-update' goal.pk %}"
                    class="btn btn-sm btn-outline-primary ms-1"
                    aria-label="Edit {{ goal.title }}">Edit</a>
-                <a href="{% url 'true_north:goal-delete' goal.pk %}"
-                   class="btn btn-sm btn-outline-danger ms-1"
-                   aria-label="Delete {{ goal.title }}">Delete</a>
-                <form method="post"
-                      action="{% url 'true_north:goal-send-email' goal.pk %}"
-                      class="d-inline ms-1">
-                  {% csrf_token %}
-                  <button type="submit"
-                          class="btn btn-sm btn-outline-secondary"
-                          aria-label="Send email for {{ goal.title }}">
-                    Send Email
-                  </button>
-                </form>
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-
-    {% if is_paginated %}
-      <nav aria-label="Goals pagination">
-        <ul class="pagination">
-          {% if page_obj.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            </li>
-          {% endif %}
-          {% for i in paginator.page_range %}
-            <li class="page-item {% if page_obj.number == i %}active{% endif %}">
-              <a class="page-link" href="?page={{ i }}"
-                 {% if page_obj.number == i %}aria-current="page"{% endif %}>{{ i }}</a>
-            </li>
-          {% endfor %}
-          {% if page_obj.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-            </li>
-          {% endif %}
-        </ul>
-      </nav>
-    {% endif %}
   {% else %}
     <div class="alert alert-info">
-      <p class="mb-0">You have no Goals yet.
-        <a href="{% url 'true_north:goal-create' %}">Create your first Goal</a>.
+      <p class="mb-0">No Goals linked to this Core Value yet.
+        <a href="{% url 'true_north:goal-create' %}">Create a Goal</a>.
       </p>
     </div>
   {% endif %}
