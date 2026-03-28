@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ object.description }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ object.description }}</h1>
+    <div>
+      <a href="{% url 'true_north:milestone-update' object.pk %}"
+         class="btn btn-outline-primary">Edit</a>
+      <a href="{% url 'true_north:goal-detail' object.goal.pk %}"
+         class="btn btn-outline-secondary ms-2">Goal: {{ object.goal.title }}</a>
+      <a href="{% url 'true_north:milestone-list' %}"
+         class="btn btn-outline-secondary ms-2">Back to Milestones</a>
+    </div>
+  </div>
+
+  {% if messages %}
+    <div role="alert" aria-live="polite">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <dl class="row mb-0">
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">{{ object.description }}</dd>
+
+        <dt class="col-sm-3">Goal</dt>
+        <dd class="col-sm-9">
+          <a href="{% url 'true_north:goal-detail' object.goal.pk %}">{{ object.goal.title }}</a>
+        </dd>
+
+        <dt class="col-sm-3">Notes</dt>
+        <dd class="col-sm-9">{{ object.notes|default:"—" }}</dd>
+
+        <dt class="col-sm-3">Due Date</dt>
+        <dd class="col-sm-9">{{ object.due_date|default:"—" }}</dd>
+
+        <dt class="col-sm-3">Completed</dt>
+        <dd class="col-sm-9">
+          {% if object.is_completed %}
+            <span class="badge bg-success">Done</span>
+            {% if object.completed_at %}
+              <small class="text-muted ms-2">{{ object.completed_at }}</small>
+            {% endif %}
+          {% else %}
+            <span class="badge bg-secondary">Pending</span>
+          {% endif %}
+        </dd>
+
+        <dt class="col-sm-3">Created</dt>
+        <dd class="col-sm-9">{{ object.created }}</dd>
+
+        <dt class="col-sm-3">Updated</dt>
+        <dd class="col-sm-9">{{ object.updated }}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h2 class="h5 mb-3">Associated Value Actions</h2>
+
+  {% if value_actions %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle" aria-label="Value Actions for {{ object.description }}">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Content</th>
+            <th scope="col">Status</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Completed</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for action in value_actions %}
+            <tr>
+              <td>
+                <a href="{% url 'true_north:value-action-detail' action.pk %}">
+                  {{ action.content|truncatewords:15 }}
+                </a>
+              </td>
+              <td>
+                <span class="badge status-badge-{{ action.status }}">{{ action.get_status_display }}</span>
+              </td>
+              <td>{{ action.due_date|default:"—" }}</td>
+              <td>
+                {% if action.is_completed %}
+                  <span class="badge bg-success">Done</span>
+                {% else %}
+                  <span class="badge bg-secondary">Pending</span>
+                {% endif %}
+              </td>
+              <td class="text-nowrap">
+                <a href="{% url 'true_north:value-action-detail' action.pk %}"
+                   class="btn btn-sm btn-outline-info"
+                   aria-label="View action">View</a>
+                <a href="{% url 'true_north:value-action-update' action.pk %}"
+                   class="btn btn-sm btn-outline-primary ms-1"
+                   aria-label="Edit action">Edit</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info">
+      <p class="mb-0">No Value Actions for this Milestone yet.
+        <a href="{% url 'true_north:value-action-create' %}">Create a Value Action</a>.
+      </p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .status-badge-todo { background-color: #6c757d; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-doing { background-color: #ffc107; color: #000; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-done { background-color: #198754; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-skipped { background-color: #dc3545; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+</style>
+{% endblock %}

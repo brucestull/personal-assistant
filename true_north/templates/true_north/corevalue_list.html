@@ -53,8 +53,11 @@
               </td>
               <td>{{ cv.order }}</td>
               <td class="text-nowrap">
+                <a href="{% url 'true_north:core-value-detail' cv.pk %}"
+                   class="btn btn-sm btn-outline-info"
+                   aria-label="View {{ cv.name }}">View</a>
                 <a href="{% url 'true_north:core-value-update' cv.pk %}"
-                   class="btn btn-sm btn-outline-primary"
+                   class="btn btn-sm btn-outline-primary ms-1"
                    aria-label="Edit {{ cv.name }}">Edit</a>
                 <a href="{% url 'true_north:core-value-delete' cv.pk %}"
                    class="btn btn-sm btn-outline-danger ms-1"

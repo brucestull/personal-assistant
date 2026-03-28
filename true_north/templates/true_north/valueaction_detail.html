@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - Value Action Detail{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">Value Action Detail</h1>
+    <div>
+      <a href="{% url 'true_north:value-action-update' object.pk %}"
+         class="btn btn-outline-primary">Edit</a>
+      <a href="{% url 'true_north:milestone-detail' object.milestone.pk %}"
+         class="btn btn-outline-secondary ms-2">Milestone: {{ object.milestone.description|truncatewords:5 }}</a>
+      <a href="{% url 'true_north:value-action-list' %}"
+         class="btn btn-outline-secondary ms-2">Back to Value Actions</a>
+    </div>
+  </div>
+
+  {% if messages %}
+    <div role="alert" aria-live="polite">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <dl class="row mb-0">
+        <dt class="col-sm-3">Content</dt>
+        <dd class="col-sm-9">{{ object.content }}</dd>
+
+        <dt class="col-sm-3">Milestone</dt>
+        <dd class="col-sm-9">
+          <a href="{% url 'true_north:milestone-detail' object.milestone.pk %}">
+            {{ object.milestone.description }}
+          </a>
+        </dd>
+
+        <dt class="col-sm-3">Goal</dt>
+        <dd class="col-sm-9">
+          <a href="{% url 'true_north:goal-detail' object.milestone.goal.pk %}">
+            {{ object.milestone.goal.title }}
+          </a>
+        </dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">
+          <span class="badge status-badge-{{ object.status }}">{{ object.get_status_display }}</span>
+        </dd>
+
+        <dt class="col-sm-3">Due Date</dt>
+        <dd class="col-sm-9">{{ object.due_date|default:"—" }}</dd>
+
+        <dt class="col-sm-3">Completed</dt>
+        <dd class="col-sm-9">
+          {% if object.is_completed %}
+            <span class="badge bg-success">Done</span>
+            {% if object.completed_at %}
+              <small class="text-muted ms-2">{{ object.completed_at }}</small>
+            {% endif %}
+          {% else %}
+            <span class="badge bg-secondary">Pending</span>
+          {% endif %}
+        </dd>
+
+        <dt class="col-sm-3">Created</dt>
+        <dd class="col-sm-9">{{ object.created }}</dd>
+
+        <dt class="col-sm-3">Updated</dt>
+        <dd class="col-sm-9">{{ object.updated }}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <a href="{% url 'true_north:value-action-update' object.pk %}"
+       class="btn btn-primary">Edit</a>
+    <a href="{% url 'true_north:value-action-delete' object.pk %}"
+       class="btn btn-outline-danger">Delete</a>
+  </div>
+</div>
+
+<style>
+  .status-badge-todo { background-color: #6c757d; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-doing { background-color: #ffc107; color: #000; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-done { background-color: #198754; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+  .status-badge-skipped { background-color: #dc3545; color: #fff; padding: .25em .5em; border-radius: .25rem; font-size: .75em; }
+</style>
+{% endblock %}
