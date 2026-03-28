@@ -53,8 +53,11 @@
               </td>
               <td>{{ milestone.due_date|default:"—" }}</td>
               <td class="text-nowrap">
+                <a href="{% url 'true_north:milestone-detail' milestone.pk %}"
+                   class="btn btn-sm btn-outline-info"
+                   aria-label="View milestone: {{ milestone.description }}">View</a>
                 <a href="{% url 'true_north:milestone-update' milestone.pk %}"
-                   class="btn btn-sm btn-outline-primary"
+                   class="btn btn-sm btn-outline-primary ms-1"
                    aria-label="Edit milestone: {{ milestone.description }}">Edit</a>
                 <a href="{% url 'true_north:milestone-delete' milestone.pk %}"
                    class="btn btn-sm btn-outline-danger ms-1"
