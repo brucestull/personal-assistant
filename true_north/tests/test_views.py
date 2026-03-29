@@ -4,6 +4,7 @@ import pytest
 from django.urls import reverse
 
 from true_north.tests.factories import (
+    CoreValueEmailScheduleFactory,
     CoreValueFactory,
     CustomUserFactory,
     GoalFactory,
@@ -615,3 +616,156 @@ def test_valueaction_send_email_forbidden_other_user(client):
     url = reverse("true_north:value-action-send-email", kwargs={"pk": action.pk})
     response = client.post(url)
     assert response.status_code == 404
+
+
+# ---------------------------------------------------------------------------
+# CoreValueEmailSchedule CRUD
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_list_requires_login(client):
+    url = reverse("true_north:corevalue-email-schedule-list")
+    response = client.get(url)
+    assert response.status_code in (302, 403)
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_list_shows_user_schedules(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    schedule = CoreValueEmailScheduleFactory(user=user, core_value=cv)
+    url = reverse("true_north:corevalue-email-schedule-list")
+    response = client.get(url)
+    assert response.status_code == 200
+    assert schedule.get_frequency_display().encode() in response.content
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_list_hides_other_user_schedules(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv_other = CoreValueFactory(user=other)
+    CoreValueEmailScheduleFactory(user=other, core_value=cv_other)
+    url = reverse("true_north:corevalue-email-schedule-list")
+    response = client.get(url)
+    assert cv_other.name.encode() not in response.content
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_create(client):
+    from true_north.models import CoreValueEmailSchedule
+
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    url = reverse("true_north:corevalue-email-schedule-create")
+    response = client.post(
+        url, {"core_value": cv.pk, "frequency": "daily", "is_active": True}
+    )
+    assert response.status_code == 302
+    assert CoreValueEmailSchedule.objects.filter(user=user, core_value=cv).exists()
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_create_prefills_core_value(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    url = reverse("true_north:corevalue-email-schedule-create") + f"?core_value={cv.pk}"
+    response = client.get(url)
+    assert response.status_code == 200
+    assert str(cv.pk).encode() in response.content
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_update(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    schedule = CoreValueEmailScheduleFactory(user=user, core_value=cv)
+    url = reverse(
+        "true_north:corevalue-email-schedule-update", kwargs={"pk": schedule.pk}
+    )
+    response = client.post(
+        url, {"core_value": cv.pk, "frequency": "weekly", "is_active": True}
+    )
+    assert response.status_code == 302
+    schedule.refresh_from_db()
+    assert schedule.frequency == "weekly"
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_update_forbidden_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    schedule = CoreValueEmailScheduleFactory(user=other, core_value=cv)
+    url = reverse(
+        "true_north:corevalue-email-schedule-update", kwargs={"pk": schedule.pk}
+    )
+    response = client.post(
+        url, {"core_value": cv.pk, "frequency": "weekly", "is_active": True}
+    )
+    assert response.status_code in (403, 404)
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_delete(client):
+    from true_north.models import CoreValueEmailSchedule
+
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    schedule = CoreValueEmailScheduleFactory(user=user, core_value=cv)
+    url = reverse(
+        "true_north:corevalue-email-schedule-delete", kwargs={"pk": schedule.pk}
+    )
+    response = client.post(url)
+    assert response.status_code == 302
+    assert not CoreValueEmailSchedule.objects.filter(pk=schedule.pk).exists()
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_delete_forbidden_other_user(client):
+    from true_north.models import CoreValueEmailSchedule
+
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    schedule = CoreValueEmailScheduleFactory(user=other, core_value=cv)
+    url = reverse(
+        "true_north:corevalue-email-schedule-delete", kwargs={"pk": schedule.pk}
+    )
+    response = client.post(url)
+    assert response.status_code in (403, 404)
+    assert CoreValueEmailSchedule.objects.filter(pk=schedule.pk).exists()
+
+
+@pytest.mark.django_db
+def test_corevalue_detail_shows_schedule_button(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    url = reverse("true_north:core-value-detail", kwargs={"pk": cv.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert b"Schedule Email Reminder" in response.content
+
+
+@pytest.mark.django_db
+def test_corevalue_email_schedule_send_now_forbidden_other_user(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    schedule = CoreValueEmailScheduleFactory(user=other, core_value=cv)
+    url = reverse(
+        "true_north:corevalue-email-schedule-send-now", kwargs={"pk": schedule.pk}
+    )
+    response = client.post(url)
+    assert response.status_code in (403, 404)

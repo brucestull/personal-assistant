@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <a href="{% url 'true_north:corevalue-email-schedule-list' %}"
+       class="btn btn-outline-secondary">Cancel</a>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <p class="text-muted">
+        Choose a Core Value and how often you'd like to receive an email reminder
+        about it. The email will be sent to <strong>{{ request.user.email }}</strong>.
+      </p>
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3">
+            {% if field.field.widget.input_type == 'checkbox' %}
+              <div class="form-check">
+                {{ field }}
+                <label for="{{ field.id_for_label }}" class="form-check-label fw-semibold">
+                  {{ field.label }}
+                </label>
+              </div>
+            {% else %}
+              <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                {{ field.label }}
+              </label>
+              {{ field }}
+            {% endif %}
+            {% if field.help_text %}
+              <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+            {% for error in field.errors %}
+              <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">
+          {% if object %}Update Schedule{% else %}Create Schedule{% endif %}
+        </button>
+        <a href="{% url 'true_north:corevalue-email-schedule-list' %}"
+           class="btn btn-outline-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

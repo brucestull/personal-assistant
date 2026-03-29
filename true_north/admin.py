@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from .models import CoreValue, Goal, Milestone, ValueAction
+from .models import CoreValue, CoreValueEmailSchedule, Goal, Milestone, ValueAction
 
 
 class GoalInline(admin.TabularInline):
@@ -107,3 +107,22 @@ class ValueActionAdmin(admin.ModelAdmin):
     readonly_fields = ("created", "updated")
 
     autocomplete_fields = ("user", "milestone")
+
+
+@admin.register(CoreValueEmailSchedule)
+class CoreValueEmailScheduleAdmin(admin.ModelAdmin):
+    list_display = (
+        "__str__",
+        "user",
+        "core_value",
+        "frequency",
+        "is_active",
+        "next_send",
+        "last_sent",
+        "created",
+    )
+    list_filter = ("frequency", "is_active", "user")
+    search_fields = ("core_value__name", "user__username")
+    ordering = ("-created",)
+    readonly_fields = ("created", "updated", "last_sent", "next_send")
+    autocomplete_fields = ("user", "core_value")
