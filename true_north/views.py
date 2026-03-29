@@ -631,6 +631,7 @@ class CoreValueEmailScheduleUpdateView(
         return self.get_object().user == self.request.user
 
     def form_valid(self, form):
+        form.instance.next_send = form.instance.compute_next_send()
         messages.success(self.request, "Email reminder schedule updated.")
         return super().form_valid(form)
 
