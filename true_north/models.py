@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from datetime import datetime as _dt
+from datetime import time as _time
+from datetime import timedelta
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -391,25 +395,21 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
         3. Otherwise – original frequency-based behaviour (add a fixed delta
            to *now*).
         """
-        from datetime import datetime as dt_class
-        from datetime import time as time_class
-        from datetime import timedelta
-
         now = timezone.now()
         days = self.get_days_of_week_list()
 
         if days:
             # Days-of-week mode: fire at send_time on the specified weekdays.
-            target_time = self.send_time or time_class(9, 0)
+            target_time = self.send_time or _time(9, 0)
             tz = timezone.get_current_timezone()
 
-            # Check today through the next 7 days (inclusive) to find the
-            # next slot that is still in the future.
+            # Check today and the following 7 days (8 candidates total) to find
+            # the next slot that is still in the future.
             for offset in range(8):
                 candidate_date = now.date() + timedelta(days=offset)
                 if candidate_date.weekday() in days:
                     candidate_dt = timezone.make_aware(
-                        dt_class.combine(candidate_date, target_time), tz
+                        _dt.combine(candidate_date, target_time), tz
                     )
                     if candidate_dt > now:
                         return candidate_dt
@@ -435,7 +435,7 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
             tz = timezone.get_current_timezone()
             next_local = next_raw.astimezone(tz)
             next_dt = timezone.make_aware(
-                dt_class.combine(next_local.date(), self.send_time), tz
+                _dt.combine(next_local.date(), self.send_time), tz
             )
             # Guard: if pinning to send_time pushed us back into the past,
             # advance by one more interval.

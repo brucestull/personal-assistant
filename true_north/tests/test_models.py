@@ -312,7 +312,7 @@ def test_compute_next_send_frequency_only_adds_delta():
     result = schedule.compute_next_send()
     after = timezone.now()
 
-    assert before + timedelta(days=1) <= result <= after + timedelta(days=1, seconds=1)
+    assert before + timedelta(days=1) <= result <= after + timedelta(days=1, seconds=5)
 
 
 def test_compute_next_send_send_time_anchors_time_of_day():

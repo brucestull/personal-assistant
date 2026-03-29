@@ -159,8 +159,8 @@ class CoreValueEmailScheduleForm(forms.ModelForm):
     def clean_days_of_week(self):
         """Convert the selected list back to a comma-separated string."""
         days = self.cleaned_data.get("days_of_week") or []
-        # Sort for canonical storage order (Mon → Sun).
-        return ",".join(sorted(days))
+        # Sort numerically for canonical storage order (Mon → Sun).
+        return ",".join(sorted(days, key=int))
 
     class Meta:
         model = CoreValueEmailSchedule
