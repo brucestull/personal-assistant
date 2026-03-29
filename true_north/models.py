@@ -5,6 +5,8 @@ from __future__ import annotations
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.urls import reverse
+from django.utils import timezone
 from django.utils.text import slugify
 
 from base.mixins import OrderableMixin
@@ -250,3 +252,110 @@ class ValueAction(UserOwnedBase, OrderableMixin):
             models.Index(fields=["user", "status"]),
             models.Index(fields=["user", "is_completed"]),
         ]
+
+
+class CoreValueEmailSchedule(CreatedUpdatedBase):
+    """
+    A recurring email schedule that reminds a user of one of their CoreValues.
+
+    The user picks a CoreValue and a frequency; the Celery periodic task
+    ``process_due_corevalue_reminders`` dispatches
+    ``send_corevalue_reminder_email`` whenever ``next_send`` is in the past.
+    """
+
+    TWICE_DAILY = "twice_daily"
+    DAILY = "daily"
+    THREE_PER_WEEK = "three_per_week"
+    WEEKLY = "weekly"
+    BIWEEKLY = "biweekly"
+    MONTHLY = "monthly"
+
+    FREQUENCY_CHOICES = [
+        (TWICE_DAILY, "Twice a day (every 12 hours)"),
+        (DAILY, "Once a day"),
+        (THREE_PER_WEEK, "Three times a week (every 2 days)"),
+        (WEEKLY, "Once a week"),
+        (BIWEEKLY, "Every two weeks"),
+        (MONTHLY, "Once a month"),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="corevalue_email_schedules",
+    )
+    core_value = models.ForeignKey(
+        CoreValue,
+        on_delete=models.CASCADE,
+        related_name="email_schedules",
+    )
+    frequency = models.CharField(
+        max_length=20,
+        choices=FREQUENCY_CHOICES,
+        default=DAILY,
+        help_text="How often to receive a reminder email for this Core Value.",
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Uncheck to pause this reminder without deleting it.",
+    )
+    next_send = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When the next reminder email will be sent.",
+    )
+    last_sent = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When the most recent reminder email was sent.",
+    )
+
+    def clean(self):
+        if self.core_value_id and self.user_id:
+            if self.core_value.user_id != self.user_id:
+                raise ValidationError(
+                    {"core_value": "This Core Value belongs to a different user."}
+                )
+
+    def compute_next_send(self):
+        """Return the datetime of the next send based on frequency."""
+        from datetime import timedelta
+
+        now = timezone.now()
+        delta_map = {
+            self.TWICE_DAILY: timedelta(hours=12),
+            self.DAILY: timedelta(days=1),
+            self.THREE_PER_WEEK: timedelta(days=2),
+            self.WEEKLY: timedelta(weeks=1),
+            self.BIWEEKLY: timedelta(weeks=2),
+            self.MONTHLY: timedelta(days=30),
+        }
+        return now + delta_map.get(self.frequency, timedelta(days=1))
+
+    def get_subject(self):
+        site_name = getattr(settings, "THE_SITE_NAME", "Personal Assistant")
+        return f"{site_name} — Core Value Reminder: {self.core_value.name}"
+
+    def get_content(self):
+        cv = self.core_value
+        return (
+            f"Core Value: {cv.name}\n\n"
+            f"Definition: {cv.definition or 'N/A'}\n"
+            f"Active: {cv.is_active}\n"
+        )
+
+    def get_absolute_url(self):
+        return reverse(
+            "true_north:corevalue-email-schedule-list"
+        )
+
+    def __str__(self):
+        return (
+            f"{self.get_frequency_display()} reminder for "
+            f'"{self.core_value.name}" ({self.user})'
+        )
+
+    class Meta:
+        verbose_name = "Core Value Email Schedule"
+        verbose_name_plural = "Core Value Email Schedules"
+        ordering = ("-created",)

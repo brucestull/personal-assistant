@@ -2,7 +2,7 @@
 
 from django import forms
 
-from true_north.models import CoreValue, Goal, Milestone, ValueAction
+from true_north.models import CoreValue, CoreValueEmailSchedule, Goal, Milestone, ValueAction  # noqa E501
 
 _FORM_CONTROL_WIDGETS = (
     forms.TextInput,
@@ -117,3 +117,21 @@ class ValueActionForm(forms.ModelForm):
             "content": forms.Textarea(attrs={"rows": 4}),
             "due_date": forms.DateInput(attrs={"type": "date"}),
         }
+
+
+class CoreValueEmailScheduleForm(forms.ModelForm):
+    """Form for creating/editing a CoreValueEmailSchedule."""
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user is not None:
+            self.fields["core_value"].queryset = CoreValue.objects.filter(
+                user=user, is_active=True
+            ).order_by("order", "name")
+        else:
+            self.fields["core_value"].queryset = CoreValue.objects.none()
+        _add_bootstrap_classes(self)
+
+    class Meta:
+        model = CoreValueEmailSchedule
+        fields = ["core_value", "frequency", "is_active"]

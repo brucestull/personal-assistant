@@ -132,4 +132,30 @@ urlpatterns = [
         views.ValueActionSendEmailView.as_view(),
         name="value-action-send-email",
     ),
+    # CoreValue Email Schedules
+    path(
+        "core-value-email-schedules/",
+        views.CoreValueEmailScheduleListView.as_view(),
+        name="corevalue-email-schedule-list",
+    ),
+    path(
+        "core-value-email-schedules/create/",
+        views.CoreValueEmailScheduleCreateView.as_view(),
+        name="corevalue-email-schedule-create",
+    ),
+    path(
+        "core-value-email-schedules/<int:pk>/update/",
+        views.CoreValueEmailScheduleUpdateView.as_view(),
+        name="corevalue-email-schedule-update",
+    ),
+    path(
+        "core-value-email-schedules/<int:pk>/delete/",
+        views.CoreValueEmailScheduleDeleteView.as_view(),
+        name="corevalue-email-schedule-delete",
+    ),
+    path(
+        "core-value-email-schedules/<int:pk>/send-now/",
+        views.CoreValueEmailScheduleSendNowView.as_view(),
+        name="corevalue-email-schedule-send-now",
+    ),
 ]
