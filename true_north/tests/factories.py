@@ -106,6 +106,8 @@ class CoreValueEmailScheduleFactory(factory.django.DjangoModelFactory):
         CoreValueFactory, user=factory.SelfAttribute("..user")
     )
     frequency = CoreValueEmailSchedule.DAILY
+    send_time = None
+    days_of_week = ""
     is_active = True
     next_send = None
     last_sent = None

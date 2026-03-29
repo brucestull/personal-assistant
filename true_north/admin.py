@@ -116,6 +116,8 @@ class CoreValueEmailScheduleAdmin(admin.ModelAdmin):
         "user",
         "core_value",
         "frequency",
+        "send_time",
+        "days_of_week",
         "is_active",
         "next_send",
         "last_sent",

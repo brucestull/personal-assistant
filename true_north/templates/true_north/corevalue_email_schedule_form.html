@@ -13,39 +13,109 @@
   <div class="card">
     <div class="card-body">
       <p class="text-muted">
-        Choose a Core Value and how often you'd like to receive an email reminder
+        Choose a Core Value and configure when you'd like to receive an email reminder
         about it. The email will be sent to <strong>{{ request.user.email }}</strong>.
       </p>
       <form method="post">
         {% csrf_token %}
-        {% for field in form %}
+
+        {# ---- Core Value ---- #}
+        <div class="mb-3">
+          <label for="{{ form.core_value.id_for_label }}" class="form-label fw-semibold">
+            {{ form.core_value.label }}
+          </label>
+          {{ form.core_value }}
+          {% if form.core_value.help_text %}
+            <div class="form-text">{{ form.core_value.help_text }}</div>
+          {% endif %}
+          {% for error in form.core_value.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        {# ---- Schedule section ---- #}
+        <fieldset class="border rounded p-3 mb-3">
+          <legend class="float-none w-auto px-2 fs-6 fw-semibold text-secondary">
+            Schedule Settings
+          </legend>
+          <p class="text-muted small mb-3">
+            <strong>Option A – Days of the week:</strong> pick specific days (and
+            optionally a time) and emails will fire on those days at that time.
+            The <em>Frequency</em> field is ignored when days are selected.<br>
+            <strong>Option B – Frequency only:</strong> leave the days unchecked and
+            choose a <em>Frequency</em> (and optionally a <em>Time of day</em>) for a
+            recurring interval-based schedule.
+          </p>
+
+          {# Time of day #}
           <div class="mb-3">
-            {% if field.field.widget.input_type == 'checkbox' %}
-              <div class="form-check">
-                {{ field }}
-                <label for="{{ field.id_for_label }}" class="form-check-label fw-semibold">
-                  {{ field.label }}
-                </label>
-              </div>
-            {% else %}
-              <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
-                {{ field.label }}
-              </label>
-              {{ field }}
+            <label for="{{ form.send_time.id_for_label }}" class="form-label fw-semibold">
+              {{ form.send_time.label }}
+            </label>
+            {{ form.send_time }}
+            {% if form.send_time.help_text %}
+              <div class="form-text">{{ form.send_time.help_text }}</div>
             {% endif %}
-            {% if field.help_text %}
-              <div class="form-text">{{ field.help_text }}</div>
-            {% endif %}
-            {% for error in field.errors %}
+            {% for error in form.send_time.errors %}
               <div class="invalid-feedback d-block">{{ error }}</div>
             {% endfor %}
           </div>
-        {% endfor %}
+
+          {# Days of the week #}
+          <div class="mb-3">
+            <p class="form-label fw-semibold mb-1">{{ form.days_of_week.label }}</p>
+            <div class="d-flex flex-wrap gap-3">
+              {% for checkbox in form.days_of_week %}
+                <div class="form-check">
+                  {{ checkbox.tag }}
+                  <label for="{{ checkbox.id_for_label }}" class="form-check-label">
+                    {{ checkbox.choice_label }}
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+            {% if form.days_of_week.help_text %}
+              <div class="form-text">{{ form.days_of_week.help_text }}</div>
+            {% endif %}
+            {% for error in form.days_of_week.errors %}
+              <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          {# Frequency (fallback) #}
+          <div class="mb-3">
+            <label for="{{ form.frequency.id_for_label }}" class="form-label fw-semibold">
+              {{ form.frequency.label }}
+            </label>
+            {{ form.frequency }}
+            {% if form.frequency.help_text %}
+              <div class="form-text">{{ form.frequency.help_text }}</div>
+            {% endif %}
+            {% for error in form.frequency.errors %}
+              <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+        </fieldset>
+
+        {# ---- Active toggle ---- #}
+        <div class="mb-3">
+          <div class="form-check">
+            {{ form.is_active }}
+            <label for="{{ form.is_active.id_for_label }}" class="form-check-label fw-semibold">
+              {{ form.is_active.label }}
+            </label>
+          </div>
+          {% if form.is_active.help_text %}
+            <div class="form-text">{{ form.is_active.help_text }}</div>
+          {% endif %}
+        </div>
+
         {% if form.non_field_errors %}
           <div class="alert alert-danger">
             {% for error in form.non_field_errors %}{{ error }}{% endfor %}
           </div>
         {% endif %}
+
         <button type="submit" class="btn btn-primary">
           {% if object %}Update Schedule{% else %}Create Schedule{% endif %}
         </button>
