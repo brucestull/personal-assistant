@@ -429,10 +429,18 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
         delta = delta_map.get(self.frequency, timedelta(days=1))
 
         if self.send_time:
-            # Frequency + specific time: compute the next send date from
-            # *now* + delta, then replace the time component with send_time.
-            next_raw = now + delta
+            # Frequency + specific time: first check if today's send_time is
+            # still in the future; if so return it.  Otherwise advance by one
+            # full interval and anchor to send_time on that date.
             tz = timezone.get_current_timezone()
+            now_local = now.astimezone(tz)
+            candidate_today = timezone.make_aware(
+                _dt.combine(now_local.date(), self.send_time), tz
+            )
+            if candidate_today > now:
+                return candidate_today
+
+            next_raw = now + delta
             next_local = next_raw.astimezone(tz)
             next_dt = timezone.make_aware(
                 _dt.combine(next_local.date(), self.send_time), tz

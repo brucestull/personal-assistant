@@ -368,3 +368,36 @@ def test_compute_next_send_days_of_week_ignores_frequency():
     assert result > timezone.now()
     assert local_result.weekday() == 0
     assert local_result.hour == 7
+
+
+def test_compute_next_send_send_time_today_when_still_in_future():
+    """A schedule created before send_time should fire TODAY, not tomorrow."""
+    from datetime import datetime as _dt
+    from datetime import time  # noqa: F401
+    from unittest.mock import patch
+
+    tz = timezone.get_current_timezone()
+    # Simulate "now" as 08:53 local time so that 09:00 is still in the future.
+    now_local_date = timezone.now().astimezone(tz).date()
+    now_utc = timezone.make_aware(
+        _dt.combine(now_local_date, time(8, 53, 0)), tz
+    )
+
+    send_time = time(9, 0)
+    schedule = CoreValueEmailScheduleFactory.build(
+        frequency=CoreValueEmailSchedule.DAILY,
+        send_time=send_time,
+        days_of_week="",
+    )
+
+    with patch("true_north.models.timezone") as mock_tz:
+        mock_tz.now.return_value = now_utc
+        mock_tz.get_current_timezone.return_value = tz
+        mock_tz.make_aware.side_effect = timezone.make_aware
+        result = schedule.compute_next_send()
+
+    local_result = result.astimezone(tz)
+    # Should be TODAY at 09:00, not tomorrow.
+    assert local_result.date() == now_local_date
+    assert local_result.hour == 9
+    assert local_result.minute == 0
