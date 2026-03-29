@@ -18,7 +18,7 @@ class TestSendCoreValueEmail:
         from true_north.tasks import send_core_value_email
 
         user = CustomUserFactory(email="test@example.com")
-        core_value = CoreValueFactory(user=user, name="Integrity", definition="Be honest.")
+        core_value = CoreValueFactory(user=user, name="Integrity", definition="Be honest.")  # noqa: E501
 
         with patch("true_north.tasks._send_email") as mock_send:
             result = send_core_value_email(user.id, core_value.id)
