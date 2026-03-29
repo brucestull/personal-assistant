@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from datetime import datetime as _dt
+from datetime import time as _time
+from datetime import timedelta
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -258,8 +262,14 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
     """
     A recurring email schedule that reminds a user of one of their CoreValues.
 
-    The user picks a CoreValue and a frequency; the Celery periodic task
-    ``process_due_corevalue_reminders`` dispatches
+    The user picks a CoreValue, an optional specific time of day (``send_time``),
+    and optional days of the week (``days_of_week``).  When ``days_of_week`` is
+    populated the schedule fires on those weekdays at ``send_time`` (ignoring
+    ``frequency``).  When only ``send_time`` is set, ``frequency`` controls the
+    interval but the email is sent at the specified time of day.  When neither
+    is set the original frequency-based behaviour is used.
+
+    The Celery periodic task ``process_due_corevalue_reminders`` dispatches
     ``send_corevalue_reminder_email`` whenever ``next_send`` is in the past.
     """
 
@@ -279,6 +289,19 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
         (MONTHLY, "Once a month"),
     ]
 
+    # Day-of-week constants (compatible with Python's datetime.weekday())
+    MON, TUE, WED, THU, FRI, SAT, SUN = 0, 1, 2, 3, 4, 5, 6
+
+    DAYS_OF_WEEK_CHOICES = [
+        (str(MON), "Monday"),
+        (str(TUE), "Tuesday"),
+        (str(WED), "Wednesday"),
+        (str(THU), "Thursday"),
+        (str(FRI), "Friday"),
+        (str(SAT), "Saturday"),
+        (str(SUN), "Sunday"),
+    ]
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -293,7 +316,26 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
         max_length=20,
         choices=FREQUENCY_CHOICES,
         default=DAILY,
-        help_text="How often to receive a reminder email for this Core Value.",
+        help_text=(
+            "How often to receive a reminder (used when no specific days are chosen)."
+        ),
+    )
+    send_time = models.TimeField(
+        null=True,
+        blank=True,
+        help_text=(
+            "Time of day to receive the reminder (e.g. 09:00). "
+            "Leave blank to use the current time when the schedule is created."
+        ),
+    )
+    days_of_week = models.CharField(
+        max_length=20,
+        blank=True,
+        default="",
+        help_text=(
+            "Comma-separated weekday numbers (0=Mon … 6=Sun) on which to send "
+            "reminders.  When set, overrides the Frequency field."
+        ),
     )
     is_active = models.BooleanField(
         default=True,
@@ -316,12 +358,66 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
                 raise ValidationError(
                     {"core_value": "This Core Value belongs to a different user."}
                 )
+        # Validate days_of_week contents
+        if self.days_of_week:
+            valid = {str(i) for i in range(7)}
+            parts = [p.strip() for p in self.days_of_week.split(",") if p.strip()]
+            invalid = [p for p in parts if p not in valid]
+            if invalid:
+                raise ValidationError(
+                    {
+                        "days_of_week": (
+                            "Invalid day values: %(values)s. "
+                            "Use 0 (Monday) through 6 (Sunday)."
+                        ),
+                    },
+                    params={"values": ", ".join(invalid)},
+                )
+
+    def get_days_of_week_list(self):
+        """Return a list of integer weekday numbers from ``days_of_week``."""
+        if not self.days_of_week:
+            return []
+        return [
+            int(d.strip())
+            for d in self.days_of_week.split(",")
+            if d.strip().isdigit()
+        ]
 
     def compute_next_send(self):
-        """Return the datetime of the next send based on frequency."""
-        from datetime import timedelta
+        """Return the datetime of the next reminder send.
 
+        Priority:
+        1. If ``days_of_week`` is set – find the next matching weekday at
+           ``send_time`` (defaulting to 09:00 when ``send_time`` is blank).
+        2. If only ``send_time`` is set – apply the ``frequency`` interval but
+           anchor the time component to ``send_time``.
+        3. Otherwise – original frequency-based behaviour (add a fixed delta
+           to *now*).
+        """
         now = timezone.now()
+        days = self.get_days_of_week_list()
+
+        if days:
+            # Days-of-week mode: fire at send_time on the specified weekdays.
+            target_time = self.send_time or _time(9, 0)
+            tz = timezone.get_current_timezone()
+
+            # Check today and the following 7 days (8 candidates total) to find
+            # the next slot that is still in the future.
+            for offset in range(8):
+                candidate_date = now.date() + timedelta(days=offset)
+                if candidate_date.weekday() in days:
+                    candidate_dt = timezone.make_aware(
+                        _dt.combine(candidate_date, target_time), tz
+                    )
+                    if candidate_dt > now:
+                        return candidate_dt
+
+            # Fallback – should not happen with a valid days list.
+            return now + timedelta(days=7)
+
+        # Frequency-based interval delta map (used by both remaining branches).
         delta_map = {
             self.TWICE_DAILY: timedelta(hours=12),
             self.DAILY: timedelta(days=1),
@@ -330,7 +426,25 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
             self.BIWEEKLY: timedelta(weeks=2),
             self.MONTHLY: timedelta(days=30),
         }
-        return now + delta_map.get(self.frequency, timedelta(days=1))
+        delta = delta_map.get(self.frequency, timedelta(days=1))
+
+        if self.send_time:
+            # Frequency + specific time: compute the next send date from
+            # *now* + delta, then replace the time component with send_time.
+            next_raw = now + delta
+            tz = timezone.get_current_timezone()
+            next_local = next_raw.astimezone(tz)
+            next_dt = timezone.make_aware(
+                _dt.combine(next_local.date(), self.send_time), tz
+            )
+            # Guard: if pinning to send_time pushed us back into the past,
+            # advance by one more interval.
+            if next_dt <= now:
+                next_dt += delta
+            return next_dt
+
+        # Original behaviour: add a fixed delta to now.
+        return now + delta
 
     def get_subject(self):
         site_name = getattr(settings, "THE_SITE_NAME", "Personal Assistant")

@@ -5,11 +5,13 @@ from __future__ import annotations
 import pytest
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
+from django.utils import timezone
 
-from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
+from true_north.models import CoreValue, CoreValueEmailSchedule, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
 from true_north.tests.factories import (
     CustomUserFactory,
     CoreValueFactory,
+    CoreValueEmailScheduleFactory,
     GoalFactory,
     MilestoneFactory,
     ValueActionFactory,
@@ -251,3 +253,118 @@ def test_task_meta_ordering_is_order_then_id():
 
     qs = ValueAction.objects.filter(milestone=milestone).values_list("id", flat=True)
     assert list(qs) == [t3.id, t1.id, t2.id]
+
+
+# -------------------------
+# CoreValueEmailSchedule
+# -------------------------
+
+
+def test_schedule_clean_rejects_mismatched_user():
+    user_a = CustomUserFactory()
+    user_b = CustomUserFactory()
+    cv = CoreValueFactory(user=user_a)
+
+    schedule = CoreValueEmailSchedule(
+        user=user_b,
+        core_value=cv,
+        frequency=CoreValueEmailSchedule.DAILY,
+    )
+    with pytest.raises(ValidationError) as exc:
+        schedule.clean()
+    assert "core_value" in exc.value.message_dict
+
+
+def test_schedule_clean_rejects_invalid_days_of_week():
+    user = CustomUserFactory()
+    cv = CoreValueFactory(user=user)
+
+    schedule = CoreValueEmailSchedule(
+        user=user,
+        core_value=cv,
+        days_of_week="0,7,3",  # 7 is invalid
+    )
+    with pytest.raises(ValidationError) as exc:
+        schedule.clean()
+    assert "days_of_week" in exc.value.message_dict
+
+
+def test_get_days_of_week_list_parses_comma_separated():
+    schedule = CoreValueEmailScheduleFactory.build(days_of_week="0,2,4")
+    assert schedule.get_days_of_week_list() == [0, 2, 4]
+
+
+def test_get_days_of_week_list_empty_string_returns_empty():
+    schedule = CoreValueEmailScheduleFactory.build(days_of_week="")
+    assert schedule.get_days_of_week_list() == []
+
+
+def test_compute_next_send_frequency_only_adds_delta():
+    """With no days_of_week or send_time, next_send is now + frequency delta."""
+    from datetime import timedelta
+
+    schedule = CoreValueEmailScheduleFactory.build(
+        frequency=CoreValueEmailSchedule.DAILY,
+        send_time=None,
+        days_of_week="",
+    )
+    before = timezone.now()
+    result = schedule.compute_next_send()
+    after = timezone.now()
+
+    assert before + timedelta(days=1) <= result <= after + timedelta(days=1, seconds=5)
+
+
+def test_compute_next_send_send_time_anchors_time_of_day():
+    """When send_time is set (no days_of_week), next_send lands on send_time."""
+    from datetime import time
+
+    schedule = CoreValueEmailScheduleFactory.build(
+        frequency=CoreValueEmailSchedule.DAILY,
+        send_time=time(8, 30),
+        days_of_week="",
+    )
+    result = schedule.compute_next_send()
+    tz = timezone.get_current_timezone()
+    local_result = result.astimezone(tz)
+    assert local_result.hour == 8
+    assert local_result.minute == 30
+
+
+def test_compute_next_send_days_of_week_returns_future_weekday():
+    """When days_of_week is set, next_send falls on one of those weekdays."""
+    from datetime import time
+
+    # Schedule for every day of the week at 09:00.
+    schedule = CoreValueEmailScheduleFactory.build(
+        frequency=CoreValueEmailSchedule.DAILY,
+        send_time=time(9, 0),
+        days_of_week="0,1,2,3,4,5,6",  # all days
+    )
+    result = schedule.compute_next_send()
+    assert result > timezone.now()
+    tz = timezone.get_current_timezone()
+    local_result = result.astimezone(tz)
+    assert local_result.hour == 9
+    assert local_result.minute == 0
+
+
+def test_compute_next_send_days_of_week_ignores_frequency():
+    """With days_of_week set the frequency field is not used for timing."""
+    from datetime import time
+
+    # Pick a specific weekday to ensure a deterministic result.
+    # We find next Monday (weekday 0).
+    schedule = CoreValueEmailScheduleFactory.build(
+        frequency=CoreValueEmailSchedule.MONTHLY,  # would be 30 days otherwise
+        send_time=time(7, 0),
+        days_of_week="0",  # Monday only
+    )
+    result = schedule.compute_next_send()
+    tz = timezone.get_current_timezone()
+    local_result = result.astimezone(tz)
+
+    # Must be in the future and be a Monday.
+    assert result > timezone.now()
+    assert local_result.weekday() == 0
+    assert local_result.hour == 7

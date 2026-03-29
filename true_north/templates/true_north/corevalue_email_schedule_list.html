@@ -30,13 +30,22 @@
       {% for schedule in object_list %}
         <div class="list-group-item d-flex justify-content-between align-items-start">
           <div class="me-3">
-            <span class="badge {% if schedule.is_active %}bg-success{% else %}bg-secondary{% endif %} me-1">
-              {{ schedule.get_frequency_display }}
-            </span>
             <strong>{{ schedule.core_value.name }}</strong>
             {% if not schedule.is_active %}
               <span class="badge bg-secondary ms-1">Paused</span>
             {% endif %}
+            <div class="text-muted small mt-1">
+              {% if schedule.days_of_week %}
+                <span class="badge bg-info text-dark me-1">Custom days</span>
+                {{ schedule.days_of_week }}
+                {% if schedule.send_time %} at {{ schedule.send_time|time:"g:i A" }}{% endif %}
+              {% else %}
+                <span class="badge {% if schedule.is_active %}bg-success{% else %}bg-secondary{% endif %} me-1">
+                  {{ schedule.get_frequency_display }}
+                </span>
+                {% if schedule.send_time %}at {{ schedule.send_time|time:"g:i A" }}{% endif %}
+              {% endif %}
+            </div>
             <div class="text-muted small mt-1">
               {% if schedule.next_send %}Next: {{ schedule.next_send|date:"N j, Y, g:i a" }}{% endif %}
               {% if schedule.last_sent %} | Last sent: {{ schedule.last_sent|date:"N j, Y, g:i a" }}{% endif %}
