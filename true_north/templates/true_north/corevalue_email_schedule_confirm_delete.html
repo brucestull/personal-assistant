@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <a href="{% url 'true_north:corevalue-email-schedule-list' %}"
+       class="btn btn-outline-secondary">Cancel</a>
+  </div>
+
+  <div class="card border-danger">
+    <div class="card-body">
+      <p>
+        Are you sure you want to delete the
+        <strong>{{ object.get_frequency_display }}</strong> reminder for
+        <strong>&ldquo;{{ object.core_value.name }}&rdquo;</strong>?
+      </p>
+      <p class="text-muted small">This action cannot be undone.</p>
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete it</button>
+        <a href="{% url 'true_north:corevalue-email-schedule-list' %}"
+           class="btn btn-outline-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

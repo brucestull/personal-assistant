@@ -5,7 +5,7 @@ from __future__ import annotations
 import factory
 
 from accounts.models import CustomUser
-from true_north.models import CoreValue, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
+from true_north.models import CoreValue, CoreValueEmailSchedule, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
 
 
 class CustomUserFactory(factory.django.DjangoModelFactory):
@@ -94,3 +94,18 @@ class ValueActionFactory(factory.django.DjangoModelFactory):
     is_completed = False
     completed_at = None
     order = factory.Sequence(lambda n: n)
+
+
+class CoreValueEmailScheduleFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = CoreValueEmailSchedule
+        skip_postgeneration_save = True
+
+    user = factory.SubFactory(CustomUserFactory)
+    core_value = factory.SubFactory(
+        CoreValueFactory, user=factory.SelfAttribute("..user")
+    )
+    frequency = CoreValueEmailSchedule.DAILY
+    is_active = True
+    next_send = None
+    last_sent = None

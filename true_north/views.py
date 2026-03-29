@@ -1,9 +1,10 @@
 # true_north/views.py
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import (
     DeleteView,
     DetailView,
@@ -14,9 +15,15 @@ from django.views.generic import (
 from django.views.generic.edit import CreateView
 
 from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
-from true_north.forms import CoreValueForm, GoalForm, MilestoneForm, ValueActionForm
-from true_north.models import CoreValue, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus  # noqa E501
-from true_north.tasks import send_true_north_email
+from true_north.forms import (
+    CoreValueEmailScheduleForm,
+    CoreValueForm,
+    GoalForm,
+    MilestoneForm,
+    ValueActionForm,
+)
+from true_north.models import CoreValue, CoreValueEmailSchedule, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus  # noqa E501
+from true_north.tasks import send_corevalue_reminder_email, send_true_north_email
 
 
 class DashboardView(
@@ -170,6 +177,9 @@ class CoreValueDetailView(
         ctx["goals"] = self.object.goals.filter(
             user=self.request.user
         ).prefetch_related("milestones").order_by("order", "title")
+        ctx["email_schedules"] = self.object.email_schedules.filter(
+            user=self.request.user
+        ).order_by("-created")
         return ctx
 
 
@@ -547,3 +557,131 @@ class ValueActionSendEmailView(
             f'Email for Value Action "{obj.content[:80]}" has been queued for sending.',
         )
         return redirect("true_north:value-action-list")
+
+
+# ---------------------------------------------------------------------------
+# CoreValueEmailSchedule CRUD + Send-Now
+# ---------------------------------------------------------------------------
+
+
+class CoreValueEmailScheduleListView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, ListView
+):
+    model = CoreValueEmailSchedule
+    template_name = "true_north/corevalue_email_schedule_list.html"
+    page_title = "Core Value Email Schedules"
+    paginate_by = 20
+
+    def get_queryset(self):
+        return CoreValueEmailSchedule.objects.filter(
+            user=self.request.user
+        ).select_related("core_value").order_by("-created")
+
+
+class CoreValueEmailScheduleCreateView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, CreateView
+):
+    model = CoreValueEmailSchedule
+    form_class = CoreValueEmailScheduleForm
+    template_name = "true_north/corevalue_email_schedule_form.html"
+    success_url = reverse_lazy("true_north:corevalue-email-schedule-list")
+    page_title = "Schedule Core Value Email Reminder"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def get_initial(self):
+        initial = super().get_initial()
+        core_value_id = self.request.GET.get("core_value")
+        if core_value_id:
+            initial["core_value"] = core_value_id
+        return initial
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.next_send = form.instance.compute_next_send()
+        messages.success(self.request, "Email reminder schedule created.")
+        return super().form_valid(form)
+
+
+class CoreValueEmailScheduleUpdateView(
+    SiteContextMixin,
+    RegistrationAcceptedMixin,
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    UpdateView,
+):
+    model = CoreValueEmailSchedule
+    form_class = CoreValueEmailScheduleForm
+    template_name = "true_north/corevalue_email_schedule_form.html"
+    success_url = reverse_lazy("true_north:corevalue-email-schedule-list")
+    page_title = "Update Core Value Email Reminder"
+
+    def get_queryset(self):
+        return CoreValueEmailSchedule.objects.filter(user=self.request.user)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def form_valid(self, form):
+        form.instance.next_send = form.instance.compute_next_send()
+        messages.success(self.request, "Email reminder schedule updated.")
+        return super().form_valid(form)
+
+
+class CoreValueEmailScheduleDeleteView(
+    SiteContextMixin,
+    RegistrationAcceptedMixin,
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    DeleteView,
+):
+    model = CoreValueEmailSchedule
+    template_name = "true_north/corevalue_email_schedule_confirm_delete.html"
+    success_url = reverse_lazy("true_north:corevalue-email-schedule-list")
+    page_title = "Delete Core Value Email Reminder"
+
+    def get_queryset(self):
+        return CoreValueEmailSchedule.objects.filter(user=self.request.user)
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def form_valid(self, form):
+        messages.success(self.request, "Email reminder schedule deleted.")
+        return super().form_valid(form)
+
+
+class CoreValueEmailScheduleSendNowView(
+    SiteContextMixin,
+    RegistrationAcceptedMixin,
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    DetailView,
+):
+    """POST to immediately queue a reminder email for this schedule."""
+
+    model = CoreValueEmailSchedule
+    http_method_names = ["post"]
+
+    def get_queryset(self):
+        return CoreValueEmailSchedule.objects.filter(user=self.request.user)
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def post(self, request, *args, **kwargs):
+        schedule = self.get_object()
+        send_corevalue_reminder_email.delay(schedule.pk)
+        schedule.next_send = schedule.compute_next_send()
+        schedule.last_sent = timezone.now()
+        schedule.save(update_fields=["next_send", "last_sent"])
+        messages.success(request, "Reminder email queued for sending.")
+        return redirect("true_north:corevalue-email-schedule-list")

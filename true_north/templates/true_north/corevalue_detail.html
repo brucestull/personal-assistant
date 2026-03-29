@@ -7,8 +7,10 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
     <h1 class="h3 mb-0">{{ object.name }}</h1>
     <div>
+      <a href="{% url 'true_north:corevalue-email-schedule-create' %}?core_value={{ object.pk }}"
+         class="btn btn-outline-success">Schedule Email Reminder</a>
       <a href="{% url 'true_north:core-value-update' object.pk %}"
-         class="btn btn-outline-primary">Edit</a>
+         class="btn btn-outline-primary ms-2">Edit</a>
       <a href="{% url 'true_north:core-value-list' %}"
          class="btn btn-outline-secondary ms-2">Back to Core Values</a>
     </div>
@@ -102,6 +104,49 @@
     <div class="alert alert-info">
       <p class="mb-0">No Goals linked to this Core Value yet.
         <a href="{% url 'true_north:goal-create' %}">Create a Goal</a>.
+      </p>
+    </div>
+  {% endif %}
+
+  <h2 class="h5 mt-4 mb-3">Email Reminder Schedules</h2>
+
+  {% if email_schedules %}
+    <div class="list-group mb-4">
+      {% for schedule in email_schedules %}
+        <div class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="me-3">
+            <span class="badge {% if schedule.is_active %}bg-success{% else %}bg-secondary{% endif %} me-1">
+              {{ schedule.get_frequency_display }}
+            </span>
+            {% if not schedule.is_active %}
+              <span class="badge bg-secondary ms-1">Paused</span>
+            {% endif %}
+            <div class="text-muted small mt-1">
+              {% if schedule.next_send %}Next: {{ schedule.next_send|date:"N j, Y, g:i a" }}{% endif %}
+              {% if schedule.last_sent %} | Last sent: {{ schedule.last_sent|date:"N j, Y, g:i a" }}{% endif %}
+            </div>
+          </div>
+          <div class="text-nowrap">
+            <form method="post"
+                  action="{% url 'true_north:corevalue-email-schedule-send-now' schedule.pk %}"
+                  class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-success me-1">Send Now</button>
+            </form>
+            <a href="{% url 'true_north:corevalue-email-schedule-update' schedule.pk %}"
+               class="btn btn-sm btn-outline-primary me-1">Edit</a>
+            <a href="{% url 'true_north:corevalue-email-schedule-delete' schedule.pk %}"
+               class="btn btn-sm btn-outline-danger">Delete</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-light border">
+      <p class="mb-0">No email schedules yet.
+        <a href="{% url 'true_north:corevalue-email-schedule-create' %}?core_value={{ object.pk }}">
+          Set up a reminder schedule
+        </a>.
       </p>
     </div>
   {% endif %}

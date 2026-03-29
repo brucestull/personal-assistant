@@ -187,3 +187,98 @@ def send_true_north_email(self, model_name: str, pk: int) -> dict:
         user.email,
     )
     return {"ok": True, "model_name": model_name, "pk": pk, "user_id": user.pk}
+
+
+@shared_task(**RETRY_KW)
+def send_corevalue_reminder_email(self, schedule_id: int) -> dict:
+    """
+    Send a reminder email for the given CoreValueEmailSchedule ID.
+    Updates ``last_sent`` and ``next_send`` on the schedule after a successful send.
+    """
+    from django.utils import timezone
+
+    from .models import CoreValueEmailSchedule
+
+    try:
+        schedule = CoreValueEmailSchedule.objects.select_related(
+            "user", "core_value"
+        ).get(pk=schedule_id)
+    except CoreValueEmailSchedule.DoesNotExist:
+        logger.warning("CoreValueEmailSchedule %s not found", schedule_id)
+        return {"ok": False, "reason": "schedule_not_found"}
+
+    user = schedule.user
+    if not getattr(user, "email", None):
+        logger.warning(
+            "User %s has no email; skipping CoreValue reminder %s",
+            user.pk,
+            schedule_id,
+        )
+        return {"ok": False, "reason": "no_user_email"}
+
+    subject = schedule.get_subject()
+    body = (
+        f"Hey {user.username},\n\n"
+        f"Here is your Core Value reminder:\n\n"
+        f"{schedule.get_content()}\n"
+        f"— {getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')}"
+    )
+
+    resolved_from = (
+        DEFAULT_FROM_EMAIL
+        or getattr(settings, "EMAIL_HOST_USER", None)
+        or user.email
+    )
+
+    try:
+        _send_email(subject, body, [user.email], from_email=resolved_from)
+    except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
+        logger.warning(
+            "send_corevalue_reminder_email: SMTP error for schedule %s"
+            " — will retry: %s",
+            schedule_id,
+            exc,
+        )
+        raise
+
+    now = timezone.now()
+    schedule.last_sent = now
+    schedule.next_send = schedule.compute_next_send()
+    schedule.save(update_fields=["last_sent", "next_send"])
+
+    logger.info(
+        "send_corevalue_reminder_email: sent schedule %s to user %s (%s)",
+        schedule_id,
+        user.pk,
+        user.email,
+    )
+    return {"ok": True, "schedule_id": schedule_id, "user_id": user.pk}
+
+
+@shared_task
+def process_due_corevalue_reminders() -> dict:
+    """
+    Periodic task: find all active CoreValueEmailSchedule records that are due
+    and dispatch ``send_corevalue_reminder_email`` for each.
+
+    Register this in django-celery-beat (e.g. every 15 minutes or every hour).
+    """
+    from django.utils import timezone
+
+    from .models import CoreValueEmailSchedule
+
+    now = timezone.now()
+    due_ids = CoreValueEmailSchedule.objects.filter(
+        is_active=True,
+        next_send__lte=now,
+    ).values_list("id", flat=True)
+
+    dispatched = 0
+    for schedule_id in due_ids:
+        send_corevalue_reminder_email.delay(schedule_id)
+        dispatched += 1
+
+    logger.info(
+        "process_due_corevalue_reminders: dispatched %s task(s)", dispatched
+    )
+    return {"dispatched": dispatched}
