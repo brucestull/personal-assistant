@@ -373,7 +373,7 @@ def test_compute_next_send_days_of_week_ignores_frequency():
 def test_compute_next_send_send_time_today_when_still_in_future():
     """A schedule created before send_time should fire TODAY, not tomorrow."""
     from datetime import datetime as _dt
-    from datetime import time, timedelta
+    from datetime import time, timedelta  # noqa: F401
     from unittest.mock import patch
 
     tz = timezone.get_current_timezone()
