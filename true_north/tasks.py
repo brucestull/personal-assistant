@@ -255,6 +255,82 @@ def send_corevalue_reminder_email(self, schedule_id: int) -> dict:
     return {"ok": True, "schedule_id": schedule_id, "user_id": user.pk}
 
 
+@shared_task(**RETRY_KW)
+def send_core_value_email(self, user_id: int, core_value_id: int) -> dict:
+    """
+    Send a specific CoreValue (by ID) to a specific user (by ID).
+    This is meant for scheduled/triggered sends using kwargs.
+    """
+    from django.contrib.auth import get_user_model
+
+    from .models import CoreValue
+
+    User = get_user_model()
+
+    # ---- User lookup ----
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        logger.warning("send_core_value_email: user %s not found", user_id)
+        return {"ok": False, "reason": "user_not_found"}
+
+    if not getattr(user, "email", None):
+        logger.warning(
+            "send_core_value_email: user %s has no email; skipping CoreValue pk=%s",
+            user.pk,
+            core_value_id,
+        )
+        return {"ok": False, "reason": "no_user_email"}
+
+    # ---- CoreValue lookup ----
+    try:
+        core_value = CoreValue.objects.get(pk=core_value_id, user=user)
+    except CoreValue.DoesNotExist:
+        logger.warning(
+            "send_core_value_email: CoreValue %s not found for user %s",
+            core_value_id,
+            user_id,
+        )
+        return {"ok": False, "reason": "core_value_not_found_for_user"}
+
+    # ---- Build email content ----
+    subject, body_content = _get_email_subject_and_body(core_value)
+    body = (
+        f"Hey {user.username},\n\n"
+        f"Here is your Core Value:\n\n"
+        f"{body_content}\n"
+        f"— {getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')}"
+    )
+
+    resolved_from = (
+        DEFAULT_FROM_EMAIL
+        or getattr(settings, "EMAIL_HOST_USER", None)
+        or user.email
+    )
+
+    try:
+        _send_email(subject, body, [user.email], from_email=resolved_from)
+    except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
+        logger.warning(
+            "send_core_value_email: SMTP error for CoreValue %s — will retry: %s",
+            core_value_id,
+            exc,
+        )
+        raise
+
+    logger.info(
+        "send_core_value_email: sent CoreValue %s to user %s (%s)",
+        core_value.id,
+        user.id,
+        user.email,
+    )
+    return {
+        "ok": True,
+        "core_value_id": core_value.id,
+        "user_id": user.id,
+    }
+
+
 @shared_task
 def process_due_corevalue_reminders() -> dict:
     """
