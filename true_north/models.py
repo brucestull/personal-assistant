@@ -402,12 +402,11 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
             # Days-of-week mode: fire at send_time on the specified weekdays.
             target_time = self.send_time or _time(9, 0)
             tz = timezone.get_current_timezone()
-            now_local = now.astimezone(tz)
 
             # Check today and the following 7 days (8 candidates total) to find
             # the next slot that is still in the future.
             for offset in range(8):
-                candidate_date = now_local.date() + timedelta(days=offset)
+                candidate_date = now.date() + timedelta(days=offset)
                 if candidate_date.weekday() in days:
                     candidate_dt = timezone.make_aware(
                         _dt.combine(candidate_date, target_time), tz
@@ -430,20 +429,10 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
         delta = delta_map.get(self.frequency, timedelta(days=1))
 
         if self.send_time:
-            # Frequency + specific time: first check if today at send_time is
-            # still in the future (handles newly-created schedules where the
-            # send_time hasn't arrived yet today).
-            tz = timezone.get_current_timezone()
-            now_local = now.astimezone(tz)
-            today_at_send_time = timezone.make_aware(
-                _dt.combine(now_local.date(), self.send_time), tz
-            )
-            if today_at_send_time > now:
-                return today_at_send_time
-
-            # Today's send_time has already passed — advance by one frequency
-            # interval, then pin the time component to send_time.
+            # Frequency + specific time: compute the next send date from
+            # *now* + delta, then replace the time component with send_time.
             next_raw = now + delta
+            tz = timezone.get_current_timezone()
             next_local = next_raw.astimezone(tz)
             next_dt = timezone.make_aware(
                 _dt.combine(next_local.date(), self.send_time), tz
