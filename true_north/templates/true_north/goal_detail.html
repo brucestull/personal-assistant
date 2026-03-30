@@ -7,8 +7,14 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
     <h1 class="h3 mb-0">{{ object.title }}</h1>
     <div>
+      <form method="post"
+            action="{% url 'true_north:goal-send-email' object.pk %}"
+            class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-success">Send Email</button>
+      </form>
       <a href="{% url 'true_north:goal-update' object.pk %}"
-         class="btn btn-outline-primary">Edit</a>
+         class="btn btn-outline-primary ms-2">Edit</a>
       {% if object.value %}
         <a href="{% url 'true_north:core-value-detail' object.value.pk %}"
            class="btn btn-outline-secondary ms-2">Core Value: {{ object.value.name }}</a>
