@@ -7,8 +7,14 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
     <h1 class="h3 mb-0">Value Action Detail</h1>
     <div>
+      <form method="post"
+            action="{% url 'true_north:value-action-send-email' object.pk %}"
+            class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-success">Send Email</button>
+      </form>
       <a href="{% url 'true_north:value-action-update' object.pk %}"
-         class="btn btn-outline-primary">Edit</a>
+         class="btn btn-outline-primary ms-2">Edit</a>
       <a href="{% url 'true_north:milestone-detail' object.milestone.pk %}"
          class="btn btn-outline-secondary ms-2">Milestone: {{ object.milestone.description|truncatewords:5 }}</a>
       <a href="{% url 'true_north:value-action-list' %}"
