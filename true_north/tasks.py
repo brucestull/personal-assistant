@@ -331,6 +331,238 @@ def send_core_value_email(self, user_id: int, core_value_id: int) -> dict:
     }
 
 
+@shared_task(**RETRY_KW)
+def send_goal_email(self, user_id: int, goal_id: int) -> dict:
+    """
+    Send a specific Goal (by ID) to a specific user (by ID).
+    This is meant for scheduled/triggered sends using kwargs.
+    """
+    from django.contrib.auth import get_user_model
+
+    from .models import Goal
+
+    User = get_user_model()
+
+    # ---- User lookup ----
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        logger.warning("send_goal_email: user %s not found", user_id)
+        return {"ok": False, "reason": "user_not_found"}
+
+    if not getattr(user, "email", None):
+        logger.warning(
+            "send_goal_email: user %s has no email; skipping Goal pk=%s",
+            user.pk,
+            goal_id,
+        )
+        return {"ok": False, "reason": "no_user_email"}
+
+    # ---- Goal lookup ----
+    try:
+        goal = Goal.objects.get(pk=goal_id, user=user)
+    except Goal.DoesNotExist:
+        logger.warning(
+            "send_goal_email: Goal %s not found for user %s",
+            goal_id,
+            user_id,
+        )
+        return {"ok": False, "reason": "goal_not_found_for_user"}
+
+    # ---- Build email content ----
+    subject, body_content = _get_email_subject_and_body(goal)
+    body = (
+        f"Hey {user.username},\n\n"
+        f"Here is your Goal:\n\n"
+        f"{body_content}\n"
+        f"— {getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')}"
+    )
+
+    resolved_from = (
+        DEFAULT_FROM_EMAIL
+        or getattr(settings, "EMAIL_HOST_USER", None)
+        or user.email
+    )
+
+    try:
+        _send_email(subject, body, [user.email], from_email=resolved_from)
+    except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
+        logger.warning(
+            "send_goal_email: SMTP error for Goal %s — will retry: %s",
+            goal_id,
+            exc,
+        )
+        raise
+
+    logger.info(
+        "send_goal_email: sent Goal %s to user %s (%s)",
+        goal.id,
+        user.id,
+        user.email,
+    )
+    return {
+        "ok": True,
+        "goal_id": goal.id,
+        "user_id": user.id,
+    }
+
+
+@shared_task(**RETRY_KW)
+def send_milestone_email(self, user_id: int, milestone_id: int) -> dict:
+    """
+    Send a specific Milestone (by ID) to a specific user (by ID).
+    This is meant for scheduled/triggered sends using kwargs.
+    """
+    from django.contrib.auth import get_user_model
+
+    from .models import Milestone
+
+    User = get_user_model()
+
+    # ---- User lookup ----
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        logger.warning("send_milestone_email: user %s not found", user_id)
+        return {"ok": False, "reason": "user_not_found"}
+
+    if not getattr(user, "email", None):
+        logger.warning(
+            "send_milestone_email: user %s has no email; skipping Milestone pk=%s",
+            user.pk,
+            milestone_id,
+        )
+        return {"ok": False, "reason": "no_user_email"}
+
+    # ---- Milestone lookup ----
+    try:
+        milestone = Milestone.objects.select_related("goal").get(
+            pk=milestone_id, user=user
+        )
+    except Milestone.DoesNotExist:
+        logger.warning(
+            "send_milestone_email: Milestone %s not found for user %s",
+            milestone_id,
+            user_id,
+        )
+        return {"ok": False, "reason": "milestone_not_found_for_user"}
+
+    # ---- Build email content ----
+    subject, body_content = _get_email_subject_and_body(milestone)
+    body = (
+        f"Hey {user.username},\n\n"
+        f"Here is your Milestone:\n\n"
+        f"{body_content}\n"
+        f"— {getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')}"
+    )
+
+    resolved_from = (
+        DEFAULT_FROM_EMAIL
+        or getattr(settings, "EMAIL_HOST_USER", None)
+        or user.email
+    )
+
+    try:
+        _send_email(subject, body, [user.email], from_email=resolved_from)
+    except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
+        logger.warning(
+            "send_milestone_email: SMTP error for Milestone %s — will retry: %s",
+            milestone_id,
+            exc,
+        )
+        raise
+
+    logger.info(
+        "send_milestone_email: sent Milestone %s to user %s (%s)",
+        milestone.id,
+        user.id,
+        user.email,
+    )
+    return {
+        "ok": True,
+        "milestone_id": milestone.id,
+        "user_id": user.id,
+    }
+
+
+@shared_task(**RETRY_KW)
+def send_value_action_email(self, user_id: int, value_action_id: int) -> dict:
+    """
+    Send a specific ValueAction (by ID) to a specific user (by ID).
+    This is meant for scheduled/triggered sends using kwargs.
+    """
+    from django.contrib.auth import get_user_model
+
+    from .models import ValueAction
+
+    User = get_user_model()
+
+    # ---- User lookup ----
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        logger.warning("send_value_action_email: user %s not found", user_id)
+        return {"ok": False, "reason": "user_not_found"}
+
+    if not getattr(user, "email", None):
+        logger.warning(
+            "send_value_action_email: user %s has no email; skipping ValueAction pk=%s",
+            user.pk,
+            value_action_id,
+        )
+        return {"ok": False, "reason": "no_user_email"}
+
+    # ---- ValueAction lookup ----
+    try:
+        value_action = ValueAction.objects.select_related("milestone").get(
+            pk=value_action_id, user=user
+        )
+    except ValueAction.DoesNotExist:
+        logger.warning(
+            "send_value_action_email: ValueAction %s not found for user %s",
+            value_action_id,
+            user_id,
+        )
+        return {"ok": False, "reason": "value_action_not_found_for_user"}
+
+    # ---- Build email content ----
+    subject, body_content = _get_email_subject_and_body(value_action)
+    body = (
+        f"Hey {user.username},\n\n"
+        f"Here is your Value Action:\n\n"
+        f"{body_content}\n"
+        f"— {getattr(settings, 'THE_SITE_NAME', 'Personal Assistant')}"
+    )
+
+    resolved_from = (
+        DEFAULT_FROM_EMAIL
+        or getattr(settings, "EMAIL_HOST_USER", None)
+        or user.email
+    )
+
+    try:
+        _send_email(subject, body, [user.email], from_email=resolved_from)
+    except (smtplib.SMTPException, ConnectionError, TimeoutError) as exc:
+        logger.warning(
+            "send_value_action_email: SMTP error for ValueAction %s — will retry: %s",
+            value_action_id,
+            exc,
+        )
+        raise
+
+    logger.info(
+        "send_value_action_email: sent ValueAction %s to user %s (%s)",
+        value_action.id,
+        user.id,
+        user.email,
+    )
+    return {
+        "ok": True,
+        "value_action_id": value_action.id,
+        "user_id": user.id,
+    }
+
+
 @shared_task
 def process_due_corevalue_reminders() -> dict:
     """

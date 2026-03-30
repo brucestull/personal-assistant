@@ -23,7 +23,13 @@ from true_north.forms import (
     ValueActionForm,
 )
 from true_north.models import CoreValue, CoreValueEmailSchedule, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus  # noqa E501
-from true_north.tasks import send_corevalue_reminder_email, send_true_north_email
+from true_north.tasks import (
+    send_corevalue_reminder_email,
+    send_goal_email,
+    send_milestone_email,
+    send_true_north_email,
+    send_value_action_email,
+)
 
 
 class DashboardView(
@@ -508,7 +514,7 @@ class GoalSendEmailView(
 
     def post(self, request, *args, **kwargs):
         obj = self.get_object()
-        send_true_north_email.delay("Goal", obj.pk)
+        send_goal_email.delay(request.user.id, obj.pk)
         messages.success(
             request,
             f'Email for Goal "{obj.title}" has been queued for sending.',
@@ -529,7 +535,7 @@ class MilestoneSendEmailView(
 
     def post(self, request, *args, **kwargs):
         obj = self.get_object()
-        send_true_north_email.delay("Milestone", obj.pk)
+        send_milestone_email.delay(request.user.id, obj.pk)
         messages.success(
             request,
             f'Email for Milestone "{obj.description[:80]}" '
@@ -551,7 +557,7 @@ class ValueActionSendEmailView(
 
     def post(self, request, *args, **kwargs):
         obj = self.get_object()
-        send_true_north_email.delay("ValueAction", obj.pk)
+        send_value_action_email.delay(request.user.id, obj.pk)
         messages.success(
             request,
             f'Email for Value Action "{obj.content[:80]}" has been queued for sending.',
