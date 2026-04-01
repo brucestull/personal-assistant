@@ -46,6 +46,7 @@ def test_corevalue_admin_configuration():
     model_admin = CoreValueAdmin(CoreValue, site)
 
     assert model_admin.list_display == (
+        "id",
         "name",
         "user",
         "is_active",
@@ -67,6 +68,7 @@ def test_goal_admin_configuration():
     model_admin = GoalAdmin(Goal, site)
 
     assert model_admin.list_display == (
+        "id",
         "title",
         "user",
         "value",
@@ -96,6 +98,7 @@ def test_milestone_admin_configuration():
     model_admin = MilestoneAdmin(Milestone, site)
 
     assert model_admin.list_display == (
+        "id",
         "description",
         "user",
         "goal",
@@ -124,6 +127,7 @@ def test_task_admin_configuration():
     model_admin = ValueActionAdmin(ValueAction, site)
 
     assert model_admin.list_display == (
+        "id",
         "__str__",
         "user",
         "milestone",

@@ -15,7 +15,7 @@ class GoalInline(admin.TabularInline):
 
 @admin.register(CoreValue)
 class CoreValueAdmin(admin.ModelAdmin):
-    list_display = ("name", "user", "is_active", "order", "created", "updated")
+    list_display = ("id", "name", "user", "is_active", "order", "created", "updated")
     list_filter = ("is_active", "user")
     search_fields = ("name", "definition", "slug", "user__username")
     ordering = ("order", "name")
@@ -37,6 +37,7 @@ class MilestoneInline(admin.TabularInline):
 @admin.register(Goal)
 class GoalAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "title",
         "user",
         "value",
@@ -66,6 +67,7 @@ class ValueActionInline(admin.TabularInline):
 @admin.register(Milestone)
 class MilestoneAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "description",
         "user",
         "goal",
@@ -87,6 +89,7 @@ class MilestoneAdmin(admin.ModelAdmin):
 @admin.register(ValueAction)
 class ValueActionAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "__str__",
         "user",
         "milestone",
