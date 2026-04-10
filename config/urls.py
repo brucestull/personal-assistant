@@ -57,4 +57,5 @@ urlpatterns = [
     path("true-north/", include("true_north.urls")),
     path("thoughts/", include("thoughts.urls")),
     path("thing-thought-reminder/", include("thing_thought_reminder.urls")),
+    path("item-location/", include("item_location.urls")),
 ]

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ page_title }}</h1>
+    <div>
+      <a href="{% url 'item_location:location-create' %}" class="btn btn-primary">Add Location</a>
+      <a href="{% url 'item_location:dashboard' %}" class="btn btn-outline-secondary ms-2">Dashboard</a>
+    </div>
+  </div>
+
+  {% if messages %}
+    <div role="alert" aria-live="polite">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if object_list %}
+    <div class="list-group mb-4">
+      {% for loc in object_list %}
+        <div class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="me-3">
+            <strong>{{ loc.name }}</strong>
+            <span class="badge bg-secondary ms-1">{{ loc.get_type_display }}</span>
+            <small class="text-muted d-block">{{ loc.items.count }} item{{ loc.items.count|pluralize }}</small>
+          </div>
+          <div class="text-nowrap">
+            <a href="{{ loc.get_absolute_url }}" class="btn btn-sm btn-outline-secondary me-1">View</a>
+            <a href="{% url 'item_location:location-update' loc.pk %}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+            <a href="{% url 'item_location:location-delete' loc.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+      <nav aria-label="Locations pagination">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% endif %}
+          {% for i in paginator.page_range %}
+            <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+              <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <div class="alert alert-info">
+      No storage locations yet.
+      <a href="{% url 'item_location:location-create' %}">Add your first location</a>.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
