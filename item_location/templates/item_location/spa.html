@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div id="app" class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0">Item Location App</h1>
+    <a href="{% url 'item_location:dashboard' %}" class="btn btn-outline-secondary btn-sm">Classic View</a>
+  </div>
+
+  <!-- Tab navigation -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <button class="nav-link" :class="{ active: tab === 'locations' }" @click="tab = 'locations'">
+        Storage Locations <span class="badge bg-secondary ms-1">[[ locations.length ]]</span>
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" :class="{ active: tab === 'items' }" @click="tab = 'items'">
+        Items <span class="badge bg-secondary ms-1">[[ items.length ]]</span>
+      </button>
+    </li>
+  </ul>
+
+  <!-- Alerts -->
+  <div v-if="alert.message" :class="'alert alert-' + alert.type + ' alert-dismissible'" role="alert">
+    [[ alert.message ]]
+    <button type="button" class="btn-close" @click="alert.message = ''"></button>
+  </div>
+
+  <!-- ===================== LOCATIONS TAB ===================== -->
+  <div v-if="tab === 'locations'">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h5 mb-0">Storage Locations</h2>
+      <button class="btn btn-primary btn-sm" @click="openLocationForm()">+ Add Location</button>
+    </div>
+
+    <!-- Location Form (add / edit) -->
+    <div v-if="locationForm.visible" class="card mb-4">
+      <div class="card-body">
+        <h3 class="h6 card-title">[[ locationForm.id ? 'Edit Location' : 'New Location' ]]</h3>
+        <div class="mb-2">
+          <label class="form-label">Name</label>
+          <input v-model="locationForm.name" class="form-control" placeholder="e.g. Kitchen Cabinet" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Type</label>
+          <select v-model="locationForm.type" class="form-control">
+            <option value="room">Room</option>
+            <option value="cabinet">Cabinet</option>
+            <option value="shelf">Shelf</option>
+            <option value="drawer">Drawer</option>
+            <option value="box">Box</option>
+            <option value="bin">Bin</option>
+            <option value="closet">Closet</option>
+            <option value="garage">Garage</option>
+            <option value="attic">Attic</option>
+            <option value="basement">Basement</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <button class="btn btn-success btn-sm" @click="saveLocation">Save</button>
+        <button class="btn btn-outline-secondary btn-sm ms-2" @click="locationForm.visible = false">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Locations list -->
+    <div v-if="locationsLoading" class="text-center py-3">
+      <div class="spinner-border spinner-border-sm"></div> Loading…
+    </div>
+    <div v-else-if="locations.length === 0" class="alert alert-info">
+      No storage locations yet. Add one above!
+    </div>
+    <div v-else class="list-group">
+      <div v-for="loc in locations" :key="loc.id" class="list-group-item d-flex justify-content-between align-items-start">
+        <div>
+          <strong>[[ loc.name ]]</strong>
+          <span class="badge bg-secondary ms-1">[[ loc.type ]]</span>
+          <small class="text-muted ms-2">[[ loc.item_count ]] item(s)</small>
+        </div>
+        <div class="text-nowrap">
+          <button class="btn btn-sm btn-outline-primary me-1" @click="openLocationForm(loc)">Edit</button>
+          <button class="btn btn-sm btn-outline-danger" @click="deleteLocation(loc)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ITEMS TAB ===================== -->
+  <div v-if="tab === 'items'">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h5 mb-0">Items</h2>
+      <button class="btn btn-primary btn-sm" @click="openItemForm()">+ Add Item</button>
+    </div>
+
+    <!-- Item Form (add / edit) -->
+    <div v-if="itemForm.visible" class="card mb-4">
+      <div class="card-body">
+        <h3 class="h6 card-title">[[ itemForm.id ? 'Edit Item' : 'New Item' ]]</h3>
+        <div class="mb-2">
+          <label class="form-label">Name</label>
+          <input v-model="itemForm.name" class="form-control" placeholder="e.g. Cordless Drill" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Type</label>
+          <select v-model="itemForm.type" class="form-control">
+            <option value="tool">Tool</option>
+            <option value="clothing">Clothing</option>
+            <option value="electronics">Electronics</option>
+            <option value="document">Document</option>
+            <option value="food">Food</option>
+            <option value="book">Book</option>
+            <option value="toy">Toy</option>
+            <option value="sports">Sports Equipment</option>
+            <option value="kitchen">Kitchen Item</option>
+            <option value="furniture">Furniture</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Storage Location</label>
+          <select v-model="itemForm.location" class="form-control">
+            <option :value="null">-- Unassigned --</option>
+            <option v-for="loc in locations" :key="loc.id" :value="loc.id">[[ loc.name ]]</option>
+          </select>
+        </div>
+        <button class="btn btn-success btn-sm" @click="saveItem">Save</button>
+        <button class="btn btn-outline-secondary btn-sm ms-2" @click="itemForm.visible = false">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Items list -->
+    <div v-if="itemsLoading" class="text-center py-3">
+      <div class="spinner-border spinner-border-sm"></div> Loading…
+    </div>
+    <div v-else-if="items.length === 0" class="alert alert-info">
+      No items yet. Add one above!
+    </div>
+    <div v-else class="list-group">
+      <div v-for="item in items" :key="item.id" class="list-group-item d-flex justify-content-between align-items-start">
+        <div>
+          <strong>[[ item.name ]]</strong>
+          <span class="badge bg-secondary ms-1">[[ item.type ]]</span>
+          <span v-if="item.location_name" class="badge bg-info text-dark ms-1">[[ item.location_name ]]</span>
+          <span v-else class="badge bg-light text-muted ms-1">Unassigned</span>
+        </div>
+        <div class="text-nowrap">
+          <button class="btn btn-sm btn-outline-primary me-1" @click="openItemForm(item)">Edit</button>
+          <button class="btn btn-sm btn-outline-danger" @click="deleteItem(item)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script>
+  const { createApp } = Vue;
+  const CSRF_TOKEN = "{{ csrf_token }}";
+
+  const API_BASE = "/item-location/api";
+
+  function getCsrfHeaders() {
+    return {
+      "Content-Type": "application/json",
+      "X-CSRFToken": CSRF_TOKEN,
+    };
+  }
+
+  createApp({
+    delimiters: ["[[", "]]"],
+    data() {
+      return {
+        tab: "locations",
+        locations: [],
+        items: [],
+        locationsLoading: false,
+        itemsLoading: false,
+        alert: { message: "", type: "success" },
+        locationForm: { visible: false, id: null, name: "", type: "other" },
+        itemForm: { visible: false, id: null, name: "", type: "other", location: null },
+      };
+    },
+    mounted() {
+      this.fetchLocations();
+      this.fetchItems();
+    },
+    methods: {
+      showAlert(message, type = "success") {
+        this.alert = { message, type };
+        setTimeout(() => { this.alert.message = ""; }, 4000);
+      },
+
+      // ── Locations ──────────────────────────────────────────────
+      async fetchLocations() {
+        this.locationsLoading = true;
+        const data = await fetch(API_BASE + "/locations/").then(r => r.json());
+        this.locations = Array.isArray(data) ? data : (data.results ?? []);
+        this.locationsLoading = false;
+      },
+      openLocationForm(loc = null) {
+        if (loc) {
+          this.locationForm = { visible: true, id: loc.id, name: loc.name, type: loc.type };
+        } else {
+          this.locationForm = { visible: true, id: null, name: "", type: "other" };
+        }
+      },
+      async saveLocation() {
+        const { id, name, type } = this.locationForm;
+        const url = id ? `${API_BASE}/locations/${id}/` : `${API_BASE}/locations/`;
+        const method = id ? "PUT" : "POST";
+        const res = await fetch(url, {
+          method,
+          headers: getCsrfHeaders(),
+          body: JSON.stringify({ name, type }),
+        });
+        if (res.ok) {
+          this.showAlert(id ? "Location updated." : "Location created.");
+          this.locationForm.visible = false;
+          await this.fetchLocations();
+        } else {
+          const err = await res.json();
+          this.showAlert("Error: " + JSON.stringify(err), "danger");
+        }
+      },
+      async deleteLocation(loc) {
+        if (!confirm(`Delete location "${loc.name}"?`)) return;
+        const res = await fetch(`${API_BASE}/locations/${loc.id}/`, {
+          method: "DELETE",
+          headers: getCsrfHeaders(),
+        });
+        if (res.ok || res.status === 204) {
+          this.showAlert("Location deleted.");
+          await this.fetchLocations();
+          await this.fetchItems();
+        } else {
+          this.showAlert("Delete failed.", "danger");
+        }
+      },
+
+      // ── Items ───────────────────────────────────────────────────
+      async fetchItems() {
+        this.itemsLoading = true;
+        const data = await fetch(API_BASE + "/items/").then(r => r.json());
+        this.items = Array.isArray(data) ? data : (data.results ?? []);
+        this.itemsLoading = false;
+      },
+      openItemForm(item = null) {
+        if (item) {
+          this.itemForm = {
+            visible: true,
+            id: item.id,
+            name: item.name,
+            type: item.type,
+            location: item.location,
+          };
+        } else {
+          this.itemForm = { visible: true, id: null, name: "", type: "other", location: null };
+        }
+      },
+      async saveItem() {
+        const { id, name, type, location } = this.itemForm;
+        const url = id ? `${API_BASE}/items/${id}/` : `${API_BASE}/items/`;
+        const method = id ? "PUT" : "POST";
+        const res = await fetch(url, {
+          method,
+          headers: getCsrfHeaders(),
+          body: JSON.stringify({ name, type, location }),
+        });
+        if (res.ok) {
+          this.showAlert(id ? "Item updated." : "Item created.");
+          this.itemForm.visible = false;
+          await this.fetchItems();
+        } else {
+          const err = await res.json();
+          this.showAlert("Error: " + JSON.stringify(err), "danger");
+        }
+      },
+      async deleteItem(item) {
+        if (!confirm(`Delete item "${item.name}"?`)) return;
+        const res = await fetch(`${API_BASE}/items/${item.id}/`, {
+          method: "DELETE",
+          headers: getCsrfHeaders(),
+        });
+        if (res.ok || res.status === 204) {
+          this.showAlert("Item deleted.");
+          await this.fetchItems();
+        } else {
+          this.showAlert("Delete failed.", "danger");
+        }
+      },
+    },
+  }).mount("#app");
+</script>
+{% endblock %}
