@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">{{ object.name }}</h1>
+    <div>
+      <a href="{% url 'item_location:item-update' object.pk %}" class="btn btn-outline-primary">Edit</a>
+      <a href="{% url 'item_location:item-delete' object.pk %}" class="btn btn-outline-danger ms-1">Delete</a>
+      <a href="{% url 'item_location:item-list' %}" class="btn btn-outline-secondary ms-1">Back</a>
+    </div>
+  </div>
+
+  <dl class="row mb-4">
+    <dt class="col-sm-3">Type</dt>
+    <dd class="col-sm-9">{{ object.get_type_display }}</dd>
+    <dt class="col-sm-3">Location</dt>
+    <dd class="col-sm-9">
+      {% if object.location %}
+        <a href="{{ object.location.get_absolute_url }}">{{ object.location.name }}</a>
+      {% else %}
+        <span class="text-muted">Unassigned</span>
+      {% endif %}
+    </dd>
+    <dt class="col-sm-3">Created</dt>
+    <dd class="col-sm-9">{{ object.created|date:"N j, Y, g:i a" }}</dd>
+    <dt class="col-sm-3">Updated</dt>
+    <dd class="col-sm-9">{{ object.updated|date:"N j, Y, g:i a" }}</dd>
+  </dl>
+</div>
+{% endblock %}
