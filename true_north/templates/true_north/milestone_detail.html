@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load tz %}
 
 {% block title %}{{ the_site_name }} - {{ object.description }}{% endblock %}
 
@@ -77,7 +76,8 @@
     {% if schedule_task %}
       <p>
         Status: {% if schedule_task.enabled %}Active{% else %}Paused{% endif %}<br>
-        Runs: every {{ schedule_task.crontab.day_of_week|default:"day" }}
+        Runs: every
+        {% if schedule_task.crontab.day_of_week == "*" %}day{% else %}{{ schedule_task.crontab.day_of_week }}{% endif %}
         at {{ schedule_task.crontab.hour }}:{{ schedule_task.crontab.minute }} ET
       </p>
       <a href="{% url 'true_north:milestone-schedule-edit' object.pk %}"

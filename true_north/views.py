@@ -194,9 +194,6 @@ class CoreValueDetailView(
         ctx["goals"] = self.object.goals.filter(
             user=self.request.user
         ).prefetch_related("milestones").order_by("order", "title")
-        ctx["email_schedules"] = self.object.email_schedules.filter(
-            user=self.request.user
-        ).order_by("-created")
         ctx["schedule_task"] = PeriodicTask.objects.filter(
             name=periodic_task_name("CoreValue", self.object.pk)
         ).first()
@@ -771,13 +768,13 @@ class ObjectScheduleSendNowView(ObjectScheduleBaseView):
     send_task = None
 
     def post(self, request, pk):
-        self.get_object(request, pk)
-        self.send_task.delay(request.user.pk, pk)
+        obj = self.get_object(request, pk)
+        self.send_task.delay(request.user.pk, obj.pk)
         messages.success(
             request,
             "Email sent! Check your inbox (or terminal if using console backend).",
         )
-        return redirect(self.detail_url_name, pk=pk)
+        return redirect(self.detail_url_name, pk=obj.pk)
 
 
 class CoreValueScheduleCreateView(ObjectScheduleCreateView):

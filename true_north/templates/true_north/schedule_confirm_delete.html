@@ -10,7 +10,8 @@
         <div class="card-body">
           <h1 class="h4 mb-3">Remove email schedule for {{ object }}?</h1>
           <p class="text-muted">
-            Runs: every {{ schedule_task.crontab.day_of_week }}
+            Runs: every
+            {% if schedule_task.crontab.day_of_week == "*" %}day{% else %}{{ schedule_task.crontab.day_of_week }}{% endif %}
             at {{ schedule_task.crontab.hour }}:{{ schedule_task.crontab.minute }} ET
           </p>
           <form method="post">
