@@ -1,7 +1,11 @@
 # true_north/tests/test_views.py
 
+import json
+
 import pytest
+from django.contrib.auth.models import Permission
 from django.urls import reverse
+from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
 from true_north.tests.factories import (
     CoreValueEmailScheduleFactory,
@@ -11,6 +15,7 @@ from true_north.tests.factories import (
     MilestoneFactory,
     ValueActionFactory,
 )
+from true_north.utils import periodic_task_name
 
 
 # ---------------------------------------------------------------------------
@@ -23,6 +28,22 @@ def _login(client, user, password="password123"):
     user.save()
     client.login(username=user.username, password=password)
     return user
+
+
+def _grant_schedule_permissions(user):
+    codenames = (
+        "add_crontabschedule",
+        "view_crontabschedule",
+        "add_periodictask",
+        "change_periodictask",
+        "delete_periodictask",
+        "view_periodictask",
+    )
+    permissions = Permission.objects.filter(
+        content_type__app_label="django_celery_beat",
+        codename__in=codenames,
+    )
+    user.user_permissions.add(*permissions)
 
 
 # ---------------------------------------------------------------------------
@@ -750,11 +771,12 @@ def test_corevalue_email_schedule_delete_forbidden_other_user(client):
 def test_corevalue_detail_shows_schedule_button(client):
     user = CustomUserFactory()
     _login(client, user)
+    _grant_schedule_permissions(user)
     cv = CoreValueFactory(user=user)
     url = reverse("true_north:core-value-detail", kwargs={"pk": cv.pk})
     response = client.get(url)
     assert response.status_code == 200
-    assert b"Schedule Email Reminder" in response.content
+    assert b"Set up email schedule" in response.content
 
 
 @pytest.mark.django_db
@@ -769,3 +791,162 @@ def test_corevalue_email_schedule_send_now_forbidden_other_user(client):
     )
     response = client.post(url)
     assert response.status_code in (403, 404)
+
+
+@pytest.mark.django_db
+def test_corevalue_schedule_create_requires_permissions(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    url = reverse("true_north:core-value-schedule-create", kwargs={"pk": cv.pk})
+    response = client.post(
+        url,
+        {"hour": "9", "minute": "0", "day_of_week": "*", "enabled": True},
+    )
+    assert response.status_code == 302
+    assert response["Location"] == reverse("true_north:dashboard")
+    assert not PeriodicTask.objects.filter(
+        name=periodic_task_name("CoreValue", cv.pk)
+    ).exists()
+
+
+@pytest.mark.django_db
+def test_corevalue_schedule_create_with_permissions(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    _grant_schedule_permissions(user)
+    cv = CoreValueFactory(user=user)
+    url = reverse("true_north:core-value-schedule-create", kwargs={"pk": cv.pk})
+    response = client.post(
+        url,
+        {"hour": "10", "minute": "15", "day_of_week": "1", "enabled": True},
+    )
+    assert response.status_code == 302
+    assert response["Location"] == reverse(
+        "true_north:core-value-detail",
+        kwargs={"pk": cv.pk},
+    )
+
+    task = PeriodicTask.objects.get(name=periodic_task_name("CoreValue", cv.pk))
+    assert task.task == "true_north.tasks.send_core_value_email"
+    assert json.loads(task.args) == [user.pk, cv.pk]
+    assert task.crontab.hour == "10"
+    assert task.crontab.minute == "15"
+    assert task.crontab.day_of_week == "1"
+
+
+@pytest.mark.django_db
+def test_corevalue_schedule_edit_with_permissions(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    _grant_schedule_permissions(user)
+    cv = CoreValueFactory(user=user)
+    schedule = CrontabSchedule.objects.create(
+        minute="0",
+        hour="9",
+        day_of_week="*",
+        day_of_month="*",
+        month_of_year="*",
+    )
+    task = PeriodicTask.objects.create(
+        name=periodic_task_name("CoreValue", cv.pk),
+        task="true_north.tasks.send_core_value_email",
+        crontab=schedule,
+        args=json.dumps([user.pk, cv.pk]),
+    )
+    url = reverse("true_north:core-value-schedule-edit", kwargs={"pk": cv.pk})
+    response = client.post(
+        url,
+        {"hour": "7", "minute": "5", "day_of_week": "2", "enabled": False},
+    )
+    assert response.status_code == 302
+    task.refresh_from_db()
+    assert task.enabled is False
+    assert task.crontab.hour == "7"
+    assert task.crontab.minute == "5"
+    assert task.crontab.day_of_week == "2"
+    assert json.loads(task.args) == [user.pk, cv.pk]
+
+
+@pytest.mark.django_db
+def test_corevalue_schedule_delete_keeps_crontab(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    _grant_schedule_permissions(user)
+    cv = CoreValueFactory(user=user)
+    schedule = CrontabSchedule.objects.create(
+        minute="0",
+        hour="9",
+        day_of_week="*",
+        day_of_month="*",
+        month_of_year="*",
+    )
+    PeriodicTask.objects.create(
+        name=periodic_task_name("CoreValue", cv.pk),
+        task="true_north.tasks.send_core_value_email",
+        crontab=schedule,
+        args=json.dumps([user.pk, cv.pk]),
+    )
+    url = reverse("true_north:core-value-schedule-delete", kwargs={"pk": cv.pk})
+    response = client.post(url)
+    assert response.status_code == 302
+    assert not PeriodicTask.objects.filter(
+        name=periodic_task_name("CoreValue", cv.pk)
+    ).exists()
+    assert CrontabSchedule.objects.filter(pk=schedule.pk).exists()
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    ("kind", "url_name", "model_name", "task_path"),
+    [
+        (
+            "goal",
+            "true_north:goal-schedule-create",
+            "Goal",
+            "true_north.tasks.send_goal_email",
+        ),
+        (
+            "milestone",
+            "true_north:milestone-schedule-create",
+            "Milestone",
+            "true_north.tasks.send_milestone_email",
+        ),
+        (
+            "value_action",
+            "true_north:value-action-schedule-create",
+            "ValueAction",
+            "true_north.tasks.send_value_action_email",
+        ),
+    ],
+)
+def test_schedule_create_for_other_models(
+    client,
+    kind,
+    url_name,
+    model_name,
+    task_path,
+):
+    user = CustomUserFactory()
+    _login(client, user)
+    _grant_schedule_permissions(user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+
+    if kind == "goal":
+        obj = goal
+    elif kind == "milestone":
+        obj = milestone
+    else:
+        obj = ValueActionFactory(milestone=milestone, user=user)
+
+    response = client.post(
+        reverse(url_name, kwargs={"pk": obj.pk}),
+        {"hour": "8", "minute": "20", "day_of_week": "3", "enabled": True},
+    )
+    assert response.status_code == 302
+
+    task = PeriodicTask.objects.get(name=periodic_task_name(model_name, obj.pk))
+    assert task.task == task_path
+    assert json.loads(task.args) == [user.pk, obj.pk]

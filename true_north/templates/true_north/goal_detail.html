@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load tz %}
 
 {% block title %}{{ the_site_name }} - {{ object.title }}{% endblock %}
 
@@ -81,6 +82,34 @@
       </dl>
     </div>
   </div>
+
+  <section class="mb-4">
+    <h2 class="h5 mb-3">Email Schedule</h2>
+    {% if schedule_task %}
+      <p>
+        Status: {% if schedule_task.enabled %}Active{% else %}Paused{% endif %}<br>
+        Runs: every {{ schedule_task.crontab.day_of_week|default:"day" }}
+        at {{ schedule_task.crontab.hour }}:{{ schedule_task.crontab.minute }} ET
+      </p>
+      <a href="{% url 'true_north:goal-schedule-edit' object.pk %}"
+         class="btn btn-sm btn-outline-primary">Edit</a>
+      <a href="{% url 'true_north:goal-schedule-delete' object.pk %}"
+         class="btn btn-sm btn-outline-danger ms-1">Remove</a>
+      <form method="post"
+            action="{% url 'true_north:goal-schedule-send' object.pk %}"
+            class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-success ms-1">Send now</button>
+      </form>
+    {% else %}
+      {% if can_schedule %}
+        <a href="{% url 'true_north:goal-schedule-create' object.pk %}"
+           class="btn btn-sm btn-outline-success">Set up email schedule</a>
+      {% else %}
+        <p><em>Contact an admin to enable scheduled emails for your account.</em></p>
+      {% endif %}
+    {% endif %}
+  </section>
 
   <h2 class="h5 mb-3">Associated Milestones</h2>
 

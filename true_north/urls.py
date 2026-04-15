@@ -118,9 +118,49 @@ urlpatterns = [
         name="core-value-send-email",
     ),
     path(
+        "core-values/<int:pk>/schedule/create/",
+        views.CoreValueScheduleCreateView.as_view(),
+        name="core-value-schedule-create",
+    ),
+    path(
+        "core-values/<int:pk>/schedule/edit/",
+        views.CoreValueScheduleEditView.as_view(),
+        name="core-value-schedule-edit",
+    ),
+    path(
+        "core-values/<int:pk>/schedule/delete/",
+        views.CoreValueScheduleDeleteView.as_view(),
+        name="core-value-schedule-delete",
+    ),
+    path(
+        "core-values/<int:pk>/schedule/send/",
+        views.CoreValueScheduleSendNowView.as_view(),
+        name="core-value-schedule-send",
+    ),
+    path(
         "goals/<int:pk>/send-email/",
         views.GoalSendEmailView.as_view(),
         name="goal-send-email",
+    ),
+    path(
+        "goals/<int:pk>/schedule/create/",
+        views.GoalScheduleCreateView.as_view(),
+        name="goal-schedule-create",
+    ),
+    path(
+        "goals/<int:pk>/schedule/edit/",
+        views.GoalScheduleEditView.as_view(),
+        name="goal-schedule-edit",
+    ),
+    path(
+        "goals/<int:pk>/schedule/delete/",
+        views.GoalScheduleDeleteView.as_view(),
+        name="goal-schedule-delete",
+    ),
+    path(
+        "goals/<int:pk>/schedule/send/",
+        views.GoalScheduleSendNowView.as_view(),
+        name="goal-schedule-send",
     ),
     path(
         "milestones/<int:pk>/send-email/",
@@ -128,9 +168,49 @@ urlpatterns = [
         name="milestone-send-email",
     ),
     path(
+        "milestones/<int:pk>/schedule/create/",
+        views.MilestoneScheduleCreateView.as_view(),
+        name="milestone-schedule-create",
+    ),
+    path(
+        "milestones/<int:pk>/schedule/edit/",
+        views.MilestoneScheduleEditView.as_view(),
+        name="milestone-schedule-edit",
+    ),
+    path(
+        "milestones/<int:pk>/schedule/delete/",
+        views.MilestoneScheduleDeleteView.as_view(),
+        name="milestone-schedule-delete",
+    ),
+    path(
+        "milestones/<int:pk>/schedule/send/",
+        views.MilestoneScheduleSendNowView.as_view(),
+        name="milestone-schedule-send",
+    ),
+    path(
         "value-actions/<int:pk>/send-email/",
         views.ValueActionSendEmailView.as_view(),
         name="value-action-send-email",
+    ),
+    path(
+        "value-actions/<int:pk>/schedule/create/",
+        views.ValueActionScheduleCreateView.as_view(),
+        name="value-action-schedule-create",
+    ),
+    path(
+        "value-actions/<int:pk>/schedule/edit/",
+        views.ValueActionScheduleEditView.as_view(),
+        name="value-action-schedule-edit",
+    ),
+    path(
+        "value-actions/<int:pk>/schedule/delete/",
+        views.ValueActionScheduleDeleteView.as_view(),
+        name="value-action-schedule-delete",
+    ),
+    path(
+        "value-actions/<int:pk>/schedule/send/",
+        views.ValueActionScheduleSendNowView.as_view(),
+        name="value-action-schedule-send",
     ),
     # CoreValue Email Schedules
     path(

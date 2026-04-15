@@ -12,6 +12,19 @@ _FORM_CONTROL_WIDGETS = (
     forms.NumberInput,
 )
 
+MINUTE_CHOICES = [(str(i), f":{i:02d}") for i in range(0, 60, 5)]
+HOUR_CHOICES = [(str(i), f"{i:02d}:00") for i in range(0, 24)]
+DOW_CHOICES = [
+    ("*", "Every day"),
+    ("1", "Monday"),
+    ("2", "Tuesday"),
+    ("3", "Wednesday"),
+    ("4", "Thursday"),
+    ("5", "Friday"),
+    ("6", "Saturday"),
+    ("0", "Sunday"),
+]
+
 
 def _add_bootstrap_classes(form):
     """Add Bootstrap CSS classes to all fields on a form."""
@@ -168,3 +181,32 @@ class CoreValueEmailScheduleForm(forms.ModelForm):
         widgets = {
             "send_time": forms.TimeInput(attrs={"type": "time"}),
         }
+
+
+class ObjectEmailScheduleForm(forms.Form):
+    hour = forms.ChoiceField(
+        choices=HOUR_CHOICES,
+        initial="9",
+        label="Hour",
+        help_text="Eastern time",
+    )
+    minute = forms.ChoiceField(
+        choices=MINUTE_CHOICES,
+        initial="0",
+        label="Minute",
+    )
+    day_of_week = forms.ChoiceField(
+        choices=DOW_CHOICES,
+        initial="*",
+        label="Day of week",
+    )
+    enabled = forms.BooleanField(
+        required=False,
+        initial=True,
+        label="Active",
+        help_text="Uncheck to pause without deleting",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        _add_bootstrap_classes(self)
