@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ object_type }} Email Schedule{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="h4 mb-3">{{ object_type }}: {{ object }}</h1>
+          <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                  {{ field.label }}
+                </label>
+                {% if field.field.widget.input_type == "checkbox" %}
+                  <div class="form-check">
+                    {{ field }}
+                  </div>
+                {% else %}
+                  {{ field }}
+                {% endif %}
+                {% if field.help_text %}
+                  <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                {% for error in field.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">
+                {% if editing %}Save changes{% else %}Create schedule{% endif %}
+              </button>
+              <a href="{{ cancel_url }}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
