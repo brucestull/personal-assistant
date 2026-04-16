@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - Remove Email Schedule{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card border-danger">
+        <div class="card-body">
+          <h1 class="h4 mb-3">Remove email schedule for {{ object }}?</h1>
+          <p class="text-muted">
+            Runs: every
+            {% if schedule_task.crontab.day_of_week == "*" %}day{% else %}{{ schedule_task.crontab.day_of_week }}{% endif %}
+            at {{ schedule_task.crontab.hour }}:{{ schedule_task.crontab.minute }} ET
+          </p>
+          <form method="post">
+            {% csrf_token %}
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-danger">Yes, remove it</button>
+              <a href="{{ cancel_url }}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
