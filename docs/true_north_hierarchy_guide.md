@@ -2,6 +2,8 @@
 
 This app helps you connect day-to-day actions to the bigger things you care about.
 
+For technical details on ordering behavior, see `docs/true_north_ordering_guide.md`.
+
 The idea is simple:
 - You decide what matters most (Core Values)
 - You define outcomes that express those values (Goals)
