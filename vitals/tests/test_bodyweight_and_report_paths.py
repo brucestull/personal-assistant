@@ -158,6 +158,7 @@ class BloodPressureExtraPathTests(TestCase):
         self.assertEqual(month.status_code, 200)
         self.assertEqual(month.context["period_choice"], "month")
 
+        # Intentionally pass start > end so the view exercises its swap branch.
         custom = self.client.get(
             reverse("vitals:bloodpressure-report")
             + f"?period=custom&start={timezone.localdate():%Y-%m-%d}"
@@ -165,6 +166,10 @@ class BloodPressureExtraPathTests(TestCase):
         )
         self.assertEqual(custom.status_code, 200)
         self.assertEqual(custom.context["period_choice"], "custom")
+        self.assertEqual(
+            custom.context["period_start"], timezone.localdate() - timedelta(days=1)
+        )
+        self.assertEqual(custom.context["period_end"], timezone.localdate())
         self.assertTrue(custom.context["period_start"] <= custom.context["period_end"])
         self.assertEqual(custom.context["bp_summary"]["count"], 1)
         self.assertEqual(custom.context["latest_bp"].pk, recent.pk)

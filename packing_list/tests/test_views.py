@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.utils import timezone
+from django.utils.text import slugify
 
 from packing_list.models import Activity, Item, Task
 
@@ -129,7 +131,8 @@ class ActivityViewTests(TestCase):
         r0 = self.client.get(base)
         self.assertEqual(r0.status_code, 200)
         self.assertEqual(r0["Content-Type"], "application/pdf")
-        self.assertIn('filename="a_', r0["Content-Disposition"])
+        expected_filename = f'{slugify(self.act.name)}_{timezone.localdate():%Y-%m-%d}.pdf'
+        self.assertIn(expected_filename, r0["Content-Disposition"])
 
         # too small
         r1 = self.client.get(base + "?font_size=5")
@@ -176,9 +179,10 @@ class ItemViewTests(TestCase):
         self.assertEqual(r404.status_code, 404)
 
     def test_create_get_and_post(self):
-        # missing activity should still render
+        # The activity query parameter is optional by design; the form still renders.
         r0 = self.client.get(reverse("packing_list:item_create"))
         self.assertEqual(r0.status_code, 200)
+        self.assertIsNone(r0.context["form"].fields["activity"].initial)
 
         url = reverse("packing_list:item_create") + f"?activity={self.act.pk}"
         r1 = self.client.get(url)
