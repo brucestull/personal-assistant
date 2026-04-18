@@ -41,7 +41,9 @@ class BaseModelTests(TestCase):
                 app_label = "base"
                 managed = False
 
-        model = TestURL(label="Docs", url="https://example.com", url_type="documentation")
+        model = TestURL(
+            label="Docs", url="https://example.com", url_type="documentation"
+        )
         self.assertEqual(str(model), "Docs (documentation)")
 
 

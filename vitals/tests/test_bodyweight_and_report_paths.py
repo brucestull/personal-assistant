@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.test import RequestFactory, TestCase
+from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
@@ -147,7 +147,9 @@ class BloodPressureExtraPathTests(TestCase):
         recent = BloodPressure.objects.create(
             user=self.user, systolic=121, diastolic=79, pulse=72
         )
-        old = BloodPressure.objects.create(user=self.user, systolic=110, diastolic=70, pulse=65)
+        old = BloodPressure.objects.create(
+            user=self.user, systolic=110, diastolic=70, pulse=65
+        )
         old.created = now - timedelta(days=40)
         old.save(update_fields=["created"])
 
@@ -174,7 +176,9 @@ class BloodPressureExtraPathTests(TestCase):
         self.assertEqual(custom.context["bp_summary"]["count"], 1)
         self.assertEqual(custom.context["latest_bp"].pk, recent.pk)
 
-        all_time = self.client.get(reverse("vitals:bloodpressure-report") + "?period=all")
+        all_time = self.client.get(
+            reverse("vitals:bloodpressure-report") + "?period=all"
+        )
         self.assertEqual(all_time.status_code, 200)
         self.assertEqual(all_time.context["period_choice"], "all")
         self.assertEqual(all_time.context["bp_summary"]["count"], 2)
@@ -190,7 +194,11 @@ class ReportParserUnitTests(TestCase):
 
     def test_compute_window_custom_single_date(self):
         class Form:
-            cleaned_data = {"period": "custom", "start": timezone.localdate(), "end": None}
+            cleaned_data = {
+                "period": "custom",
+                "start": timezone.localdate(),
+                "end": None,
+            }
 
         view = BloodPressureReportView()
         start, end, label, period = view._compute_window(Form())

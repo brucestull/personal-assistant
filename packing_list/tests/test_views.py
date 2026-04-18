@@ -131,7 +131,9 @@ class ActivityViewTests(TestCase):
         r0 = self.client.get(base)
         self.assertEqual(r0.status_code, 200)
         self.assertEqual(r0["Content-Type"], "application/pdf")
-        expected_filename = f'{slugify(self.act.name)}_{timezone.localdate():%Y-%m-%d}.pdf'
+        expected_filename = (
+            f'{slugify(self.act.name)}_{timezone.localdate():%Y-%m-%d}.pdf'
+        )
         self.assertIn(expected_filename, r0["Content-Disposition"])
 
         # too small

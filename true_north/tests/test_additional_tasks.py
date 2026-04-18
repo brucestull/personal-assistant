@@ -66,7 +66,9 @@ def test_send_corevalue_reminder_branches():
     no_email = send_corevalue_reminder_email(schedule_no_email.id)
     assert no_email["reason"] == "no_user_email"
 
-    schedule = CoreValueEmailScheduleFactory(user=CustomUserFactory(email="cv@example.com"))
+    schedule = CoreValueEmailScheduleFactory(
+        user=CustomUserFactory(email="cv@example.com")
+    )
     with patch("true_north.tasks._send_email") as mock_send:
         result = send_corevalue_reminder_email(schedule.id)
     assert result["ok"] is True

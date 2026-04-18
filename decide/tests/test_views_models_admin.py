@@ -96,7 +96,9 @@ class DecideViewTests(TestCase):
         self.assertEqual(flow_response.context["prompt"], self.p1)
         self.assertEqual(flow_response.context["total_prompts"], 2)
 
-        json_url = reverse("decide:decision_flow_json", kwargs={"decision_id": decision.id})
+        json_url = reverse(
+            "decide:decision_flow_json", kwargs={"decision_id": decision.id}
+        )
         invalid = self.client.post(
             json_url,
             data="{}",
@@ -123,7 +125,9 @@ class DecideViewTests(TestCase):
         decision.refresh_from_db()
         self.assertEqual(decision.quadrant, "Q3")
 
-        result_url = reverse("decide:decision_result", kwargs={"decision_id": decision.id})
+        result_url = reverse(
+            "decide:decision_result", kwargs={"decision_id": decision.id}
+        )
         result = self.client.get(result_url)
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.context["decision"], decision)

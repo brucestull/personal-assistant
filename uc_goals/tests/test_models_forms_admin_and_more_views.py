@@ -71,12 +71,18 @@ class UcGoalsAdditionalViewTests(TestCase):
             username="other-goal", password="pw", registration_accepted=True
         )
         self.client.login(username="accepted-goal", password="pw")
-        self.parent = Goal.objects.create(user=self.user, name="Parent", is_ultimate_concern=True)
-        self.goal = Goal.objects.create(user=self.user, name="Child", parent=self.parent)
+        self.parent = Goal.objects.create(
+            user=self.user, name="Parent", is_ultimate_concern=True
+        )
+        self.goal = Goal.objects.create(
+            user=self.user, name="Child", parent=self.parent
+        )
         self.other_uc = Goal.objects.create(
             user=self.other, name="Other UC", is_ultimate_concern=True
         )
-        Goal.objects.create(user=self.other, name="Other Orphan", is_ultimate_concern=False)
+        Goal.objects.create(
+            user=self.other, name="Other Orphan", is_ultimate_concern=False
+        )
 
     def test_create_view_prefills_parent_and_sets_user(self):
         response = self.client.get(
@@ -84,7 +90,9 @@ class UcGoalsAdditionalViewTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["mode"], "create")
-        self.assertEqual(response.context["form"].initial["parent"], str(self.parent.pk))
+        self.assertEqual(
+            response.context["form"].initial["parent"], str(self.parent.pk)
+        )
 
         post_response = self.client.post(
             reverse("uc_goals:goal_create"),
@@ -106,7 +114,9 @@ class UcGoalsAdditionalViewTests(TestCase):
         )
 
     def test_update_view_filters_queryset_and_context(self):
-        response = self.client.get(reverse("uc_goals:goal_update", kwargs={"pk": self.goal.pk}))
+        response = self.client.get(
+            reverse("uc_goals:goal_update", kwargs={"pk": self.goal.pk})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["mode"], "update")
         self.assertIn("Edit:", response.context["page_title"])
@@ -121,7 +131,9 @@ class UcGoalsAdditionalViewTests(TestCase):
         self.assertEqual(uc_response.status_code, 200)
         self.assertEqual(list(uc_response.context["goals"]), [self.parent])
 
-        orphan = Goal.objects.create(user=self.user, name="Orphan", is_ultimate_concern=False)
+        orphan = Goal.objects.create(
+            user=self.user, name="Orphan", is_ultimate_concern=False
+        )
         orphan_response = self.client.get(reverse("uc_goals:orphan_list"))
         self.assertEqual(orphan_response.status_code, 200)
         self.assertEqual(list(orphan_response.context["goals"]), [orphan])
