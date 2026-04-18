@@ -1,4 +1,4 @@
-# packing_list/tests/admin_test.py
+# packing_list/tests/test_admin.py
 
 from __future__ import annotations
 
