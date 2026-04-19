@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin,
     UserPassesTestMixin,
 )
+from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -31,7 +32,15 @@ from true_north.forms import (
     ObjectEmailScheduleForm,
     ValueActionForm,
 )
-from true_north.models import CoreValue, CoreValueEmailSchedule, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus  # noqa E501
+from true_north.models import (  # noqa E501
+    CoreValue,
+    CoreValueEmailSchedule,
+    Goal,
+    GoalStatus,
+    Milestone,
+    ValueAction,
+    ValueActionStatus,
+)
 from true_north.tasks import (
     send_core_value_email,
     send_corevalue_reminder_email,
@@ -66,13 +75,11 @@ class DashboardView(
         )
 
         # Base querysets for the user with optimized prefetching
-        core_values = CoreValue.objects.filter(
-            user=user, is_active=True
-        ).prefetch_related(
-            "goals",
-            "goals__milestones",
-            "goals__milestones__tasks"
-        ).order_by("order", "name")
+        core_values = (
+            CoreValue.objects.filter(user=user, is_active=True)
+            .prefetch_related("goals", "goals__milestones", "goals__milestones__tasks")
+            .order_by("order", "name")
+        )
 
         # Filter goals based on selected status
         goals_qs = Goal.objects.filter(user=user, is_active=True)
@@ -132,32 +139,40 @@ class DashboardView(
                     milestone_tasks = tasks.filter(milestone=milestone)
                     # Get count before slicing to avoid double evaluation
                     total_tasks = milestone_tasks.count()
-                    milestones_data.append({
-                        "milestone": milestone,
-                        "tasks": milestone_tasks[:5],  # Show first 5 tasks
-                        "total_tasks": total_tasks,
-                    })
+                    milestones_data.append(
+                        {
+                            "milestone": milestone,
+                            "tasks": milestone_tasks[:5],  # Show first 5 tasks
+                            "total_tasks": total_tasks,
+                        }
+                    )
 
-                goals_data.append({
-                    "goal": goal,
-                    "milestones": milestones_data,
-                })
+                goals_data.append(
+                    {
+                        "goal": goal,
+                        "milestones": milestones_data,
+                    }
+                )
 
-            core_values_data.append({
-                "core_value": cv,
-                "goals": goals_data,
-            })
+            core_values_data.append(
+                {
+                    "core_value": cv,
+                    "goals": goals_data,
+                }
+            )
 
         # Add context
-        ctx.update({
-            "core_values_data": core_values_data,
-            "stats": stats,
-            "goal_status_filter": goal_status_filter,
-            "task_status_filter": task_status_filter,
-            "show_completed_milestones": show_completed_milestones,
-            "goal_status_choices": GoalStatus.choices,
-            "task_status_choices": ValueActionStatus.choices,
-        })
+        ctx.update(
+            {
+                "core_values_data": core_values_data,
+                "stats": stats,
+                "goal_status_filter": goal_status_filter,
+                "task_status_filter": task_status_filter,
+                "show_completed_milestones": show_completed_milestones,
+                "goal_status_choices": GoalStatus.choices,
+                "task_status_choices": ValueActionStatus.choices,
+            }
+        )
 
         return ctx
 
@@ -191,9 +206,11 @@ class CoreValueDetailView(
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["goals"] = self.object.goals.filter(
-            user=self.request.user
-        ).prefetch_related("milestones").order_by("order", "title")
+        ctx["goals"] = (
+            self.object.goals.filter(user=self.request.user)
+            .prefetch_related("milestones")
+            .order_by("order", "title")
+        )
         ctx["schedule_task"] = PeriodicTask.objects.filter(
             name=periodic_task_name("CoreValue", self.object.pk)
         ).first()
@@ -243,6 +260,8 @@ class CoreValueDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteVie
     def form_valid(self, form):
         messages.success(self.request, "Core Value deleted.")
         return super().form_valid(form)
+
+
 # ---------------------------------------------------------------------------
 
 
@@ -268,9 +287,11 @@ class GoalDetailView(
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["milestones"] = self.object.milestones.filter(
-            user=self.request.user
-        ).prefetch_related("tasks").order_by("order", "description")
+        ctx["milestones"] = (
+            self.object.milestones.filter(user=self.request.user)
+            .prefetch_related("tasks")
+            .order_by("order", "description")
+        )
         ctx["schedule_task"] = PeriodicTask.objects.filter(
             name=periodic_task_name("Goal", self.object.pk)
         ).first()
@@ -330,6 +351,8 @@ class GoalDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, "Goal deleted.")
         return super().form_valid(form)
+
+
 # ---------------------------------------------------------------------------
 
 
@@ -509,6 +532,100 @@ class ValueActionDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteV
     def form_valid(self, form):
         messages.success(self.request, "Value Action deleted.")
         return super().form_valid(form)
+
+
+class _BaseMoveOrderView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, View
+):
+    model = None
+    scope_fields = ()
+    list_url_name = ""
+    label = "Item"
+    direction = "up"
+
+    def post(self, request, pk):
+        obj = get_object_or_404(self.model, pk=pk, user=request.user)
+        scope_filters = {"user_id": request.user.id}
+        scope_filters.update(
+            {f"{field}_id": getattr(obj, f"{field}_id") for field in self.scope_fields}
+        )
+
+        scope_qs = self.model.objects.filter(**scope_filters)
+        if self.direction == "up":
+            neighbor = (
+                scope_qs.filter(order__lt=obj.order).order_by("-order", "-id").first()
+            )
+        else:
+            neighbor = (
+                scope_qs.filter(order__gt=obj.order).order_by("order", "id").first()
+            )
+
+        if not neighbor:
+            messages.info(request, f"{self.label} is already at the boundary.")
+            return redirect(self.list_url_name)
+
+        with transaction.atomic():
+            original_order = obj.order
+            swap_order = neighbor.order
+            temp_order = (
+                scope_qs.order_by("-order").values_list("order", flat=True).first() or 0
+            ) + 1
+
+            obj.order = temp_order
+            obj.save(update_fields=["order"])
+            neighbor.order = original_order
+            neighbor.save(update_fields=["order"])
+            obj.order = swap_order
+            obj.save(update_fields=["order"])
+
+        messages.success(
+            request,
+            f'{self.label} moved {"up" if self.direction == "up" else "down"}.',
+        )
+        return redirect(self.list_url_name)
+
+
+class CoreValueMoveUpView(_BaseMoveOrderView):
+    model = CoreValue
+    list_url_name = "true_north:core-value-list"
+    label = "Core Value"
+
+
+class CoreValueMoveDownView(CoreValueMoveUpView):
+    direction = "down"
+
+
+class GoalMoveUpView(_BaseMoveOrderView):
+    model = Goal
+    scope_fields = ("value",)
+    list_url_name = "true_north:goal-list"
+    label = "Goal"
+
+
+class GoalMoveDownView(GoalMoveUpView):
+    direction = "down"
+
+
+class MilestoneMoveUpView(_BaseMoveOrderView):
+    model = Milestone
+    scope_fields = ("goal",)
+    list_url_name = "true_north:milestone-list"
+    label = "Milestone"
+
+
+class MilestoneMoveDownView(MilestoneMoveUpView):
+    direction = "down"
+
+
+class ValueActionMoveUpView(_BaseMoveOrderView):
+    model = ValueAction
+    scope_fields = ("milestone",)
+    list_url_name = "true_north:value-action-list"
+    label = "Value Action"
+
+
+class ValueActionMoveDownView(ValueActionMoveUpView):
+    direction = "down"
 
 
 # ---------------------------------------------------------------------------
@@ -919,9 +1036,11 @@ class CoreValueEmailScheduleListView(
     paginate_by = 20
 
     def get_queryset(self):
-        return CoreValueEmailSchedule.objects.filter(
-            user=self.request.user
-        ).select_related("core_value").order_by("-created")
+        return (
+            CoreValueEmailSchedule.objects.filter(user=self.request.user)
+            .select_related("core_value")
+            .order_by("-created")
+        )
 
 
 class CoreValueEmailScheduleCreateView(

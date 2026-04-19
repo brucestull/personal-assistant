@@ -1,6 +1,7 @@
 # true_north/admin.py
 
 from django.contrib import admin
+from django.utils import timezone
 
 from .models import CoreValue, CoreValueEmailSchedule, Goal, Milestone, ValueAction
 
@@ -24,6 +25,24 @@ class CoreValueAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     autocomplete_fields = ("user",)
     inlines = [GoalInline]
+    actions = (
+        "activate_selected",
+        "deactivate_selected",
+        "normalize_order_for_selected_users",
+    )
+
+    @admin.action(description="Activate selected core values")
+    def activate_selected(self, request, queryset):
+        queryset.update(is_active=True)
+
+    @admin.action(description="Deactivate selected core values")
+    def deactivate_selected(self, request, queryset):
+        queryset.update(is_active=False)
+
+    @admin.action(description="Normalize order for selected users")
+    def normalize_order_for_selected_users(self, request, queryset):
+        for user_id in queryset.values_list("user_id", flat=True).distinct():
+            CoreValue.reorder_all(user_id=user_id)
 
 
 class MilestoneInline(admin.TabularInline):
@@ -55,6 +74,24 @@ class GoalAdmin(admin.ModelAdmin):
     autocomplete_fields = ("user", "value")
     prepopulated_fields = {"slug": ("title",)}
     inlines = [MilestoneInline]
+    actions = (
+        "activate_selected",
+        "deactivate_selected",
+        "normalize_order_for_selected_scopes",
+    )
+
+    @admin.action(description="Activate selected goals")
+    def activate_selected(self, request, queryset):
+        queryset.update(is_active=True)
+
+    @admin.action(description="Deactivate selected goals")
+    def deactivate_selected(self, request, queryset):
+        queryset.update(is_active=False)
+
+    @admin.action(description="Normalize order for selected goal scopes")
+    def normalize_order_for_selected_scopes(self, request, queryset):
+        for user_id, value_id in queryset.values_list("user_id", "value_id").distinct():
+            Goal.reorder_all(user_id=user_id, value_id=value_id)
 
 
 class ValueActionInline(admin.TabularInline):
@@ -84,6 +121,24 @@ class MilestoneAdmin(admin.ModelAdmin):
     autocomplete_fields = ("user", "goal")
     prepopulated_fields = {"slug": ("description",)}
     inlines = [ValueActionInline]
+    actions = (
+        "mark_completed",
+        "mark_pending",
+        "normalize_order_for_selected_scopes",
+    )
+
+    @admin.action(description="Mark selected milestones as completed")
+    def mark_completed(self, request, queryset):
+        queryset.update(is_completed=True, completed_at=timezone.now())
+
+    @admin.action(description="Mark selected milestones as pending")
+    def mark_pending(self, request, queryset):
+        queryset.update(is_completed=False, completed_at=None)
+
+    @admin.action(description="Normalize order for selected goal scopes")
+    def normalize_order_for_selected_scopes(self, request, queryset):
+        for user_id, goal_id in queryset.values_list("user_id", "goal_id").distinct():
+            Milestone.reorder_all(user_id=user_id, goal_id=goal_id)
 
 
 @admin.register(ValueAction)
@@ -110,6 +165,34 @@ class ValueActionAdmin(admin.ModelAdmin):
     readonly_fields = ("created", "updated")
 
     autocomplete_fields = ("user", "milestone")
+    actions = (
+        "mark_done",
+        "mark_todo",
+        "normalize_order_for_selected_scopes",
+    )
+
+    @admin.action(description="Mark selected value actions as done")
+    def mark_done(self, request, queryset):
+        queryset.update(
+            status="done",
+            is_completed=True,
+            completed_at=timezone.now(),
+        )
+
+    @admin.action(description="Mark selected value actions as to do")
+    def mark_todo(self, request, queryset):
+        queryset.update(
+            status="todo",
+            is_completed=False,
+            completed_at=None,
+        )
+
+    @admin.action(description="Normalize order for selected milestone scopes")
+    def normalize_order_for_selected_scopes(self, request, queryset):
+        for user_id, milestone_id in queryset.values_list(
+            "user_id", "milestone_id"
+        ).distinct():
+            ValueAction.reorder_all(user_id=user_id, milestone_id=milestone_id)
 
 
 @admin.register(CoreValueEmailSchedule)
