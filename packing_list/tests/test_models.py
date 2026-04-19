@@ -1,4 +1,4 @@
-# packing_list/tests/models_test.py
+# packing_list/tests/test_models.py
 
 from __future__ import annotations
 
