@@ -137,7 +137,9 @@ class BoostsAdditionalViewTests(TestCase):
         )
         self.user.beastie = self.beastie
         self.user.save(update_fields=["beastie"])
-        self.inspirational = Inspirational.objects.create(author=self.user, body="Quote body")
+        self.inspirational = Inspirational.objects.create(
+            author=self.user, body="Quote body"
+        )
 
     @patch("boosts.views.send_inspirational_to_beastie.delay")
     def test_send_inspirational_success(self, mock_delay):
@@ -149,7 +151,10 @@ class BoostsAdditionalViewTests(TestCase):
         self.assertEqual(InspirationalSent.objects.count(), 1)
         mock_delay.assert_called_once()
 
-    @patch("boosts.views.InspirationalSent.objects.create", side_effect=ValidationError("bad"))
+    @patch(
+        "boosts.views.InspirationalSent.objects.create",
+        side_effect=ValidationError("bad"),
+    )
     def test_send_inspirational_validation_error(self, _mock_create):
         self.client.login(username="view-user", password="pw")
         response = self.client.get(
@@ -159,7 +164,10 @@ class BoostsAdditionalViewTests(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertTrue(any("bad" in msg for msg in messages))
 
-    @patch("boosts.views.send_inspirational_to_beastie.delay", side_effect=Exception("boom"))
+    @patch(
+        "boosts.views.send_inspirational_to_beastie.delay",
+        side_effect=Exception("boom"),
+    )
     def test_send_inspirational_generic_error(self, _mock_delay):
         self.client.login(username="view-user", password="pw")
         response = self.client.get(
@@ -195,7 +203,9 @@ class BoostsAdditionalViewTests(TestCase):
         self.assertEqual(list_response.status_code, 200)
         self.assertEqual(list(list_response.context["object_list"]), [own])
 
-        detail = self.client.get(reverse("boosts:random-send-detail", kwargs={"pk": own.pk}))
+        detail = self.client.get(
+            reverse("boosts:random-send-detail", kwargs={"pk": own.pk})
+        )
         self.assertEqual(detail.status_code, 200)
         forbidden_detail = self.client.get(
             reverse("boosts:random-send-detail", kwargs={"pk": other.pk})
