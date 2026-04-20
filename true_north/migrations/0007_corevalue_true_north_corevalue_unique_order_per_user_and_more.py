@@ -50,6 +50,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ("true_north", "0006_scheduled_task_users_group"),
     ]
+    atomic = False
 
     operations = [
         migrations.RunPython(_normalize_scoped_orders, migrations.RunPython.noop),
