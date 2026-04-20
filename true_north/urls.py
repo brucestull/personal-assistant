@@ -33,6 +33,16 @@ urlpatterns = [
         views.CoreValueDeleteView.as_view(),
         name="core-value-delete",
     ),
+    path(
+        "core-values/<int:pk>/move-up/",
+        views.CoreValueMoveUpView.as_view(),
+        name="core-value-move-up",
+    ),
+    path(
+        "core-values/<int:pk>/move-down/",
+        views.CoreValueMoveDownView.as_view(),
+        name="core-value-move-down",
+    ),
     # Goal CRUD
     path(
         "goals/",
@@ -58,6 +68,16 @@ urlpatterns = [
         "goals/<int:pk>/delete/",
         views.GoalDeleteView.as_view(),
         name="goal-delete",
+    ),
+    path(
+        "goals/<int:pk>/move-up/",
+        views.GoalMoveUpView.as_view(),
+        name="goal-move-up",
+    ),
+    path(
+        "goals/<int:pk>/move-down/",
+        views.GoalMoveDownView.as_view(),
+        name="goal-move-down",
     ),
     # Milestone CRUD
     path(
@@ -85,6 +105,16 @@ urlpatterns = [
         views.MilestoneDeleteView.as_view(),
         name="milestone-delete",
     ),
+    path(
+        "milestones/<int:pk>/move-up/",
+        views.MilestoneMoveUpView.as_view(),
+        name="milestone-move-up",
+    ),
+    path(
+        "milestones/<int:pk>/move-down/",
+        views.MilestoneMoveDownView.as_view(),
+        name="milestone-move-down",
+    ),
     # ValueAction CRUD
     path(
         "value-actions/",
@@ -110,6 +140,16 @@ urlpatterns = [
         "value-actions/<int:pk>/delete/",
         views.ValueActionDeleteView.as_view(),
         name="value-action-delete",
+    ),
+    path(
+        "value-actions/<int:pk>/move-up/",
+        views.ValueActionMoveUpView.as_view(),
+        name="value-action-move-up",
+    ),
+    path(
+        "value-actions/<int:pk>/move-down/",
+        views.ValueActionMoveDownView.as_view(),
+        name="value-action-move-down",
     ),
     # Send-email actions
     path(
