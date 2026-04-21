@@ -7,19 +7,11 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 
-from true_north.models import (  # noqa E501
-    CoreValue,
-    CoreValueEmailSchedule,
-    Goal,
-    GoalStatus,
-    Milestone,
-    ValueAction,
-    ValueActionStatus,
-)
+from true_north.models import CoreValue, CoreValueEmailSchedule, Goal, Milestone, ValueAction, GoalStatus, ValueActionStatus  # noqa E501
 from true_north.tests.factories import (
-    CoreValueEmailScheduleFactory,
-    CoreValueFactory,
     CustomUserFactory,
+    CoreValueFactory,
+    CoreValueEmailScheduleFactory,
     GoalFactory,
     MilestoneFactory,
     ValueActionFactory,
@@ -68,28 +60,12 @@ def test_corevalue_str_is_name():
 
 def test_corevalue_meta_ordering_is_order_then_name():
     tiny_user = CustomUserFactory()
-    CoreValueFactory(user=tiny_user, name="Zulu", order=3)
+    CoreValueFactory(user=tiny_user, name="Zulu", order=2)
     CoreValueFactory(user=tiny_user, name="Alpha", order=2)
     CoreValueFactory(user=tiny_user, name="Bravo", order=1)
 
     qs = CoreValue.objects.filter(user=tiny_user).values_list("name", flat=True)
     assert list(qs) == ["Bravo", "Alpha", "Zulu"]
-
-
-def test_corevalue_order_auto_appends_on_create_when_zero():
-    tiny_user = CustomUserFactory()
-    CoreValueFactory(user=tiny_user, order=4)
-    grits_and_gravy = CoreValueFactory(user=tiny_user, order=0)
-    assert grits_and_gravy.order == 5
-
-
-@pytest.mark.django_db(transaction=True)
-def test_corevalue_unique_order_per_user_enforced():
-    tiny_user = CustomUserFactory()
-    CoreValueFactory(user=tiny_user, order=3)
-    with pytest.raises(IntegrityError):
-        with transaction.atomic():
-            CoreValueFactory(user=tiny_user, order=3)
 
 
 # -------------------------
@@ -147,38 +123,14 @@ def test_goal_str_is_title():
 
 def test_goal_meta_ordering_is_order_then_title():
     tiny_user = CustomUserFactory()
-    value_one = CoreValueFactory(user=tiny_user)
-    value_two = CoreValueFactory(user=tiny_user, name="Service", slug="")
+    value = CoreValueFactory(user=tiny_user)
 
-    GoalFactory(user=tiny_user, value=value_one, title="Zulu", order=2)
-    GoalFactory(user=tiny_user, value=value_two, title="Alpha", order=2)
-    GoalFactory(user=tiny_user, value=value_one, title="Bravo", order=1)
+    GoalFactory(user=tiny_user, value=value, title="Zulu", order=2)
+    GoalFactory(user=tiny_user, value=value, title="Alpha", order=2)
+    GoalFactory(user=tiny_user, value=value, title="Bravo", order=1)
 
     qs = Goal.objects.filter(user=tiny_user).values_list("title", flat=True)
     assert list(qs) == ["Bravo", "Alpha", "Zulu"]
-
-
-def test_goal_order_auto_appends_on_create_when_zero():
-    tiny_user = CustomUserFactory()
-    value = CoreValueFactory(user=tiny_user)
-    GoalFactory(user=tiny_user, value=value, order=2)
-    goal = GoalFactory(user=tiny_user, value=value, order=0)
-    assert goal.order == 3
-
-
-def test_goal_unique_order_per_value_enforced():
-    tiny_user = CustomUserFactory()
-    value = CoreValueFactory(user=tiny_user)
-    GoalFactory(user=tiny_user, value=value, order=7)
-    with pytest.raises(ValidationError):
-        GoalFactory(user=tiny_user, value=value, order=7)
-
-
-def test_goal_unique_order_without_value_enforced():
-    tiny_user = CustomUserFactory()
-    GoalFactory(user=tiny_user, value=None, order=7)
-    with pytest.raises(ValidationError):
-        GoalFactory(user=tiny_user, value=None, order=7)
 
 
 # -------------------------
@@ -235,27 +187,12 @@ def test_milestone_str_includes_goal_and_description():
 
 def test_milestone_meta_ordering_is_order_then_description():
     goal = GoalFactory()
-    other_goal = GoalFactory(user=goal.user, value=CoreValueFactory(user=goal.user))
     MilestoneFactory(goal=goal, user=goal.user, description="Zulu", order=2)
-    MilestoneFactory(goal=other_goal, user=goal.user, description="Alpha", order=2)
+    MilestoneFactory(goal=goal, user=goal.user, description="Alpha", order=2)
     MilestoneFactory(goal=goal, user=goal.user, description="Bravo", order=1)
 
-    qs = Milestone.objects.filter(user=goal.user).values_list("description", flat=True)
+    qs = Milestone.objects.filter(goal=goal).values_list("description", flat=True)
     assert list(qs) == ["Bravo", "Alpha", "Zulu"]
-
-
-def test_milestone_order_auto_appends_on_create_when_zero():
-    goal = GoalFactory()
-    MilestoneFactory(goal=goal, user=goal.user, order=8)
-    milestone = MilestoneFactory(goal=goal, user=goal.user, order=0)
-    assert milestone.order == 9
-
-
-def test_milestone_unique_order_per_goal_enforced():
-    goal = GoalFactory()
-    MilestoneFactory(goal=goal, user=goal.user, order=4)
-    with pytest.raises(ValidationError):
-        MilestoneFactory(goal=goal, user=goal.user, order=4)
 
 
 # -------------------------
@@ -310,32 +247,12 @@ def test_task_str_short_content_no_ellipsis():
 
 def test_task_meta_ordering_is_order_then_id():
     milestone = MilestoneFactory()
-    other_milestone = MilestoneFactory(
-        user=milestone.user,
-        goal=GoalFactory(
-            user=milestone.user, value=CoreValueFactory(user=milestone.user)
-        ),
-    )
     t1 = ValueActionFactory(milestone=milestone, user=milestone.user, order=5)
-    t2 = ValueActionFactory(milestone=other_milestone, user=milestone.user, order=5)
+    t2 = ValueActionFactory(milestone=milestone, user=milestone.user, order=5)
     t3 = ValueActionFactory(milestone=milestone, user=milestone.user, order=1)
 
-    qs = ValueAction.objects.filter(user=milestone.user).values_list("id", flat=True)
+    qs = ValueAction.objects.filter(milestone=milestone).values_list("id", flat=True)
     assert list(qs) == [t3.id, t1.id, t2.id]
-
-
-def test_task_order_auto_appends_on_create_when_zero():
-    milestone = MilestoneFactory()
-    ValueActionFactory(milestone=milestone, user=milestone.user, order=1)
-    task = ValueActionFactory(milestone=milestone, user=milestone.user, order=0)
-    assert task.order == 2
-
-
-def test_task_unique_order_per_milestone_enforced():
-    milestone = MilestoneFactory()
-    ValueActionFactory(milestone=milestone, user=milestone.user, order=3)
-    with pytest.raises(ValidationError):
-        ValueActionFactory(milestone=milestone, user=milestone.user, order=3)
 
 
 # -------------------------
@@ -462,7 +379,9 @@ def test_compute_next_send_send_time_today_when_still_in_future():
     tz = timezone.get_current_timezone()
     # Simulate "now" as 08:53 local time so that 09:00 is still in the future.
     now_local_date = timezone.now().astimezone(tz).date()
-    now_utc = timezone.make_aware(_dt.combine(now_local_date, time(8, 53, 0)), tz)
+    now_utc = timezone.make_aware(
+        _dt.combine(now_local_date, time(8, 53, 0)), tz
+    )
 
     send_time = time(9, 0)
     schedule = CoreValueEmailScheduleFactory.build(

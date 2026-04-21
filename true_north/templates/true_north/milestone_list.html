@@ -53,24 +53,8 @@
               </td>
               <td>{{ milestone.due_date|default:"—" }}</td>
               <td class="text-nowrap">
-                <form method="post"
-                      action="{% url 'true_north:milestone-move-up' milestone.pk %}"
-                      class="d-inline">
-                  {% csrf_token %}
-                  <button type="submit"
-                          class="btn btn-sm btn-outline-secondary"
-                          aria-label="Move milestone {{ milestone.description }} up">↑</button>
-                </form>
-                <form method="post"
-                      action="{% url 'true_north:milestone-move-down' milestone.pk %}"
-                      class="d-inline ms-1">
-                  {% csrf_token %}
-                  <button type="submit"
-                          class="btn btn-sm btn-outline-secondary"
-                          aria-label="Move milestone {{ milestone.description }} down">↓</button>
-                </form>
                 <a href="{% url 'true_north:milestone-detail' milestone.pk %}"
-                   class="btn btn-sm btn-outline-info ms-1"
+                   class="btn btn-sm btn-outline-info"
                    aria-label="View milestone: {{ milestone.description }}">View</a>
                 <a href="{% url 'true_north:milestone-update' milestone.pk %}"
                    class="btn btn-sm btn-outline-primary ms-1"

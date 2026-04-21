@@ -10,10 +10,10 @@ from django.test import RequestFactory
 from true_north.admin import (
     CoreValueAdmin,
     GoalAdmin,
-    GoalInline,
     MilestoneAdmin,
-    MilestoneInline,
     ValueActionAdmin,
+    GoalInline,
+    MilestoneInline,
     ValueActionInline,
 )
 from true_north.models import CoreValue, Goal, Milestone, ValueAction
@@ -61,11 +61,6 @@ def test_corevalue_admin_configuration():
     assert model_admin.prepopulated_fields == {"slug": ("name",)}
     assert model_admin.autocomplete_fields == ("user",)
     assert model_admin.inlines == [GoalInline]
-    assert model_admin.actions == (
-        "activate_selected",
-        "deactivate_selected",
-        "normalize_order_for_selected_users",
-    )
 
 
 def test_goal_admin_configuration():
@@ -96,11 +91,6 @@ def test_goal_admin_configuration():
     assert model_admin.prepopulated_fields == {"slug": ("title",)}
     assert model_admin.autocomplete_fields == ("user", "value")
     assert model_admin.inlines == [MilestoneInline]
-    assert model_admin.actions == (
-        "activate_selected",
-        "deactivate_selected",
-        "normalize_order_for_selected_scopes",
-    )
 
 
 def test_milestone_admin_configuration():
@@ -130,11 +120,6 @@ def test_milestone_admin_configuration():
     assert model_admin.prepopulated_fields == {"slug": ("description",)}
     assert model_admin.autocomplete_fields == ("user", "goal")
     assert model_admin.inlines == [ValueActionInline]
-    assert model_admin.actions == (
-        "mark_completed",
-        "mark_pending",
-        "normalize_order_for_selected_scopes",
-    )
 
 
 def test_task_admin_configuration():
@@ -162,11 +147,6 @@ def test_task_admin_configuration():
     assert model_admin.ordering == ("order", "id")
     assert model_admin.readonly_fields == ("created", "updated")
     assert model_admin.autocomplete_fields == ("user", "milestone")
-    assert model_admin.actions == (
-        "mark_done",
-        "mark_todo",
-        "normalize_order_for_selected_scopes",
-    )
 
 
 def test_inlines_point_to_expected_models_and_fields():

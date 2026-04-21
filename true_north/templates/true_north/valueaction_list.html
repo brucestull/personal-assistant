@@ -55,24 +55,8 @@
               </td>
               <td>{{ action.due_date|default:"—" }}</td>
               <td class="text-nowrap">
-                <form method="post"
-                      action="{% url 'true_north:value-action-move-up' action.pk %}"
-                      class="d-inline">
-                  {% csrf_token %}
-                  <button type="submit"
-                          class="btn btn-sm btn-outline-secondary"
-                          aria-label="Move value action up">↑</button>
-                </form>
-                <form method="post"
-                      action="{% url 'true_north:value-action-move-down' action.pk %}"
-                      class="d-inline ms-1">
-                  {% csrf_token %}
-                  <button type="submit"
-                          class="btn btn-sm btn-outline-secondary"
-                          aria-label="Move value action down">↓</button>
-                </form>
                 <a href="{% url 'true_north:value-action-detail' action.pk %}"
-                   class="btn btn-sm btn-outline-info ms-1"
+                   class="btn btn-sm btn-outline-info"
                    aria-label="View value action">View</a>
                 <a href="{% url 'true_north:value-action-update' action.pk %}"
                    class="btn btn-sm btn-outline-primary ms-1"

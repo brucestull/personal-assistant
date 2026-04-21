@@ -49,15 +49,8 @@ class OrderableMixin:
     """
 
     @classmethod
-    def reorder_all(cls, queryset=None, **scope_filters):
-        if queryset is None:
-            queryset = (
-                cls.objects.filter(**scope_filters)
-                if scope_filters
-                else cls.objects.all()
-            )
-
-        for index, item in enumerate(queryset.order_by("order", "pk")):
+    def reorder_all(cls):
+        for index, item in enumerate(cls.objects.all().order_by("order")):
             item.order = index
             item.save()
 
