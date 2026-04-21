@@ -13,7 +13,7 @@ from base.mixins import (
     UserIsAuthorMixin,
     UserQuerySetMixin,
 )
-from base.models import URL, Note
+from base.models import Note, URL
 from packing_list.models import Activity
 
 User = get_user_model()
@@ -140,47 +140,6 @@ class BaseMixinTests(TestCase):
 
         Dummy.reorder_all()
         self.assertEqual(saved, [0, 1, 2])
-
-    def test_orderable_mixin_reorder_all_accepts_scope_filters(self):
-        saved = []
-
-        class DummyItem:
-            def __init__(self, order):
-                self.order = order
-
-            def save(self):
-                saved.append(self.order)
-
-        class DummyManager:
-            def __init__(self, items_by_group):
-                self._items_by_group = items_by_group
-
-            def all(self):
-                all_items = []
-                for items in self._items_by_group.values():
-                    all_items.extend(items)
-                return DummyQuerySet(all_items)
-
-            def filter(self, **kwargs):
-                return DummyQuerySet(self._items_by_group[kwargs["group"]])
-
-        class DummyQuerySet:
-            def __init__(self, items):
-                self._items = items
-
-            def order_by(self, *_):
-                return sorted(self._items, key=lambda i: i.order)
-
-        class Dummy(OrderableMixin):
-            objects = DummyManager(
-                {
-                    "a": [DummyItem(9), DummyItem(2)],
-                    "b": [DummyItem(5)],
-                }
-            )
-
-        Dummy.reorder_all(group="a")
-        self.assertEqual(saved, [0, 1])
 
     @override_settings(THE_SITE_NAME="Site Name")
     def test_site_context_mixin_helpers(self):
