@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Thought Detail</h1>
+    <a href="{% url 'bus_drive:thought-list' %}" class="btn btn-outline-secondary btn-sm">Back to list</a>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <p class="mb-3">{{ object.text|linebreaksbr }}</p>
+      <small class="text-muted d-block">Created: {{ object.created|date:"M j, Y g:i A" }}</small>
+      <small class="text-muted d-block mb-3">Updated: {{ object.updated|date:"M j, Y g:i A" }}</small>
+      <a href="{% url 'bus_drive:thought-update' object.pk %}" class="btn btn-outline-primary btn-sm">Edit</a>
+      <a href="{% url 'bus_drive:thought-delete' object.pk %}" class="btn btn-outline-danger btn-sm">Delete</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
