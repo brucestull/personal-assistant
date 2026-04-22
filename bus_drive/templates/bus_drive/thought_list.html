@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Bus Drive Thoughts</h1>
+    <a class="btn btn-primary btn-sm" href="{% url 'bus_drive:thought-create' %}">+ Add Thought</a>
+  </div>
+
+  {% if object_list %}
+    <div class="list-group">
+      {% for thought in object_list %}
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+              <a href="{% url 'bus_drive:thought-detail' thought.pk %}" class="text-decoration-none">
+                {{ thought.text|linebreaksbr }}
+              </a>
+              <div><small class="text-muted">{{ thought.created|date:"M j, Y g:i A" }}</small></div>
+            </div>
+            <div class="text-nowrap">
+              <a class="btn btn-outline-secondary btn-sm" href="{% url 'bus_drive:thought-update' thought.pk %}">Edit</a>
+              <a class="btn btn-outline-danger btn-sm" href="{% url 'bus_drive:thought-delete' thought.pk %}">Delete</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No thoughts yet. Add your first one.</div>
+  {% endif %}
+</div>
+{% endblock %}

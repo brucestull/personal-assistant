@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Bus Drive</h1>
+    <a href="{% url 'bus_drive:spa' %}" class="btn btn-outline-primary btn-sm">React App</a>
+  </div>
+
+  <p class="text-muted">Track and review your thoughts.</p>
+
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <p class="mb-1 text-muted">Total Thoughts</p>
+          <h2 class="h4 mb-0">{{ total_thoughts }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mb-3">
+    <a class="btn btn-primary btn-sm" href="{% url 'bus_drive:thought-create' %}">+ Add Thought</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{% url 'bus_drive:thought-list' %}">View All</a>
+  </div>
+
+  <h2 class="h5">Recent Thoughts</h2>
+  {% if recent_thoughts %}
+    <ul class="list-group">
+      {% for thought in recent_thoughts %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{% url 'bus_drive:thought-detail' thought.pk %}" class="text-decoration-none">
+            {{ thought.text|truncatechars:80 }}
+          </a>
+          <small class="text-muted">{{ thought.created|date:"M j, Y g:i A" }}</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert alert-info">No thoughts yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
