@@ -76,7 +76,7 @@ class ActivityViewTests(TestCase):
         # POST invalid
         r2 = self.client.post(reverse("packing_list:activity_create"), {"name": ""})
         self.assertEqual(r2.status_code, 200)
-        self.assertFormError(r2, "form", "name", "This field is required.")
+        self.assertFormError(r2.context["form"], "name", "This field is required.")
 
         # POST valid
         r3 = self.client.post(
@@ -99,7 +99,7 @@ class ActivityViewTests(TestCase):
         # POST invalid
         r2 = self.client.post(url, {"name": ""})
         self.assertEqual(r2.status_code, 200)
-        self.assertFormError(r2, "form", "name", "This field is required.")
+        self.assertFormError(r2.context["form"], "name", "This field is required.")
 
         # POST valid
         r3 = self.client.post(url, {"name": "Upd", "description": "d"})
@@ -194,7 +194,7 @@ class ItemViewTests(TestCase):
         # POST invalid
         r2 = self.client.post(url, {"name": ""})
         self.assertEqual(r2.status_code, 200)
-        self.assertFormError(r2, "form", "name", "This field is required.")
+        self.assertFormError(r2.context["form"], "name", "This field is required.")
 
         # POST valid
         data = {
@@ -233,7 +233,7 @@ class ItemViewTests(TestCase):
         self.assertEqual(self.item.name, "X2")
 
         r3 = self.client.post(url, {"name": ""})
-        self.assertFormError(r3, "form", "name", "This field is required.")
+        self.assertFormError(r3.context["form"], "name", "This field is required.")
 
     def test_delete_get_and_post(self):
         url = reverse("packing_list:item_delete", kwargs={"pk": self.item.pk})
