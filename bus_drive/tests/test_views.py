@@ -44,7 +44,9 @@ class ThoughtViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_detail_other_status_404(self):
-        other_thought = Thought.objects.create(user=self.other_user, text="Other detail")
+        other_thought = Thought.objects.create(
+            user=self.other_user, text="Other detail"
+        )  # noqa: E501
         response = self.client.get(
             reverse("bus_drive:thought-detail", args=[other_thought.pk])
         )
@@ -56,7 +58,9 @@ class ThoughtViewsTest(TestCase):
             {"text": "Created thought"},
         )
         self.assertRedirects(response, reverse("bus_drive:thought-list"))
-        self.assertTrue(Thought.objects.filter(user=self.user, text="Created thought").exists())
+        self.assertTrue(
+            Thought.objects.filter(user=self.user, text="Created thought").exists()
+        )  # noqa: E501
 
     def test_update_owner_post(self):
         response = self.client.post(
@@ -68,7 +72,9 @@ class ThoughtViewsTest(TestCase):
         self.assertEqual(self.thought.text, "Updated thought")
 
     def test_update_other_forbidden(self):
-        other_thought = Thought.objects.create(user=self.other_user, text="Other update")
+        other_thought = Thought.objects.create(
+            user=self.other_user, text="Other update"
+        )  # noqa: E501
         response = self.client.post(
             reverse("bus_drive:thought-update", args=[other_thought.pk]),
             {"text": "Hacked"},
