@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3 mb-3">{{ page_title }}</h1>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+    <a href="{% url 'bus_drive:thought-list' %}" class="btn btn-outline-secondary btn-sm">Cancel</a>
+  </form>
+</div>
+{% endblock %}

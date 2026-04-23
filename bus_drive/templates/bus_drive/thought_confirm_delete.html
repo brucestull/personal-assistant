@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3 mb-3">Delete Thought</h1>
+  <p>Are you sure you want to delete this thought?</p>
+  <blockquote class="blockquote bg-light p-3 border rounded">{{ object.text|linebreaksbr }}</blockquote>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    <a href="{% url 'bus_drive:thought-list' %}" class="btn btn-outline-secondary btn-sm">Cancel</a>
+  </form>
+</div>
+{% endblock %}

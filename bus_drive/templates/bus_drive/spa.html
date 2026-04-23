@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div id="app" class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Bus Drive React App</h1>
+    <a href="{% url 'bus_drive:dashboard' %}" class="btn btn-outline-secondary btn-sm">Classic View</a>
+  </div>
+</div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script>
+  const CSRF_TOKEN = "{{ csrf_token }}";
+  const API_BASE = "/bus-drive/api/thoughts/";
+
+  function getHeaders() {
+    return {
+      "Content-Type": "application/json",
+      "X-CSRFToken": CSRF_TOKEN,
+    };
+  }
+
+  const e = React.createElement;
+
+  function App() {
+    const [thoughts, setThoughts] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+    const [text, setText] = React.useState("");
+    const [editingId, setEditingId] = React.useState(null);
+    const [error, setError] = React.useState("");
+
+    const loadThoughts = async () => {
+      setLoading(true);
+      const response = await fetch(API_BASE);
+      const data = await response.json();
+      setThoughts(Array.isArray(data) ? data : (data.results || []));
+      setLoading(false);
+    };
+
+    React.useEffect(() => {
+      loadThoughts();
+    }, []);
+
+    const submitThought = async (event) => {
+      event.preventDefault();
+      setError("");
+      const url = editingId ? `${API_BASE}${editingId}/` : API_BASE;
+      const method = editingId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: getHeaders(),
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json();
+        setError(JSON.stringify(payload));
+        return;
+      }
+
+      setText("");
+      setEditingId(null);
+      await loadThoughts();
+    };
+
+    const onEdit = (thought) => {
+      setEditingId(thought.id);
+      setText(thought.text);
+    };
+
+    const onDelete = async (thought) => {
+      if (!confirm("Delete this thought?")) {
+        return;
+      }
+
+      const response = await fetch(`${API_BASE}${thought.id}/`, {
+        method: "DELETE",
+        headers: getHeaders(),
+      });
+
+      if (!response.ok && response.status !== 204) {
+        setError("Delete failed.");
+        return;
+      }
+
+      await loadThoughts();
+    };
+
+    return e("div", null,
+      error ? e("div", { className: "alert alert-danger" }, error) : null,
+      e("form", { className: "card card-body mb-3", onSubmit: submitThought },
+        e("label", { className: "form-label", htmlFor: "thought-text" }, editingId ? "Edit Thought" : "New Thought"),
+        e("textarea", {
+          id: "thought-text",
+          className: "form-control mb-2",
+          value: text,
+          onChange: (event) => setText(event.target.value),
+          rows: 3,
+          required: true,
+        }),
+        e("div", { className: "d-flex gap-2" },
+          e("button", { type: "submit", className: "btn btn-primary btn-sm" }, editingId ? "Update" : "Create"),
+          editingId ? e("button", {
+            type: "button",
+            className: "btn btn-outline-secondary btn-sm",
+            onClick: () => {
+              setEditingId(null);
+              setText("");
+            },
+          }, "Cancel") : null
+        )
+      ),
+      loading
+        ? e("div", { className: "text-muted" }, "Loading thoughts...")
+        : thoughts.length === 0
+          ? e("div", { className: "alert alert-info" }, "No thoughts yet.")
+          : e("div", { className: "list-group" },
+              thoughts.map((thought) =>
+                e("div", { key: thought.id, className: "list-group-item d-flex justify-content-between align-items-start" },
+                  e("div", null,
+                    e("div", null, thought.text),
+                    e("small", { className: "text-muted" }, thought.created)
+                  ),
+                  e("div", { className: "text-nowrap" },
+                    e("button", { className: "btn btn-outline-primary btn-sm me-1", onClick: () => onEdit(thought) }, "Edit"),
+                    e("button", { className: "btn btn-outline-danger btn-sm", onClick: () => onDelete(thought) }, "Delete")
+                  )
+                )
+              )
+            )
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("app")).render(e(App));
+</script>
+{% endblock %}
