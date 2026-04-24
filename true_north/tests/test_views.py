@@ -17,7 +17,6 @@ from true_north.tests.factories import (
 )
 from true_north.utils import periodic_task_name
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -98,9 +97,7 @@ def test_corevalue_update(client):
     _login(client, user)
     cv = CoreValueFactory(user=user)
     url = reverse("true_north:core-value-update", kwargs={"pk": cv.pk})
-    response = client.post(
-        url, {"name": "Courage", "is_active": True, "order": 0}
-    )
+    response = client.post(url, {"name": "Courage", "is_active": True, "order": 0})
     assert response.status_code == 302
     cv.refresh_from_db()
     assert cv.name == "Courage"
@@ -139,6 +136,23 @@ def test_corevalue_delete_forbidden_other_user(client):
     url = reverse("true_north:core-value-delete", kwargs={"pk": cv.pk})
     response = client.post(url)
     assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_corevalue_move_down_swaps_order(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    first = CoreValueFactory(user=user, order=1)
+    second = CoreValueFactory(user=user, order=2)
+
+    url = reverse("true_north:core-value-move-down", kwargs={"pk": first.pk})
+    response = client.post(url)
+
+    assert response.status_code == 302
+    first.refresh_from_db()
+    second.refresh_from_db()
+    assert first.order == 2
+    assert second.order == 1
 
 
 # ---------------------------------------------------------------------------
@@ -211,6 +225,28 @@ def test_goal_delete(client):
     from true_north.models import Goal
 
     assert not Goal.objects.filter(pk=goal.pk).exists()
+
+
+@pytest.mark.django_db
+def test_goal_move_up_swaps_order_within_same_value_scope(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    other_cv = CoreValueFactory(user=user)
+    top = GoalFactory(user=user, value=cv, order=1)
+    bottom = GoalFactory(user=user, value=cv, order=2)
+    untouched = GoalFactory(user=user, value=other_cv, order=1)
+
+    url = reverse("true_north:goal-move-up", kwargs={"pk": bottom.pk})
+    response = client.post(url)
+
+    assert response.status_code == 302
+    top.refresh_from_db()
+    bottom.refresh_from_db()
+    untouched.refresh_from_db()
+    assert top.order == 2
+    assert bottom.order == 1
+    assert untouched.order == 1
 
 
 # ---------------------------------------------------------------------------
@@ -288,6 +324,20 @@ def test_milestone_delete(client):
     from true_north.models import Milestone
 
     assert not Milestone.objects.filter(pk=milestone.pk).exists()
+
+
+@pytest.mark.django_db
+def test_milestone_move_requires_ownership(client):
+    user = CustomUserFactory()
+    other = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=other)
+    goal = GoalFactory(value=cv, user=other)
+    milestone = MilestoneFactory(goal=goal, user=other, order=3)
+
+    url = reverse("true_north:milestone-move-up", kwargs={"pk": milestone.pk})
+    response = client.post(url)
+    assert response.status_code == 404
 
 
 # ---------------------------------------------------------------------------
@@ -370,6 +420,29 @@ def test_valueaction_delete(client):
     from true_north.models import ValueAction
 
     assert not ValueAction.objects.filter(pk=action.pk).exists()
+
+
+@pytest.mark.django_db
+def test_valueaction_list_contains_move_controls(client):
+    user = CustomUserFactory()
+    _login(client, user)
+    cv = CoreValueFactory(user=user)
+    goal = GoalFactory(value=cv, user=user)
+    milestone = MilestoneFactory(goal=goal, user=user)
+    action = ValueActionFactory(milestone=milestone, user=user)
+
+    url = reverse("true_north:value-action-list")
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert (
+        reverse("true_north:value-action-move-up", kwargs={"pk": action.pk}).encode()
+        in response.content
+    )
+    assert (
+        reverse("true_north:value-action-move-down", kwargs={"pk": action.pk}).encode()
+        in response.content
+    )
 
 
 # ---------------------------------------------------------------------------

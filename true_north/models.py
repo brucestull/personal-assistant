@@ -9,12 +9,18 @@ from datetime import timedelta
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Max
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 
 from base.mixins import OrderableMixin
 from base.models import CreatedUpdatedBase
+
+
+def _next_order(queryset):
+    max_order = queryset.aggregate(max_order=Max("order"))["max_order"]
+    return 0 if max_order is None else max_order + 1
 
 
 class UserOwnedBase(CreatedUpdatedBase):
@@ -55,6 +61,8 @@ class CoreValue(UserOwnedBase, OrderableMixin):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)[: self._meta.get_field("slug").max_length]
+        if self._state.adding and self.order == 0 and self.user_id:
+            self.order = _next_order(CoreValue.objects.filter(user_id=self.user_id))
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -70,6 +78,10 @@ class CoreValue(UserOwnedBase, OrderableMixin):
             models.UniqueConstraint(
                 fields=["user", "name"],
                 name="true_north_corevalue_unique_name_per_user",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "order"],
+                name="true_north_corevalue_unique_order_per_user",
             ),
         ]
 
@@ -128,6 +140,11 @@ class Goal(UserOwnedBase, OrderableMixin):
         if not self.slug:
             self.slug = slugify(self.title)[: self._meta.get_field("slug").max_length]
 
+        if self._state.adding and self.order == 0 and self.user_id:
+            self.order = _next_order(
+                Goal.objects.filter(user_id=self.user_id, value_id=self.value_id)
+            )
+
         # NOTE: This makes duplicates raise ValidationError (not IntegrityError)
         self.full_clean()
         super().save(*args, **kwargs)
@@ -141,6 +158,16 @@ class Goal(UserOwnedBase, OrderableMixin):
             models.UniqueConstraint(
                 fields=["user", "slug"],
                 name="true_north_goal_unique_slug_per_user",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "value", "order"],
+                condition=models.Q(value__isnull=False),
+                name="true_north_goal_unique_order_per_value",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "order"],
+                condition=models.Q(value__isnull=True),
+                name="true_north_goal_unique_order_without_value",
             ),
         ]
         indexes = [
@@ -179,6 +206,11 @@ class Milestone(UserOwnedBase, OrderableMixin):
                 : self._meta.get_field("slug").max_length
             ]
 
+        if self._state.adding and self.order == 0 and self.user_id and self.goal_id:
+            self.order = _next_order(
+                Milestone.objects.filter(user_id=self.user_id, goal_id=self.goal_id)
+            )
+
         # NOTE: This makes duplicates raise ValidationError (not IntegrityError)
         self.full_clean()
         super().save(*args, **kwargs)
@@ -192,6 +224,10 @@ class Milestone(UserOwnedBase, OrderableMixin):
             models.UniqueConstraint(
                 fields=["user", "goal", "slug"],
                 name="true_north_milestone_unique_slug_per_goal_per_user",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "goal", "order"],
+                name="true_north_milestone_unique_order_per_goal",
             ),
         ]
         indexes = [
@@ -242,6 +278,19 @@ class ValueAction(UserOwnedBase, OrderableMixin):
         if self.milestone_id and not self.user_id:
             self.user = self.milestone.user
 
+        if (
+            self._state.adding
+            and self.order == 0
+            and self.user_id
+            and self.milestone_id
+        ):
+            self.order = _next_order(
+                ValueAction.objects.filter(
+                    user_id=self.user_id,
+                    milestone_id=self.milestone_id,
+                )
+            )
+
         self.full_clean()
         super().save(*args, **kwargs)
 
@@ -251,6 +300,12 @@ class ValueAction(UserOwnedBase, OrderableMixin):
 
     class Meta:
         ordering = ["order", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "milestone", "order"],
+                name="true_north_valueaction_unique_order_per_milestone",
+            ),
+        ]
         indexes = [
             models.Index(fields=["user", "milestone"]),
             models.Index(fields=["user", "status"]),
@@ -467,9 +522,7 @@ class CoreValueEmailSchedule(CreatedUpdatedBase):
         )
 
     def get_absolute_url(self):
-        return reverse(
-            "true_north:corevalue-email-schedule-list"
-        )
+        return reverse("true_north:corevalue-email-schedule-list")
 
     def __str__(self):
         return (

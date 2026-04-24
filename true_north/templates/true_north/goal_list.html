@@ -53,8 +53,24 @@
               </td>
               <td>{{ goal.target_date|default:"—" }}</td>
               <td class="text-nowrap">
+                <form method="post"
+                      action="{% url 'true_north:goal-move-up' goal.pk %}"
+                      class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="btn btn-sm btn-outline-secondary"
+                          aria-label="Move {{ goal.title }} up">↑</button>
+                </form>
+                <form method="post"
+                      action="{% url 'true_north:goal-move-down' goal.pk %}"
+                      class="d-inline ms-1">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="btn btn-sm btn-outline-secondary"
+                          aria-label="Move {{ goal.title }} down">↓</button>
+                </form>
                 <a href="{% url 'true_north:goal-detail' goal.pk %}"
-                   class="btn btn-sm btn-outline-info"
+                   class="btn btn-sm btn-outline-info ms-1"
                    aria-label="View {{ goal.title }}">View</a>
                 <a href="{% url 'true_north:goal-update' goal.pk %}"
                    class="btn btn-sm btn-outline-primary ms-1"
