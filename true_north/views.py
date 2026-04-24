@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import (
     UserPassesTestMixin,
 )
 from django.db import transaction
+from django.db.models import Max
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -553,9 +554,8 @@ class _BaseMoveOrderView(
         with transaction.atomic():
             original_order = obj.order
             swap_order = neighbor.order
-            temp_order = (
-                scope_qs.order_by("-order").values_list("order", flat=True).first() or 0
-            ) + 1
+            max_order = scope_qs.aggregate(max_order=Max("order"))["max_order"] or 0
+            temp_order = max_order + 1
 
             obj.order = temp_order
             obj.save(update_fields=["order"])
