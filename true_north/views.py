@@ -8,6 +8,8 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin,
     UserPassesTestMixin,
 )
+from django.db import transaction
+from django.db.models import Max
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -31,7 +33,15 @@ from true_north.forms import (
     ObjectEmailScheduleForm,
     ValueActionForm,
 )
-from true_north.models import CoreValue, CoreValueEmailSchedule, Goal, GoalStatus, Milestone, ValueAction, ValueActionStatus  # noqa E501
+from true_north.models import (  # noqa E501
+    CoreValue,
+    CoreValueEmailSchedule,
+    Goal,
+    GoalStatus,
+    Milestone,
+    ValueAction,
+    ValueActionStatus,
+)
 from true_north.tasks import (
     send_core_value_email,
     send_corevalue_reminder_email,
@@ -509,6 +519,99 @@ class ValueActionDeleteView(SiteContextMixin, RegistrationAcceptedMixin, DeleteV
     def form_valid(self, form):
         messages.success(self.request, "Value Action deleted.")
         return super().form_valid(form)
+
+
+class _BaseMoveOrderView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, View
+):
+    model = None
+    scope_fields = ()
+    list_url_name = ""
+    label = "Item"
+    direction = "up"
+
+    def post(self, request, pk):
+        obj = get_object_or_404(self.model, pk=pk, user=request.user)
+        scope_filters = {"user_id": request.user.id}
+        scope_filters.update(
+            {f"{field}_id": getattr(obj, f"{field}_id") for field in self.scope_fields}
+        )
+
+        scope_qs = self.model.objects.filter(**scope_filters)
+        if self.direction == "up":
+            neighbor = (
+                scope_qs.filter(order__lt=obj.order).order_by("-order", "-id").first()
+            )
+        else:
+            neighbor = (
+                scope_qs.filter(order__gt=obj.order).order_by("order", "id").first()
+            )
+
+        if not neighbor:
+            messages.info(request, f"{self.label} is already at the boundary.")
+            return redirect(self.list_url_name)
+
+        with transaction.atomic():
+            original_order = obj.order
+            swap_order = neighbor.order
+            max_order = scope_qs.aggregate(max_order=Max("order"))["max_order"] or 0
+            temp_order = max_order + 1
+
+            obj.order = temp_order
+            obj.save(update_fields=["order"])
+            neighbor.order = original_order
+            neighbor.save(update_fields=["order"])
+            obj.order = swap_order
+            obj.save(update_fields=["order"])
+
+        messages.success(
+            request,
+            f'{self.label} moved {"up" if self.direction == "up" else "down"}.',
+        )
+        return redirect(self.list_url_name)
+
+
+class CoreValueMoveUpView(_BaseMoveOrderView):
+    model = CoreValue
+    list_url_name = "true_north:core-value-list"
+    label = "Core Value"
+
+
+class CoreValueMoveDownView(CoreValueMoveUpView):
+    direction = "down"
+
+
+class GoalMoveUpView(_BaseMoveOrderView):
+    model = Goal
+    scope_fields = ("value",)
+    list_url_name = "true_north:goal-list"
+    label = "Goal"
+
+
+class GoalMoveDownView(GoalMoveUpView):
+    direction = "down"
+
+
+class MilestoneMoveUpView(_BaseMoveOrderView):
+    model = Milestone
+    scope_fields = ("goal",)
+    list_url_name = "true_north:milestone-list"
+    label = "Milestone"
+
+
+class MilestoneMoveDownView(MilestoneMoveUpView):
+    direction = "down"
+
+
+class ValueActionMoveUpView(_BaseMoveOrderView):
+    model = ValueAction
+    scope_fields = ("milestone",)
+    list_url_name = "true_north:value-action-list"
+    label = "Value Action"
+
+
+class ValueActionMoveDownView(ValueActionMoveUpView):
+    direction = "down"
 
 
 # ---------------------------------------------------------------------------
