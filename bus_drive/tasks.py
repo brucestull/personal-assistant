@@ -14,8 +14,9 @@ from .models import Thought
 logger = get_task_logger(__name__)
 
 DEFAULT_FROM_EMAIL = getattr(settings, "DEFAULT_FROM_EMAIL", None)
+MAX_SUBJECT_THOUGHT_LENGTH = 80
 
-RETRY_KW = dict(
+CELERY_RETRY_KWARGS = dict(
     bind=True,
     autoretry_for=(smtplib.SMTPException, ConnectionError, TimeoutError),
     retry_backoff=30,
@@ -42,7 +43,7 @@ def _send_email(
     msg.send(fail_silently=False)
 
 
-@shared_task(**RETRY_KW)
+@shared_task(**CELERY_RETRY_KWARGS)
 def send_thought_email(self, user_id: int, thought_id: int) -> dict:
     User = get_user_model()
 
@@ -71,7 +72,10 @@ def send_thought_email(self, user_id: int, thought_id: int) -> dict:
         return {"ok": False, "reason": "thought_not_found_for_user"}
 
     site_name = getattr(settings, "THE_SITE_NAME", "Personal Assistant")
-    subject = f"{site_name} — Bus Drive Thought: {str(thought.text)[:80]}"
+    subject = (
+        f"{site_name} — Bus Drive Thought: "
+        f"{str(thought.text)[:MAX_SUBJECT_THOUGHT_LENGTH]}"
+    )
     body = (
         f"Hey {user.username},\n\n"
         "Here is your Bus Drive Thought:\n\n"
