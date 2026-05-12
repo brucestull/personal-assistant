@@ -29,5 +29,10 @@ urlpatterns = [
         views.ThoughtDeleteView.as_view(),
         name="thought-delete",
     ),
+    path(
+        "thoughts/<int:pk>/send-email/",
+        views.ThoughtSendEmailView.as_view(),
+        name="thought-send-email",
+    ),
     path("api/", include(router.urls)),
 ]

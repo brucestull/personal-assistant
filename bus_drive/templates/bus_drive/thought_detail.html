@@ -14,6 +14,12 @@
       <p class="mb-3">{{ object.text|linebreaksbr }}</p>
       <small class="text-muted d-block">Created: {{ object.created|date:"M j, Y g:i A" }}</small>
       <small class="text-muted d-block mb-3">Updated: {{ object.updated|date:"M j, Y g:i A" }}</small>
+      <form method="post"
+            action="{% url 'bus_drive:thought-send-email' object.pk %}"
+            class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-secondary btn-sm">Send Email</button>
+      </form>
       <a href="{% url 'bus_drive:thought-update' object.pk %}" class="btn btn-outline-primary btn-sm">Edit</a>
       <a href="{% url 'bus_drive:thought-delete' object.pk %}" class="btn btn-outline-danger btn-sm">Delete</a>
     </div>
