@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.urls import reverse
 
@@ -87,3 +89,23 @@ class ThoughtViewsTest(TestCase):
         )
         self.assertRedirects(response, reverse("bus_drive:thought-list"))
         self.assertFalse(Thought.objects.filter(pk=self.thought.pk).exists())
+
+    def test_send_email_owner(self):
+        with patch("bus_drive.views.send_thought_email.delay") as mock_delay:
+            response = self.client.post(
+                reverse("bus_drive:thought-send-email", args=[self.thought.pk])
+            )
+
+        self.assertRedirects(response, reverse("bus_drive:thought-list"))
+        mock_delay.assert_called_once_with(self.user.id, self.thought.pk)
+
+    def test_send_email_other_user_404(self):
+        other_thought = Thought.objects.create(
+            user=self.other_user, text="Other email thought"
+        )
+
+        response = self.client.post(
+            reverse("bus_drive:thought-send-email", args=[other_thought.pk])
+        )
+
+        self.assertEqual(response.status_code, 404)
