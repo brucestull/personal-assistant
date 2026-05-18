@@ -21,6 +21,12 @@
               <div><small class="text-muted">{{ thought.created|date:"M j, Y g:i A" }}</small></div>
             </div>
             <div class="text-nowrap">
+              <form method="post"
+                    action="{% url 'bus_drive:thought-send-email' thought.pk %}"
+                    class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Send Email</button>
+              </form>
               <a class="btn btn-outline-secondary btn-sm" href="{% url 'bus_drive:thought-update' thought.pk %}">Edit</a>
               <a class="btn btn-outline-danger btn-sm" href="{% url 'bus_drive:thought-delete' thought.pk %}">Delete</a>
             </div>

@@ -1,5 +1,7 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -8,6 +10,7 @@ from base.mixins import RegistrationAcceptedMixin, SiteContextMixin
 
 from .forms import ThoughtForm
 from .models import Thought
+from .tasks import send_thought_email
 
 
 class DashboardView(SiteContextMixin, RegistrationAcceptedMixin, TemplateView):
@@ -90,3 +93,22 @@ class ThoughtDeleteView(
     def form_valid(self, form):
         messages.success(self.request, "Thought deleted.")
         return super().form_valid(form)
+
+
+class ThoughtSendEmailView(
+    SiteContextMixin, RegistrationAcceptedMixin, LoginRequiredMixin, DetailView
+):
+    model = Thought
+    http_method_names = ["post"]
+
+    def get_queryset(self):
+        return Thought.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        thought = self.get_object()
+        send_thought_email.delay(request.user.id, thought.pk)
+        messages.success(
+            request,
+            "Email for your Thought has been queued for sending.",
+        )
+        return redirect("bus_drive:thought-list")
