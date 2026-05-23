@@ -74,7 +74,7 @@ class AuthRequiredTests(BaseViewTests):
 
     def test_dashboard_requires_registration_accepted(self):
         User = get_user_model()
-        user = User.objects.create_user( # noqa: F841
+        user = User.objects.create_user(  # noqa: F841
             username="noaccept",
             password="testpass123",
             registration_accepted=False,
