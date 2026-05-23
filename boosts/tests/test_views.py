@@ -538,6 +538,22 @@ class SendRandomInspirationalToSelfViewTest(TestCase):
         self.assertIn(self.user.username, sent_email.body)
         self.assertIn(self.inspirational.body, sent_email.body)
 
+    def test_registration_not_accepted_gets_403(self):
+        unaccepted_user = CustomUser.objects.create_user(
+            username="unaccepted_user",
+            password="a_test_password",
+            email="test2@example.com",
+            registration_accepted=False,
+        )
+        self.client.login(
+            username=unaccepted_user.username,
+            password="a_test_password",
+        )
+
+        response = self.client.post(reverse("boosts:send_random_inspirational"))
+
+        self.assertEqual(response.status_code, 403)
+
 
 class RandomInspirationalEmailSendListViewTest(TestCase):
     """

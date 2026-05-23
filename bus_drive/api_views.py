@@ -1,5 +1,7 @@
 from rest_framework import permissions, viewsets
 
+from base.permissions import RegistrationAcceptedPermission
+
 from .models import Thought
 from .serializers import ThoughtSerializer
 
@@ -11,7 +13,11 @@ class IsOwner(permissions.BasePermission):
 
 class ThoughtViewSet(viewsets.ModelViewSet):
     serializer_class = ThoughtSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwner]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        RegistrationAcceptedPermission,
+        IsOwner,
+    ]
 
     def get_queryset(self):
         return Thought.objects.filter(user=self.request.user)

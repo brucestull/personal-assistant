@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Case, Count, F, IntegerField, Q, Sum, When
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -12,6 +11,8 @@ from django.views.generic import (
     UpdateView,
 )
 
+from base.mixins import RegistrationAcceptedMixin
+
 from .models import Location, StockItem
 
 
@@ -20,7 +21,7 @@ from .models import Location, StockItem
 # ---------------------------------------------------------------------------
 
 
-class OwnerQuerySetMixin(LoginRequiredMixin):
+class OwnerQuerySetMixin(RegistrationAcceptedMixin):
     """
     Restrict queryset to the logged‑in user.
     """
@@ -56,7 +57,9 @@ class StockItemDetailView(OwnerQuerySetMixin, DetailView):
     slug_url_kwarg = "slug"
 
 
-class StockItemCreateView(LoginRequiredMixin, OwnerFormValidMixin, CreateView):
+class StockItemCreateView(
+    RegistrationAcceptedMixin, OwnerFormValidMixin, CreateView
+):
     model = StockItem
     fields = [
         "name",
@@ -133,7 +136,9 @@ class LocationDetailView(OwnerQuerySetMixin, DetailView):
     model = Location
 
 
-class LocationCreateView(LoginRequiredMixin, OwnerFormValidMixin, CreateView):
+class LocationCreateView(
+    RegistrationAcceptedMixin, OwnerFormValidMixin, CreateView
+):
     model = Location
     fields = ["name", "description", "is_active"]
 
@@ -159,7 +164,7 @@ class LocationDeleteView(OwnerQuerySetMixin, DeleteView):
 # ---------------------------------------------------------------------------
 
 
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(RegistrationAcceptedMixin, TemplateView):
     template_name = "kanban_cabinet/dashboard.html"
 
     def get_context_data(self, **kwargs):

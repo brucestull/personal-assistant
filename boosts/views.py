@@ -4,7 +4,6 @@ import random
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
@@ -163,7 +162,7 @@ def send_inspirational(request, pk):
         return redirect("boosts:inspirational-list")
 
 
-@login_required
+@registration_accepted_required
 @require_POST
 def send_random_inspirational_to_self(request):
     """
