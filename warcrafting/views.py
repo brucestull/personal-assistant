@@ -1,6 +1,5 @@
 # warcrafting/views.py
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -12,6 +11,8 @@ from django.views.generic import (
     UpdateView,
 )
 
+from base.mixins import RegistrationAcceptedMixin
+
 from .forms import CharacterForm, CharacterProfessionForm
 from .models import Character, CharacterProfession
 
@@ -21,7 +22,7 @@ from .models import Character, CharacterProfession
 # ---------------------------------------------------------------------------
 
 
-class WarcraftingDashboardView(LoginRequiredMixin, TemplateView):
+class WarcraftingDashboardView(RegistrationAcceptedMixin, TemplateView):
     """High-level overview: characters and their profession skill progress."""
 
     template_name = "warcrafting/dashboard.html"
@@ -46,7 +47,7 @@ class WarcraftingDashboardView(LoginRequiredMixin, TemplateView):
 # ---------------------------------------------------------------------------
 
 
-class CharacterListView(LoginRequiredMixin, ListView):
+class CharacterListView(RegistrationAcceptedMixin, ListView):
     """'My characters' overview."""
 
     model = Character
@@ -64,7 +65,7 @@ class CharacterListView(LoginRequiredMixin, ListView):
         )
 
 
-class CharacterDetailView(LoginRequiredMixin, DetailView):
+class CharacterDetailView(RegistrationAcceptedMixin, DetailView):
     """Per-character armory-style view."""
 
     model = Character
@@ -84,7 +85,7 @@ class CharacterDetailView(LoginRequiredMixin, DetailView):
         )
 
 
-class CharacterCreateView(LoginRequiredMixin, CreateView):
+class CharacterCreateView(RegistrationAcceptedMixin, CreateView):
     """Create a new WoW character."""
 
     model = Character
@@ -101,7 +102,7 @@ class CharacterCreateView(LoginRequiredMixin, CreateView):
         )
 
 
-class CharacterUpdateView(LoginRequiredMixin, UpdateView):
+class CharacterUpdateView(RegistrationAcceptedMixin, UpdateView):
     """Edit an existing character owned by the logged-in user."""
 
     model = Character
@@ -117,7 +118,7 @@ class CharacterUpdateView(LoginRequiredMixin, UpdateView):
         )
 
 
-class CharacterDeleteView(LoginRequiredMixin, DeleteView):
+class CharacterDeleteView(RegistrationAcceptedMixin, DeleteView):
     """Delete a character owned by the logged-in user."""
 
     model = Character
@@ -133,7 +134,7 @@ class CharacterDeleteView(LoginRequiredMixin, DeleteView):
 # ---------------------------------------------------------------------------
 
 
-class CharacterProfessionCreateView(LoginRequiredMixin, CreateView):
+class CharacterProfessionCreateView(RegistrationAcceptedMixin, CreateView):
     """Add a profession tier (with current skill) to a character."""
 
     model = CharacterProfession
@@ -161,7 +162,7 @@ class CharacterProfessionCreateView(LoginRequiredMixin, CreateView):
         )
 
 
-class CharacterProfessionUpdateView(LoginRequiredMixin, UpdateView):
+class CharacterProfessionUpdateView(RegistrationAcceptedMixin, UpdateView):
     """Update the skill level of a character's profession tier."""
 
     model = CharacterProfession
@@ -183,7 +184,7 @@ class CharacterProfessionUpdateView(LoginRequiredMixin, UpdateView):
         )
 
 
-class CharacterProfessionDeleteView(LoginRequiredMixin, DeleteView):
+class CharacterProfessionDeleteView(RegistrationAcceptedMixin, DeleteView):
     """Remove a profession tier from a character."""
 
     model = CharacterProfession

@@ -1,5 +1,7 @@
 from rest_framework import permissions, viewsets
 
+from base.permissions import RegistrationAcceptedPermission
+
 from .models import Item, StorageLocation
 from .serializers import ItemSerializer, StorageLocationSerializer
 
@@ -13,7 +15,11 @@ class IsOwner(permissions.BasePermission):
 
 class StorageLocationViewSet(viewsets.ModelViewSet):
     serializer_class = StorageLocationSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwner]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        RegistrationAcceptedPermission,
+        IsOwner,
+    ]
 
     def get_queryset(self):
         return StorageLocation.objects.filter(user=self.request.user)
@@ -24,7 +30,11 @@ class StorageLocationViewSet(viewsets.ModelViewSet):
 
 class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwner]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        RegistrationAcceptedPermission,
+        IsOwner,
+    ]
 
     def get_queryset(self):
         return Item.objects.filter(user=self.request.user).select_related("location")
