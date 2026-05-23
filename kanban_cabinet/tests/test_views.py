@@ -11,9 +11,15 @@ from kanban_cabinet import views as kc_views  # noqa: F401 - ensures module is i
 class BaseViewTests(TestCase):
     def setUp(self):
         User = get_user_model()
-        self.user = User.objects.create_user(username="owner", password="testpass123")
+        self.user = User.objects.create_user(
+            username="owner",
+            password="testpass123",
+            registration_accepted=True,
+        )
         self.other_user = User.objects.create_user(
-            username="other", password="othertest123"
+            username="other",
+            password="othertest123",
+            registration_accepted=True,
         )
 
         self.client = Client()
@@ -65,6 +71,19 @@ class AuthRequiredTests(BaseViewTests):
         url = reverse("kanban_cabinet:location_list")
         response = client.get(url)
         self.assertEqual(response.status_code, 302)
+
+    def test_dashboard_requires_registration_accepted(self):
+        User = get_user_model()
+        user = User.objects.create_user(
+            username="noaccept",
+            password="testpass123",
+            registration_accepted=False,
+        )
+        client = Client()
+        client.login(username="noaccept", password="testpass123")
+        url = reverse("kanban_cabinet:dashboard")
+        response = client.get(url)
+        self.assertEqual(response.status_code, 403)
 
 
 class StockItemListAndDetailViewTests(BaseViewTests):

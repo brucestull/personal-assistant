@@ -23,7 +23,11 @@ _CLASSIC = ProfessionTier.ExpansionLabel.CLASSIC
 
 
 def make_user(username):
-    return User.objects.create_user(username=username, password="secret")
+    return User.objects.create_user(
+        username=username,
+        password="secret",
+        registration_accepted=True,
+    )
 
 
 def make_character(owner, name="Hero", level=60):
@@ -66,6 +70,18 @@ def test_dashboard_renders_for_logged_in_user(client):
     assert response.status_code == 200
     assert "characters" in response.context
     assert "Dashchar" in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_dashboard_forbidden_when_registration_not_accepted(client):
+    user = User.objects.create_user(
+        username="dashnoaccept",
+        password="secret",
+        registration_accepted=False,
+    )
+    client.force_login(user)
+    response = client.get(reverse("warcrafting:dashboard"))
+    assert response.status_code == 403
 
 
 # ---------------------------------------------------------------------------

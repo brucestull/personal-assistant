@@ -17,6 +17,11 @@ class ThoughtAPITest(TestCase):
             password="testpass123",
             registration_accepted=True,
         )
+        cls.unaccepted_user = CustomUser.objects.create_user(
+            username="busapiunaccepted",
+            password="testpass123",
+            registration_accepted=False,
+        )
 
     def setUp(self):
         self.client.login(username="busapiuser", password="testpass123")
@@ -45,3 +50,9 @@ class ThoughtAPITest(TestCase):
         other_thought = Thought.objects.create(user=self.other_user, text="Private")
         response = self.client.get(f"/bus-drive/api/thoughts/{other_thought.pk}/")
         self.assertEqual(response.status_code, 404)
+
+    def test_unaccepted_user_gets_403(self):
+        self.client.logout()
+        self.client.login(username="busapiunaccepted", password="testpass123")
+        response = self.client.get("/bus-drive/api/thoughts/")
+        self.assertEqual(response.status_code, 403)
