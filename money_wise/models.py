@@ -2,8 +2,10 @@
 
 from django.db import models
 
+from base.models import CreatedUpdatedBase
 
-class BankAccount(models.Model):
+
+class BankAccount(CreatedUpdatedBase):
     """
     Represents a bank account whose transactions are tracked.
     """
@@ -46,8 +48,6 @@ class BankAccount(models.Model):
     )
     is_active = models.BooleanField(default=True)
     notes = models.TextField(blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["institution", "name"]
@@ -63,7 +63,7 @@ class BankAccount(models.Model):
         return result["total"] or 0
 
 
-class Transaction(models.Model):
+class Transaction(CreatedUpdatedBase):
     """
     A single financial transaction, matching the standard fields
     found in bank-exported CSV files.
@@ -123,8 +123,6 @@ class Transaction(models.Model):
         blank=True,
         help_text="Running account balance after this transaction.",
     )
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-date", "-created"]
@@ -138,7 +136,7 @@ def csv_upload_path(instance, filename):
     return f"money_wise/csv_uploads/{instance.bank_account_id}/{filename}"
 
 
-class TransactionUpload(models.Model):
+class TransactionUpload(CreatedUpdatedBase):
     """
     Represents a CSV file upload for a given bank account.
     The file is stored in the configured storage backend (S3 in production).
@@ -176,8 +174,6 @@ class TransactionUpload(models.Model):
         on_delete=models.SET_NULL,
         related_name="transaction_uploads",
     )
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-created"]

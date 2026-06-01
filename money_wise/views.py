@@ -3,6 +3,7 @@
 from decimal import Decimal
 
 from django.db.models import Count, Sum
+from django.db.models.functions import Coalesce
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -46,13 +47,13 @@ def dashboard(request):
 
     # Per-account balances — single query using annotation to avoid N+1
     accounts_annotated = accounts.annotate(
-        annotated_balance=Sum("transactions__amount"),
+        annotated_balance=Coalesce(Sum("transactions__amount"), Decimal("0")),
         transaction_count=Count("transactions"),
     )
     account_balances = [
         {
             "account": acct,
-            "balance": acct.annotated_balance or Decimal("0"),
+            "balance": acct.annotated_balance,
             "transaction_count": acct.transaction_count,
         }
         for acct in accounts_annotated
