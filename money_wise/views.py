@@ -44,17 +44,19 @@ def dashboard(request):
         .order_by("total")[:10]
     )
 
-    # Per-account balances
-    account_balances = []
-    for account in accounts:
-        total = account.transactions.aggregate(total=Sum("amount"))["total"] or Decimal("0")
-        account_balances.append(
-            {
-                "account": account,
-                "balance": total,
-                "transaction_count": account.transactions.count(),
-            }
-        )
+    # Per-account balances — single query using annotation to avoid N+1
+    accounts_annotated = accounts.annotate(
+        annotated_balance=Sum("transactions__amount"),
+        transaction_count=Count("transactions"),
+    )
+    account_balances = [
+        {
+            "account": acct,
+            "balance": acct.annotated_balance or Decimal("0"),
+            "transaction_count": acct.transaction_count,
+        }
+        for acct in accounts_annotated
+    ]
 
     context = {
         "the_site_name": THE_SITE_NAME,
@@ -171,7 +173,7 @@ class TransactionListView(RegistrationAcceptedMixin, ListView):
         ctx = super().get_context_data(**kwargs)
         ctx["the_site_name"] = THE_SITE_NAME
         ctx["page_title"] = "Transactions"
-        ctx["bank_accounts"] = BankAccount.objects.all()
+        ctx["bank_accounts"] = BankAccount.objects.only("id", "name", "institution")
         ctx["selected_account"] = self.request.GET.get("account", "")
         return ctx
 
