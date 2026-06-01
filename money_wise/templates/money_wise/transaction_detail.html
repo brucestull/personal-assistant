@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - Transaction Detail{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'money_wise:dashboard' %}">Money Wise</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'money_wise:transaction_list' %}">Transactions</a></li>
+      <li class="breadcrumb-item active">Detail</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">💳 Transaction Detail</h1>
+    <div>
+      <a href="{% url 'money_wise:transaction_update' object.pk %}" class="btn btn-primary me-2">✏️ Edit</a>
+      <a href="{% url 'money_wise:transaction_delete' object.pk %}" class="btn btn-outline-danger">🗑️ Delete</a>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">{{ object.description }}</h5>
+        </div>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-sm-4">Bank Account</dt>
+            <dd class="col-sm-8">
+              <a href="{% url 'money_wise:bankaccount_detail' object.bank_account.pk %}">{{ object.bank_account }}</a>
+            </dd>
+
+            <dt class="col-sm-4">Date</dt>
+            <dd class="col-sm-8">{{ object.date|date:"N j, Y" }}</dd>
+
+            {% if object.post_date %}
+              <dt class="col-sm-4">Post Date</dt>
+              <dd class="col-sm-8">{{ object.post_date|date:"N j, Y" }}</dd>
+            {% endif %}
+
+            <dt class="col-sm-4">Amount</dt>
+            <dd class="col-sm-8 {% if object.amount >= 0 %}text-success{% else %}text-danger{% endif %}">
+              <strong class="fs-4">{{ object.amount|floatformat:2 }} {{ object.bank_account.currency }}</strong>
+            </dd>
+
+            {% if object.balance_after is not None %}
+              <dt class="col-sm-4">Balance After</dt>
+              <dd class="col-sm-8">{{ object.balance_after|floatformat:2 }} {{ object.bank_account.currency }}</dd>
+            {% endif %}
+
+            <dt class="col-sm-4">Transaction Type</dt>
+            <dd class="col-sm-8">
+              <span class="badge {% if object.transaction_type == 'credit' %}bg-success{% elif object.transaction_type == 'debit' %}bg-danger{% else %}bg-secondary{% endif %}">
+                {{ object.get_transaction_type_display }}
+              </span>
+            </dd>
+
+            {% if object.category %}
+              <dt class="col-sm-4">Category</dt>
+              <dd class="col-sm-8">{{ object.category }}</dd>
+            {% endif %}
+
+            {% if object.memo %}
+              <dt class="col-sm-4">Memo</dt>
+              <dd class="col-sm-8">{{ object.memo }}</dd>
+            {% endif %}
+
+            {% if object.check_number %}
+              <dt class="col-sm-4">Check #</dt>
+              <dd class="col-sm-8">{{ object.check_number }}</dd>
+            {% endif %}
+
+            {% if object.reference_number %}
+              <dt class="col-sm-4">Reference #</dt>
+              <dd class="col-sm-8">{{ object.reference_number }}</dd>
+            {% endif %}
+
+            <dt class="col-sm-4">Created</dt>
+            <dd class="col-sm-8"><small class="text-muted">{{ object.created|date:"N j, Y H:i" }}</small></dd>
+
+            <dt class="col-sm-4">Updated</dt>
+            <dd class="col-sm-8"><small class="text-muted">{{ object.updated|date:"N j, Y H:i" }}</small></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <a href="{% url 'money_wise:transaction_list' %}" class="btn btn-outline-secondary">⬅️ Back to Transactions</a>
+    <a href="{% url 'money_wise:bankaccount_detail' object.bank_account.pk %}" class="btn btn-outline-primary">🏦 View Account</a>
+  </div>
+</div>
+{% endblock content %}

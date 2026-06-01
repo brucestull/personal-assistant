@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-4">💰 {{ page_title }}</h1>
+
+  <!-- Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-primary h-100">
+        <div class="card-body text-center">
+          <h2 class="card-title">{{ total_accounts }}</h2>
+          <p class="card-text">Active Bank Accounts</p>
+        </div>
+        <div class="card-footer">
+          <a href="{% url 'money_wise:bankaccount_list' %}" class="text-white">View All →</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-success h-100">
+        <div class="card-body text-center">
+          <h2 class="card-title">{{ total_transactions }}</h2>
+          <p class="card-text">Total Transactions</p>
+        </div>
+        <div class="card-footer">
+          <a href="{% url 'money_wise:transaction_list' %}" class="text-white">View All →</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-info h-100">
+        <div class="card-body text-center">
+          <h2 class="card-title">{{ total_uploads }}</h2>
+          <p class="card-text">CSV Uploads</p>
+        </div>
+        <div class="card-footer">
+          <a href="{% url 'money_wise:upload_list' %}" class="text-white">View All →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Balances -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">🏦 Account Balances</h5>
+        </div>
+        <div class="card-body">
+          {% if account_balances %}
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Account</th>
+                    <th>Institution</th>
+                    <th>Type</th>
+                    <th class="text-end">Balance</th>
+                    <th class="text-end">Transactions</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in account_balances %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'money_wise:bankaccount_detail' item.account.pk %}">{{ item.account.name }}</a>
+                      </td>
+                      <td>{{ item.account.institution }}</td>
+                      <td><span class="badge bg-secondary">{{ item.account.get_account_type_display }}</span></td>
+                      <td class="text-end {% if item.balance >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        <strong>{{ item.balance|floatformat:2 }} {{ item.account.currency }}</strong>
+                      </td>
+                      <td class="text-end">{{ item.transaction_count }}</td>
+                      <td>
+                        <a href="{% url 'money_wise:transaction_list' %}?account={{ item.account.pk }}" class="btn btn-sm btn-outline-primary">Transactions</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted mb-0">No active bank accounts yet. <a href="{% url 'money_wise:bankaccount_create' %}">Add one →</a></p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <!-- Recent Transactions -->
+    <div class="col-lg-8 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">🕐 Recent Transactions</h5>
+          <a href="{% url 'money_wise:transaction_list' %}" class="btn btn-sm btn-outline-light">View All</a>
+        </div>
+        <div class="card-body p-0">
+          {% if recent_transactions %}
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Account</th>
+                    <th class="text-end">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for txn in recent_transactions %}
+                    <tr>
+                      <td><small>{{ txn.date|date:"M d, Y" }}</small></td>
+                      <td>
+                        <a href="{% url 'money_wise:transaction_detail' txn.pk %}" class="text-decoration-none">
+                          {{ txn.description|truncatechars:50 }}
+                        </a>
+                        {% if txn.category %}
+                          <br><small class="text-muted">{{ txn.category }}</small>
+                        {% endif %}
+                      </td>
+                      <td><small>{{ txn.bank_account.name }}</small></td>
+                      <td class="text-end {% if txn.amount >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        <strong>{{ txn.amount|floatformat:2 }}</strong>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <div class="p-3">
+              <p class="text-muted mb-0">No transactions yet. <a href="{% url 'money_wise:transaction_create' %}">Add one →</a></p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Spending by Category -->
+    <div class="col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-warning text-dark">
+          <h5 class="mb-0">📊 Top Spending Categories</h5>
+        </div>
+        <div class="card-body">
+          {% if category_totals %}
+            <ul class="list-group list-group-flush">
+              {% for cat in category_totals %}
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  <span>{{ cat.category }}</span>
+                  <div class="text-end">
+                    <span class="badge bg-danger rounded-pill">{{ cat.total|floatformat:2 }}</span>
+                    <br><small class="text-muted">{{ cat.count }} txns</small>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted">No category data available.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">⚡ Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'money_wise:bankaccount_create' %}" class="btn btn-primary">➕ Add Bank Account</a>
+            <a href="{% url 'money_wise:transaction_create' %}" class="btn btn-success">➕ Add Transaction</a>
+            <a href="{% url 'money_wise:upload_create' %}" class="btn btn-info">📤 Upload CSV</a>
+            <a href="{% url 'money_wise:bankaccount_list' %}" class="btn btn-outline-primary">🏦 All Accounts</a>
+            <a href="{% url 'money_wise:transaction_list' %}" class="btn btn-outline-success">📋 All Transactions</a>
+            <a href="{% url 'money_wise:upload_list' %}" class="btn btn-outline-info">📁 All Uploads</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
