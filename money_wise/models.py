@@ -131,6 +131,39 @@ class Transaction(CreatedUpdatedBase):
         return f"{self.date} | {self.description[:60]} | {self.amount}"
 
 
+def receipt_upload_path(instance, filename):
+    """Store receipt images under money_wise/receipts/<account_id>/filename."""
+    return f"money_wise/receipts/{instance.bank_account_id}/{filename}"
+
+
+class Receipt(CreatedUpdatedBase):
+    """
+    A receipt image linked to a bank account so users can upload and view it later.
+    """
+
+    bank_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.CASCADE,
+        related_name="receipts",
+    )
+    image = models.ImageField(
+        upload_to=receipt_upload_path,
+        help_text="Upload an image of your receipt.",
+    )
+    description = models.CharField(max_length=255, blank=True)
+    purchased_on = models.DateField(
+        null=True,
+        blank=True,
+        help_text="Date shown on the receipt.",
+    )
+
+    class Meta:
+        ordering = ["-created"]
+
+    def __str__(self):
+        return self.description or f"Receipt #{self.pk}"
+
+
 def csv_upload_path(instance, filename):
     """Store CSV uploads under money_wise/csv_uploads/<account_id>/filename."""
     return f"money_wise/csv_uploads/{instance.bank_account_id}/{filename}"

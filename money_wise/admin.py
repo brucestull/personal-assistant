@@ -31,6 +31,16 @@ class TransactionUploadInline(admin.TabularInline):
     show_change_link = True
 
 
+class ReceiptInline(admin.TabularInline):
+    """Inline for Receipts on the BankAccount admin."""
+
+    model = models.Receipt
+    extra = 0
+    fields = ("image", "description", "purchased_on", "created")
+    readonly_fields = ("created",)
+    show_change_link = True
+
+
 # ---------------------------------------------------------------------------
 # Admin classes
 # ---------------------------------------------------------------------------
@@ -54,7 +64,7 @@ class BankAccountAdmin(admin.ModelAdmin):
     search_fields = ("name", "institution", "account_number_last4", "notes")
     ordering = ("institution", "name")
     readonly_fields = ("created", "updated")
-    inlines = [TransactionInline, TransactionUploadInline]
+    inlines = [TransactionInline, TransactionUploadInline, ReceiptInline]
     fieldsets = (
         (
             _("Account Details"),
@@ -170,6 +180,42 @@ class TransactionUploadAdmin(admin.ModelAdmin):
         "rows_skipped",
         "uploaded_by",
         "created",
+    )
+
+
+@admin.register(models.Receipt)
+class ReceiptAdmin(admin.ModelAdmin):
+    """Admin for Receipt."""
+
+    list_display = ("bank_account", "description", "purchased_on", "created")
+    list_filter = ("bank_account", "purchased_on", "created")
+    search_fields = (
+        "description",
+        "bank_account__name",
+        "bank_account__institution",
+    )
+    ordering = ("-created",)
+    readonly_fields = ("created", "updated")
+    list_select_related = ("bank_account",)
+    fieldsets = (
+        (
+            _("Receipt Details"),
+            {
+                "fields": (
+                    "bank_account",
+                    "image",
+                    "description",
+                    "purchased_on",
+                )
+            },
+        ),
+        (
+            _("Dates"),
+            {
+                "fields": ("created", "updated"),
+                "classes": ("collapse",),
+            },
+        ),
     )
     list_filter = ("status", "bank_account")
     search_fields = (
