@@ -181,42 +181,6 @@ class TransactionUploadAdmin(admin.ModelAdmin):
         "uploaded_by",
         "created",
     )
-
-
-@admin.register(models.Receipt)
-class ReceiptAdmin(admin.ModelAdmin):
-    """Admin for Receipt."""
-
-    list_display = ("bank_account", "description", "purchased_on", "created")
-    list_filter = ("bank_account", "purchased_on", "created")
-    search_fields = (
-        "description",
-        "bank_account__name",
-        "bank_account__institution",
-    )
-    ordering = ("-created",)
-    readonly_fields = ("created", "updated")
-    list_select_related = ("bank_account",)
-    fieldsets = (
-        (
-            _("Receipt Details"),
-            {
-                "fields": (
-                    "bank_account",
-                    "image",
-                    "description",
-                    "purchased_on",
-                )
-            },
-        ),
-        (
-            _("Dates"),
-            {
-                "fields": ("created", "updated"),
-                "classes": ("collapse",),
-            },
-        ),
-    )
     list_filter = ("status", "bank_account")
     search_fields = (
         "original_filename",
@@ -250,6 +214,42 @@ class ReceiptAdmin(admin.ModelAdmin):
                     "error_message",
                     "uploaded_by",
                 ),
+            },
+        ),
+        (
+            _("Dates"),
+            {
+                "fields": ("created", "updated"),
+                "classes": ("collapse",),
+            },
+        ),
+    )
+
+
+@admin.register(models.Receipt)
+class ReceiptAdmin(admin.ModelAdmin):
+    """Admin for Receipt."""
+
+    list_display = ("bank_account", "description", "purchased_on", "created")
+    list_filter = ("bank_account", "purchased_on", "created")
+    search_fields = (
+        "description",
+        "bank_account__name",
+        "bank_account__institution",
+    )
+    ordering = ("-created",)
+    readonly_fields = ("created", "updated")
+    list_select_related = ("bank_account",)
+    fieldsets = (
+        (
+            _("Receipt Details"),
+            {
+                "fields": (
+                    "bank_account",
+                    "image",
+                    "description",
+                    "purchased_on",
+                )
             },
         ),
         (
