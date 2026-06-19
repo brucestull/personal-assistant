@@ -264,6 +264,7 @@ class Host(CreatedUpdatedBase):
         ("Pi3A+", "Raspberry Pi 3 Model A+"),
         # Raspberry Pi Zero variants
         ("PiZero2W", "Raspberry Pi Zero 2 W"),
+        ("PiZero2WR10", "Raspberry Pi Zero 2 W Rev 1.0"),
         ("PiZeroW", "Raspberry Pi Zero W"),
         ("PiZero", "Raspberry Pi Zero"),
         # Raspberry Pi Pico variants
