@@ -78,7 +78,7 @@ for module_name in PYTEST_MODULES:
                 _counter += 1
                 setattr(
                     PytestCompatibilityTests,
-                    f"test_pycompat_{_counter:04d}_{module_name.replace('.', '_')}_{attr_name}",
+                    f"test_pycompat_{_counter:04d}_{module_name.replace('.', '_')}_{attr_name}",  # noqa E501
                     _make_function_adapter(obj, param_names),
                 )
 
@@ -91,6 +91,7 @@ for module_name in PYTEST_MODULES:
                         _counter += 1
                         setattr(
                             PytestCompatibilityTests,
-                            f"test_pycompat_{_counter:04d}_{module_name.replace('.', '_')}_{class_name}_{method_name}",
+                            f"test_pycompat_{_counter:04d}_{module_name.replace('.', '_')}_{class_name}_{method_name}",  # noqa E501
+                    _make_function_adapter(obj, param_names),
                             _make_method_adapter(cls_obj, method_name),
                         )
