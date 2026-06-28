@@ -65,33 +65,41 @@ class PytestCompatibilityTests(TestCase):
 
 
 _counter = 0
-for module_name in PYTEST_MODULES:
-    module = importlib.import_module(module_name)
+for _module_name in PYTEST_MODULES:
+    _module = importlib.import_module(_module_name)
 
-    for attr_name, obj in vars(module).items():
-        if attr_name.startswith("test_") and inspect.isfunction(obj):
-            fully_qualified_name = f"{module_name}.{attr_name}"
-            if fully_qualified_name in _SKIPPED_FUNCTIONS:
+    for _attr_name, _obj in vars(_module).items():
+        if _attr_name.startswith("test_") and inspect.isfunction(_obj):
+            _fully_qualified_name = f"{_module_name}.{_attr_name}"
+            if _fully_qualified_name in _SKIPPED_FUNCTIONS:
                 continue
-            param_names = list(inspect.signature(obj).parameters)
-            if _supports_params(param_names):
+            _param_names = list(inspect.signature(_obj).parameters)
+            if _supports_params(_param_names):
                 _counter += 1
+                _method_name = (
+                    f"test_pycompat_{_counter:04d}"
+                    f"_{_module_name.replace('.', '_')}_{_attr_name}"
+                )
                 setattr(
                     PytestCompatibilityTests,
-                    f"test_pycompat_{_counter:04d}_{module_name.replace('.', '_')}_{attr_name}",  # noqa E501
-                    _make_function_adapter(obj, param_names),
+                    _method_name,
+                    _make_function_adapter(_obj, _param_names),
                 )
 
-    for class_name, cls_obj in vars(module).items():
-        if class_name.startswith("Test") and inspect.isclass(cls_obj):
-            for method_name, method in vars(cls_obj).items():
-                if method_name.startswith("test_") and inspect.isfunction(method):
-                    param_names = list(inspect.signature(method).parameters)
-                    if param_names == ["self"]:
+    for _class_name, _cls_obj in vars(_module).items():
+        if _class_name.startswith("Test") and inspect.isclass(_cls_obj):
+            for _meth_name, _method in vars(_cls_obj).items():
+                if _meth_name.startswith("test_") and inspect.isfunction(_method):
+                    _param_names = list(inspect.signature(_method).parameters)
+                    if _param_names == ["self"]:
                         _counter += 1
+                        _method_name = (
+                            f"test_pycompat_{_counter:04d}"
+                            f"_{_module_name.replace('.', '_')}"
+                            f"_{_class_name}_{_meth_name}"
+                        )
                         setattr(
                             PytestCompatibilityTests,
-                            f"test_pycompat_{_counter:04d}_{module_name.replace('.', '_')}_{class_name}_{method_name}",  # noqa E501
-                            _make_function_adapter(obj, param_names),
-                            _make_method_adapter(cls_obj, method_name),
+                            _method_name,
+                            _make_method_adapter(_cls_obj, _meth_name),
                         )
