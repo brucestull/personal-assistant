@@ -92,6 +92,6 @@ for module_name in PYTEST_MODULES:
                         setattr(
                             PytestCompatibilityTests,
                             f"test_pycompat_{_counter:04d}_{module_name.replace('.', '_')}_{class_name}_{method_name}",  # noqa E501
-                    _make_function_adapter(obj, param_names),
+                            _make_function_adapter(obj, param_names),
                             _make_method_adapter(cls_obj, method_name),
                         )
