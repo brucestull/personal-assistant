@@ -4,7 +4,6 @@ jobs:
   build_and_test:
     docker:
       - image: cimg/python:3.11.5
-    parallelism: 3
 
     environment:
       # Keep the venv inside the repo so CircleCI caching is easy.
@@ -54,21 +53,10 @@ jobs:
           command: |
             mkdir -p test-results
 
-            # Collect test files from repo, but EXCLUDE anything inside virtualenv folders.
-            TEST_FILES=$(circleci tests glob \
-              "**/tests/test_*.py" \
-              "**/tests/*_tests.py" \
-              "**/tests.py" \
-              "tests/test_*.py" \
-              | grep -vE '(^|/)\.venv/|(^|/)venv/' \
-              | circleci tests split --split-by=timings)
-
             pipenv run coverage run -m pytest \
-              --junitxml=test-results/pytest.xml \
-              $TEST_FILES
+              --junitxml=test-results/pytest.xml
 
             pipenv run coverage report
-
 
       - store_test_results:
           path: test-results
