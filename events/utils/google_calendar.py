@@ -10,6 +10,10 @@ Each user's OAuth2 tokens are persisted in GoogleCalendarCredentials.
 """
 
 import os
+from datetime import datetime
+
+from django.utils import timezone
+from django.utils.dateparse import parse_date, parse_datetime
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -134,9 +138,6 @@ def sync_events_from_google(user) -> tuple[int, int]:
         if not start_str or not end_str:
             continue
 
-        from django.utils.dateparse import parse_datetime, parse_date
-        from django.utils import timezone
-
         start_dt = parse_datetime(start_str) or _date_to_datetime(
             parse_date(start_str)
         )
@@ -181,8 +182,6 @@ def create_google_calendar_event(user, event: "CalendarEvent") -> str:
 
     service = build("calendar", "v3", credentials=creds)
 
-    from django.utils import timezone
-
     def _format_dt(dt):
         # Google Calendar expects RFC 3339 strings
         if timezone.is_aware(dt):
@@ -207,6 +206,4 @@ def _date_to_datetime(d):
     """Convert a date to a datetime at midnight."""
     if d is None:
         return None
-    from datetime import datetime
-
     return datetime(d.year, d.month, d.day)

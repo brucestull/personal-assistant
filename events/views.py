@@ -2,6 +2,8 @@
 
 import logging
 
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -75,8 +77,6 @@ def today_events(request):
         # Pre-fill start time with the current time rounded to the nearest hour
         now = timezone.localtime()
         initial_start = now.replace(minute=0, second=0, microsecond=0)
-        from datetime import timedelta
-
         initial_end = initial_start + timedelta(hours=1)
         form = EventForm(
             initial={
