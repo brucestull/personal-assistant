@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     "thing_thought_reminder.apps.ThingThoughtReminderConfig",
     "item_location.apps.ItemLocationConfig",
     "bus_drive.apps.BusDriveConfig",
+    "events.apps.EventsConfig",
 ]
 
 MIDDLEWARE = [
