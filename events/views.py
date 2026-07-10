@@ -65,7 +65,7 @@ def today_events(request):
                     messages.warning(
                         request,
                         f'Event "{event.summary}" saved locally, but could not be '
-                        "added to Google Calendar. Check your connection and try again.",
+                        "added to Google Calendar. Check your connection and try again.", # noqa: E501
                     )
             else:
                 messages.success(
