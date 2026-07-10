@@ -59,4 +59,5 @@ urlpatterns = [
     path("thing-thought-reminder/", include("thing_thought_reminder.urls")),
     path("item-location/", include("item_location.urls")),
     path("bus-drive/", include("bus_drive.urls")),
+    path("events/", include("events.urls")),
 ]
