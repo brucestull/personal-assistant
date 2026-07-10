@@ -20,9 +20,6 @@ redis = "==5.2.1"
 celery = "==5.4.0"
 reportlab = "*"
 setuptools = "*"
-google-api-python-client = ">=2.100.0"
-google-auth-oauthlib = ">=1.2.0"
-google-auth-httplib2 = ">=0.2.0"
 
 [dev-packages]
 ruff = "*"
