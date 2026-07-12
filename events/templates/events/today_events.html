@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>{{ page_title }} &mdash; {{ today }}</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {# ── Google Calendar sync / connect ── #}
+    <div class="d-flex gap-2 mb-4">
+        {% if has_google_credentials %}
+            <form method="post" action="{% url 'events:sync' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">
+                    🔄 Sync with Google Calendar
+                </button>
+            </form>
+        {% else %}
+            <a href="{% url 'events:google-connect' %}" class="btn btn-outline-primary">
+                🔗 Connect Google Calendar
+            </a>
+        {% endif %}
+    </div>
+
+    {# ── Today's events list ── #}
+    <h2 class="h5">Events for today</h2>
+    {% if events %}
+        <ul class="list-group mb-4">
+            {% for event in events %}
+                <li class="list-group-item">
+                    <strong>{{ event.start_datetime|time:"H:i" }} – {{ event.end_datetime|time:"H:i" }}</strong>
+                    &nbsp; {{ event.summary }}
+                    {% if event.description %}
+                        <small class="text-muted ms-2">{{ event.description }}</small>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No events scheduled for today.</p>
+    {% endif %}
+
+    {# ── Add event form ── #}
+    <h2 class="h5">Add an event</h2>
+    <form method="post" action="{% url 'events:today' %}" class="mb-4" style="max-width: 480px;">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="text-danger small">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Save event</button>
+    </form>
+</div>
+{% endblock content %}
