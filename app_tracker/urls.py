@@ -201,4 +201,30 @@ urlpatterns = [
         views.URLDeleteView.as_view(),
         name="url_delete",
     ),
+    # SSHConnection routes
+    path(
+        "ssh-connections/",
+        views.SSHConnectionListView.as_view(),
+        name="ssh_connection_list",
+    ),
+    path(
+        "ssh-connections/<int:pk>/",
+        views.SSHConnectionDetailView.as_view(),
+        name="ssh_connection_detail",
+    ),
+    path(
+        "ssh-connections/create/",
+        views.SSHConnectionCreateView.as_view(),
+        name="ssh_connection_create",
+    ),
+    path(
+        "ssh-connections/<int:pk>/update/",
+        views.SSHConnectionUpdateView.as_view(),
+        name="ssh_connection_update",
+    ),
+    path(
+        "ssh-connections/<int:pk>/delete/",
+        views.SSHConnectionDeleteView.as_view(),
+        name="ssh_connection_delete",
+    ),
 ]

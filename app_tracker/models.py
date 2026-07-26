@@ -388,6 +388,71 @@ class Host(CreatedUpdatedBase):
         ordering = ["host_name"]
 
 
+class SSHConnection(CreatedUpdatedBase):
+    """
+    Represents an SSH connection between two hosts (client → server).
+    """
+
+    ENCRYPTION_ALGORITHM_CHOICES = [
+        ("ed25519", "Ed25519"),
+        ("rsa", "RSA"),
+        ("ecdsa", "ECDSA"),
+        ("dsa", "DSA"),
+    ]
+
+    server = models.ForeignKey(
+        "Host",
+        verbose_name="Server",
+        help_text="The server host that accepts the SSH connection.",
+        on_delete=models.CASCADE,
+        related_name="ssh_server_connections",
+    )
+    client = models.ForeignKey(
+        "Host",
+        verbose_name="Client",
+        help_text="The client host that initiates the SSH connection.",
+        on_delete=models.CASCADE,
+        related_name="ssh_client_connections",
+    )
+    key_filename = models.CharField(
+        verbose_name="Key Filename",
+        help_text="The filename of the SSH key (e.g., id_ed25519).",
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+    key_comment = models.CharField(
+        verbose_name="Key Comment",
+        help_text="The preferred comment used with the key (e.g., user@host).",
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+    encryption_algorithm = models.CharField(
+        verbose_name="Encryption Algorithm",
+        help_text="The encryption algorithm used for the key (e.g., ed25519).",
+        max_length=20,
+        choices=ENCRYPTION_ALGORITHM_CHOICES,
+        default="ed25519",
+    )
+    passphrase_protected = models.BooleanField(
+        verbose_name="Passphrase Protected",
+        help_text="Whether the SSH key is protected by a passphrase.",
+        default=False,
+    )
+
+    def __str__(self):
+        return (
+            f"{self.client} → {self.server}"
+            f" ({self.encryption_algorithm})"
+        )
+
+    class Meta:
+        verbose_name = "SSH Connection"
+        verbose_name_plural = "SSH Connections"
+        ordering = ["server", "client"]
+
+
 class Project(CreatedUpdatedBase):
     """
     Model for a single `Project`.

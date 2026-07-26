@@ -21,6 +21,7 @@ from app_tracker.models import (
     OperatingSystem,
     OrganizationalConcept,
     Project,
+    SSHConnection,
 )
 from base.decorators import registration_accepted_required
 from base.mixins import RegistrationAcceptedMixin
@@ -51,6 +52,7 @@ def dashboard(request):
 
     total_hosts = hosts.count()
     total_lfs = LanguageFrameworkSystem.objects.count()
+    total_ssh_connections = SSHConnection.objects.count()
 
     # Applications with specific features
     apps_with_production = all_applications.filter(has_prod_deployment=True).count()
@@ -112,6 +114,7 @@ def dashboard(request):
         "total_projects": total_projects,
         "total_hosts": total_hosts,
         "total_lfs": total_lfs,
+        "total_ssh_connections": total_ssh_connections,
         # Host filtering
         "include_paused": include_paused,
         # Feature counts
@@ -418,3 +421,29 @@ class URLUpdateView(RegistrationAcceptedMixin, UpdateView):
 class URLDeleteView(RegistrationAcceptedMixin, DeleteView):
     model = URL
     success_url = reverse_lazy("app_tracker:url_list")
+
+
+# SSHConnection views
+class SSHConnectionListView(RegistrationAcceptedMixin, ListView):
+    model = SSHConnection
+
+
+class SSHConnectionDetailView(RegistrationAcceptedMixin, DetailView):
+    model = SSHConnection
+
+
+class SSHConnectionCreateView(RegistrationAcceptedMixin, CreateView):
+    model = SSHConnection
+    fields = "__all__"
+    success_url = reverse_lazy("app_tracker:ssh_connection_list")
+
+
+class SSHConnectionUpdateView(RegistrationAcceptedMixin, UpdateView):
+    model = SSHConnection
+    fields = "__all__"
+    success_url = reverse_lazy("app_tracker:ssh_connection_list")
+
+
+class SSHConnectionDeleteView(RegistrationAcceptedMixin, DeleteView):
+    model = SSHConnection
+    success_url = reverse_lazy("app_tracker:ssh_connection_list")

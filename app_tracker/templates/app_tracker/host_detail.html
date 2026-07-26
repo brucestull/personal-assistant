@@ -177,6 +177,81 @@
     </div>
   </div>
 
+  <!-- SSH Connections -->
+  <div class="row mb-4">
+    <!-- Incoming SSH Connections (as server) -->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">🔑 Incoming SSH Connections (as Server)</h5>
+          <a href="{% url 'app_tracker:ssh_connection_create' %}" class="btn btn-sm btn-light">➕ Add</a>
+        </div>
+        <div class="card-body">
+          {% if object.ssh_server_connections.all %}
+            <ul class="list-group list-group-flush">
+              {% for conn in object.ssh_server_connections.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-start px-0">
+                  <div>
+                    <a href="{% url 'app_tracker:ssh_connection_detail' conn.pk %}" class="text-decoration-none fw-bold">
+                      {{ conn.client.host_name|default:conn.client.name }} → this host
+                    </a>
+                    <br>
+                    <small class="text-muted">
+                      <span class="badge bg-secondary">{{ conn.get_encryption_algorithm_display }}</span>
+                      {% if conn.key_filename %}<code>{{ conn.key_filename }}</code>{% endif %}
+                      {% if conn.passphrase_protected %}<span class="badge bg-success">🔒</span>{% else %}<span class="badge bg-warning text-dark">🔓</span>{% endif %}
+                    </small>
+                  </div>
+                  <a href="{% url 'app_tracker:ssh_connection_detail' conn.pk %}" class="btn btn-sm btn-outline-primary" title="View">
+                    👁️
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">No incoming SSH connections from other hosts.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Outgoing SSH Connections (as client) -->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">🔑 Outgoing SSH Connections (as Client)</h5>
+          <a href="{% url 'app_tracker:ssh_connection_create' %}" class="btn btn-sm btn-light">➕ Add</a>
+        </div>
+        <div class="card-body">
+          {% if object.ssh_client_connections.all %}
+            <ul class="list-group list-group-flush">
+              {% for conn in object.ssh_client_connections.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-start px-0">
+                  <div>
+                    <a href="{% url 'app_tracker:ssh_connection_detail' conn.pk %}" class="text-decoration-none fw-bold">
+                      this host → {{ conn.server.host_name|default:conn.server.name }}
+                    </a>
+                    <br>
+                    <small class="text-muted">
+                      <span class="badge bg-secondary">{{ conn.get_encryption_algorithm_display }}</span>
+                      {% if conn.key_filename %}<code>{{ conn.key_filename }}</code>{% endif %}
+                      {% if conn.passphrase_protected %}<span class="badge bg-success">🔒</span>{% else %}<span class="badge bg-warning text-dark">🔓</span>{% endif %}
+                    </small>
+                  </div>
+                  <a href="{% url 'app_tracker:ssh_connection_detail' conn.pk %}" class="btn btn-sm btn-outline-primary" title="View">
+                    👁️
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">No outgoing SSH connections to other hosts.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Action Buttons -->
   <div class="d-flex gap-2">
     <a href="{% url 'app_tracker:host_list' %}" class="btn btn-outline-secondary">
