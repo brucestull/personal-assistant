@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{% if object %}Edit{% else %}Create{% endif %} SSH Connection{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:ssh_connection_list' %}">SSH Connections</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% if object %}Edit{% else %}Create{% endif %} SSH Connection</li>
+    </ol>
+  </nav>
+
+  <h1 class="mb-4">{% if object %}✏️ Edit{% else %}➕ Create{% endif %} SSH Connection</h1>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">📋 Connection Details</h5>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                  {{ field.label }}
+                  {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ field }}
+                {% if field.help_text %}
+                  <div class="form-text text-muted">{{ field.help_text }}</div>
+                {% endif %}
+                {% if field.errors %}
+                  <div class="invalid-feedback d-block">
+                    {% for error in field.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+
+            <hr class="my-4">
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">
+                💾 {% if object %}Update{% else %}Create{% endif %} SSH Connection
+              </button>
+              <a href="{% url 'app_tracker:ssh_connection_list' %}" class="btn btn-outline-secondary">
+                ❌ Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">💡 Tips</h5>
+        </div>
+        <div class="card-body">
+          <ul class="mb-0">
+            <li class="mb-2"><strong>Server:</strong> The host that accepts the SSH connection</li>
+            <li class="mb-2"><strong>Client:</strong> The host that initiates the SSH connection</li>
+            <li class="mb-2"><strong>Key Filename:</strong> The filename of the SSH key (e.g., id_ed25519)</li>
+            <li class="mb-2"><strong>Key Comment:</strong> The comment embedded in the key (e.g., user@hostname)</li>
+            <li class="mb-2"><strong>Algorithm:</strong> The encryption algorithm used (e.g., ed25519)</li>
+            <li><strong>Passphrase:</strong> Whether the key is passphrase-protected</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
