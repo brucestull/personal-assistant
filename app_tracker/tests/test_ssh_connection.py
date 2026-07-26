@@ -3,12 +3,11 @@
 Comprehensive tests for the SSHConnection model, admin, and views.
 """
 
-from django.contrib.admin.sites import AdminSite
 from django.test import TestCase
 from django.urls import reverse
 
 from accounts.models import CustomUser
-from app_tracker.admin import SSHConnectionAdmin, SSHClientConnectionInline, SSHServerConnectionInline
+from app_tracker.admin import SSHConnectionAdmin, SSHClientConnectionInline, SSHServerConnectionInline  # noqa: E501
 from app_tracker.models import Host, SSHConnection
 
 
@@ -335,7 +334,7 @@ class SSHConnectionListViewTest(SSHConnectionViewTestBase):
         self.assertEqual(response.status_code, 302)
 
     def test_requires_registration_accepted(self):
-        unaccepted = make_user("unaccepted", registration_accepted=False)
+        unaccepted = make_user("unaccepted", registration_accepted=False)  # noqa: F841
         self.client.login(username="unaccepted", password="pass")
         response = self.client.get(reverse("app_tracker:ssh_connection_list"))
         self.assertEqual(response.status_code, 403)

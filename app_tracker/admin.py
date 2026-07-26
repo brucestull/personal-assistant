@@ -51,7 +51,7 @@ class SSHServerConnectionInline(admin.TabularInline):
     model = models.SSHConnection
     fk_name = "server"
     extra = 1
-    fields = ("client", "key_filename", "key_comment", "encryption_algorithm", "passphrase_protected")
+    fields = ("client", "key_filename", "key_comment", "encryption_algorithm", "passphrase_protected")  # noqa: E501
     show_change_link = True
     verbose_name = "Incoming SSH Connection (client → this host)"
     verbose_name_plural = "Incoming SSH Connections (clients → this host)"
@@ -65,7 +65,7 @@ class SSHClientConnectionInline(admin.TabularInline):
     model = models.SSHConnection
     fk_name = "client"
     extra = 1
-    fields = ("server", "key_filename", "key_comment", "encryption_algorithm", "passphrase_protected")
+    fields = ("server", "key_filename", "key_comment", "encryption_algorithm", "passphrase_protected")  # noqa: E501
     show_change_link = True
     verbose_name = "Outgoing SSH Connection (this host → server)"
     verbose_name_plural = "Outgoing SSH Connections (this host → servers)"
