@@ -43,6 +43,34 @@ class URLInline(admin.TabularInline):
     show_change_link = True
 
 
+class SSHServerConnectionInline(admin.TabularInline):
+    """
+    Inline for SSHConnection where this host is the server.
+    """
+
+    model = models.SSHConnection
+    fk_name = "server"
+    extra = 1
+    fields = ("client", "key_filename", "key_comment", "encryption_algorithm", "passphrase_protected")
+    show_change_link = True
+    verbose_name = "Incoming SSH Connection (client → this host)"
+    verbose_name_plural = "Incoming SSH Connections (clients → this host)"
+
+
+class SSHClientConnectionInline(admin.TabularInline):
+    """
+    Inline for SSHConnection where this host is the client.
+    """
+
+    model = models.SSHConnection
+    fk_name = "client"
+    extra = 1
+    fields = ("server", "key_filename", "key_comment", "encryption_algorithm", "passphrase_protected")
+    show_change_link = True
+    verbose_name = "Outgoing SSH Connection (this host → server)"
+    verbose_name_plural = "Outgoing SSH Connections (this host → servers)"
+
+
 # ---------------------------------------------------------------------------
 # Admin classes
 # ---------------------------------------------------------------------------
@@ -554,6 +582,7 @@ class HostAdmin(admin.ModelAdmin):
     readonly_fields = ("created", "updated")
     list_select_related = ("operating_system",)
     actions = ["mark_as_active", "mark_as_paused", "mark_as_retired"]
+    inlines = [SSHServerConnectionInline, SSHClientConnectionInline]
     fieldsets = (
         (
             None,
@@ -684,6 +713,59 @@ class URLAdmin(admin.ModelAdmin):
                     "created",
                     "updated",
                 )
+            },
+        ),
+    )
+
+
+@admin.register(models.SSHConnection)
+class SSHConnectionAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for SSHConnection.
+    """
+
+    list_display = (
+        "server",
+        "client",
+        "encryption_algorithm",
+        "key_filename",
+        "key_comment",
+        "passphrase_protected",
+        "created",
+    )
+    list_filter = ("encryption_algorithm", "passphrase_protected")
+    date_hierarchy = "created"
+    search_fields = (
+        "server__host_name",
+        "client__host_name",
+        "key_filename",
+        "key_comment",
+    )
+    ordering = ("server", "client")
+    autocomplete_fields = ("server", "client")
+    readonly_fields = ("created", "updated")
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "server",
+                    "client",
+                    "key_filename",
+                    "key_comment",
+                    "encryption_algorithm",
+                    "passphrase_protected",
+                )
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": (
+                    "created",
+                    "updated",
+                ),
+                "classes": ("collapse",),
             },
         ),
     )

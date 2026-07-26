@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}SSH Connections{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">🔑 SSH Connections</h1>
+    <a href="{% url 'app_tracker:ssh_connection_create' %}" class="btn btn-primary">
+      ➕ Create New SSH Connection
+    </a>
+  </div>
+
+  {% if object_list %}
+    <div class="card">
+      <div class="card-header bg-dark text-white">
+        <div class="row fw-bold">
+          <div class="col-md-3">Client → Server</div>
+          <div class="col-md-2">Algorithm</div>
+          <div class="col-md-3">Key Filename</div>
+          <div class="col-md-2">Passphrase</div>
+          <div class="col-md-2">Actions</div>
+        </div>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for conn in object_list %}
+          <li class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-md-3">
+                <a href="{% url 'app_tracker:ssh_connection_detail' conn.pk %}" class="fw-bold text-decoration-none">
+                  <a href="{% url 'app_tracker:host_detail' conn.client.pk %}" class="text-decoration-none">{{ conn.client.host_name|default:conn.client.name }}</a>
+                  →
+                  <a href="{% url 'app_tracker:host_detail' conn.server.pk %}" class="text-decoration-none">{{ conn.server.host_name|default:conn.server.name }}</a>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <span class="badge bg-secondary">{{ conn.get_encryption_algorithm_display }}</span>
+              </div>
+              <div class="col-md-3">
+                {% if conn.key_filename %}
+                  <code>{{ conn.key_filename }}</code>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </div>
+              <div class="col-md-2">
+                {% if conn.passphrase_protected %}
+                  <span class="badge bg-success">🔒 Yes</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">🔓 No</span>
+                {% endif %}
+              </div>
+              <div class="col-md-2">
+                <a href="{% url 'app_tracker:ssh_connection_detail' conn.pk %}" class="btn btn-sm btn-outline-primary me-1" title="View">
+                  👁️
+                </a>
+                <a href="{% url 'app_tracker:ssh_connection_update' conn.pk %}" class="btn btn-sm btn-outline-secondary me-1" title="Edit">
+                  ✏️
+                </a>
+                <a href="{% url 'app_tracker:ssh_connection_delete' conn.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                  ❌
+                </a>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="mt-3 text-muted">
+      <small>Total: {{ object_list|length }} SSH connection{{ object_list|length|pluralize }}</small>
+    </div>
+  {% else %}
+    <div class="card">
+      <div class="card-body text-center py-5">
+        <h4 class="text-muted mb-3">No SSH Connections Found</h4>
+        <p class="text-muted">Get started by creating your first SSH connection.</p>
+        <a href="{% url 'app_tracker:ssh_connection_create' %}" class="btn btn-primary">
+          ➕ Create New SSH Connection
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="mt-4">
+    <a href="{% url 'app_tracker:dashboard' %}" class="btn btn-outline-secondary">
+      ⬅️ Back to Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -65,6 +65,17 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-dark h-100">
+                <div class="card-body text-center">
+                    <h2 class="card-title">{{ total_ssh_connections }}</h2>
+                    <p class="card-text">SSH Connections</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'app_tracker:ssh_connection_list' %}" class="text-white">View All →</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Application Features Overview -->
@@ -350,6 +361,7 @@
                         <a href="{% url 'app_tracker:application_create' %}" class="btn btn-primary">➕ Add Application</a>
                         <a href="{% url 'app_tracker:project_create' %}" class="btn btn-success">➕ Add Project</a>
                         <a href="{% url 'app_tracker:host_create' %}" class="btn btn-info">➕ Add Host</a>
+                        <a href="{% url 'app_tracker:ssh_connection_create' %}" class="btn btn-dark">➕ Add SSH Connection</a>
                         <a href="{% url 'app_tracker:lfs_create' %}" class="btn btn-secondary">➕ Add Language/Framework</a>
                         <a href="{% url 'app_tracker:application_list' %}" class="btn btn-outline-primary">📋 All Applications</a>
                     </div>

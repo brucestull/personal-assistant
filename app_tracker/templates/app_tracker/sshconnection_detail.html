@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}SSH Connection Details{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'app_tracker:ssh_connection_list' %}">SSH Connections</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Connection Details</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">🔑 SSH Connection</h1>
+    <div>
+      <a href="{% url 'app_tracker:ssh_connection_update' object.pk %}" class="btn btn-primary me-2">
+        ✏️ Edit
+      </a>
+      <a href="{% url 'app_tracker:ssh_connection_delete' object.pk %}" class="btn btn-outline-danger">
+        ❌ Delete
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Main Info Card -->
+    <div class="col-lg-8 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">📋 Connection Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Client (initiates connection):</strong>
+              <p class="mb-0">
+                <a href="{% url 'app_tracker:host_detail' object.client.pk %}" class="text-decoration-none">
+                  {{ object.client.host_name|default:object.client.name }}
+                </a>
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Server (accepts connection):</strong>
+              <p class="mb-0">
+                <a href="{% url 'app_tracker:host_detail' object.server.pk %}" class="text-decoration-none">
+                  {{ object.server.host_name|default:object.server.name }}
+                </a>
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Encryption Algorithm:</strong>
+              <p class="mb-0">
+                <span class="badge bg-secondary">{{ object.get_encryption_algorithm_display }}</span>
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Passphrase Protected:</strong>
+              <p class="mb-0">
+                {% if object.passphrase_protected %}
+                  <span class="badge bg-success">🔒 Yes</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">🔓 No</span>
+                {% endif %}
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Key Filename:</strong>
+              <p class="mb-0">
+                {% if object.key_filename %}
+                  <code>{{ object.key_filename }}</code>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong class="text-muted">Key Comment:</strong>
+              <p class="mb-0">
+                {% if object.key_comment %}
+                  <code>{{ object.key_comment }}</code>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-muted">
+          <small>
+            Created: {{ object.created|date:"M d, Y H:i" }} |
+            Updated: {{ object.updated|date:"M d, Y H:i" }}
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Card -->
+    <div class="col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">⚡ Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <a href="{% url 'app_tracker:host_detail' object.client.pk %}" class="btn btn-outline-info">
+              🖥️ View Client Host
+            </a>
+            <a href="{% url 'app_tracker:host_detail' object.server.pk %}" class="btn btn-outline-info">
+              🖥️ View Server Host
+            </a>
+            <a href="{% url 'app_tracker:ssh_connection_update' object.pk %}" class="btn btn-outline-secondary">
+              ✏️ Edit Connection
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="d-flex gap-2">
+    <a href="{% url 'app_tracker:ssh_connection_list' %}" class="btn btn-outline-secondary">
+      ⬅️ Back to SSH Connections
+    </a>
+    <a href="{% url 'app_tracker:ssh_connection_update' object.pk %}" class="btn btn-primary">
+      ✏️ Edit Connection
+    </a>
+    <a href="{% url 'app_tracker:ssh_connection_delete' object.pk %}" class="btn btn-outline-danger">
+      ❌ Delete Connection
+    </a>
+  </div>
+</div>
+{% endblock %}
