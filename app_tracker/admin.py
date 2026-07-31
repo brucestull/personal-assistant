@@ -564,12 +564,11 @@ class HostAdmin(admin.ModelAdmin):
 
     list_display = [
         "host_name",
-        "name",
+        "ram",
+        "form_factor",
         "ip_address",
         "status",
         "operating_system",
-        "form_factor",
-        "ram",
         "environment",
         "created",
     ]
