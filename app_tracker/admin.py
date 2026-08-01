@@ -556,6 +556,17 @@ class OperatingSystemAdmin(admin.ModelAdmin):
     ordering = ["name"]
 
 
+@admin.register(models.Ram)
+class RamAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for Ram.
+    """
+
+    search_fields = ["name"]
+    list_display = ["name"]
+    ordering = ["name"]
+
+
 @admin.register(models.Host)
 class HostAdmin(admin.ModelAdmin):
     """
@@ -576,10 +587,10 @@ class HostAdmin(admin.ModelAdmin):
     date_hierarchy = "created"
     search_fields = ["host_name", "ip_address", "notes", "name"]
     ordering = ["host_name"]
-    autocomplete_fields = ["operating_system", "applications"]
+    autocomplete_fields = ["operating_system", "ram", "applications"]
     filter_horizontal = ["applications"]
     readonly_fields = ("created", "updated")
-    list_select_related = ("operating_system",)
+    list_select_related = ("operating_system", "ram")
     actions = ["mark_as_active", "mark_as_paused", "mark_as_retired"]
     inlines = [SSHServerConnectionInline, SSHClientConnectionInline]
     fieldsets = (

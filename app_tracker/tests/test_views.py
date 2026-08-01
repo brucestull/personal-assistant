@@ -295,7 +295,7 @@ class HostUpdateViewTest(TestCase):
         """
         Set up test data.
         """
-        from app_tracker.models import Host, OperatingSystem
+        from app_tracker.models import Host, OperatingSystem, Ram
 
         # Create a test user with registration_accepted=True
         self.user = CustomUser.objects.create_user(
@@ -309,12 +309,16 @@ class HostUpdateViewTest(TestCase):
         self.os_debian = OperatingSystem.objects.create(name="Debian 11")
         self.os_centos = OperatingSystem.objects.create(name="CentOS 7")
         self.os_alpine = OperatingSystem.objects.create(name="Alpine Linux")
+        self.ram_8gb = Ram.objects.create(name="8GB")
+        self.ram_2gb = Ram.objects.create(name="2GB")
+        self.ram_4gb = Ram.objects.create(name="4GB")
 
         # Create a test host
         self.host = Host.objects.create(
             name="Test Host",
             host_name="test-host",
             operating_system=self.os_ubuntu,
+            ram=self.ram_8gb,
         )
 
     def test_host_update_view_operating_system_sorted(self):
@@ -340,6 +344,22 @@ class HostUpdateViewTest(TestCase):
             ["Alpine Linux", "CentOS 7", "Debian 11", "Ubuntu 22.04"],
         )
 
+    def test_host_update_view_ram_sorted(self):
+        """
+        Test that the ram field is sorted by name.
+        """
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(
+            reverse("app_tracker:host_update", kwargs={"pk": self.host.pk})
+        )
+        self.assertEqual(response.status_code, 200)
+
+        form = response.context["form"]
+        ram_field = form.fields["ram"]
+        ram_list = list(ram_field.queryset.values_list("name", flat=True))
+
+        self.assertEqual(ram_list, ["2GB", "4GB", "8GB"])
+
     def test_host_update_view_template_has_search_input(self):
         """
         Test that the template includes a search input for operating system.
@@ -364,7 +384,7 @@ class HostCreateViewTest(TestCase):
         """
         Set up test data.
         """
-        from app_tracker.models import OperatingSystem
+        from app_tracker.models import OperatingSystem, Ram
 
         # Create a test user with registration_accepted=True
         self.user = CustomUser.objects.create_user(
@@ -377,6 +397,9 @@ class HostCreateViewTest(TestCase):
         self.os_ubuntu = OperatingSystem.objects.create(name="Ubuntu 22.04")
         self.os_debian = OperatingSystem.objects.create(name="Debian 11")
         self.os_centos = OperatingSystem.objects.create(name="CentOS 7")
+        self.ram_8gb = Ram.objects.create(name="8GB")
+        self.ram_2gb = Ram.objects.create(name="2GB")
+        self.ram_4gb = Ram.objects.create(name="4GB")
 
     def test_host_create_view_operating_system_sorted(self):
         """
@@ -398,3 +421,17 @@ class HostCreateViewTest(TestCase):
             os_list,
             ["CentOS 7", "Debian 11", "Ubuntu 22.04"],
         )
+
+    def test_host_create_view_ram_sorted(self):
+        """
+        Test that the ram field is sorted by name in create view.
+        """
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(reverse("app_tracker:host_create"))
+        self.assertEqual(response.status_code, 200)
+
+        form = response.context["form"]
+        ram_field = form.fields["ram"]
+        ram_list = list(ram_field.queryset.values_list("name", flat=True))
+
+        self.assertEqual(ram_list, ["2GB", "4GB", "8GB"])

@@ -21,6 +21,7 @@ from app_tracker.models import (
     OperatingSystem,
     OrganizationalConcept,
     Project,
+    Ram,
     SSHConnection,
 )
 from base.decorators import registration_accepted_required
@@ -333,6 +334,7 @@ class HostFormMixin:
         form.fields["operating_system"].queryset = OperatingSystem.objects.order_by(
             "name"
         )
+        form.fields["ram"].queryset = Ram.objects.order_by("name")
         return form
 
 

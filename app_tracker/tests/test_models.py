@@ -11,6 +11,7 @@ from app_tracker.models import (
     Note,
     OrganizationalConcept,
     Project,
+    Ram,
 )
 
 
@@ -1109,10 +1110,12 @@ class HostModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
+        cls.ram = Ram.objects.create(name="4GB")
         cls.host_active = Host.objects.create(
             name="Active Host",
             host_name="active-host",
             ip_address="192.168.1.10",
+            ram=cls.ram,
             status=Host.HostStatus.ACTIVE,
         )
         cls.host_paused = Host.objects.create(
@@ -1132,6 +1135,28 @@ class HostModelTest(TestCase):
         """Test that the status field exists on the Host model."""
         host = Host.objects.get(id=self.host_active.pk)
         self.assertTrue(hasattr(host, "status"))
+
+    def test_ram_field_uses_ram_model(self):
+        """Test that the ram field uses the Ram model."""
+        host = Host.objects.get(id=self.host_active.pk)
+        self.assertEqual(host._meta.get_field("ram").related_model, Ram)
+
+    def test_ram_field_verbose_name(self):
+        """Test the verbose_name of the ram field."""
+        host = Host.objects.get(id=self.host_active.pk)
+        field_label = host._meta.get_field("ram").verbose_name
+        self.assertEqual(field_label, "RAM")
+
+    def test_ram_field_help_text(self):
+        """Test the help_text of the ram field."""
+        host = Host.objects.get(id=self.host_active.pk)
+        help_text = host._meta.get_field("ram").help_text
+        self.assertEqual(help_text, "The RAM configuration for this host.")
+
+    def test_ram_field_value_uses_related_object(self):
+        """Test that the ram field stores a related Ram object."""
+        host = Host.objects.get(id=self.host_active.pk)
+        self.assertEqual(host.ram, self.ram)
 
     def test_status_default_value(self):
         """Test that the status field defaults to ACTIVE."""
@@ -1243,3 +1268,21 @@ class HostModelTest(TestCase):
         self.assertEqual(Host.HostStatus.ACTIVE.label, "Active")
         self.assertEqual(Host.HostStatus.PAUSED.label, "Paused")
         self.assertEqual(Host.HostStatus.RETIRED.label, "Retired")
+
+
+class RamModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.ram = Ram.objects.create(name="8GB")
+
+    def test_name_unique_true(self):
+        ram = Ram.objects.get(id=self.ram.pk)
+        self.assertTrue(ram._meta.get_field("name").unique)
+
+    def test_name_verbose_name(self):
+        ram = Ram.objects.get(id=self.ram.pk)
+        self.assertEqual(ram._meta.get_field("name").verbose_name, "RAM")
+
+    def test_dunder_string_method(self):
+        ram = Ram.objects.get(id=self.ram.pk)
+        self.assertEqual(str(ram), "8GB")
