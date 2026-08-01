@@ -36,6 +36,27 @@ class OperatingSystem(models.Model):
         verbose_name_plural = "Operating Systems"
 
 
+class Ram(CreatedUpdatedBase):
+    """
+    Represents a known RAM size/configuration for hosts.
+    """
+
+    name = models.CharField(
+        verbose_name="RAM",
+        help_text="e.g., 500MB, .5GB, 2GB, 4GB, 8GB",
+        max_length=50,
+        unique=True,
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "RAM"
+        verbose_name_plural = "RAM"
+
+
 class LanguageFrameworkSystem(CreatedUpdatedBase):
     """
     This model represents a single language, framework, or system that is
@@ -319,9 +340,12 @@ class Host(CreatedUpdatedBase):
         blank=True,
         null=True,
     )
-    ram = models.CharField(
-        max_length=50,
-        help_text="e.g., 500MB, .5GB, 2GB, 4GB, 8GB",
+    ram = models.ForeignKey(
+        "Ram",
+        on_delete=models.SET_NULL,
+        related_name="hosts",
+        verbose_name="RAM",
+        help_text="The RAM configuration for this host.",
         blank=True,
         null=True,
     )
