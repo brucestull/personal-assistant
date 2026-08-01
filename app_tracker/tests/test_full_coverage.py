@@ -21,6 +21,7 @@ from app_tracker.models import (  # noqa: E402
     OperatingSystem,
     OrganizationalConcept,
     Project,
+    Ram,
 )
 
 User = get_user_model()
@@ -70,8 +71,10 @@ class ModelTestCase(TestCase):
 
     def test_host_str_and_fields(self):
         os_obj = OperatingSystem.objects.create(name="CentOS 8")
+        ram_obj = Ram.objects.create(name="8GB")
         host = Host.objects.create(
             operating_system=os_obj,
+            ram=ram_obj,
             host_name="HOST1",
             form_factor="Pi4",
             ip_address="192.168.1.10",
@@ -139,6 +142,7 @@ class ViewTestCase(TestCase):
 
         # Create sample instances for each model
         self.os_obj = OperatingSystem.objects.create(name="TestOS")
+        self.ram_obj = Ram.objects.create(name="2GB")
         self.lfs_obj = LanguageFrameworkSystem.objects.create(name="TestLFS")
         self.app_obj = Application.objects.create(name="TestApp")
         self.app_obj.language_framework_systems.add(self.lfs_obj)
@@ -157,6 +161,7 @@ class ViewTestCase(TestCase):
 
         self.host_obj = Host.objects.create(
             operating_system=self.os_obj,
+            ram=self.ram_obj,
             host_name="TestHost",
             form_factor="Pi4",
             ip_address="10.0.0.1",
@@ -312,9 +317,9 @@ class ViewTestCase(TestCase):
                 "name": "Created Host",
                 "host_name": "CREATED-HOST",
                 "operating_system": self.os_obj.pk,
+                "ram": self.ram_obj.pk,
                 "form_factor": "PiZero",
                 "mac_address": "DE:AD:BE:EF:00:01",
-                "ram": "2GB",
                 "status": Host.HostStatus.ACTIVE,
             },
         )
