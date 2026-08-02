@@ -435,3 +435,51 @@ class HostCreateViewTest(TestCase):
         ram_list = list(ram_field.queryset.values_list("name", flat=True))
 
         self.assertEqual(ram_list, ["2GB", "4GB", "8GB"])
+
+    def test_host_create_view_redirects_to_detail(self):
+        """
+        Test that creating a Host redirects to its detail view.
+        """
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.post(
+            reverse("app_tracker:host_create"),
+            data={"name": "New Host", "status": "ACTIVE"},
+        )
+        self.assertEqual(response.status_code, 302)
+        created_host = Host.objects.get(name="New Host")
+        self.assertRedirects(
+            response,
+            reverse("app_tracker:host_detail", kwargs={"pk": created_host.pk}),
+        )
+
+
+class HostUpdateViewRedirectTest(TestCase):
+    """
+    Test that HostUpdateView redirects to the host detail view after update.
+    """
+
+    def setUp(self):
+        """
+        Set up test data.
+        """
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            password="testpass123",
+            registration_accepted=True,
+        )
+        self.host = Host.objects.create(name="Existing Host")
+
+    def test_host_update_view_redirects_to_detail(self):
+        """
+        Test that updating a Host redirects to its detail view.
+        """
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.post(
+            reverse("app_tracker:host_update", kwargs={"pk": self.host.pk}),
+            data={"name": "Updated Host", "status": "ACTIVE"},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse("app_tracker:host_detail", kwargs={"pk": self.host.pk}),
+        )
