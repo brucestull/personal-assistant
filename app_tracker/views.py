@@ -385,13 +385,17 @@ class HostDetailView(RegistrationAcceptedMixin, DetailView):
 class HostCreateView(HostFormMixin, RegistrationAcceptedMixin, CreateView):
     model = Host
     fields = "__all__"
-    success_url = reverse_lazy("app_tracker:host_list")
+
+    def get_success_url(self):
+        return reverse_lazy("app_tracker:host_detail", kwargs={"pk": self.object.pk})
 
 
 class HostUpdateView(HostFormMixin, RegistrationAcceptedMixin, UpdateView):
     model = Host
     fields = "__all__"
-    success_url = reverse_lazy("app_tracker:host_list")
+
+    def get_success_url(self):
+        return reverse_lazy("app_tracker:host_detail", kwargs={"pk": self.object.pk})
 
 
 class HostDeleteView(RegistrationAcceptedMixin, DeleteView):
