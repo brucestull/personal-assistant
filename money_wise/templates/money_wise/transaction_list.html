@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'money_wise:dashboard' %}">Money Wise</a></li>
+      <li class="breadcrumb-item active">Transactions</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">💳 {{ page_title }}</h1>
+    <a href="{% url 'money_wise:transaction_create' %}" class="btn btn-success">➕ Add Transaction</a>
+  </div>
+
+  <!-- Filter by Account -->
+  <div class="card mb-4">
+    <div class="card-body py-2">
+      <form method="get" class="row g-2 align-items-center">
+        <div class="col-auto">
+          <label for="accountFilter" class="col-form-label fw-bold">Filter by Account:</label>
+        </div>
+        <div class="col-auto">
+          <select name="account" id="accountFilter" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">— All Accounts —</option>
+            {% for account in bank_accounts %}
+              <option value="{{ account.pk }}" {% if selected_account == account.pk|stringformat:"s" %}selected{% endif %}>
+                {{ account.name }} ({{ account.institution }})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        {% if selected_account %}
+          <div class="col-auto">
+            <a href="{% url 'money_wise:transaction_list' %}" class="btn btn-sm btn-outline-secondary">Clear Filter</a>
+          </div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  {% if transactions %}
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Account</th>
+            <th class="text-end">Amount</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for txn in transactions %}
+            <tr>
+              <td><small>{{ txn.date|date:"M d, Y" }}</small></td>
+              <td>
+                <a href="{% url 'money_wise:transaction_detail' txn.pk %}" class="text-decoration-none">
+                  {{ txn.description|truncatechars:60 }}
+                </a>
+              </td>
+              <td><small class="text-muted">{{ txn.category|default:"—" }}</small></td>
+              <td>
+                <span class="badge {% if txn.transaction_type == 'credit' %}bg-success{% elif txn.transaction_type == 'debit' %}bg-danger{% else %}bg-secondary{% endif %}">
+                  {{ txn.get_transaction_type_display }}
+                </span>
+              </td>
+              <td><small>{{ txn.bank_account.name }}</small></td>
+              <td class="text-end {% if txn.amount >= 0 %}text-success{% else %}text-danger{% endif %}">
+                <strong>{{ txn.amount|floatformat:2 }}</strong>
+              </td>
+              <td>
+                <a href="{% url 'money_wise:transaction_update' txn.pk %}" class="btn btn-sm btn-outline-primary">✏️</a>
+                <a href="{% url 'money_wise:transaction_delete' txn.pk %}" class="btn btn-sm btn-outline-danger">🗑️</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+      <nav aria-label="Transaction pagination">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_account %}&account={{ selected_account }}{% endif %}">Previous</a>
+            </li>
+          {% endif %}
+          <li class="page-item disabled">
+            <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+          </li>
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_account %}&account={{ selected_account }}{% endif %}">Next</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+
+  {% else %}
+    <div class="alert alert-info">
+      No transactions found. <a href="{% url 'money_wise:transaction_create' %}">Add one →</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock content %}

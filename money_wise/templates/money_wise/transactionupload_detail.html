@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - Upload Detail{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'money_wise:dashboard' %}">Money Wise</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'money_wise:upload_list' %}">CSV Uploads</a></li>
+      <li class="breadcrumb-item active">Detail</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">📤 Upload Detail</h1>
+    <a href="{% url 'money_wise:upload_delete' object.pk %}" class="btn btn-outline-danger">🗑️ Delete</a>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">{{ object.original_filename|default:object.csv_file.name }}</h5>
+        </div>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-sm-4">Bank Account</dt>
+            <dd class="col-sm-8">
+              <a href="{% url 'money_wise:bankaccount_detail' object.bank_account.pk %}">{{ object.bank_account }}</a>
+            </dd>
+
+            <dt class="col-sm-4">File</dt>
+            <dd class="col-sm-8">
+              {% if object.csv_file %}
+                <a href="{{ object.csv_file.url }}" target="_blank">{{ object.original_filename|default:object.csv_file.name }}</a>
+              {% else %}
+                —
+              {% endif %}
+            </dd>
+
+            <dt class="col-sm-4">Status</dt>
+            <dd class="col-sm-8">
+              <span class="badge {% if object.status == 'processed' %}bg-success{% elif object.status == 'failed' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+                {{ object.get_status_display }}
+              </span>
+            </dd>
+
+            <dt class="col-sm-4">Rows Processed</dt>
+            <dd class="col-sm-8">{{ object.rows_processed }}</dd>
+
+            <dt class="col-sm-4">Rows Created</dt>
+            <dd class="col-sm-8">{{ object.rows_created }}</dd>
+
+            <dt class="col-sm-4">Rows Skipped</dt>
+            <dd class="col-sm-8">{{ object.rows_skipped }}</dd>
+
+            {% if object.error_message %}
+              <dt class="col-sm-4">Error</dt>
+              <dd class="col-sm-8 text-danger">{{ object.error_message }}</dd>
+            {% endif %}
+
+            {% if object.notes %}
+              <dt class="col-sm-4">Notes</dt>
+              <dd class="col-sm-8">{{ object.notes }}</dd>
+            {% endif %}
+
+            <dt class="col-sm-4">Uploaded By</dt>
+            <dd class="col-sm-8">{{ object.uploaded_by|default:"—" }}</dd>
+
+            <dt class="col-sm-4">Uploaded On</dt>
+            <dd class="col-sm-8"><small class="text-muted">{{ object.created|date:"N j, Y H:i" }}</small></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <a href="{% url 'money_wise:upload_list' %}" class="btn btn-outline-secondary">⬅️ Back to Uploads</a>
+    <a href="{% url 'money_wise:bankaccount_detail' object.bank_account.pk %}" class="btn btn-outline-primary">🏦 View Account</a>
+  </div>
+</div>
+{% endblock content %}

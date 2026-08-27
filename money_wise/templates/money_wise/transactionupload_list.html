@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}{{ the_site_name }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'money_wise:dashboard' %}">Money Wise</a></li>
+      <li class="breadcrumb-item active">CSV Uploads</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">📤 {{ page_title }}</h1>
+    <a href="{% url 'money_wise:upload_create' %}" class="btn btn-info">➕ Upload CSV</a>
+  </div>
+
+  {% if uploads %}
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>File</th>
+            <th>Account</th>
+            <th>Status</th>
+            <th>Processed</th>
+            <th>Created</th>
+            <th>Uploaded By</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for upload in uploads %}
+            <tr>
+              <td>
+                <a href="{% url 'money_wise:upload_detail' upload.pk %}" class="text-decoration-none">
+                  {{ upload.original_filename|default:upload.csv_file.name }}
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'money_wise:bankaccount_detail' upload.bank_account.pk %}">{{ upload.bank_account.name }}</a>
+              </td>
+              <td>
+                <span class="badge {% if upload.status == 'processed' %}bg-success{% elif upload.status == 'failed' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+                  {{ upload.get_status_display }}
+                </span>
+              </td>
+              <td>
+                {% if upload.rows_processed %}
+                  {{ upload.rows_created }} / {{ upload.rows_processed }}
+                  {% if upload.rows_skipped %}<small class="text-muted">({{ upload.rows_skipped }} skipped)</small>{% endif %}
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td><small>{{ upload.created|date:"M d, Y H:i" }}</small></td>
+              <td><small>{{ upload.uploaded_by|default:"—" }}</small></td>
+              <td>
+                <a href="{% url 'money_wise:upload_delete' upload.pk %}" class="btn btn-sm btn-outline-danger">🗑️</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info">
+      No uploads yet. <a href="{% url 'money_wise:upload_create' %}">Upload a CSV file →</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock content %}
