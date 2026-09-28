@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{# Static PERMA page. Render from a view, e.g.: #}
+{#   from django.views.generic import TemplateView #}
+{#   path("perma/", TemplateView.as_view(template_name="perma.html"), name="perma") #}
+{# All styling is scoped under .perma so it won't touch the navbar or the rest of the site. #}
+
+{% block title %}PERMA — A Model of Well-Being{% endblock %}
+
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&display=swap');
+
+  .perma {
+    /* One accent per PERMA element — the whole page is built around these. */
+    --p: #d8952a;  /* Positive Emotion  */
+    --e: #2a857a;  /* Engagement        */
+    --r: #c85a6e;  /* Relationships     */
+    --m: #5f54a0;  /* Meaning           */
+    --a: #4f8442;  /* Accomplishment    */
+
+    --ink: #262b26;
+    --ink-soft: #556054;
+    --line: #d7dcd5;
+    --card: #fbfcfa;
+
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+
+    color: var(--ink);
+    max-width: 62rem;
+    margin-inline: auto;
+  }
+
+  /* ---------- Hero ---------- */
+  .perma .wordmark {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(4rem, 18vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    gap: 0.02em;
+    margin: 0;
+  }
+  .perma .wordmark a {
+    text-decoration: none;
+    border-radius: 0.15em;
+    transition: transform 160ms ease, opacity 160ms ease;
+  }
+  .perma .wordmark a:hover { transform: translateY(-0.04em); opacity: 0.85; }
+  .perma .wordmark a:focus-visible { outline: 3px solid currentColor; outline-offset: 0.06em; }
+  .perma .wordmark .l-p { color: var(--p); }
+  .perma .wordmark .l-e { color: var(--e); }
+  .perma .wordmark .l-r { color: var(--r); }
+  .perma .wordmark .l-m { color: var(--m); }
+  .perma .wordmark .l-a { color: var(--a); }
+
+  .perma .tagline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+    line-height: 1.4;
+    color: var(--ink-soft);
+    max-width: 34ch;
+    margin: 1.5rem auto 0;
+  }
+
+  /* ---------- Elements ---------- */
+  .perma .element {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: clamp(1rem, 4vw, 2.5rem);
+    padding: clamp(1.75rem, 4vw, 2.75rem) 0;
+    border-top: 1px solid var(--line);
+    scroll-margin-top: 1.5rem;
+  }
+  .perma .element:last-child { border-bottom: 1px solid var(--line); }
+
+  .perma .mark {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 4.25rem;
+    line-height: 1;
+    color: var(--accent);
+    border-bottom: 4px solid var(--accent);
+    padding-bottom: 0.15rem;
+    align-self: start;
+  }
+
+  .perma .element h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3.2vw, 2rem);
+    line-height: 1.15;
+    margin: 0.15rem 0 0.85rem;
+    color: var(--ink);
+  }
+
+  .perma .desc { margin: 0 0 1.5rem; max-width: 60ch; }
+
+  .perma .practice-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+
+  .perma .examples {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .perma .examples li {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 34rem) {
+    .perma .element { grid-template-columns: 1fr; gap: 0.75rem; }
+    .perma .mark { font-size: 3.25rem; border-bottom-width: 3px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .perma .wordmark a { transition: none; }
+  }
+</style>
+
+<div class="perma py-5">
+
+  <header class="text-center mb-5">
+    <h1 class="wordmark" aria-label="PERMA"><a class="l-p" href="#positive-emotion">P</a><a class="l-e" href="#engagement">E</a><a class="l-r" href="#relationships">R</a><a class="l-m" href="#meaning">M</a><a class="l-a" href="#accomplishment">A</a></h1>
+    <p class="tagline">
+      PERMA maps the five building blocks of a flourishing life, helping people
+      notice, strengthen, and balance what makes their well-being last.
+    </p>
+  </header>
+
+  <section class="element" id="positive-emotion" style="--accent: var(--p)">
+    <div class="mark">P</div>
+    <div>
+      <h2>Positive Emotion</h2>
+      <p class="desc">
+        Regularly feeling joy, gratitude, hope, and contentment broadens your
+        outlook and builds a reserve of resilience you can draw on when life
+        gets hard.
+      </p>
+      <p class="practice-label">Ways to practice</p>
+      <ul class="examples">
+        <li>Savoring a good meal</li>
+        <li>Gratitude journaling</li>
+        <li>Music you love</li>
+        <li>Time outdoors</li>
+        <li>Celebrating small wins</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="element" id="engagement" style="--accent: var(--e)">
+    <div class="mark">E</div>
+    <div>
+      <h2>Engagement</h2>
+      <p class="desc">
+        Losing yourself in an activity that stretches your skills produces
+        &ldquo;flow&rdquo; &mdash; a deep absorption that grows your strengths
+        and makes time seem to disappear.
+      </p>
+      <p class="practice-label">Ways to practice</p>
+      <ul class="examples">
+        <li>Playing an instrument</li>
+        <li>Solving a hard problem</li>
+        <li>Gardening</li>
+        <li>Painting or making</li>
+        <li>Sport that absorbs you</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="element" id="relationships" style="--accent: var(--r)">
+    <div class="mark">R</div>
+    <div>
+      <h2>Relationships</h2>
+      <p class="desc">
+        Warm, supportive connections give you a sense of belonging and someone
+        to lean on, and they turn out to be one of the strongest predictors of
+        well-being.
+      </p>
+      <p class="practice-label">Ways to practice</p>
+      <ul class="examples">
+        <li>Calling a friend</li>
+        <li>Sharing a meal</li>
+        <li>Helping a neighbor</li>
+        <li>Honest conversation</li>
+        <li>Joining a group or team</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="element" id="meaning" style="--accent: var(--m)">
+    <div class="mark">M</div>
+    <div>
+      <h2>Meaning</h2>
+      <p class="desc">
+        Belonging to and serving something larger than yourself gives life
+        direction and purpose, so daily effort feels worthwhile even when it is
+        difficult.
+      </p>
+      <p class="practice-label">Ways to practice</p>
+      <ul class="examples">
+        <li>Volunteering</li>
+        <li>Mentoring someone</li>
+        <li>Faith or reflection</li>
+        <li>Creative work</li>
+        <li>Contributing to a cause</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="element" id="accomplishment" style="--accent: var(--a)">
+    <div class="mark">A</div>
+    <div>
+      <h2>Accomplishment</h2>
+      <p class="desc">
+        Setting goals and making real progress toward them builds competence
+        and pride, giving you the confidence that you can shape outcomes through
+        your own effort.
+      </p>
+      <p class="practice-label">Ways to practice</p>
+      <ul class="examples">
+        <li>Finishing a project</li>
+        <li>Learning a new skill</li>
+        <li>Hitting a fitness goal</li>
+        <li>Mastering a craft</li>
+        <li>Meeting a deadline</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
