@@ -32,6 +32,14 @@ urlpatterns = [
         name="home",
     ),
     path(
+        "perma/",
+        TemplateView.as_view(
+            template_name="true_north/perma.html",
+            # template_name="true_north/templates/true_north/perma.html",
+        ),
+        name="perma",
+    ),
+    path(
         "metronome/",
         TemplateView.as_view(
             template_name="metronome.html",
