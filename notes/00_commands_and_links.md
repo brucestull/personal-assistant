@@ -102,6 +102,8 @@
 * Applications:
   * <http://localhost:8000/journals/list/>
   * [HTML](http://localhost:8000/valued-goals/html/)
+  * [Events](http://localhost:8000/events/)
+    * http://localhost:8000/events/
   * [Goals](http://localhost:8000/valued-goals/goals/)
   * [Goals Create](http://localhost:8000/valued-goals/goals/create/)
   * [Unimportant Notes](http://localhost:8000/unimportant-notes/)
@@ -117,12 +119,8 @@
   * [App Tracker - Projects](http://localhost:8000/app-tracker/projects/)
   * [App Tracker - Servers](http://localhost:8000/app-tracker/servers/)
 
-
-
-
-
-
-
+* PERMA
+  * [PERMA](http://localhost:8000/perma/)
 
 * Create user:
   * <http://localhost:8000/accounts/signup/>
